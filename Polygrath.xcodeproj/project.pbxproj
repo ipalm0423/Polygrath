@@ -1,0 +1,523 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		ACBC3F6D1B9EC9D7007AC186 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = ACBC3F6C1B9EC9D7007AC186 /* AppDelegate.swift */; };
+		ACBC3F6F1B9EC9D7007AC186 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = ACBC3F6E1B9EC9D7007AC186 /* ViewController.swift */; };
+		ACBC3F721B9EC9D7007AC186 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = ACBC3F701B9EC9D7007AC186 /* Main.storyboard */; };
+		ACBC3F751B9EC9D7007AC186 /* Polygrath.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = ACBC3F731B9EC9D7007AC186 /* Polygrath.xcdatamodeld */; };
+		ACBC3F771B9EC9D7007AC186 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = ACBC3F761B9EC9D7007AC186 /* Assets.xcassets */; };
+		ACBC3F7A1B9EC9D7007AC186 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = ACBC3F781B9EC9D7007AC186 /* LaunchScreen.storyboard */; };
+		ACBC3F851B9EC9D7007AC186 /* PolygrathTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = ACBC3F841B9EC9D7007AC186 /* PolygrathTests.swift */; };
+		ACBC3F901B9EC9D7007AC186 /* PolygrathUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = ACBC3F8F1B9EC9D7007AC186 /* PolygrathUITests.swift */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		ACBC3F811B9EC9D7007AC186 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = ACBC3F611B9EC9D7007AC186 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = ACBC3F681B9EC9D7007AC186;
+			remoteInfo = Polygrath;
+		};
+		ACBC3F8C1B9EC9D7007AC186 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = ACBC3F611B9EC9D7007AC186 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = ACBC3F681B9EC9D7007AC186;
+			remoteInfo = Polygrath;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		ACBC3F691B9EC9D7007AC186 /* Polygrath.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Polygrath.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		ACBC3F6C1B9EC9D7007AC186 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
+		ACBC3F6E1B9EC9D7007AC186 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
+		ACBC3F711B9EC9D7007AC186 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
+		ACBC3F741B9EC9D7007AC186 /* Polygrath.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Polygrath.xcdatamodel; sourceTree = "<group>"; };
+		ACBC3F761B9EC9D7007AC186 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		ACBC3F791B9EC9D7007AC186 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
+		ACBC3F7B1B9EC9D7007AC186 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		ACBC3F801B9EC9D7007AC186 /* PolygrathTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = PolygrathTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		ACBC3F841B9EC9D7007AC186 /* PolygrathTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PolygrathTests.swift; sourceTree = "<group>"; };
+		ACBC3F861B9EC9D7007AC186 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		ACBC3F8B1B9EC9D7007AC186 /* PolygrathUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = PolygrathUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		ACBC3F8F1B9EC9D7007AC186 /* PolygrathUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PolygrathUITests.swift; sourceTree = "<group>"; };
+		ACBC3F911B9EC9D7007AC186 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		ACBC3F661B9EC9D7007AC186 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		ACBC3F7D1B9EC9D7007AC186 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		ACBC3F881B9EC9D7007AC186 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		ACBC3F601B9EC9D7007AC186 = {
+			isa = PBXGroup;
+			children = (
+				ACBC3F6B1B9EC9D7007AC186 /* Polygrath */,
+				ACBC3F831B9EC9D7007AC186 /* PolygrathTests */,
+				ACBC3F8E1B9EC9D7007AC186 /* PolygrathUITests */,
+				ACBC3F6A1B9EC9D7007AC186 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		ACBC3F6A1B9EC9D7007AC186 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				ACBC3F691B9EC9D7007AC186 /* Polygrath.app */,
+				ACBC3F801B9EC9D7007AC186 /* PolygrathTests.xctest */,
+				ACBC3F8B1B9EC9D7007AC186 /* PolygrathUITests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		ACBC3F6B1B9EC9D7007AC186 /* Polygrath */ = {
+			isa = PBXGroup;
+			children = (
+				ACBC3F6C1B9EC9D7007AC186 /* AppDelegate.swift */,
+				ACBC3F6E1B9EC9D7007AC186 /* ViewController.swift */,
+				ACBC3F701B9EC9D7007AC186 /* Main.storyboard */,
+				ACBC3F761B9EC9D7007AC186 /* Assets.xcassets */,
+				ACBC3F781B9EC9D7007AC186 /* LaunchScreen.storyboard */,
+				ACBC3F7B1B9EC9D7007AC186 /* Info.plist */,
+				ACBC3F731B9EC9D7007AC186 /* Polygrath.xcdatamodeld */,
+			);
+			path = Polygrath;
+			sourceTree = "<group>";
+		};
+		ACBC3F831B9EC9D7007AC186 /* PolygrathTests */ = {
+			isa = PBXGroup;
+			children = (
+				ACBC3F841B9EC9D7007AC186 /* PolygrathTests.swift */,
+				ACBC3F861B9EC9D7007AC186 /* Info.plist */,
+			);
+			path = PolygrathTests;
+			sourceTree = "<group>";
+		};
+		ACBC3F8E1B9EC9D7007AC186 /* PolygrathUITests */ = {
+			isa = PBXGroup;
+			children = (
+				ACBC3F8F1B9EC9D7007AC186 /* PolygrathUITests.swift */,
+				ACBC3F911B9EC9D7007AC186 /* Info.plist */,
+			);
+			path = PolygrathUITests;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		ACBC3F681B9EC9D7007AC186 /* Polygrath */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = ACBC3F941B9EC9D7007AC186 /* Build configuration list for PBXNativeTarget "Polygrath" */;
+			buildPhases = (
+				ACBC3F651B9EC9D7007AC186 /* Sources */,
+				ACBC3F661B9EC9D7007AC186 /* Frameworks */,
+				ACBC3F671B9EC9D7007AC186 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = Polygrath;
+			productName = Polygrath;
+			productReference = ACBC3F691B9EC9D7007AC186 /* Polygrath.app */;
+			productType = "com.apple.product-type.application";
+		};
+		ACBC3F7F1B9EC9D7007AC186 /* PolygrathTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = ACBC3F971B9EC9D7007AC186 /* Build configuration list for PBXNativeTarget "PolygrathTests" */;
+			buildPhases = (
+				ACBC3F7C1B9EC9D7007AC186 /* Sources */,
+				ACBC3F7D1B9EC9D7007AC186 /* Frameworks */,
+				ACBC3F7E1B9EC9D7007AC186 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				ACBC3F821B9EC9D7007AC186 /* PBXTargetDependency */,
+			);
+			name = PolygrathTests;
+			productName = PolygrathTests;
+			productReference = ACBC3F801B9EC9D7007AC186 /* PolygrathTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+		ACBC3F8A1B9EC9D7007AC186 /* PolygrathUITests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = ACBC3F9A1B9EC9D7007AC186 /* Build configuration list for PBXNativeTarget "PolygrathUITests" */;
+			buildPhases = (
+				ACBC3F871B9EC9D7007AC186 /* Sources */,
+				ACBC3F881B9EC9D7007AC186 /* Frameworks */,
+				ACBC3F891B9EC9D7007AC186 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				ACBC3F8D1B9EC9D7007AC186 /* PBXTargetDependency */,
+			);
+			name = PolygrathUITests;
+			productName = PolygrathUITests;
+			productReference = ACBC3F8B1B9EC9D7007AC186 /* PolygrathUITests.xctest */;
+			productType = "com.apple.product-type.bundle.ui-testing";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		ACBC3F611B9EC9D7007AC186 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastUpgradeCheck = 0700;
+				ORGANIZATIONNAME = "陳冠宇";
+				TargetAttributes = {
+					ACBC3F681B9EC9D7007AC186 = {
+						CreatedOnToolsVersion = 7.0;
+					};
+					ACBC3F7F1B9EC9D7007AC186 = {
+						CreatedOnToolsVersion = 7.0;
+						TestTargetID = ACBC3F681B9EC9D7007AC186;
+					};
+					ACBC3F8A1B9EC9D7007AC186 = {
+						CreatedOnToolsVersion = 7.0;
+						TestTargetID = ACBC3F681B9EC9D7007AC186;
+					};
+				};
+			};
+			buildConfigurationList = ACBC3F641B9EC9D7007AC186 /* Build configuration list for PBXProject "Polygrath" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = ACBC3F601B9EC9D7007AC186;
+			productRefGroup = ACBC3F6A1B9EC9D7007AC186 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				ACBC3F681B9EC9D7007AC186 /* Polygrath */,
+				ACBC3F7F1B9EC9D7007AC186 /* PolygrathTests */,
+				ACBC3F8A1B9EC9D7007AC186 /* PolygrathUITests */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		ACBC3F671B9EC9D7007AC186 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				ACBC3F7A1B9EC9D7007AC186 /* LaunchScreen.storyboard in Resources */,
+				ACBC3F771B9EC9D7007AC186 /* Assets.xcassets in Resources */,
+				ACBC3F721B9EC9D7007AC186 /* Main.storyboard in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		ACBC3F7E1B9EC9D7007AC186 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		ACBC3F891B9EC9D7007AC186 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		ACBC3F651B9EC9D7007AC186 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				ACBC3F6F1B9EC9D7007AC186 /* ViewController.swift in Sources */,
+				ACBC3F6D1B9EC9D7007AC186 /* AppDelegate.swift in Sources */,
+				ACBC3F751B9EC9D7007AC186 /* Polygrath.xcdatamodeld in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		ACBC3F7C1B9EC9D7007AC186 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				ACBC3F851B9EC9D7007AC186 /* PolygrathTests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		ACBC3F871B9EC9D7007AC186 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				ACBC3F901B9EC9D7007AC186 /* PolygrathUITests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		ACBC3F821B9EC9D7007AC186 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = ACBC3F681B9EC9D7007AC186 /* Polygrath */;
+			targetProxy = ACBC3F811B9EC9D7007AC186 /* PBXContainerItemProxy */;
+		};
+		ACBC3F8D1B9EC9D7007AC186 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = ACBC3F681B9EC9D7007AC186 /* Polygrath */;
+			targetProxy = ACBC3F8C1B9EC9D7007AC186 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin PBXVariantGroup section */
+		ACBC3F701B9EC9D7007AC186 /* Main.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				ACBC3F711B9EC9D7007AC186 /* Base */,
+			);
+			name = Main.storyboard;
+			sourceTree = "<group>";
+		};
+		ACBC3F781B9EC9D7007AC186 /* LaunchScreen.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				ACBC3F791B9EC9D7007AC186 /* Base */,
+			);
+			name = LaunchScreen.storyboard;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		ACBC3F921B9EC9D7007AC186 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
+				MTL_ENABLE_DEBUG_INFO = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		ACBC3F931B9EC9D7007AC186 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		ACBC3F951B9EC9D7007AC186 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				INFOPLIST_FILE = Polygrath/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = Morpheus.Polygrath;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Debug;
+		};
+		ACBC3F961B9EC9D7007AC186 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				INFOPLIST_FILE = Polygrath/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = Morpheus.Polygrath;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Release;
+		};
+		ACBC3F981B9EC9D7007AC186 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				INFOPLIST_FILE = PolygrathTests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = Morpheus.PolygrathTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Polygrath.app/Polygrath";
+			};
+			name = Debug;
+		};
+		ACBC3F991B9EC9D7007AC186 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				INFOPLIST_FILE = PolygrathTests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = Morpheus.PolygrathTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Polygrath.app/Polygrath";
+			};
+			name = Release;
+		};
+		ACBC3F9B1B9EC9D7007AC186 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				INFOPLIST_FILE = PolygrathUITests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = Morpheus.PolygrathUITests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TEST_TARGET_NAME = Polygrath;
+				USES_XCTRUNNER = YES;
+			};
+			name = Debug;
+		};
+		ACBC3F9C1B9EC9D7007AC186 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				INFOPLIST_FILE = PolygrathUITests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = Morpheus.PolygrathUITests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TEST_TARGET_NAME = Polygrath;
+				USES_XCTRUNNER = YES;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		ACBC3F641B9EC9D7007AC186 /* Build configuration list for PBXProject "Polygrath" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				ACBC3F921B9EC9D7007AC186 /* Debug */,
+				ACBC3F931B9EC9D7007AC186 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		ACBC3F941B9EC9D7007AC186 /* Build configuration list for PBXNativeTarget "Polygrath" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				ACBC3F951B9EC9D7007AC186 /* Debug */,
+				ACBC3F961B9EC9D7007AC186 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+		};
+		ACBC3F971B9EC9D7007AC186 /* Build configuration list for PBXNativeTarget "PolygrathTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				ACBC3F981B9EC9D7007AC186 /* Debug */,
+				ACBC3F991B9EC9D7007AC186 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+		};
+		ACBC3F9A1B9EC9D7007AC186 /* Build configuration list for PBXNativeTarget "PolygrathUITests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				ACBC3F9B1B9EC9D7007AC186 /* Debug */,
+				ACBC3F9C1B9EC9D7007AC186 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+		};
+/* End XCConfigurationList section */
+
+/* Begin XCVersionGroup section */
+		ACBC3F731B9EC9D7007AC186 /* Polygrath.xcdatamodeld */ = {
+			isa = XCVersionGroup;
+			children = (
+				ACBC3F741B9EC9D7007AC186 /* Polygrath.xcdatamodel */,
+			);
+			currentVersion = ACBC3F741B9EC9D7007AC186 /* Polygrath.xcdatamodel */;
+			path = Polygrath.xcdatamodeld;
+			sourceTree = "<group>";
+			versionGroupType = wrapper.xcdatamodel;
+		};
+/* End XCVersionGroup section */
+	};
+	rootObject = ACBC3F611B9EC9D7007AC186 /* Project object */;
+}
