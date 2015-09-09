@@ -4,6 +4,11 @@
 <dict>
 	<key>SchemeUserState</key>
 	<dict>
+		<key>Polygrath-iWatch.xcscheme</key>
+		<dict>
+			<key>orderHint</key>
+			<integer>1</integer>
+		</dict>
 		<key>Polygrath.xcscheme</key>
 		<dict>
 			<key>orderHint</key>
@@ -23,6 +28,11 @@
 			<true/>
 		</dict>
 		<key>ACBC3F8A1B9EC9D7007AC186</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>ACBC3F9E1B9ECA2B007AC186</key>
 		<dict>
 			<key>primary</key>
 			<true/>

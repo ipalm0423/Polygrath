@@ -15,6 +15,16 @@
 		ACBC3F7A1B9EC9D7007AC186 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = ACBC3F781B9EC9D7007AC186 /* LaunchScreen.storyboard */; };
 		ACBC3F851B9EC9D7007AC186 /* PolygrathTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = ACBC3F841B9EC9D7007AC186 /* PolygrathTests.swift */; };
 		ACBC3F901B9EC9D7007AC186 /* PolygrathUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = ACBC3F8F1B9EC9D7007AC186 /* PolygrathUITests.swift */; };
+		ACBC3FA31B9ECA2B007AC186 /* Interface.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = ACBC3FA11B9ECA2B007AC186 /* Interface.storyboard */; };
+		ACBC3FA51B9ECA2B007AC186 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = ACBC3FA41B9ECA2B007AC186 /* Assets.xcassets */; };
+		ACBC3FAC1B9ECA2B007AC186 /* Polygrath-iWatch Extension.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = ACBC3FAB1B9ECA2B007AC186 /* Polygrath-iWatch Extension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		ACBC3FB11B9ECA2B007AC186 /* InterfaceController.swift in Sources */ = {isa = PBXBuildFile; fileRef = ACBC3FB01B9ECA2B007AC186 /* InterfaceController.swift */; };
+		ACBC3FB31B9ECA2B007AC186 /* ExtensionDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = ACBC3FB21B9ECA2B007AC186 /* ExtensionDelegate.swift */; };
+		ACBC3FB51B9ECA2B007AC186 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = ACBC3FB41B9ECA2B007AC186 /* Assets.xcassets */; };
+		ACBC3FB91B9ECA2B007AC186 /* Polygrath-iWatch.app in Embed Watch Content */ = {isa = PBXBuildFile; fileRef = ACBC3F9F1B9ECA2B007AC186 /* Polygrath-iWatch.app */; };
+		ACBC3FC31B9ECC65007AC186 /* TestInterfaceController.swift in Sources */ = {isa = PBXBuildFile; fileRef = ACBC3FC21B9ECC65007AC186 /* TestInterfaceController.swift */; settings = {ASSET_TAGS = (); }; };
+		ACBC3FC61B9ED277007AC186 /* HealthKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = ACBC3FC51B9ED277007AC186 /* HealthKit.framework */; };
+		ACDE3ADE1B9F378100917E97 /* HealthKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = ACDE3ADD1B9F378100917E97 /* HealthKit.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -32,7 +42,46 @@
 			remoteGlobalIDString = ACBC3F681B9EC9D7007AC186;
 			remoteInfo = Polygrath;
 		};
+		ACBC3FAD1B9ECA2B007AC186 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = ACBC3F611B9EC9D7007AC186 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = ACBC3FAA1B9ECA2B007AC186;
+			remoteInfo = "Polygrath-iWatch Extension";
+		};
+		ACBC3FB71B9ECA2B007AC186 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = ACBC3F611B9EC9D7007AC186 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = ACBC3F9E1B9ECA2B007AC186;
+			remoteInfo = "Polygrath-iWatch";
+		};
 /* End PBXContainerItemProxy section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		ACBC3FBF1B9ECA2B007AC186 /* Embed App Extensions */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 13;
+			files = (
+				ACBC3FAC1B9ECA2B007AC186 /* Polygrath-iWatch Extension.appex in Embed App Extensions */,
+			);
+			name = "Embed App Extensions";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		ACBC3FC11B9ECA2B007AC186 /* Embed Watch Content */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "$(CONTENTS_FOLDER_PATH)/Watch";
+			dstSubfolderSpec = 16;
+			files = (
+				ACBC3FB91B9ECA2B007AC186 /* Polygrath-iWatch.app in Embed Watch Content */,
+			);
+			name = "Embed Watch Content";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
 		ACBC3F691B9EC9D7007AC186 /* Polygrath.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Polygrath.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -49,6 +98,21 @@
 		ACBC3F8B1B9EC9D7007AC186 /* PolygrathUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = PolygrathUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		ACBC3F8F1B9EC9D7007AC186 /* PolygrathUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PolygrathUITests.swift; sourceTree = "<group>"; };
 		ACBC3F911B9EC9D7007AC186 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		ACBC3F9F1B9ECA2B007AC186 /* Polygrath-iWatch.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Polygrath-iWatch.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		ACBC3FA21B9ECA2B007AC186 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Interface.storyboard; sourceTree = "<group>"; };
+		ACBC3FA41B9ECA2B007AC186 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		ACBC3FA61B9ECA2B007AC186 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		ACBC3FAB1B9ECA2B007AC186 /* Polygrath-iWatch Extension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = "Polygrath-iWatch Extension.appex"; sourceTree = BUILT_PRODUCTS_DIR; };
+		ACBC3FB01B9ECA2B007AC186 /* InterfaceController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InterfaceController.swift; sourceTree = "<group>"; };
+		ACBC3FB21B9ECA2B007AC186 /* ExtensionDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExtensionDelegate.swift; sourceTree = "<group>"; };
+		ACBC3FB41B9ECA2B007AC186 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		ACBC3FB61B9ECA2B007AC186 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		ACBC3FC21B9ECC65007AC186 /* TestInterfaceController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TestInterfaceController.swift; sourceTree = "<group>"; };
+		ACBC3FC41B9ED26D007AC186 /* Polygrath-iWatch Extension.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = "Polygrath-iWatch Extension.entitlements"; sourceTree = "<group>"; };
+		ACBC3FC51B9ED277007AC186 /* HealthKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = HealthKit.framework; path = Platforms/WatchOS.platform/Developer/SDKs/WatchOS2.0.sdk/System/Library/Frameworks/HealthKit.framework; sourceTree = DEVELOPER_DIR; };
+		ACDE3ADC1B9F378000917E97 /* Polygrath.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = Polygrath.entitlements; sourceTree = "<group>"; };
+		ACDE3ADD1B9F378100917E97 /* HealthKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = HealthKit.framework; path = System/Library/Frameworks/HealthKit.framework; sourceTree = SDKROOT; };
+		ACDE3ADF1B9F379100917E97 /* Polygrath-iWatch.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = "Polygrath-iWatch.entitlements"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -56,6 +120,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				ACDE3ADE1B9F378100917E97 /* HealthKit.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -73,15 +138,27 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		ACBC3FA81B9ECA2B007AC186 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				ACBC3FC61B9ED277007AC186 /* HealthKit.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
 		ACBC3F601B9EC9D7007AC186 = {
 			isa = PBXGroup;
 			children = (
+				ACDE3ADD1B9F378100917E97 /* HealthKit.framework */,
+				ACBC3FC51B9ED277007AC186 /* HealthKit.framework */,
 				ACBC3F6B1B9EC9D7007AC186 /* Polygrath */,
 				ACBC3F831B9EC9D7007AC186 /* PolygrathTests */,
 				ACBC3F8E1B9EC9D7007AC186 /* PolygrathUITests */,
+				ACBC3FA01B9ECA2B007AC186 /* Polygrath-iWatch */,
+				ACBC3FAF1B9ECA2B007AC186 /* Polygrath-iWatch Extension */,
 				ACBC3F6A1B9EC9D7007AC186 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -92,6 +169,8 @@
 				ACBC3F691B9EC9D7007AC186 /* Polygrath.app */,
 				ACBC3F801B9EC9D7007AC186 /* PolygrathTests.xctest */,
 				ACBC3F8B1B9EC9D7007AC186 /* PolygrathUITests.xctest */,
+				ACBC3F9F1B9ECA2B007AC186 /* Polygrath-iWatch.app */,
+				ACBC3FAB1B9ECA2B007AC186 /* Polygrath-iWatch Extension.appex */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -99,6 +178,7 @@
 		ACBC3F6B1B9EC9D7007AC186 /* Polygrath */ = {
 			isa = PBXGroup;
 			children = (
+				ACDE3ADC1B9F378000917E97 /* Polygrath.entitlements */,
 				ACBC3F6C1B9EC9D7007AC186 /* AppDelegate.swift */,
 				ACBC3F6E1B9EC9D7007AC186 /* ViewController.swift */,
 				ACBC3F701B9EC9D7007AC186 /* Main.storyboard */,
@@ -128,6 +208,30 @@
 			path = PolygrathUITests;
 			sourceTree = "<group>";
 		};
+		ACBC3FA01B9ECA2B007AC186 /* Polygrath-iWatch */ = {
+			isa = PBXGroup;
+			children = (
+				ACDE3ADF1B9F379100917E97 /* Polygrath-iWatch.entitlements */,
+				ACBC3FA11B9ECA2B007AC186 /* Interface.storyboard */,
+				ACBC3FA41B9ECA2B007AC186 /* Assets.xcassets */,
+				ACBC3FA61B9ECA2B007AC186 /* Info.plist */,
+			);
+			path = "Polygrath-iWatch";
+			sourceTree = "<group>";
+		};
+		ACBC3FAF1B9ECA2B007AC186 /* Polygrath-iWatch Extension */ = {
+			isa = PBXGroup;
+			children = (
+				ACBC3FC41B9ED26D007AC186 /* Polygrath-iWatch Extension.entitlements */,
+				ACBC3FB01B9ECA2B007AC186 /* InterfaceController.swift */,
+				ACBC3FC21B9ECC65007AC186 /* TestInterfaceController.swift */,
+				ACBC3FB21B9ECA2B007AC186 /* ExtensionDelegate.swift */,
+				ACBC3FB41B9ECA2B007AC186 /* Assets.xcassets */,
+				ACBC3FB61B9ECA2B007AC186 /* Info.plist */,
+			);
+			path = "Polygrath-iWatch Extension";
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -138,10 +242,12 @@
 				ACBC3F651B9EC9D7007AC186 /* Sources */,
 				ACBC3F661B9EC9D7007AC186 /* Frameworks */,
 				ACBC3F671B9EC9D7007AC186 /* Resources */,
+				ACBC3FC11B9ECA2B007AC186 /* Embed Watch Content */,
 			);
 			buildRules = (
 			);
 			dependencies = (
+				ACBC3FB81B9ECA2B007AC186 /* PBXTargetDependency */,
 			);
 			name = Polygrath;
 			productName = Polygrath;
@@ -184,6 +290,40 @@
 			productReference = ACBC3F8B1B9EC9D7007AC186 /* PolygrathUITests.xctest */;
 			productType = "com.apple.product-type.bundle.ui-testing";
 		};
+		ACBC3F9E1B9ECA2B007AC186 /* Polygrath-iWatch */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = ACBC3FC01B9ECA2B007AC186 /* Build configuration list for PBXNativeTarget "Polygrath-iWatch" */;
+			buildPhases = (
+				ACBC3F9D1B9ECA2B007AC186 /* Resources */,
+				ACBC3FBF1B9ECA2B007AC186 /* Embed App Extensions */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				ACBC3FAE1B9ECA2B007AC186 /* PBXTargetDependency */,
+			);
+			name = "Polygrath-iWatch";
+			productName = "Polygrath-iWatch";
+			productReference = ACBC3F9F1B9ECA2B007AC186 /* Polygrath-iWatch.app */;
+			productType = "com.apple.product-type.application.watchapp2";
+		};
+		ACBC3FAA1B9ECA2B007AC186 /* Polygrath-iWatch Extension */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = ACBC3FBE1B9ECA2B007AC186 /* Build configuration list for PBXNativeTarget "Polygrath-iWatch Extension" */;
+			buildPhases = (
+				ACBC3FA71B9ECA2B007AC186 /* Sources */,
+				ACBC3FA81B9ECA2B007AC186 /* Frameworks */,
+				ACBC3FA91B9ECA2B007AC186 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = "Polygrath-iWatch Extension";
+			productName = "Polygrath-iWatch Extension";
+			productReference = ACBC3FAB1B9ECA2B007AC186 /* Polygrath-iWatch Extension.appex */;
+			productType = "com.apple.product-type.watchkit2-extension";
+		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -195,6 +335,15 @@
 				TargetAttributes = {
 					ACBC3F681B9EC9D7007AC186 = {
 						CreatedOnToolsVersion = 7.0;
+						DevelopmentTeam = Z2U36UFBHG;
+						SystemCapabilities = {
+							com.apple.ApplicationGroups.iOS = {
+								enabled = 1;
+							};
+							com.apple.HealthKit = {
+								enabled = 1;
+							};
+						};
 					};
 					ACBC3F7F1B9EC9D7007AC186 = {
 						CreatedOnToolsVersion = 7.0;
@@ -203,6 +352,27 @@
 					ACBC3F8A1B9EC9D7007AC186 = {
 						CreatedOnToolsVersion = 7.0;
 						TestTargetID = ACBC3F681B9EC9D7007AC186;
+					};
+					ACBC3F9E1B9ECA2B007AC186 = {
+						CreatedOnToolsVersion = 7.0;
+						DevelopmentTeam = Z2U36UFBHG;
+						SystemCapabilities = {
+							com.apple.ApplicationGroups.iOS = {
+								enabled = 1;
+							};
+						};
+					};
+					ACBC3FAA1B9ECA2B007AC186 = {
+						CreatedOnToolsVersion = 7.0;
+						DevelopmentTeam = Z2U36UFBHG;
+						SystemCapabilities = {
+							com.apple.ApplicationGroups.iOS = {
+								enabled = 1;
+							};
+							com.apple.HealthKit = {
+								enabled = 1;
+							};
+						};
 					};
 				};
 			};
@@ -222,6 +392,8 @@
 				ACBC3F681B9EC9D7007AC186 /* Polygrath */,
 				ACBC3F7F1B9EC9D7007AC186 /* PolygrathTests */,
 				ACBC3F8A1B9EC9D7007AC186 /* PolygrathUITests */,
+				ACBC3F9E1B9ECA2B007AC186 /* Polygrath-iWatch */,
+				ACBC3FAA1B9ECA2B007AC186 /* Polygrath-iWatch Extension */,
 			);
 		};
 /* End PBXProject section */
@@ -248,6 +420,23 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		ACBC3F9D1B9ECA2B007AC186 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				ACBC3FA51B9ECA2B007AC186 /* Assets.xcassets in Resources */,
+				ACBC3FA31B9ECA2B007AC186 /* Interface.storyboard in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		ACBC3FA91B9ECA2B007AC186 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				ACBC3FB51B9ECA2B007AC186 /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -280,6 +469,16 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		ACBC3FA71B9ECA2B007AC186 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				ACBC3FB31B9ECA2B007AC186 /* ExtensionDelegate.swift in Sources */,
+				ACBC3FC31B9ECC65007AC186 /* TestInterfaceController.swift in Sources */,
+				ACBC3FB11B9ECA2B007AC186 /* InterfaceController.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
@@ -292,6 +491,16 @@
 			isa = PBXTargetDependency;
 			target = ACBC3F681B9EC9D7007AC186 /* Polygrath */;
 			targetProxy = ACBC3F8C1B9EC9D7007AC186 /* PBXContainerItemProxy */;
+		};
+		ACBC3FAE1B9ECA2B007AC186 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = ACBC3FAA1B9ECA2B007AC186 /* Polygrath-iWatch Extension */;
+			targetProxy = ACBC3FAD1B9ECA2B007AC186 /* PBXContainerItemProxy */;
+		};
+		ACBC3FB81B9ECA2B007AC186 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = ACBC3F9E1B9ECA2B007AC186 /* Polygrath-iWatch */;
+			targetProxy = ACBC3FB71B9ECA2B007AC186 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
@@ -310,6 +519,14 @@
 				ACBC3F791B9EC9D7007AC186 /* Base */,
 			);
 			name = LaunchScreen.storyboard;
+			sourceTree = "<group>";
+		};
+		ACBC3FA11B9ECA2B007AC186 /* Interface.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				ACBC3FA21B9ECA2B007AC186 /* Base */,
+			);
+			name = Interface.storyboard;
 			sourceTree = "<group>";
 		};
 /* End PBXVariantGroup section */
@@ -402,10 +619,14 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = Polygrath/Polygrath.entitlements;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				INFOPLIST_FILE = Polygrath/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = Morpheus.Polygrath;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "";
 			};
 			name = Debug;
 		};
@@ -413,10 +634,14 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = Polygrath/Polygrath.entitlements;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				INFOPLIST_FILE = Polygrath/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = Morpheus.Polygrath;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "";
 			};
 			name = Release;
 		};
@@ -468,6 +693,82 @@
 			};
 			name = Release;
 		};
+		ACBC3FBA1B9ECA2B007AC186 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = "Polygrath-iWatch/Polygrath-iWatch.entitlements";
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "iPhone Developer";
+				EMBEDDED_CONTENT_CONTAINS_SWIFT = YES;
+				IBSC_MODULE = Polygrath_iWatch_Extension;
+				INFOPLIST_FILE = "Polygrath-iWatch/Info.plist";
+				PRODUCT_BUNDLE_IDENTIFIER = Morpheus.Polygrath.watchkitapp;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "";
+				SDKROOT = watchos;
+				SKIP_INSTALL = YES;
+				TARGETED_DEVICE_FAMILY = 4;
+				WATCHOS_DEPLOYMENT_TARGET = 2.0;
+			};
+			name = Debug;
+		};
+		ACBC3FBB1B9ECA2B007AC186 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = "Polygrath-iWatch/Polygrath-iWatch.entitlements";
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "iPhone Developer";
+				EMBEDDED_CONTENT_CONTAINS_SWIFT = YES;
+				IBSC_MODULE = Polygrath_iWatch_Extension;
+				INFOPLIST_FILE = "Polygrath-iWatch/Info.plist";
+				PRODUCT_BUNDLE_IDENTIFIER = Morpheus.Polygrath.watchkitapp;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "";
+				SDKROOT = watchos;
+				SKIP_INSTALL = YES;
+				TARGETED_DEVICE_FAMILY = 4;
+				WATCHOS_DEPLOYMENT_TARGET = 2.0;
+			};
+			name = Release;
+		};
+		ACBC3FBC1B9ECA2B007AC186 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_ENTITLEMENTS = "Polygrath-iWatch Extension/Polygrath-iWatch Extension.entitlements";
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "iPhone Developer";
+				INFOPLIST_FILE = "Polygrath-iWatch Extension/Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = Morpheus.Polygrath.watchkitapp.watchkitextension;
+				PRODUCT_NAME = "${TARGET_NAME}";
+				PROVISIONING_PROFILE = "";
+				SDKROOT = watchos;
+				SKIP_INSTALL = YES;
+				TARGETED_DEVICE_FAMILY = 4;
+				WATCHOS_DEPLOYMENT_TARGET = 2.0;
+			};
+			name = Debug;
+		};
+		ACBC3FBD1B9ECA2B007AC186 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_ENTITLEMENTS = "Polygrath-iWatch Extension/Polygrath-iWatch Extension.entitlements";
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "iPhone Developer";
+				INFOPLIST_FILE = "Polygrath-iWatch Extension/Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = Morpheus.Polygrath.watchkitapp.watchkitextension;
+				PRODUCT_NAME = "${TARGET_NAME}";
+				PROVISIONING_PROFILE = "";
+				SDKROOT = watchos;
+				SKIP_INSTALL = YES;
+				TARGETED_DEVICE_FAMILY = 4;
+				WATCHOS_DEPLOYMENT_TARGET = 2.0;
+			};
+			name = Release;
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -487,6 +788,7 @@
 				ACBC3F961B9EC9D7007AC186 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		ACBC3F971B9EC9D7007AC186 /* Build configuration list for PBXNativeTarget "PolygrathTests" */ = {
 			isa = XCConfigurationList;
@@ -495,6 +797,7 @@
 				ACBC3F991B9EC9D7007AC186 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		ACBC3F9A1B9EC9D7007AC186 /* Build configuration list for PBXNativeTarget "PolygrathUITests" */ = {
 			isa = XCConfigurationList;
@@ -503,6 +806,25 @@
 				ACBC3F9C1B9EC9D7007AC186 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		ACBC3FBE1B9ECA2B007AC186 /* Build configuration list for PBXNativeTarget "Polygrath-iWatch Extension" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				ACBC3FBC1B9ECA2B007AC186 /* Debug */,
+				ACBC3FBD1B9ECA2B007AC186 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		ACBC3FC01B9ECA2B007AC186 /* Build configuration list for PBXNativeTarget "Polygrath-iWatch" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				ACBC3FBA1B9ECA2B007AC186 /* Debug */,
+				ACBC3FBB1B9ECA2B007AC186 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 
