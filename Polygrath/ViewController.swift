@@ -8,25 +8,22 @@
 
 import UIKit
 import HealthKit
-import WatchConnectivity
 
-class ViewController: UIViewController, WCSessionDelegate {
 
+class ViewController: UIViewController {
+
+    
     var healthStore = HKHealthStore()
     
-    @IBOutlet weak var textView: UITextView!
     
-    var data = [NSDate : Double]()
     
-//WCSession
-    let session: WCSession? = WCSession.isSupported() ? WCSession.defaultSession() : nil
     
     
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
         
-        self.setupHealthStore()
+        self.alertHealthWarning()
         
     }
 
@@ -36,34 +33,12 @@ class ViewController: UIViewController, WCSessionDelegate {
     }
 
     override func viewDidAppear(animated: Bool) {
-        self.checkWCConnection()
-    }
-    
-    
-    
-//WCSession
-    func checkWCConnection() {
-        if WCSession.isSupported() {
-            session?.delegate = self
-            session?.activateSession()
-            if let isConnect = session?.reachable {
-                print("session reachable: \(isConnect)")
-            }
-        }
-    }
-    
-    func session(session: WCSession, didReceiveMessage message: [String : AnyObject]) {
-        
-        if let dics = message["heartRateData"] as? [NSDate : Double] {
-            dispatch_async(dispatch_get_main_queue()) {
-                for dic in dics {
-                    self.data[dic.0] = dic.1
-                }
-                self.textView.text = self.data.description
-            }
-        }
         
     }
+    
+    
+    
+
     
     
 //health store
@@ -75,37 +50,78 @@ class ViewController: UIViewController, WCSessionDelegate {
             let status = healthStore.authorizationStatusForType(HKObjectType.quantityTypeForIdentifier(HKQuantityTypeIdentifierHeartRate)!)
             
             if status == HKAuthorizationStatus.NotDetermined || status == HKAuthorizationStatus.SharingDenied {
-                print("HK not authorize")
+                print("HK not authorize", terminator: "")
                 self.healthStore.requestAuthorizationToShareTypes(typetoShare, readTypes: typetoRead, completion: { (bool, error) -> Void in
                     if let ER = error {
-                        print(ER)
+                        print(ER, terminator: "")
                     }
                     if bool {
-                        print("did feedback HK permission. but denied")
+                        print("did feedback HK permission. but denied", terminator: "")
                     }else {
-                        print("didn't reply HK authorization")
+                        print("didn't reply HK authorization", terminator: "")
                     }
                 })
-                print("health store is not authorize")
+                print("health store is not authorize", terminator: "")
                 return false
                 
             }else {
-                print("Authorize success")
+                print("Authorize success", terminator: "")
                 return true
             }
             
         }else {
-            print("health store is not available")
+            print("health store is not available", terminator: "")
             //self.frontLabel.setText("Your device is not support.")
             return false
         }
     }
 
     
+//alert func
     
+    func alertNotSupportDevice() {
+        let alert = UIAlertController(title: "Not Support", message: "Your iOS device is not support in HealthKit, please upgrade", preferredStyle: UIAlertControllerStyle.Alert)
+        alert.addAction(UIAlertAction(title: "OK", style: UIAlertActionStyle.Default, handler: nil))
+        self.presentViewController(alert, animated: true, completion: nil)
+    }
+    
+    func alertHealthWarning() {
+        let alert = UIAlertController(title: "Notice", message: "We need to access your health data for polygrath purpose", preferredStyle: UIAlertControllerStyle.Alert)
+        
+        alert.addAction(UIAlertAction(title: "OK", style: .Default, handler: { action in
+            switch action.style{
+            case .Default:
+                print("alert for access health data", terminator: "")
+                self.setupHealthStore()
+                
+            case .Cancel:
+                print("cancel", terminator: "")
+                
+            case .Destructive:
+                print("destructive", terminator: "")
+            }
+        }))
+        self.presentViewController(alert, animated: true, completion: nil)
+    }
     
     
 
+//button 
+    @IBAction func startButtonTouch(sender: AnyObject) {
+        print("press start button", terminator: "")
+        
+        if (HKHealthStore.isHealthDataAvailable()) {
+            let status = healthStore.authorizationStatusForType(HKObjectType.quantityTypeForIdentifier(HKQuantityTypeIdentifierHeartRate)!)
+            if status == HKAuthorizationStatus.NotDetermined || status == HKAuthorizationStatus.SharingDenied {
+                self.alertHealthWarning()
+            }else {
+                self.performSegueWithIdentifier("StartSegue", sender: self)
+            }
+        }else {
+            print("device is not support in health kit", terminator: "")
+            self.alertNotSupportDevice()
+        }
+    }
     
    
     
