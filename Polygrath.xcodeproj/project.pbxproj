@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		5E4EC7BFE4A8EA17D7BC421C /* Pods_Polygrath.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = ECA21D86324B26463EF8D046 /* Pods_Polygrath.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
+		ACB4E08A1BAAB6B60044EB72 /* PolyTestViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = ACB4E0891BAAB6B60044EB72 /* PolyTestViewController.swift */; settings = {ASSET_TAGS = (); }; };
 		ACBC3F6D1B9EC9D7007AC186 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = ACBC3F6C1B9EC9D7007AC186 /* AppDelegate.swift */; };
 		ACBC3F6F1B9EC9D7007AC186 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = ACBC3F6E1B9EC9D7007AC186 /* ViewController.swift */; };
 		ACBC3F721B9EC9D7007AC186 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = ACBC3F701B9EC9D7007AC186 /* Main.storyboard */; };
@@ -25,9 +27,7 @@
 		ACBC3FC31B9ECC65007AC186 /* TestInterfaceController.swift in Sources */ = {isa = PBXBuildFile; fileRef = ACBC3FC21B9ECC65007AC186 /* TestInterfaceController.swift */; };
 		ACBC3FC61B9ED277007AC186 /* HealthKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = ACBC3FC51B9ED277007AC186 /* HealthKit.framework */; };
 		ACDE08571BA7A1BD00D3ECB7 /* FrontHeartViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = ACDE08561BA7A1BD00D3ECB7 /* FrontHeartViewController.swift */; };
-		ACDE08591BA87B7400D3ECB7 /* TestViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = ACDE08581BA87B7400D3ECB7 /* TestViewController.swift */; };
 		ACDE3ADE1B9F378100917E97 /* HealthKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = ACDE3ADD1B9F378100917E97 /* HealthKit.framework */; };
-		B1E12F2FA976587283B6D022 /* libPods-Polygrath.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 26387BBEA23BB6B9CF9D219D /* libPods-Polygrath.a */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -87,9 +87,9 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
-		26387BBEA23BB6B9CF9D219D /* libPods-Polygrath.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Polygrath.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		56B162313CA8359AF986ACF4 /* Pods-Polygrath.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Polygrath.release.xcconfig"; path = "Pods/Target Support Files/Pods-Polygrath/Pods-Polygrath.release.xcconfig"; sourceTree = "<group>"; };
 		631EC294364B209FAE69CA46 /* Pods-Polygrath.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Polygrath.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Polygrath/Pods-Polygrath.debug.xcconfig"; sourceTree = "<group>"; };
+		ACB4E0891BAAB6B60044EB72 /* PolyTestViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PolyTestViewController.swift; sourceTree = "<group>"; };
 		ACBC3F691B9EC9D7007AC186 /* Polygrath.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Polygrath.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		ACBC3F6C1B9EC9D7007AC186 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		ACBC3F6E1B9EC9D7007AC186 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -116,12 +116,11 @@
 		ACBC3FC21B9ECC65007AC186 /* TestInterfaceController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TestInterfaceController.swift; sourceTree = "<group>"; };
 		ACBC3FC41B9ED26D007AC186 /* Polygrath-iWatch Extension.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = "Polygrath-iWatch Extension.entitlements"; sourceTree = "<group>"; };
 		ACBC3FC51B9ED277007AC186 /* HealthKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = HealthKit.framework; path = Platforms/WatchOS.platform/Developer/SDKs/WatchOS2.0.sdk/System/Library/Frameworks/HealthKit.framework; sourceTree = DEVELOPER_DIR; };
-		ACC1699C1BA936C60051BA62 /* Polygrath-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Polygrath-Bridging-Header.h"; sourceTree = "<group>"; };
 		ACDE08561BA7A1BD00D3ECB7 /* FrontHeartViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FrontHeartViewController.swift; sourceTree = "<group>"; };
-		ACDE08581BA87B7400D3ECB7 /* TestViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TestViewController.swift; sourceTree = "<group>"; };
 		ACDE3ADC1B9F378000917E97 /* Polygrath.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = Polygrath.entitlements; sourceTree = "<group>"; };
 		ACDE3ADD1B9F378100917E97 /* HealthKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = HealthKit.framework; path = System/Library/Frameworks/HealthKit.framework; sourceTree = SDKROOT; };
 		ACDE3ADF1B9F379100917E97 /* Polygrath-iWatch.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = "Polygrath-iWatch.entitlements"; sourceTree = "<group>"; };
+		ECA21D86324B26463EF8D046 /* Pods_Polygrath.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Polygrath.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -130,7 +129,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				ACDE3ADE1B9F378100917E97 /* HealthKit.framework in Frameworks */,
-				B1E12F2FA976587283B6D022 /* libPods-Polygrath.a in Frameworks */,
+				5E4EC7BFE4A8EA17D7BC421C /* Pods_Polygrath.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -162,7 +161,7 @@
 		4A2FDE4EA48429FC655A26BB /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				26387BBEA23BB6B9CF9D219D /* libPods-Polygrath.a */,
+				ECA21D86324B26463EF8D046 /* Pods_Polygrath.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -211,8 +210,7 @@
 				ACBC3F6C1B9EC9D7007AC186 /* AppDelegate.swift */,
 				ACBC3F6E1B9EC9D7007AC186 /* ViewController.swift */,
 				ACDE08561BA7A1BD00D3ECB7 /* FrontHeartViewController.swift */,
-				ACC1699C1BA936C60051BA62 /* Polygrath-Bridging-Header.h */,
-				ACDE08581BA87B7400D3ECB7 /* TestViewController.swift */,
+				ACB4E0891BAAB6B60044EB72 /* PolyTestViewController.swift */,
 				ACBC3F701B9EC9D7007AC186 /* Main.storyboard */,
 				ACBC3F761B9EC9D7007AC186 /* Assets.xcassets */,
 				ACBC3F781B9EC9D7007AC186 /* LaunchScreen.storyboard */,
@@ -277,6 +275,7 @@
 				ACBC3F671B9EC9D7007AC186 /* Resources */,
 				ACBC3FC11B9ECA2B007AC186 /* Embed Watch Content */,
 				89CFD6CDB8383198EBD4F24E /* Copy Pods Resources */,
+				393E26ADC2114C389E0B99E2 /* Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -479,6 +478,21 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
+		393E26ADC2114C389E0B99E2 /* Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Embed Pods Frameworks";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-Polygrath/Pods-Polygrath-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
 		7AC422A1C5D4D728414CBAC0 /* Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -516,10 +530,10 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				ACDE08591BA87B7400D3ECB7 /* TestViewController.swift in Sources */,
 				ACBC3F6F1B9EC9D7007AC186 /* ViewController.swift in Sources */,
 				ACDE08571BA7A1BD00D3ECB7 /* FrontHeartViewController.swift in Sources */,
 				ACBC3F6D1B9EC9D7007AC186 /* AppDelegate.swift in Sources */,
+				ACB4E08A1BAAB6B60044EB72 /* PolyTestViewController.swift in Sources */,
 				ACBC3F751B9EC9D7007AC186 /* Polygrath.xcdatamodeld in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -699,7 +713,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = Morpheus.Polygrath;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
-				SWIFT_OBJC_BRIDGING_HEADER = "Polygrath/Polygrath-Bridging-Header.h";
+				SWIFT_OBJC_BRIDGING_HEADER = "";
 			};
 			name = Debug;
 		};
@@ -716,7 +730,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = Morpheus.Polygrath;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
-				SWIFT_OBJC_BRIDGING_HEADER = "Polygrath/Polygrath-Bridging-Header.h";
+				SWIFT_OBJC_BRIDGING_HEADER = "";
 			};
 			name = Release;
 		};

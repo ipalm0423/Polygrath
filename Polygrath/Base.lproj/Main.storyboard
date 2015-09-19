@@ -3,6 +3,7 @@
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="8151.3"/>
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
+        <capability name="Constraints with non-1.0 multipliers" minToolsVersion="5.1"/>
     </dependencies>
     <scenes>
         <!--Front View Controller-->
@@ -20,13 +21,13 @@
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Polygrath" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="NL3-E8-xua">
                                 <rect key="frame" x="241" y="116" width="117.5" height="33.5"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="28"/>
-                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Find the truth by your iWatch" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="eoj-PA-1wN">
                                 <rect key="frame" x="189" y="169.5" width="221.5" height="20.5"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <button opaque="NO" alpha="0.90000000000000002" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Nm4-Ca-daW">
@@ -100,13 +101,13 @@
                                     <action selector="startButtonTouch:" destination="5Wn-wh-fws" eventType="touchUpInside" id="xdd-bE-fct"/>
                                 </connections>
                             </button>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" image="heart-80-vec" translatesAutoresizingMaskIntoConstraints="NO" id="X8e-aO-J1E">
-                                <rect key="frame" x="270" y="94" width="80" height="80"/>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="heart-80-vec" translatesAutoresizingMaskIntoConstraints="NO" id="X8e-aO-J1E">
+                                <rect key="frame" x="260" y="94" width="80" height="80"/>
                             </imageView>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Open 'Polygrath' APP on your iWatch" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="5y3-mt-Cau">
-                                <rect key="frame" x="159.5" y="214" width="281.5" height="20.5"/>
+                                <rect key="frame" x="159" y="214" width="281.5" height="20.5"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="BbP-qB-tmP">
@@ -114,7 +115,7 @@
                                 <string key="text">When you are ready 
 Press 'Start Button' on both side</string>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
                         </subviews>
@@ -125,11 +126,17 @@ Press 'Start Button' on both side</string>
                             <constraint firstItem="mnn-uX-LOt" firstAttribute="leading" secondItem="Pvk-P3-l2h" secondAttribute="leading" constant="20" id="QrC-EL-A31"/>
                             <constraint firstItem="BbP-qB-tmP" firstAttribute="top" secondItem="5y3-mt-Cau" secondAttribute="bottom" constant="40" id="UdX-dq-5C3"/>
                             <constraint firstItem="D2C-4P-act" firstAttribute="top" secondItem="mnn-uX-LOt" secondAttribute="bottom" constant="20" id="afl-nB-sLD"/>
+                            <constraint firstItem="X8e-aO-J1E" firstAttribute="centerX" secondItem="Pvk-P3-l2h" secondAttribute="centerX" id="f2j-Ql-mVR"/>
                             <constraint firstItem="X8e-aO-J1E" firstAttribute="top" secondItem="XEh-m7-Nwc" secondAttribute="bottom" constant="30" id="fQ9-aF-T03"/>
                             <constraint firstAttribute="trailingMargin" secondItem="X8e-aO-J1E" secondAttribute="trailing" constant="10" id="mqT-gS-6W6"/>
                             <constraint firstItem="BbP-qB-tmP" firstAttribute="centerX" secondItem="5y3-mt-Cau" secondAttribute="centerX" id="rxv-U2-DbN"/>
                             <constraint firstItem="5y3-mt-Cau" firstAttribute="top" secondItem="X8e-aO-J1E" secondAttribute="bottom" constant="40" id="sL5-Sh-ZWq"/>
                         </constraints>
+                        <variation key="default">
+                            <mask key="constraints">
+                                <exclude reference="mqT-gS-6W6"/>
+                            </mask>
+                        </variation>
                     </view>
                     <connections>
                         <outlet property="heartImage" destination="X8e-aO-J1E" id="c1p-Rn-kUn"/>
@@ -143,7 +150,7 @@ Press 'Start Button' on both side</string>
         <!--Test View Controller-->
         <scene sceneID="w04-Ta-orh">
             <objects>
-                <viewController id="wYw-Wg-Y1Y" userLabel="Test View Controller" customClass="TestViewController" customModule="Polygrath" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController id="wYw-Wg-Y1Y" userLabel="Test View Controller" customClass="PolyTestViewController" customModule="Polygrath" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="3GS-05-RTX"/>
                         <viewControllerLayoutGuide type="bottom" id="iKT-Ov-KQf"/>
@@ -152,29 +159,69 @@ Press 'Start Button' on both side</string>
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="cHr-c8-kC3" userLabel="HeartGrath">
-                                <rect key="frame" x="40" y="84" width="520" height="496"/>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="cHr-c8-kC3" userLabel="HeartGrath" customClass="LineChartView" customModule="Charts">
+                                <rect key="frame" x="10" y="124" width="580" height="240"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                             </view>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="SH9-Kc-5W0">
+                                <rect key="frame" x="10" y="558" width="73" height="30"/>
+                                <state key="normal" title="move view"/>
+                                <connections>
+                                    <action selector="moveViewTouch:" destination="wYw-Wg-Y1Y" eventType="touchUpInside" id="NWH-m8-d7F"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Zb7-H8-Sr4">
+                                <rect key="frame" x="260" y="460" width="80" height="80"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="80" id="A21-7V-bDp"/>
+                                    <constraint firstAttribute="height" constant="80" id="eGg-yX-vCt"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" type="system" pointSize="20"/>
+                                <state key="normal" title="Ask!"/>
+                                <connections>
+                                    <action selector="askButtonTouch:" destination="wYw-Wg-Y1Y" eventType="touchUpInside" id="MpK-bL-l0t"/>
+                                </connections>
+                            </button>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="heart-80-vec" translatesAutoresizingMaskIntoConstraints="NO" id="s5C-ur-m3S">
+                                <rect key="frame" x="510" y="74" width="80" height="80"/>
+                            </imageView>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Lying!" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="8dz-gp-tRn">
+                                <rect key="frame" x="10" y="74" width="490" height="40"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                <nil key="highlightedColor"/>
+                            </label>
                         </subviews>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
-                            <constraint firstItem="cHr-c8-kC3" firstAttribute="top" secondItem="3GS-05-RTX" secondAttribute="bottom" constant="20" id="9dm-L8-5of"/>
-                            <constraint firstAttribute="trailingMargin" secondItem="cHr-c8-kC3" secondAttribute="trailing" constant="20" id="MvA-TR-J42"/>
-                            <constraint firstItem="cHr-c8-kC3" firstAttribute="centerY" secondItem="hTP-Uy-ico" secondAttribute="centerY" id="Qil-p0-KPL"/>
-                            <constraint firstItem="cHr-c8-kC3" firstAttribute="leading" secondItem="hTP-Uy-ico" secondAttribute="leadingMargin" constant="20" id="mQ3-bt-UFS"/>
-                            <constraint firstItem="iKT-Ov-KQf" firstAttribute="top" secondItem="cHr-c8-kC3" secondAttribute="bottom" constant="20" id="opf-mC-ccX"/>
-                            <constraint firstItem="cHr-c8-kC3" firstAttribute="centerX" secondItem="hTP-Uy-ico" secondAttribute="centerX" id="p3P-eg-oX5"/>
+                            <constraint firstItem="8dz-gp-tRn" firstAttribute="top" secondItem="3GS-05-RTX" secondAttribute="bottom" constant="10" id="462-Yj-V9l"/>
+                            <constraint firstItem="cHr-c8-kC3" firstAttribute="top" secondItem="3GS-05-RTX" secondAttribute="bottom" constant="60" id="9dm-L8-5of"/>
+                            <constraint firstItem="Zb7-H8-Sr4" firstAttribute="centerX" secondItem="hTP-Uy-ico" secondAttribute="centerX" id="B0L-gi-Ink"/>
+                            <constraint firstItem="cHr-c8-kC3" firstAttribute="top" secondItem="8dz-gp-tRn" secondAttribute="bottom" constant="10" id="LWt-93-uxQ"/>
+                            <constraint firstAttribute="trailing" secondItem="cHr-c8-kC3" secondAttribute="trailing" constant="10" id="MvA-TR-J42"/>
+                            <constraint firstItem="cHr-c8-kC3" firstAttribute="height" secondItem="hTP-Uy-ico" secondAttribute="height" multiplier="4:10" id="O0K-L1-0vm"/>
+                            <constraint firstItem="s5C-ur-m3S" firstAttribute="leading" secondItem="8dz-gp-tRn" secondAttribute="trailing" constant="20" id="UHd-MP-z0n"/>
+                            <constraint firstItem="s5C-ur-m3S" firstAttribute="leading" secondItem="8dz-gp-tRn" secondAttribute="trailing" constant="10" id="aE1-of-llv"/>
+                            <constraint firstItem="s5C-ur-m3S" firstAttribute="top" secondItem="3GS-05-RTX" secondAttribute="bottom" constant="10" id="jIm-5e-tsr"/>
+                            <constraint firstItem="cHr-c8-kC3" firstAttribute="leading" secondItem="hTP-Uy-ico" secondAttribute="leading" constant="10" id="mQ3-bt-UFS"/>
+                            <constraint firstItem="s5C-ur-m3S" firstAttribute="trailing" secondItem="hTP-Uy-ico" secondAttribute="trailingMargin" constant="10" id="p2g-qs-eNW"/>
+                            <constraint firstAttribute="trailing" secondItem="8dz-gp-tRn" secondAttribute="trailing" constant="100" id="tba-cQ-kxo"/>
+                            <constraint firstItem="Zb7-H8-Sr4" firstAttribute="top" secondItem="cHr-c8-kC3" secondAttribute="bottom" constant="96" id="vTq-gb-6np"/>
+                            <constraint firstItem="8dz-gp-tRn" firstAttribute="leading" secondItem="hTP-Uy-ico" secondAttribute="leading" constant="10" id="zTA-EU-geK"/>
                         </constraints>
                         <variation key="default">
                             <mask key="constraints">
-                                <exclude reference="Qil-p0-KPL"/>
-                                <exclude reference="p3P-eg-oX5"/>
+                                <exclude reference="UHd-MP-z0n"/>
+                                <exclude reference="aE1-of-llv"/>
                             </mask>
                         </variation>
                     </view>
                     <connections>
-                        <outlet property="heartGrathView" destination="cHr-c8-kC3" id="Sge-ZQ-wgH"/>
+                        <outlet property="askButton" destination="Zb7-H8-Sr4" id="Jss-fv-xgJ"/>
+                        <outlet property="grathView" destination="cHr-c8-kC3" id="u0r-dc-88P"/>
+                        <outlet property="heartImage" destination="s5C-ur-m3S" id="cp9-ws-rMx"/>
+                        <outlet property="heartLabel" destination="8dz-gp-tRn" id="t70-7H-cwI"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="yF3-D8-DMW" userLabel="First Responder" sceneMemberID="firstResponder"/>

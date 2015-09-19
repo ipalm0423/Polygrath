@@ -14,8 +14,8 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "754C3EE42D0CF8F4C7D46423"
-               BuildableName = "libPods-Polygrath.a"
+               BlueprintIdentifier = "76C1A786A3DCFEFE3C001DCD"
+               BuildableName = "Pods_Polygrath.framework"
                BlueprintName = "Pods-Polygrath"
                ReferencedContainer = "container:Pods.xcodeproj">
             </BuildableReference>

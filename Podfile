@@ -1,8 +1,8 @@
 # Uncomment this line to define a global platform for your project
 # platform :ios, '6.0'
-
+use_frameworks!
 target 'Polygrath' do
-pod 'CorePlot'
+pod 'Charts', :git => 'https://github.com/danielgindi/ios-charts.git' , :branch => 'swift-2.0'
 end
 
 target 'PolygrathTests' do

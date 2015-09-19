@@ -1,0 +1,6 @@
+framework module Pods_Polygrath {
+  umbrella header "Pods-Polygrath-umbrella.h"
+
+  export *
+  module * { export * }
+}

@@ -13,7 +13,7 @@ import WatchConnectivity
 class FrontHeartViewController: UIViewController,WCSessionDelegate {
 
     @IBOutlet weak var heartImage: UIImageView!
-    
+    var snapHeart = UIView()
     
     //WCSession
     let session: WCSession? = WCSession.isSupported() ? WCSession.defaultSession() : nil
@@ -23,7 +23,7 @@ class FrontHeartViewController: UIViewController,WCSessionDelegate {
         super.viewDidLoad()
 
         // Do any additional setup after loading the view.
-        self.animateHeart()
+        
     }
 
     override func didReceiveMemoryWarning() {
@@ -31,17 +31,25 @@ class FrontHeartViewController: UIViewController,WCSessionDelegate {
         // Dispose of any resources that can be recreated.
     }
     
-
+    override func viewDidAppear(animated: Bool) {
+        self.animateHeart()
+    }
     
     
 //animate
     func animateHeart() {
-        UIView.animateWithDuration(0.5, delay: 0.0, options: [UIViewAnimationOptions.Repeat, UIViewAnimationOptions.CurveEaseIn, UIViewAnimationOptions.Autoreverse], animations: { () -> Void in
-            //self.heartImage.frame.offsetInPlace(dx: 20, dy: 20)
-            self.heartImage.setWidth(100)
-            self.heartImage.setHeight(100)
-            //self.view.layoutIfNeeded()
-            }, completion: nil)
+        self.snapHeart.layer.removeAllAnimations()
+        self.snapHeart.removeFromSuperview()
+        self.snapHeart = self.heartImage.snapshotViewAfterScreenUpdates(true)
+        self.snapHeart.frame = self.heartImage.frame
+        self.view.addSubview(self.snapHeart)
+        
+        UIView.animateWithDuration(0.375, delay: 0, options: [UIViewAnimationOptions.CurveEaseIn, UIViewAnimationOptions.Autoreverse, UIViewAnimationOptions.Repeat], animations: { () -> Void in
+            
+            self.snapHeart.transform = CGAffineTransformMakeScale(1.2, 1.2)
+            }) { (Bool) -> Void in
+                
+        }
     }
     
     
@@ -50,6 +58,7 @@ class FrontHeartViewController: UIViewController,WCSessionDelegate {
     
     
     @IBAction func startButtonTouch(sender: AnyObject) {
+        /*
         print("press start button", terminator: "")
         if WCSession.isSupported() {
             if let session = session where session.reachable {
@@ -67,9 +76,10 @@ class FrontHeartViewController: UIViewController,WCSessionDelegate {
             let alert = UIAlertController(title: "Not Support", message: "Your iOS device is not support, please upgrade", preferredStyle: UIAlertControllerStyle.Alert)
             alert.addAction(UIAlertAction(title: "OK", style: UIAlertActionStyle.Default, handler: nil))
             self.presentViewController(alert, animated: true, completion: nil)
-        }
+            
+        }*/
         
-        
+        self.performSegueWithIdentifier("TestSegue", sender: self)
     }
     
     
