@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="8187.4" systemVersion="14F27" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="7K4-Zl-XeZ">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="8191" systemVersion="14F27" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="7K4-Zl-XeZ">
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="8151.3"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="8154"/>
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
         <capability name="Constraints with non-1.0 multipliers" minToolsVersion="5.1"/>
     </dependencies>
@@ -19,13 +19,13 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Polygrath" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="NL3-E8-xua">
-                                <rect key="frame" x="241" y="116" width="117.5" height="33.5"/>
+                                <rect key="frame" x="241" y="116" width="118" height="34"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="28"/>
                                 <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Find the truth by your iWatch" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="eoj-PA-1wN">
-                                <rect key="frame" x="189" y="169.5" width="221.5" height="20.5"/>
+                                <rect key="frame" x="189" y="170" width="222" height="21"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
@@ -105,7 +105,7 @@
                                 <rect key="frame" x="260" y="94" width="80" height="80"/>
                             </imageView>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Open 'Polygrath' APP on your iWatch" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="5y3-mt-Cau">
-                                <rect key="frame" x="159" y="214" width="281.5" height="20.5"/>
+                                <rect key="frame" x="159" y="214" width="282" height="21"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
@@ -171,7 +171,7 @@ Press 'Start Button' on both side</string>
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Zb7-H8-Sr4">
-                                <rect key="frame" x="260" y="460" width="80" height="80"/>
+                                <rect key="frame" x="260" y="440" width="80" height="80"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="80" id="A21-7V-bDp"/>
@@ -186,42 +186,56 @@ Press 'Start Button' on both side</string>
                             <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="heart-80-vec" translatesAutoresizingMaskIntoConstraints="NO" id="s5C-ur-m3S">
                                 <rect key="frame" x="510" y="74" width="80" height="80"/>
                             </imageView>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Lying!" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="8dz-gp-tRn">
-                                <rect key="frame" x="10" y="74" width="490" height="40"/>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" verticalHuggingPriority="251" horizontalCompressionResistancePriority="749" text="Press 'Ask' button, and have fun." textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="8dz-gp-tRn">
+                                <rect key="frame" x="10" y="74" width="480" height="40"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="40" id="ZJa-BL-NUu"/>
+                                </constraints>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="6Oc-Nt-5hb">
+                                <rect key="frame" x="379" y="550" width="201" height="30"/>
+                                <state key="normal" title="I'm finished, check out result."/>
+                            </button>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="idU-jf-8JG">
+                                <rect key="frame" x="20" y="530" width="560" height="17"/>
+                                <fontDescription key="fontDescription" type="system" weight="thin" pointSize="14"/>
+                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
                         </subviews>
                         <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
+                            <constraint firstAttribute="trailing" secondItem="idU-jf-8JG" secondAttribute="trailing" constant="20" id="3rq-6K-iXs"/>
                             <constraint firstItem="8dz-gp-tRn" firstAttribute="top" secondItem="3GS-05-RTX" secondAttribute="bottom" constant="10" id="462-Yj-V9l"/>
+                            <constraint firstItem="idU-jf-8JG" firstAttribute="top" secondItem="Zb7-H8-Sr4" secondAttribute="bottom" constant="10" id="7c7-1A-iH6"/>
                             <constraint firstItem="cHr-c8-kC3" firstAttribute="top" secondItem="3GS-05-RTX" secondAttribute="bottom" constant="60" id="9dm-L8-5of"/>
+                            <constraint firstAttribute="trailing" secondItem="6Oc-Nt-5hb" secondAttribute="trailing" constant="20" id="9qM-dN-EOi"/>
                             <constraint firstItem="Zb7-H8-Sr4" firstAttribute="centerX" secondItem="hTP-Uy-ico" secondAttribute="centerX" id="B0L-gi-Ink"/>
-                            <constraint firstItem="cHr-c8-kC3" firstAttribute="top" secondItem="8dz-gp-tRn" secondAttribute="bottom" constant="10" id="LWt-93-uxQ"/>
                             <constraint firstAttribute="trailing" secondItem="cHr-c8-kC3" secondAttribute="trailing" constant="10" id="MvA-TR-J42"/>
                             <constraint firstItem="cHr-c8-kC3" firstAttribute="height" secondItem="hTP-Uy-ico" secondAttribute="height" multiplier="4:10" id="O0K-L1-0vm"/>
-                            <constraint firstItem="s5C-ur-m3S" firstAttribute="leading" secondItem="8dz-gp-tRn" secondAttribute="trailing" constant="20" id="UHd-MP-z0n"/>
-                            <constraint firstItem="s5C-ur-m3S" firstAttribute="leading" secondItem="8dz-gp-tRn" secondAttribute="trailing" constant="10" id="aE1-of-llv"/>
+                            <constraint firstItem="idU-jf-8JG" firstAttribute="centerX" secondItem="Zb7-H8-Sr4" secondAttribute="centerX" id="PYg-re-QYm"/>
+                            <constraint firstItem="iKT-Ov-KQf" firstAttribute="top" secondItem="6Oc-Nt-5hb" secondAttribute="bottom" constant="20" id="TqR-R1-Ygk"/>
+                            <constraint firstItem="iKT-Ov-KQf" firstAttribute="top" secondItem="Zb7-H8-Sr4" secondAttribute="bottom" constant="80" id="X3Z-BG-otr"/>
+                            <constraint firstItem="idU-jf-8JG" firstAttribute="leading" secondItem="hTP-Uy-ico" secondAttribute="leading" constant="20" id="XJE-bD-4TQ"/>
                             <constraint firstItem="s5C-ur-m3S" firstAttribute="top" secondItem="3GS-05-RTX" secondAttribute="bottom" constant="10" id="jIm-5e-tsr"/>
                             <constraint firstItem="cHr-c8-kC3" firstAttribute="leading" secondItem="hTP-Uy-ico" secondAttribute="leading" constant="10" id="mQ3-bt-UFS"/>
                             <constraint firstItem="s5C-ur-m3S" firstAttribute="trailing" secondItem="hTP-Uy-ico" secondAttribute="trailingMargin" constant="10" id="p2g-qs-eNW"/>
-                            <constraint firstAttribute="trailing" secondItem="8dz-gp-tRn" secondAttribute="trailing" constant="100" id="tba-cQ-kxo"/>
-                            <constraint firstItem="Zb7-H8-Sr4" firstAttribute="top" secondItem="cHr-c8-kC3" secondAttribute="bottom" constant="96" id="vTq-gb-6np"/>
+                            <constraint firstItem="s5C-ur-m3S" firstAttribute="leading" secondItem="8dz-gp-tRn" secondAttribute="trailing" constant="20" id="rZK-ZR-Jit"/>
                             <constraint firstItem="8dz-gp-tRn" firstAttribute="leading" secondItem="hTP-Uy-ico" secondAttribute="leading" constant="10" id="zTA-EU-geK"/>
                         </constraints>
-                        <variation key="default">
-                            <mask key="constraints">
-                                <exclude reference="UHd-MP-z0n"/>
-                                <exclude reference="aE1-of-llv"/>
-                            </mask>
-                        </variation>
                     </view>
                     <connections>
+                        <outlet property="QuestionLabelTopConst" destination="462-Yj-V9l" id="RN3-W9-jva"/>
                         <outlet property="askButton" destination="Zb7-H8-Sr4" id="Jss-fv-xgJ"/>
+                        <outlet property="askButtonBottomConst" destination="X3Z-BG-otr" id="1iL-0T-3Me"/>
                         <outlet property="grathView" destination="cHr-c8-kC3" id="u0r-dc-88P"/>
                         <outlet property="heartImage" destination="s5C-ur-m3S" id="cp9-ws-rMx"/>
-                        <outlet property="heartLabel" destination="8dz-gp-tRn" id="t70-7H-cwI"/>
+                        <outlet property="questionLabel" destination="8dz-gp-tRn" id="G8U-AY-yFe"/>
+                        <outlet property="questionLabelLeadingConst" destination="zTA-EU-geK" id="oK1-gr-SiC"/>
+                        <outlet property="tutorialLabel" destination="idU-jf-8JG" id="m8a-un-KgC"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="yF3-D8-DMW" userLabel="First Responder" sceneMemberID="firstResponder"/>

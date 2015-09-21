@@ -60,7 +60,9 @@ class InterfaceController: WKInterfaceController, WCSessionDelegate {
         }
     }
     
-    
+    override func updateUserActivity(type: String, userInfo: [NSObject : AnyObject]?, webpageURL: NSURL?) {
+        print("hand off")
+    }
     
 //navi
     override func contextForSegueWithIdentifier(segueIdentifier: String) -> AnyObject? {

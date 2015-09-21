@@ -13,14 +13,21 @@ import Charts
 class PolyTestViewController: UIViewController, WCSessionDelegate, ChartViewDelegate {
     
     
+    @IBOutlet weak var askButtonBottomConst: NSLayoutConstraint!
+    
+    @IBOutlet weak var QuestionLabelTopConst: NSLayoutConstraint!
+    
+    @IBOutlet weak var questionLabelLeadingConst: NSLayoutConstraint!
+    
+    @IBOutlet weak var tutorialLabel: UILabel!
     
     @IBOutlet weak var grathView: LineChartView!
     
     @IBOutlet weak var heartImage: UIImageView!
     
-    @IBOutlet weak var heartLabel: UILabel!
+    @IBOutlet weak var questionLabel: UILabel!
     
-    
+    //save data from watch
     var dataDates = [NSDate]()
     var dataString = [String]()
     var dataValues = [Double]()
@@ -34,10 +41,22 @@ class PolyTestViewController: UIViewController, WCSessionDelegate, ChartViewDele
     var bpm = 60
     var snapHeart = UIView()
     
+    //question
+    var questions: [question] = []
+    var sugestQuestion = ["What did you eat at lunch ?", "When did you get home last night ?", "Did you go out with him/her ?", "Did you wash your hands after toilet ?", "Who did you sleep with last night ?", "What's your size ?", "When was your first time ?", "Are you virgin?"]
+    
     //flag
     var isAsking = false {
         didSet {
-            
+            if self.isAsking {
+                self.askButton.setTitle("End", forState: UIControlState.Normal)
+                self.askButton.backgroundColor = UIColor(red: 1, green: 0.1, blue: 243 / 255, alpha: 0.9)
+                self.tutorialLabel.text = "Press, when question no.\(self.questions.count) had been answerd."
+            }else {
+                self.askButton.setTitle("Ask!", forState: UIControlState.Normal)
+                self.askButton.backgroundColor = UIColor(red: 80 / 255, green: 1, blue: 0, alpha: 0.9)
+                self.tutorialLabel.text = "Press, when you ready to ask question no.\(self.questions.count + 1)"
+            }
         }
     }
     
@@ -55,6 +74,11 @@ class PolyTestViewController: UIViewController, WCSessionDelegate, ChartViewDele
         self.formatter.dateFormat = "mm:ss"
         //setup
         self.isAsking = false
+        self.questionLabel.text = "Need some hints for question ?"
+        
+        //layer
+        self.askButton.layer.cornerRadius = self.askButton.frame.width / 2
+        self.askButtonBottomConst.constant = self.view.frame.height / 4 - self.askButton.frame.height / 2
         
         
     }
@@ -103,7 +127,8 @@ class PolyTestViewController: UIViewController, WCSessionDelegate, ChartViewDele
         //self.chartDataSet.colors = [UIColor(red: 230/255, green: 125/255, blue: 34/255, alpha: 1.0)]
         let chartData = LineChartData(xVals: self.dataString, dataSet: self.chartDataSet)
         self.grathView.data = chartData
-        
+        print("add grath")
+        print(self.grathView.data)
         self.grathView.getAxis(ChartYAxis.AxisDependency.Right).enabled = false
         let yAxisLeft = self.grathView.getAxis(ChartYAxis.AxisDependency.Left)
         yAxisLeft.spaceTop = 0.1
@@ -115,7 +140,15 @@ class PolyTestViewController: UIViewController, WCSessionDelegate, ChartViewDele
         xAxis.drawGridLinesEnabled = false
         xAxis.avoidFirstLastClippingEnabled = true
         
+        self.grathView.rightAxis.drawLimitLinesBehindDataEnabled = true
+        
+        
+        //visible axis
+        self.grathView.setVisibleXRangeMaximum(10)
+        
+        
         // test 
+        /*
         self.dataString = ["1", "2", "3", "4", "5", "1", "2", "3", "4", "5", "1", "2", "3", "4", "5"]
         self.dataValues = [60, 70, 80, 90, 100, 60, 70, 80, 90, 100, 60, 70, 80, 90, 100]
         
@@ -123,21 +156,24 @@ class PolyTestViewController: UIViewController, WCSessionDelegate, ChartViewDele
             let dataentry = ChartDataEntry(value: value, xIndex: self.dataIndex)
             self.dataIndex++
             self.chartDataSet.addEntry(dataentry)
-        }
-        let data = LineChartData(xVals: self.dataString, dataSet: self.chartDataSet)
-        self.grathView.data = data
+        }*/
         
+        
+        //let data = LineChartData(xVals: self.dataString, dataSet: self.chartDataSet)
+        //self.grathView.data = data
+
     }
     
     
     func updateGraph(time: String, value: Double) {
-        
+        print(", update grath")
         if value > self.dataMax {
             self.dataMax = value
         }
         if value < dataMin {
             self.dataMin = value
         }
+        
         if let data = self.grathView.data {
             print("input grath at index: \(self.dataIndex)")
             let entry = ChartDataEntry(value: value, xIndex: self.dataIndex)
@@ -146,36 +182,70 @@ class PolyTestViewController: UIViewController, WCSessionDelegate, ChartViewDele
             self.grathView.notifyDataSetChanged()
             //scope
             let Yrange = self.dataMax - self.dataMin + 10
-            self.grathView.setVisibleXRangeMaximum(10)
             self.grathView.setVisibleYRangeMaximum(CGFloat(Yrange), axis: ChartYAxis.AxisDependency.Left)
-            self.grathView.moveViewTo(xIndex: self.dataIndex - 10, yValue: CGFloat(value), axis: ChartYAxis.AxisDependency.Left)
+            self.grathView.setVisibleXRangeMaximum(10)
+            self.grathView.moveViewTo(xIndex: self.dataIndex, yValue: CGFloat(value), axis: ChartYAxis.AxisDependency.Left)
             //limit line
             self.addStaticLine()
             self.grathView.setScaleEnabled(true)
             self.grathView.setScaleMinima(1, scaleY: 1)
             self.dataIndex++
+            
+            self.animateHeart(value)
+        }else {
+            
+            let dataentry = ChartDataEntry(value: value, xIndex: self.dataIndex)
+            self.chartDataSet.addEntry(dataentry)
+            let data = LineChartData(xVals: self.dataString, dataSet: self.chartDataSet)
+            self.grathView.data = data
+            self.grathView.notifyDataSetChanged()
+            //scope
+            let Yrange = self.dataMax - self.dataMin + 10
+            self.grathView.setVisibleYRangeMaximum(CGFloat(Yrange), axis: ChartYAxis.AxisDependency.Left)
+            self.grathView.moveViewTo(xIndex: self.dataIndex, yValue: CGFloat(value), axis: ChartYAxis.AxisDependency.Left)
+            //limit line
+            //self.addStaticLine()
+            self.getAverage(self.dataValues)
+            self.getStandardDeviation(self.dataValues)
+            self.grathView.setScaleEnabled(true)
+            self.grathView.setScaleMinima(1, scaleY: 1)
+            self.dataIndex++
+            
+            //animate
+            self.animateHeart(value)
+            NSTimer.scheduledTimerWithTimeInterval(8, target: self, selector: Selector("animateSuggestion"), userInfo: nil, repeats: true)
+            
         }
     }
     
     func addStaticLine() {
+        if self.dataIndex < 4 {
+            return
+        }
         let avg = self.getAverage(self.dataValues)
         let dev = self.getStandardDeviation(self.dataValues)
         self.grathView.rightAxis.removeAllLimitLines()
-        self.addLimitLine(avg, name: "Average")
-        self.addLimitLine(avg + dev, name: "Truth Limit")
+        self.addYLimitLine(avg, name: "Average")
+        self.addYLimitLine(avg + dev, name: "Truth Limit")
     }
     
     func addYLimitLine(value: Double, name: String) {
         let limitLine = ChartLimitLine(limit: value, label: name)
-        limitLine.lineWidth = 5
+        limitLine.lineWidth = 1
         self.grathView.rightAxis.addLimitLine(limitLine)
     }
     
     func addXLimitLine(index: Double) {
-        let limitline = ChartLimitLine(limit: index, label: "question")
-        limitline.lineColor = ChartColorTemplates.joyful()[index]
+        let status = self.isAsking ? "Start" : "End"
+        let limitline = ChartLimitLine(limit: index, label: "Q.\(self.questions.count) \(status)")
+        limitline.lineColor = ChartColorTemplates.joyful()[self.questions.count]
+        limitline.lineWidth = 10
         self.grathView.xAxis.addLimitLine(limitline)
-        self.grathView.animate(yAxisDuration: 0.5, easingOption: ChartEasingOption.EaseInCubic)
+        self.grathView.animate(xAxisDuration: 0.5, easingOption: ChartEasingOption.EaseInElastic)
+    }
+    
+    func updateXLimitLine() {
+        
     }
     
     func chartValueSelected(chartView: ChartViewBase, entry: ChartDataEntry, dataSetIndex: Int, highlight: ChartHighlight) {
@@ -235,6 +305,47 @@ class PolyTestViewController: UIViewController, WCSessionDelegate, ChartViewDele
         }
     }
     
+    func animateSuggestion() {
+        print("suggestion animate")
+        let randomIndex = Int(arc4random_uniform(UInt32(self.sugestQuestion.count)))
+        UIView.animateWithDuration(1, delay: 0.0, options: UIViewAnimationOptions.CurveEaseIn, animations: { () -> Void in
+            
+            self.questionLabelLeadingConst.constant -= 300
+            self.view.layoutIfNeeded()
+            
+            }) { (bool) -> Void in
+                //
+                self.questionLabel.text = self.sugestQuestion[randomIndex]
+                
+                
+                
+        }
+        UIView.animateWithDuration(0.5, delay: 1, options: UIViewAnimationOptions.CurveEaseIn, animations: { () -> Void in
+            self.questionLabel.alpha = 1
+            self.questionLabelLeadingConst.constant += 300
+            self.view.layoutIfNeeded()
+            }) { (bool) -> Void in
+                
+        }
+        
+    }
+    
+//struct
+    struct heartStatus {
+        var icon = ""
+        var description = "Mid-range"
+        var bpm = 80
+        var duration: Double {
+            return 60.0 / Double(bpm)
+        }
+    }
+    
+    struct question {
+        var startTime = NSDate()
+        var endTime = NSDate()
+        var index = 0
+    }
+    
     
     /*
     // MARK: - Navigation
@@ -278,9 +389,15 @@ class PolyTestViewController: UIViewController, WCSessionDelegate, ChartViewDele
     @IBOutlet weak var askButton: UIButton!
     
     @IBAction func askButtonTouch(sender: AnyObject) {
+        if self.isAsking == false {
+            self.questions.append(question())
+        }
+        self.isAsking = !self.isAsking
+        self.addXLimitLine(Double(self.dataIndex) - 0.5)
         
        
         
     }
+    
     
 }
