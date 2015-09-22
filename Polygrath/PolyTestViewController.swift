@@ -13,6 +13,9 @@ import Charts
 class PolyTestViewController: UIViewController, WCSessionDelegate, ChartViewDelegate {
     
     
+    
+    @IBOutlet weak var chartIndicator: UIActivityIndicatorView!
+    
     @IBOutlet weak var askButtonBottomConst: NSLayoutConstraint!
     
     @IBOutlet weak var QuestionLabelTopConst: NSLayoutConstraint!
@@ -35,11 +38,14 @@ class PolyTestViewController: UIViewController, WCSessionDelegate, ChartViewDele
     var dataMin: Double = 100
     var average: Double = 0
     var deviation: Double = 0
-    var chartDataSet = LineChartDataSet(yVals: nil, label: "Heart Rate (BPM)")
+    var chartDataSet = LineChartDataSet(yVals: [], label: "Heart Rate (BPM)")
     var dataIndex = 0
     let formatter = NSDateFormatter()
     var bpm = 60
     var snapHeart = UIView()
+    
+    //time
+    var startTime = NSDate()
     
     //question
     var questions: [question] = []
@@ -75,10 +81,12 @@ class PolyTestViewController: UIViewController, WCSessionDelegate, ChartViewDele
         //setup
         self.isAsking = false
         self.questionLabel.text = "Need some hints for question ?"
+        self.chartIndicator.startAnimating()
         
         //layer
         self.askButton.layer.cornerRadius = self.askButton.frame.width / 2
         self.askButtonBottomConst.constant = self.view.frame.height / 4 - self.askButton.frame.height / 2
+        
         
         
     }
@@ -112,23 +120,26 @@ class PolyTestViewController: UIViewController, WCSessionDelegate, ChartViewDele
                     self.dataString.append(timeString)
                     self.dataDates.append(dic.0)
                     self.dataValues.append(dic.1)
+                    self.chartIndicator.stopAnimating()
                     self.updateGraph(timeString, value: dic.1)
+                    
                 }
             }
         }
     }
     
     //chart
+    
     func setupGraph() {
+        //setup
         self.grathView.delegate = self
-        self.grathView.noDataText = "Loading..."
+        self.grathView.noDataText = ""
         self.grathView.descriptionText = ""
-        self.grathView.xAxis.labelPosition = .Bottom
+        self.chartDataSet.drawCubicEnabled = true
         //self.chartDataSet.colors = [UIColor(red: 230/255, green: 125/255, blue: 34/255, alpha: 1.0)]
-        let chartData = LineChartData(xVals: self.dataString, dataSet: self.chartDataSet)
-        self.grathView.data = chartData
-        print("add grath")
-        print(self.grathView.data)
+        
+        //axis
+        self.grathView.xAxis.labelPosition = .Bottom
         self.grathView.getAxis(ChartYAxis.AxisDependency.Right).enabled = false
         let yAxisLeft = self.grathView.getAxis(ChartYAxis.AxisDependency.Left)
         yAxisLeft.spaceTop = 0.1
@@ -140,15 +151,15 @@ class PolyTestViewController: UIViewController, WCSessionDelegate, ChartViewDele
         xAxis.drawGridLinesEnabled = false
         xAxis.avoidFirstLastClippingEnabled = true
         
+        self.grathView.setVisibleXRangeMaximum(10)
         self.grathView.rightAxis.drawLimitLinesBehindDataEnabled = true
         
         
-        //visible axis
-        self.grathView.setVisibleXRangeMaximum(10)
+        
         
         
         // test 
-        /*
+        
         self.dataString = ["1", "2", "3", "4", "5", "1", "2", "3", "4", "5", "1", "2", "3", "4", "5"]
         self.dataValues = [60, 70, 80, 90, 100, 60, 70, 80, 90, 100, 60, 70, 80, 90, 100]
         
@@ -156,14 +167,21 @@ class PolyTestViewController: UIViewController, WCSessionDelegate, ChartViewDele
             let dataentry = ChartDataEntry(value: value, xIndex: self.dataIndex)
             self.dataIndex++
             self.chartDataSet.addEntry(dataentry)
-        }*/
+        }
         
         
-        //let data = LineChartData(xVals: self.dataString, dataSet: self.chartDataSet)
-        //self.grathView.data = data
+        let data = LineChartData(xVals: self.dataString, dataSet: self.chartDataSet)
+        print(data)
+        self.grathView.data = data
+        
+        NSTimer.scheduledTimerWithTimeInterval(1, target: self, selector: Selector("addXTime"), userInfo: nil, repeats: true)
 
     }
     
+    func addXTime() {
+        print("add x")
+        self.grathView.data?.addXValue("1")
+    }
     
     func updateGraph(time: String, value: Double) {
         print(", update grath")

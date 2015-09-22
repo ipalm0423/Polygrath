@@ -161,7 +161,20 @@ Press 'Start Button' on both side</string>
                         <subviews>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="cHr-c8-kC3" userLabel="HeartGrath" customClass="LineChartView" customModule="Charts">
                                 <rect key="frame" x="10" y="124" width="580" height="240"/>
+                                <subviews>
+                                    <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" hidesWhenStopped="YES" animating="YES" style="gray" translatesAutoresizingMaskIntoConstraints="NO" id="eyq-tF-zU8">
+                                        <rect key="frame" x="270" y="100" width="40" height="40"/>
+                                        <constraints>
+                                            <constraint firstAttribute="width" constant="40" id="Wsk-cX-41F"/>
+                                            <constraint firstAttribute="height" constant="40" id="cMG-H9-fqY"/>
+                                        </constraints>
+                                    </activityIndicatorView>
+                                </subviews>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <constraints>
+                                    <constraint firstItem="eyq-tF-zU8" firstAttribute="centerX" secondItem="cHr-c8-kC3" secondAttribute="centerX" id="3Fi-Lv-CKW"/>
+                                    <constraint firstItem="eyq-tF-zU8" firstAttribute="centerY" secondItem="cHr-c8-kC3" secondAttribute="centerY" id="QLp-AD-die"/>
+                                </constraints>
                             </view>
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="SH9-Kc-5W0">
                                 <rect key="frame" x="10" y="558" width="73" height="30"/>
@@ -231,7 +244,8 @@ Press 'Start Button' on both side</string>
                         <outlet property="QuestionLabelTopConst" destination="462-Yj-V9l" id="RN3-W9-jva"/>
                         <outlet property="askButton" destination="Zb7-H8-Sr4" id="Jss-fv-xgJ"/>
                         <outlet property="askButtonBottomConst" destination="X3Z-BG-otr" id="1iL-0T-3Me"/>
-                        <outlet property="grathView" destination="cHr-c8-kC3" id="u0r-dc-88P"/>
+                        <outlet property="chartIndicator" destination="eyq-tF-zU8" id="YLD-Q5-LBY"/>
+                        <outlet property="grathView" destination="cHr-c8-kC3" id="Sm7-YP-9cU"/>
                         <outlet property="heartImage" destination="s5C-ur-m3S" id="cp9-ws-rMx"/>
                         <outlet property="questionLabel" destination="8dz-gp-tRn" id="G8U-AY-yFe"/>
                         <outlet property="questionLabelLeadingConst" destination="zTA-EU-geK" id="oK1-gr-SiC"/>
