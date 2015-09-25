@@ -40,6 +40,7 @@ class TestInterfaceController: WKInterfaceController, WCSessionDelegate, HKWorko
                 self.frontLabel.setText("Running...")
                 self.startButton.setTitle("Stop")
                 self.startButton.setBackgroundColor(self.stopColor)
+                
             }else {
                 //test is stop
                 print("test is pause")
@@ -47,6 +48,7 @@ class TestInterfaceController: WKInterfaceController, WCSessionDelegate, HKWorko
                 self.startButton.setTitle("Start")
                 self.startButton.setBackgroundColor(self.startColor)
                 self.frontLabel.setText("Pause")
+                self.showStopAlert()
                 
             }
         }
@@ -90,14 +92,12 @@ class TestInterfaceController: WKInterfaceController, WCSessionDelegate, HKWorko
     
     @IBAction func startButtonTouch() {
         print("start button touch")
-        if !self.checkWCConnection() {
-            //connection fail
-            self.testIsStart = false
-            return
-        }
-        //connection ok
         self.testIsStart = self.testIsStart ? false : true
-        
+        if self.testIsStart {
+            self.sendCMDStartPhone()
+        }else {
+            self.sendCMDStopPhone()
+        }
     }
     
     
@@ -113,9 +113,8 @@ class TestInterfaceController: WKInterfaceController, WCSessionDelegate, HKWorko
             self.startButton.setEnabled(true)
             return true
         }else {
-            self.frontLabel.setText("Please check the connection between iWatch and iOS device")
-            self.setTitle("Disconnected")
-            self.startButton.setEnabled(false)
+            self.frontLabel.setText("Please keep your wrist on the right position")
+            self.setTitle("Reconnected")
             return false
         }
     }
@@ -179,12 +178,53 @@ class TestInterfaceController: WKInterfaceController, WCSessionDelegate, HKWorko
     }
     
 //Watch Connect function
+    func session(session: WCSession, didReceiveMessage message: [String : AnyObject], replyHandler: ([String : AnyObject]) -> Void) {
+        print(message)
+        if let cmd = message["cmd"] as? String {
+            switch cmd {
+            case "stop" :
+                print("cmd from iphone: stop")
+                replyHandler(["cmdResponse" : true])
+                self.testIsStart = false
+                
+                
+            case "start" :
+                print("cmd from iphone: start")
+                replyHandler(["cmdResponse" : true])
+                self.testIsStart = true
+                
+                
+            default :
+                print("unknow cmd from iphone")
+            }
+        }
+    }
+    
+    func sendCMDStopPhone() {
+        if self.session!.reachable {
+            print("send cmd to iphone: stop")
+            self.session?.sendMessage(["cmd" : "stop"], replyHandler: nil, errorHandler: { (error) -> Void in
+                print(error)
+            })
+        }
+    }
+    
+    func sendCMDStartPhone() {
+        if self.session!.reachable {
+            print("send cmd to iphone: start")
+            self.session?.sendMessage(["cmd" : "start"], replyHandler: nil, errorHandler: { (error) -> Void in
+                print(error)
+            })
+        }
+    }
+    
+    
     
     func sendArrayData(array : [NSDate : Double]) {
         let applicationData = ["heartRateData" : array]
         
         // The paired iPhone has to be connected via Bluetooth.
-        if let session = session where session.reachable {
+        if let session = session {
             print("send data to iOS device")
             dispatch_async(dispatch_get_main_queue(), { () -> Void in
                 session.sendMessage(applicationData,
@@ -199,6 +239,14 @@ class TestInterfaceController: WKInterfaceController, WCSessionDelegate, HKWorko
         } else {
             print("device is not connected")
             self.checkWCConnection()
+            self.session?.sendMessage(applicationData,
+                replyHandler: { replyData in
+                    // handle reply from iPhone app here
+                    print(replyData)
+                }, errorHandler: { error in
+                    // catch any errors here
+                    print(error)
+            })
             // when the iPhone is not connected via Bluetooth
         }
     }
@@ -207,12 +255,24 @@ class TestInterfaceController: WKInterfaceController, WCSessionDelegate, HKWorko
         if session.reachable {
             self.setTitle("Connected")
         }else {
-            self.setTitle("Disconnected")
-            self.testIsStart = false
-            //self.pushControllerWithName("frontController", context: nil)
+            self.setTitle("Reconnected")
+            //self.testIsStart = false
+            
         }
     }
+
     
+//alert
+    func showStopAlert() {
+        
+        let action = WKAlertAction(title: "Ok", style: WKAlertActionStyle.Default) { () -> Void in
+            //back segue
+            self.pushControllerWithName("frontController", context: nil)
+        }
+        
+        presentAlertControllerWithTitle("Alert", message: "Measurement is stop", preferredStyle: .ActionSheet, actions: [action])
+
+    }
     
     
     

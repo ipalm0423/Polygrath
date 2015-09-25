@@ -37,6 +37,7 @@ class InterfaceController: WKInterfaceController, WCSessionDelegate {
     override func willActivate() {
         // This method is called when watch view controller is about to be visible to user
         super.willActivate()
+        
     }
 
     override func didDeactivate() {
@@ -57,11 +58,30 @@ class InterfaceController: WKInterfaceController, WCSessionDelegate {
             self.pushControllerWithName("testController", context: nil)
         }else {
             self.frontLabel.setText("Doesn't found any paired device")
+            self.checkWCConnection()
         }
     }
     
     override func updateUserActivity(type: String, userInfo: [NSObject : AnyObject]?, webpageURL: NSURL?) {
         print("hand off")
+    }
+    
+    
+//wc session
+    
+    func checkWCConnection() -> Bool {
+        if let session = session {
+            self.frontLabel.setText("Wearing the iWatch and press 'Start' button")
+            
+            self.session?.delegate = self
+            self.session?.activateSession()
+            
+            return true
+        }else {
+            self.frontLabel.setText("Please check the connection between iWatch and iOS device")
+            
+            return false
+        }
     }
     
 //navi
@@ -105,5 +125,7 @@ class InterfaceController: WKInterfaceController, WCSessionDelegate {
             return false
         }
     }
+    
+    
 
 }
