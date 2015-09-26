@@ -23,4 +23,9 @@ class question {
     var questIndex = 0
     var dataDates = [NSDate]()
     var dataValues = [Double]()
+    var score: Double = 0
+    var average: Double = 0
+    var max: Double = 0
+    var min: Double = 0
+    var isTruth: Bool?
 }

@@ -23,12 +23,14 @@ class TestInterfaceController: WKInterfaceController, WCSessionDelegate, HKWorko
 //WC
     let session: WCSession? = WCSession.isSupported() ? WCSession.defaultSession() : nil
     
+    
 //health kit
     var healthStore = HKHealthStore()
     var anchorQuery: HKAnchoredObjectQuery?
     var anchor = HKQueryAnchor(fromValue: Int(HKAnchoredObjectQueryNoAnchor))
     let heartRateUnit = HKUnit(fromString: "count/min")
     var workOutSession = HKWorkoutSession(activityType: HKWorkoutActivityType.CrossTraining, locationType: HKWorkoutSessionLocationType.Indoor)
+    
     
 //status
     var testIsStart = false {
@@ -48,7 +50,6 @@ class TestInterfaceController: WKInterfaceController, WCSessionDelegate, HKWorko
                 self.startButton.setTitle("Start")
                 self.startButton.setBackgroundColor(self.startColor)
                 self.frontLabel.setText("Pause")
-                self.showStopAlert()
                 
             }
         }
@@ -64,7 +65,8 @@ class TestInterfaceController: WKInterfaceController, WCSessionDelegate, HKWorko
         
         // Configure interface objects here.
         self.startButton.setBackgroundColor(self.startColor)
-        self.checkWCConnection()
+        self.setupWCConnection()
+        self.checkWCConnectReachable()
         self.setupHeartRateQuery()
         self.workOutSession.delegate = self
     }
@@ -74,7 +76,11 @@ class TestInterfaceController: WKInterfaceController, WCSessionDelegate, HKWorko
     override func willActivate() {
         // This method is called when watch view controller is about to be visible to user
         super.willActivate()
-        
+        let fileCount = session?.outstandingUserInfoTransfers.count
+        if let file = session?.outstandingUserInfoTransfers {
+            print(file)
+        }
+        print("file is wait transfer: \(fileCount)")
     }
 
     override func didDeactivate() {
@@ -91,26 +97,47 @@ class TestInterfaceController: WKInterfaceController, WCSessionDelegate, HKWorko
 //button
     
     @IBAction func startButtonTouch() {
+        
         print("start button touch")
-        self.testIsStart = self.testIsStart ? false : true
-        if self.testIsStart {
+        
+        
+        if self.testIsStart == false {
             self.sendCMDStartPhone()
+            self.testIsStart = true
         }else {
-            self.sendCMDStopPhone()
+            //stop testing
+            let file = session?.outstandingUserInfoTransfers.count
+            print(file)
+            if file > 0 {
+                //wait transfer
+                print("file is wait transfer: \(file)")
+                //NSTimer.scheduledTimerWithTimeInterval(1, target: self, selector: Selector(""), userInfo: nil, repeats: true)
+                return
+                
+            }else {
+                self.testIsStart = false
+                
+            }
         }
+        
     }
     
     
 //status func
     
-    func checkWCConnection() -> Bool {
+    func setupWCConnection() {
+        if let session = self.session {
+            self.session?.delegate = self
+            self.session?.activateSession()
+            print("active session")
+        }
+    }
+    
+    func checkWCConnectReachable() -> Bool {
+        
         if let session = session where session.reachable {
             self.setTitle("Connected")
             self.frontLabel.setText("Wearing the iWatch and press 'Start' button")
-            
-            self.session?.delegate = self
-            self.session?.activateSession()
-            self.startButton.setEnabled(true)
             return true
         }else {
             self.frontLabel.setText("Please keep your wrist on the right position")
@@ -133,7 +160,7 @@ class TestInterfaceController: WKInterfaceController, WCSessionDelegate, HKWorko
             
         }
         print(data)
-        self.sendArrayData(data)
+        self.sendDataFile(data)
     }
     
     
@@ -149,6 +176,7 @@ class TestInterfaceController: WKInterfaceController, WCSessionDelegate, HKWorko
             
         })
         self.anchorQuery!.updateHandler = {(query, samples, deleteObjects, newAnchor, error) -> Void in
+            print("anchor update query")
             self.anchor = newAnchor!
             self.sendHeartRateData(samples)
         }
@@ -156,7 +184,7 @@ class TestInterfaceController: WKInterfaceController, WCSessionDelegate, HKWorko
     }
     
     
-//work out session
+//health workout session
     func workoutSession(workoutSession: HKWorkoutSession, didChangeToState toState: HKWorkoutSessionState, fromState: HKWorkoutSessionState, date: NSDate) {
         switch toState {
         case .Running:
@@ -165,6 +193,7 @@ class TestInterfaceController: WKInterfaceController, WCSessionDelegate, HKWorko
         case .Ended:
             print("work out to state: Ended")
             self.healthStore.stopQuery(self.anchorQuery!)
+            self.showStopAlert()
             
         case .NotStarted:
             print("work out to state: NotStarted")
@@ -186,7 +215,6 @@ class TestInterfaceController: WKInterfaceController, WCSessionDelegate, HKWorko
                 print("cmd from iphone: stop")
                 replyHandler(["cmdResponse" : true])
                 self.testIsStart = false
-                
                 
             case "start" :
                 print("cmd from iphone: start")
@@ -218,36 +246,11 @@ class TestInterfaceController: WKInterfaceController, WCSessionDelegate, HKWorko
         }
     }
     
-    
-    
-    func sendArrayData(array : [NSDate : Double]) {
+    func sendDataFile(array : [NSDate : Double]) {
+        print("send data to iOS device")
         let applicationData = ["heartRateData" : array]
-        
-        // The paired iPhone has to be connected via Bluetooth.
-        if let session = session {
-            print("send data to iOS device")
-            dispatch_async(dispatch_get_main_queue(), { () -> Void in
-                session.sendMessage(applicationData,
-                    replyHandler: { replyData in
-                        // handle reply from iPhone app here
-                        print(replyData)
-                    }, errorHandler: { error in
-                        // catch any errors here
-                        print(error)
-                })
-            })
-        } else {
-            print("device is not connected")
-            self.checkWCConnection()
-            self.session?.sendMessage(applicationData,
-                replyHandler: { replyData in
-                    // handle reply from iPhone app here
-                    print(replyData)
-                }, errorHandler: { error in
-                    // catch any errors here
-                    print(error)
-            })
-            // when the iPhone is not connected via Bluetooth
+        dispatch_async(dispatch_get_main_queue()) { () -> Void in
+            self.session?.transferUserInfo(applicationData)
         }
     }
     
@@ -256,8 +259,6 @@ class TestInterfaceController: WKInterfaceController, WCSessionDelegate, HKWorko
             self.setTitle("Connected")
         }else {
             self.setTitle("Reconnected")
-            //self.testIsStart = false
-            
         }
     }
 
@@ -267,6 +268,7 @@ class TestInterfaceController: WKInterfaceController, WCSessionDelegate, HKWorko
         
         let action = WKAlertAction(title: "Ok", style: WKAlertActionStyle.Default) { () -> Void in
             //back segue
+            self.sendCMDStopPhone()
             self.pushControllerWithName("frontController", context: nil)
         }
         

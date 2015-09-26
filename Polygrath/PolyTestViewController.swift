@@ -45,13 +45,12 @@ class PolyTestViewController: UIViewController, WCSessionDelegate, ChartViewDele
     
     //time
     var startTime = NSDate()
-    var lastUpdateTime = NSDate()
     var secondTimer: NSTimer?
     //question
     var questions: [question] = []
     var sugestQuestion = ["What did you eat at lunch ?", "When did you get home last night ?", "Did you go out with him/her ?", "Did you wash your hands after toilet ?", "Who did you sleep with last night ?", "What's your size ?", "When was your first time ?", "Are you virgin?"]
     
-    //flag
+//flag
     var isAsking = false {
         didSet {
             if self.isAsking {
@@ -82,7 +81,7 @@ class PolyTestViewController: UIViewController, WCSessionDelegate, ChartViewDele
         }
     }
     
-    //WCSession
+//WCSession
     let session: WCSession? = WCSession.isSupported() ? WCSession.defaultSession() : nil
     
     
@@ -130,10 +129,11 @@ class PolyTestViewController: UIViewController, WCSessionDelegate, ChartViewDele
         }
     }
     
-    func session(session: WCSession, didReceiveMessage message: [String : AnyObject]) {
-        print(message)
-        if let dics = message["heartRateData"] as? [NSDate : Double] {
-            
+    func session(session: WCSession, didReceiveUserInfo userInfo: [String : AnyObject]) {
+        
+        
+        print("get userInfo data: ")
+        if let dics = userInfo["heartRateData"] as? [NSDate : Double] {
             //sort by time
             let dicsSort = dics.sort({ (a, b) -> Bool in
                 if a.0.timeIntervalSince1970 > b.0.timeIntervalSince1970 {
@@ -141,14 +141,13 @@ class PolyTestViewController: UIViewController, WCSessionDelegate, ChartViewDele
                 }
                 return true
             })
-            print("got new data: \(dicsSort)")
+            print("got new heart rate data: \(dicsSort)")
             //add to grath
             dispatch_sync(dispatch_get_main_queue()) { () -> Void in
+                //start to plot x-axis
+                self.startAddXTime()
                 
                 for dic in dicsSort {
-                    //let timeString = self.formatter.stringFromDate(dic.0)
-                    //self.dataString.append(timeString)
-                    self.startAddXTime()
                     self.dataDates.append(dic.0)
                     self.dataValues.append(dic.1)
                     self.updateGraph(dic.0, value: dic.1)
@@ -157,34 +156,21 @@ class PolyTestViewController: UIViewController, WCSessionDelegate, ChartViewDele
                 }
             }
         }
+    }
+    
+    func session(session: WCSession, didReceiveMessage message: [String : AnyObject]) {
+        print(message)
         
-        //watch pause the test
+        // got cmd from watch
         if let cmd = message["cmd"] as? String {
             if cmd == "stop" {
                 print("recieve cmd from watch: stop")
                 //stop runnung
-                self.closeAllAnimate()
-                
-                //alert
-                let alert = UIAlertController(title: "Alert", message: "Test is stop by iWatch", preferredStyle: UIAlertControllerStyle.Alert)
-                
-                alert.addAction(UIAlertAction(title: "OK", style: .Default, handler: { action in
-                    switch action.style{
-                    case .Default:
-                        print("test is stop by watch, jump to result", terminator: "")
-                        //segue
-                        self.performSegueWithIdentifier("ResultSegue", sender: self)
-                        
-                    case .Cancel:
-                        print("cancel", terminator: "")
-                        
-                    case .Destructive:
-                        print("destructive", terminator: "")
-                    }
-                }))
-                self.presentViewController(alert, animated: true, completion: nil)
-                
-                
+                dispatch_async(dispatch_get_main_queue(), { () -> Void in
+                    self.closeAllAnimate()
+                    //alert
+                    self.alertStopMessage()
+                })
                 
             }else if cmd == "start" {
                 //start running
@@ -212,15 +198,12 @@ class PolyTestViewController: UIViewController, WCSessionDelegate, ChartViewDele
                         
                     }
                 }
-                
                 }, errorHandler: { (error) -> Void in
                     print(error)
             })
         }else {
-            //no connection, manually close
-            let alert = UIAlertController(title: "Alert", message: "Press 'Stop' button on your iWatch", preferredStyle: UIAlertControllerStyle.Alert)
-            alert.addAction(UIAlertAction(title: "OK", style: UIAlertActionStyle.Default, handler: nil))
-            self.presentViewController(alert, animated: true, completion: nil)
+            //unReachable, alert manually close
+            self.alertStopMannualOnWatch()
             return
         }
     }
@@ -249,6 +232,7 @@ class PolyTestViewController: UIViewController, WCSessionDelegate, ChartViewDele
         let xAxis = self.grathView.xAxis
         xAxis.drawGridLinesEnabled = false
         xAxis.avoidFirstLastClippingEnabled = true
+        xAxis.drawLabelsEnabled = true
         
         self.grathView.setVisibleXRangeMaximum(10)
         self.grathView.rightAxis.drawLimitLinesBehindDataEnabled = true
@@ -267,8 +251,8 @@ class PolyTestViewController: UIViewController, WCSessionDelegate, ChartViewDele
         }
         */
         
+        //setup first data
         let chartDataSet = LineChartDataSet(yVals: [ChartDataEntry()], label: "Heart Rate (BPM)")
-        
         chartDataSet.drawFilledEnabled = true
         let data = LineChartData(xVals: ["0"], dataSet: chartDataSet)
         print("setup new grath data: \(data)")
@@ -279,18 +263,13 @@ class PolyTestViewController: UIViewController, WCSessionDelegate, ChartViewDele
     
     
     func updateGraph(time: NSDate, value: Double) {
+         //only update data after start
         if time.timeIntervalSince1970 < self.startTime.timeIntervalSince1970 {
-            //only update data after start
             return
         }
         
         print("update grath")
-        if value > self.dataMax {
-            self.dataMax = value
-        }
-        if value < dataMin {
-            self.dataMin = value
-        }
+        self.updateMaxMinValue(value)
         
         if let data = self.grathView.data {
             //update old data
@@ -353,21 +332,21 @@ class PolyTestViewController: UIViewController, WCSessionDelegate, ChartViewDele
     }
     
     func updateQuestionData(time: NSDate, value: Double) {
-        for quest in self.questions {
-            
-            if time.timeIntervalSinceDate(quest.startTime) > 0 && quest.endTime.timeIntervalSinceDate(time) > 0 {
-                print(time.timeIntervalSinceDate(quest.startTime))
-                quest.dataValues.append(value)
-                quest.dataDates.append(time)
-                print("add data to Q.\(quest.questIndex)")
+        if self.questions.count > 0 {
+            for quest in self.questions {
                 
-            }else if time.timeIntervalSinceDate(quest.startTime) > 0 && quest.endTime.timeIntervalSinceDate(time) < 0 {
-                //add to last
-                print(time.timeIntervalSinceDate(quest.startTime))
-                quest.dataValues.append(value)
-                quest.dataDates.append(time)
-                print("add data to Q.\(quest.questIndex)")
+                if time.timeIntervalSinceDate(quest.startTime) > 0 && quest.endTime.timeIntervalSinceDate(time) > 0 {
+                    //data is in previous time range
+                    quest.dataValues.append(value)
+                    quest.dataDates.append(time)
+                    print("add data to Q.\(quest.questIndex)")
+                    return
+                }
             }
+            //data is in the last time range
+            self.questions[questions.count - 1].dataValues.append(value)
+            self.questions[questions.count - 1].dataDates.append(time)
+            print("add data to Q.\(self.questions.count)")
         }
     }
     
@@ -375,11 +354,21 @@ class PolyTestViewController: UIViewController, WCSessionDelegate, ChartViewDele
     func chartValueSelected(chartView: ChartViewBase, entry: ChartDataEntry, dataSetIndex: Int, highlight: ChartHighlight) {
         print("select chart at index: \(dataSetIndex)")
         //select chart single value
+        
     }
     
     
     
 //calculate
+    func updateMaxMinValue(value: Double) {
+        if value > self.dataMax {
+            self.dataMax = value
+        }
+        if value < dataMin && value != 0 {
+            self.dataMin = value
+        }
+    }
+    
     func getAverage(nums: [Double]) -> Double {
         var total = 0.0
         //use the parameter-array instead of the global variable votes
@@ -415,6 +404,8 @@ class PolyTestViewController: UIViewController, WCSessionDelegate, ChartViewDele
             let diff = Int(NSDate().timeIntervalSinceDate(self.startTime)) - self.dataIndex
             for var i = 0; i < diff + 2; i++ {
                 self.dataIndex++
+                //let timeString = self.formatter.stringFromDate(dic.0)
+                //self.dataString.append(timeString)
                 data.addXValue(self.dataIndex.description)
             }
             self.grathView.notifyDataSetChanged()
@@ -436,6 +427,7 @@ class PolyTestViewController: UIViewController, WCSessionDelegate, ChartViewDele
     
 //animate
     func animateHeart(bpm: Double) {
+
         self.snapHeart.layer.removeAllAnimations()
         self.snapHeart.removeFromSuperview()
         self.snapHeart = self.heartImage.snapshotViewAfterScreenUpdates(true)
@@ -444,7 +436,9 @@ class PolyTestViewController: UIViewController, WCSessionDelegate, ChartViewDele
         
         var scale: Double = 1.2
         var duration = 30 / bpm
-        if bpm > self.average {
+        
+        //bonus heart size
+        if bpm > self.average && self.dataDates.count > 3 {
             scale = 1.2 + (bpm - self.average) * 0.02
             if bpm > self.average + self.deviation {
                 duration = 0.2
@@ -494,8 +488,34 @@ class PolyTestViewController: UIViewController, WCSessionDelegate, ChartViewDele
         self.isAsking = false
     }
     
+//alert
+    func alertStopMessage() {
+        print("alert message: stop")
+        let alert = UIAlertController(title: "Alert", message: "Program is stop by iWatch", preferredStyle: UIAlertControllerStyle.Alert)
+        
+        alert.addAction(UIAlertAction(title: "OK", style: .Default, handler: { action in
+            switch action.style{
+            case .Default:
+                print("test is stop by watch, jump to result", terminator: "")
+                //segue
+                self.performSegueWithIdentifier("ResultSegue", sender: self)
+                
+            case .Cancel:
+                print("cancel", terminator: "")
+                
+            case .Destructive:
+                print("destructive", terminator: "")
+            }
+        }))
+        self.presentViewController(alert, animated: true, completion: nil)
+    }
     
-    
+    func alertStopMannualOnWatch() {
+        print("alert message: stop mannully")
+        let alert = UIAlertController(title: "Alert", message: "Press 'Stop' button on your iWatch", preferredStyle: UIAlertControllerStyle.Alert)
+        alert.addAction(UIAlertAction(title: "OK", style: UIAlertActionStyle.Default, handler: nil))
+        self.presentViewController(alert, animated: true, completion: nil)
+    }
 //struct
     
     
@@ -561,8 +581,6 @@ class PolyTestViewController: UIViewController, WCSessionDelegate, ChartViewDele
         self.sendCMDStopWatch()
         
         //show indicate
-        
-        
         
         
     }
