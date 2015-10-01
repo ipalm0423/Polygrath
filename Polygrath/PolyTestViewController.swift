@@ -167,6 +167,14 @@ class PolyTestViewController: UIViewController, WCSessionDelegate, ChartViewDele
         if let cmd = message["cmd"] as? String {
             if cmd == "stop" {
                 print("recieve cmd from watch: stop")
+                //no question
+                if self.questions.count == 0 {
+                    dispatch_async(dispatch_get_main_queue(), { () -> Void in
+                        self.alertNoAskQuestion()
+                        return
+                    })
+                }
+                
                 //stop runnung
                 if isAsking {
                     dispatch_async(dispatch_get_main_queue(), { () -> Void in
@@ -288,11 +296,10 @@ class PolyTestViewController: UIViewController, WCSessionDelegate, ChartViewDele
             self.grathView.notifyDataSetChanged()
             
             //scope
-            let Yrange = self.dataMax - self.dataMin + 10
-            let YrangeMid = Yrange / 2 + self.dataMin
-            self.grathView.setVisibleYRangeMaximum(CGFloat(Yrange), axis: ChartYAxis.AxisDependency.Left)
+            let firstRange = self.getFirstTenDataRange(self.dataValues)
+            self.grathView.setVisibleYRangeMaximum(CGFloat(firstRange["Range"]!), axis: ChartYAxis.AxisDependency.Left)
             self.grathView.setVisibleXRangeMaximum(50)
-            self.grathView.moveViewTo(xIndex: self.dataIndex, yValue: CGFloat(value), axis: ChartYAxis.AxisDependency.Left)
+            self.grathView.moveViewTo(xIndex: self.dataIndex, yValue: CGFloat(firstRange["Target"]!), axis: ChartYAxis.AxisDependency.Left)
             
             //limit line
             if self.dataDates.count > 3 {
@@ -367,6 +374,38 @@ class PolyTestViewController: UIViewController, WCSessionDelegate, ChartViewDele
     
     
 //calculate
+    func getMin(values: [Double]) -> Double {
+        var min:Double = 200
+        for value in values {
+            if value < min && value != 0 {
+                min = value
+            }
+        }
+        return min
+    }
+    
+    func getMax(values: [Double]) -> Double {
+        var max:Double = 0
+        for value in values {
+            if value > max {
+                max = value
+            }
+        }
+        return max
+    }
+    
+    func getFirstTenDataRange(num: [Double]) -> [String : Double] {
+        var temp = num
+        while temp.count > 10 {
+            temp.removeFirst()
+        }
+        let max = self.getMax(temp)
+        let min = self.getMin(temp)
+        let range = max - min + 10
+        let target = ( max + min ) / 2
+        return ["Range" : range, "Target" : target]
+    }
+    
     func updateMaxMinValue(value: Double) {
         if value > self.dataMax {
             self.dataMax = value
@@ -521,6 +560,27 @@ class PolyTestViewController: UIViewController, WCSessionDelegate, ChartViewDele
     }
     
 //alert
+    func alertNoAskQuestion() {
+        print("alert no question ask")
+        let alert = UIAlertController(title: "Alert", message: "Program is stop by iWatch, you didn't ask any question.", preferredStyle: UIAlertControllerStyle.Alert)
+        
+        alert.addAction(UIAlertAction(title: "OK", style: .Default, handler: { action in
+            switch action.style{
+            case .Default:
+                print("test is stop by watch, jump to result", terminator: "")
+                //segue
+                self.navigationController?.popViewControllerAnimated(true)
+                
+            case .Cancel:
+                print("cancel", terminator: "")
+                
+            case .Destructive:
+                print("destructive", terminator: "")
+            }
+        }))
+        self.presentViewController(alert, animated: true, completion: nil)
+    }
+    
     func alertStopMessage() {
         print("alert message: stop")
         let alert = UIAlertController(title: "Alert", message: "Program is stop by iWatch", preferredStyle: UIAlertControllerStyle.Alert)
