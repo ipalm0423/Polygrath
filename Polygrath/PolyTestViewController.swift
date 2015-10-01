@@ -46,9 +46,11 @@ class PolyTestViewController: UIViewController, WCSessionDelegate, ChartViewDele
     //time
     var startTime = NSDate()
     var secondTimer: NSTimer?
+    var suggestTimer: NSTimer?
     //question
     var questions: [question] = []
-    var sugestQuestion = ["What did you eat at lunch ?", "When did you get home last night ?", "Did you go out with him/her ?", "Did you wash your hands after toilet ?", "Who did you sleep with last night ?", "What's your size ?", "When was your first time ?", "Are you virgin?"]
+    var isSuggesting = false
+    var suggestQuestion = ["What did you eat at lunch ?", "When did you get home last night ?", "Did you go out with him/her ?", "Did you wash your hands after toilet ?", "Who did you sleep with last night ?", "What's your size ?", "When was your first time ?", "Are you virgin?"]
     
 //flag
     var isAsking = false {
@@ -166,12 +168,13 @@ class PolyTestViewController: UIViewController, WCSessionDelegate, ChartViewDele
             if cmd == "stop" {
                 print("recieve cmd from watch: stop")
                 //stop runnung
-                dispatch_async(dispatch_get_main_queue(), { () -> Void in
-                    self.closeAllAnimate()
-                    //alert
-                    self.alertStopMessage()
-                })
-                
+                if isAsking {
+                    dispatch_async(dispatch_get_main_queue(), { () -> Void in
+                        self.closeAllAnimate()
+                        //alert
+                        self.alertStopMessage()
+                    })
+                }
             }else if cmd == "start" {
                 //start running
                 print("recieve cmd from watch: start")
@@ -191,16 +194,20 @@ class PolyTestViewController: UIViewController, WCSessionDelegate, ChartViewDele
                 if let response = reply["cmdResponse"] as? Bool {
                     if response {
                         print("got 'stop' cmd response from watch: \(response)")
-                        //already stop
-                        self.closeAllAnimate()
-                        //segue
-                        self.performSegueWithIdentifier("ResultSegue", sender: self)
+                        
                         
                     }
                 }
                 }, errorHandler: { (error) -> Void in
                     print(error)
             })
+            
+            //going to stop
+            if isAsking {
+                self.closeAllAnimate()
+                //segue
+                self.performSegueWithIdentifier("ResultSegue", sender: self)
+            }
         }else {
             //unReachable, alert manually close
             self.alertStopMannualOnWatch()
@@ -224,8 +231,8 @@ class PolyTestViewController: UIViewController, WCSessionDelegate, ChartViewDele
         self.grathView.xAxis.labelPosition = .Bottom
         self.grathView.getAxis(ChartYAxis.AxisDependency.Right).enabled = false
         let yAxisLeft = self.grathView.getAxis(ChartYAxis.AxisDependency.Left)
-        yAxisLeft.spaceTop = 0.1
-        yAxisLeft.spaceBottom = 0.05
+        yAxisLeft.spaceTop = 10
+        yAxisLeft.spaceBottom = 10
         yAxisLeft.setLabelCount(3, force: true)
         yAxisLeft.showOnlyMinMaxEnabled = true
         yAxisLeft.drawGridLinesEnabled = false
@@ -455,9 +462,25 @@ class PolyTestViewController: UIViewController, WCSessionDelegate, ChartViewDele
         }
     }
     
-    func animateSuggestion() {
+    func startAnimateSuggestion() {
         print("suggestion animate")
-        let randomIndex = Int(arc4random_uniform(UInt32(self.sugestQuestion.count)))
+        if self.suggestTimer == nil {
+            self.animateSuggestion()
+            self.isSuggesting = true
+            //start suggest
+            self.suggestTimer = NSTimer.scheduledTimerWithTimeInterval(8, target: self, selector: Selector("animateSuggestion"), userInfo: nil, repeats: true)
+        }
+    }
+    
+    func stopAnimateSuggestion() {
+        self.isSuggesting = false
+        self.suggestTimer?.invalidate()
+        self.suggestTimer = nil
+    }
+    
+    func animateSuggestion() {
+        
+        let randomIndex = Int(arc4random_uniform(UInt32(self.suggestQuestion.count)))
         UIView.animateWithDuration(1, delay: 0.0, options: UIViewAnimationOptions.CurveEaseIn, animations: { () -> Void in
             
             self.questionLabelLeadingConst.constant -= 300
@@ -465,7 +488,7 @@ class PolyTestViewController: UIViewController, WCSessionDelegate, ChartViewDele
             
             }) { (bool) -> Void in
                 //
-                self.questionLabel.text = self.sugestQuestion[randomIndex]
+                self.questionLabel.text = self.suggestQuestion[randomIndex]
                 
                 
                 
@@ -480,7 +503,16 @@ class PolyTestViewController: UIViewController, WCSessionDelegate, ChartViewDele
         
     }
     
+    func animateVibrate() {
+        //vibrate
+        
+        //noise
+    }
+    
     func closeAllAnimate() {
+        //save last question time
+        self.questions[self.questions.count - 1].endTime = NSDate()
+        self.stopAnimateSuggestion()
         self.stopAddIndexXTime()
         self.chartIndicator.stopAnimating()
         self.snapHeart.layer.removeAllAnimations()
@@ -576,15 +608,26 @@ class PolyTestViewController: UIViewController, WCSessionDelegate, ChartViewDele
     
     @IBAction func finishedButtonTouch(sender: AnyObject) {
         print("finished button touch")
-        //close animate
-        self.questions[self.questions.count - 1].endTime = NSDate()
-        self.sendCMDStopWatch()
+        //is finished before
+        if self.isAsking == false {
+            self.performSegueWithIdentifier("ResultSegue", sender: self)
+            return
+        }
         
-        //show indicate
+        //going to stop, send stop message to watch
+        self.sendCMDStopWatch()
         
         
     }
     
+    @IBAction func suggestLabelTouch(recognizer:UITapGestureRecognizer) {
+        print("tap on suggest label")
+        if self.isSuggesting {
+            self.animateSuggestion()
+        }else {
+            self.startAnimateSuggestion()
+        }
+    }
     
     
 }

@@ -195,6 +195,7 @@ class TestInterfaceController: WKInterfaceController, WCSessionDelegate, HKWorko
             self.healthStore.stopQuery(self.anchorQuery!)
             self.showStopAlert()
             
+            
         case .NotStarted:
             print("work out to state: NotStarted")
             
@@ -269,10 +270,10 @@ class TestInterfaceController: WKInterfaceController, WCSessionDelegate, HKWorko
         let action = WKAlertAction(title: "Ok", style: WKAlertActionStyle.Default) { () -> Void in
             //back segue
             self.sendCMDStopPhone()
-            self.pushControllerWithName("frontController", context: nil)
+            self.popToRootController()
         }
         
-        presentAlertControllerWithTitle("Alert", message: "Measurement is stop", preferredStyle: .ActionSheet, actions: [action])
+        presentAlertControllerWithTitle("Alert", message: "Do you want to stop ?", preferredStyle: .ActionSheet, actions: [action])
 
     }
     

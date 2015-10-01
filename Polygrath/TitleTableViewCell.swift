@@ -23,9 +23,9 @@ class TitleTableViewCell: UITableViewCell {
         super.awakeFromNib()
         // Initialization code
         self.column1Label.text = "No."
-        self.column2Label.text = "Question Info."
-        self.column3Label.text = "Truth Rate"
-        self.column4Label.text = "Truth or not"
+        self.column2Label.text = "Truth Score"
+        self.column3Label.text = "Time"
+        self.column4Label.text = "Result"
     }
 
     override func setSelected(selected: Bool, animated: Bool) {
