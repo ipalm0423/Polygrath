@@ -272,10 +272,11 @@ class TestInterfaceController: WKInterfaceController, WCSessionDelegate, HKWorko
             self.sendCMDStopPhone()
             self.popToRootController()
         }
-        
+
         presentAlertControllerWithTitle("Alert", message: "Do you want to stop ?", preferredStyle: .ActionSheet, actions: [action])
 
     }
+    
     
     
     

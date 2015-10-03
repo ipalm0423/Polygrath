@@ -9,8 +9,9 @@
 import UIKit
 import WatchConnectivity
 import Charts
+import AVFoundation
 
-class PolyTestViewController: UIViewController, WCSessionDelegate, ChartViewDelegate {
+class PolyTestViewController: UIViewController, WCSessionDelegate, ChartViewDelegate, AVAudioRecorderDelegate {
     
     
     @IBOutlet weak var finishedButtonBTMConst: NSLayoutConstraint!
@@ -51,6 +52,13 @@ class PolyTestViewController: UIViewController, WCSessionDelegate, ChartViewDele
     var questions: [question] = []
     var isSuggesting = false
     var suggestQuestion = ["What did you eat at lunch ?", "When did you get home last night ?", "Did you go out with him/her ?", "Did you wash your hands after toilet ?", "Who did you sleep with last night ?", "What's your size ?", "When was your first time ?", "Are you virgin?"]
+    
+    //AV record
+    var audioPlayer:AVAudioPlayer!
+    var audioRecorder:AVAudioRecorder!
+    var recordedAudio:RecordedAudio!
+    
+    
     
 //flag
     var isAsking = false {
@@ -608,7 +616,98 @@ class PolyTestViewController: UIViewController, WCSessionDelegate, ChartViewDele
         alert.addAction(UIAlertAction(title: "OK", style: UIAlertActionStyle.Default, handler: nil))
         self.presentViewController(alert, animated: true, completion: nil)
     }
-//struct
+    
+    
+//voice recorder
+    func setupRecorder() {
+        
+        //Create a session
+        let session = AVAudioSession.sharedInstance()
+        do {
+            print("setup recorder")
+            try session.setCategory(AVAudioSessionCategoryPlayAndRecord)
+            try session.setActive(true)
+            session.requestRecordPermission({ (bool) -> Void in
+                if bool {
+                    //allow to record
+                    print("User allow to record")
+                }else {
+                    //not allow to record
+                    print("User is not allow to record")
+                }
+            })
+        }catch {
+            //fail to record
+            print("Erroe: can't setup record.")
+            return
+        }
+    }
+    
+    func getNewFileURL() -> NSURL {
+        //Get the place to store the recorded file in the app's memory
+        let dirPath = NSSearchPathForDirectoriesInDomains(.DocumentDirectory,.UserDomainMask,true)[0] as String
+        
+        //Name the file with date/time to be unique
+        let currentDateTime=NSDate();
+        let formatter = NSDateFormatter();
+        formatter.dateFormat = "ddMMyyyy-HHmmss";
+        let recordingName = formatter.stringFromDate(currentDateTime)+".m4a"
+        let pathArray = [dirPath, recordingName]
+        return NSURL.fileURLWithPathComponents(pathArray)!
+    }
+    
+    func startRecord() -> RecordedAudio? {
+        
+        
+        
+        //Create a new audio recorder
+        let newURL = self.getNewFileURL()
+        let settings = [
+            AVFormatIDKey: Int(kAudioFormatMPEG4AAC),
+            AVSampleRateKey: 12000.0,
+            AVNumberOfChannelsKey: 1 as NSNumber,
+            AVEncoderAudioQualityKey: AVAudioQuality.High.rawValue
+        ]
+        
+        do {
+            //start
+            print("start record new voice")
+            self.audioRecorder = try AVAudioRecorder(URL: newURL, settings: settings)
+            self.audioRecorder.delegate = self
+            self.audioRecorder.prepareToRecord()
+            self.audioRecorder.record()
+        } catch {
+            //error
+            print("record error: can't start record")
+            finishRecording()
+            return nil
+        }
+        
+        //new a record info
+        let recordInfo = RecordedAudio()
+        recordInfo.title = "1"
+        recordInfo.URL = newURL
+        
+        return recordInfo
+    }
+    
+    func finishRecording() {
+        self.audioRecorder.stop()
+        self.audioRecorder = nil
+    }
+    
+    func audioRecorderDidFinishRecording(recorder: AVAudioRecorder, successfully flag: Bool) {
+        if flag {
+            //save to record array
+            let recordedAudio = RecordedAudio()
+            recordedAudio.URL = recorder.url
+            recordedAudio.title = recorder.url.lastPathComponent
+            self.questions[self.question]
+        }else {
+            //fail to record
+            self.finishRecording()
+        }
+    }
     
     
     
