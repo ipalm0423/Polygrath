@@ -8,18 +8,29 @@
 
 import UIKit
 
+
 class ResultQuestTableViewCell: UITableViewCell {
 
     
-    @IBOutlet weak var processBar: UIProgressView!
     
     @IBOutlet weak var numLabel: UILabel!
     
-    @IBOutlet weak var timeLabel: UILabel!
     
     @IBOutlet weak var scoreLabel: UILabel!
     
-    @IBOutlet weak var resultLabel: UILabel!
+    
+    @IBOutlet weak var maxLabel: UILabel!
+    
+    @IBOutlet weak var minLabel: UILabel!
+  
+    @IBOutlet weak var warningSightView: UIImageView!
+    
+    @IBOutlet weak var playButton: UIButton!
+    
+    @IBOutlet weak var moreButton: UIButton!
+    
+    @IBOutlet weak var progressBar: UIProgressView!
+    
     
     
     

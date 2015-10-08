@@ -54,10 +54,9 @@ class PolyTestViewController: UIViewController, WCSessionDelegate, ChartViewDele
     var suggestQuestion = ["What did you eat at lunch ?", "When did you get home last night ?", "Did you go out with him/her ?", "Did you wash your hands after toilet ?", "Who did you sleep with last night ?", "What's your size ?", "When was your first time ?", "Are you virgin?"]
     
     //AV record
-    var audioPlayer:AVAudioPlayer!
     var audioRecorder:AVAudioRecorder!
     var recordedAudio:RecordedAudio!
-    
+    var recordCount = 0
     
     
 //flag
@@ -110,6 +109,7 @@ class PolyTestViewController: UIViewController, WCSessionDelegate, ChartViewDele
         self.isAsking = false
         self.questionLabel.text = "Need some hints for question ?"
         self.chartIndicator.startAnimating()
+        self.setupRecorder()
         
         //layer
         self.askButton.layer.cornerRadius = self.askButton.frame.width / 2
@@ -125,7 +125,10 @@ class PolyTestViewController: UIViewController, WCSessionDelegate, ChartViewDele
         // Dispose of any resources that can be recreated.
     }
     
-    
+    override func viewDidDisappear(animated: Bool) {
+        self.finishRecording()
+        self.deActiveRecord()
+    }
     
     
 //WCSession
@@ -221,6 +224,7 @@ class PolyTestViewController: UIViewController, WCSessionDelegate, ChartViewDele
             //going to stop
             if isAsking {
                 self.closeAllAnimate()
+                self.finishRecording()
                 //segue
                 self.performSegueWithIdentifier("ResultSegue", sender: self)
             }
@@ -625,7 +629,7 @@ class PolyTestViewController: UIViewController, WCSessionDelegate, ChartViewDele
         let session = AVAudioSession.sharedInstance()
         do {
             print("setup recorder")
-            try session.setCategory(AVAudioSessionCategoryPlayAndRecord)
+            try session.setCategory(AVAudioSessionCategoryPlayAndRecord, withOptions: AVAudioSessionCategoryOptions.DefaultToSpeaker)
             try session.setActive(true)
             session.requestRecordPermission({ (bool) -> Void in
                 if bool {
@@ -643,6 +647,19 @@ class PolyTestViewController: UIViewController, WCSessionDelegate, ChartViewDele
         }
     }
     
+    func deActiveRecord() {
+        let session = AVAudioSession.sharedInstance()
+        do {
+            print("de-Active recorder")
+            try session.setActive(false)
+            
+        }catch {
+            //fail to record
+            print("Erroe: can't de-Active record.")
+            return
+        }
+    }
+    
     func getNewFileURL() -> NSURL {
         //Get the place to store the recorded file in the app's memory
         let dirPath = NSSearchPathForDirectoriesInDomains(.DocumentDirectory,.UserDomainMask,true)[0] as String
@@ -656,10 +673,7 @@ class PolyTestViewController: UIViewController, WCSessionDelegate, ChartViewDele
         return NSURL.fileURLWithPathComponents(pathArray)!
     }
     
-    func startRecord() -> RecordedAudio? {
-        
-        
-        
+    func startRecord() {
         //Create a new audio recorder
         let newURL = self.getNewFileURL()
         let settings = [
@@ -680,20 +694,18 @@ class PolyTestViewController: UIViewController, WCSessionDelegate, ChartViewDele
             //error
             print("record error: can't start record")
             finishRecording()
-            return nil
+            return
         }
         
-        //new a record info
-        let recordInfo = RecordedAudio()
-        recordInfo.title = "1"
-        recordInfo.URL = newURL
         
-        return recordInfo
     }
     
     func finishRecording() {
-        self.audioRecorder.stop()
-        self.audioRecorder = nil
+        if self.audioRecorder != nil {
+            print("stop recording...")
+            self.audioRecorder.stop()
+            self.audioRecorder = nil
+        }
     }
     
     func audioRecorderDidFinishRecording(recorder: AVAudioRecorder, successfully flag: Bool) {
@@ -702,10 +714,13 @@ class PolyTestViewController: UIViewController, WCSessionDelegate, ChartViewDele
             let recordedAudio = RecordedAudio()
             recordedAudio.URL = recorder.url
             recordedAudio.title = recorder.url.lastPathComponent
-            self.questions[self.question]
+            self.questions[self.recordCount].recordAudio = recordedAudio
+            print("record stop, save to quest.\(self.recordCount + 1)")
+            self.recordCount++
+            
         }else {
             //fail to record
-            self.finishRecording()
+            print("Did finished recording: fail")
         }
     }
     
@@ -746,16 +761,20 @@ class PolyTestViewController: UIViewController, WCSessionDelegate, ChartViewDele
             var quest = question()
             quest.questIndex = self.questions.count + 1
             self.questions.append(quest)
+            self.startRecord()
             self.addQuestionLimitLine(quest)
             
         }else {
             //next ask question
-            var quest = self.questions[self.questions.count - 1]
+            let quest = self.questions[self.questions.count - 1]
             quest.endTime = NSDate()
+            self.finishRecording()
+            
             //add next question
-            var nextQuest = question()
+            let nextQuest = question()
             nextQuest.questIndex = self.questions.count + 1
             self.questions.append(nextQuest)
+            self.startRecord()
             self.addQuestionLimitLine(nextQuest)
         }
         
@@ -767,7 +786,7 @@ class PolyTestViewController: UIViewController, WCSessionDelegate, ChartViewDele
     
     @IBAction func finishedButtonTouch(sender: AnyObject) {
         print("finished button touch")
-        //is finished before
+        //had been finished before
         if self.isAsking == false {
             self.performSegueWithIdentifier("ResultSegue", sender: self)
             return

@@ -8,8 +8,9 @@
 
 import UIKit
 import Charts
+import AVFoundation
 
-class ResultViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, ChartViewDelegate {
+class ResultViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, ChartViewDelegate, AVAudioPlayerDelegate {
 
     @IBOutlet weak var minLabel: UILabel!
     
@@ -29,8 +30,16 @@ class ResultViewController: UIViewController, UITableViewDelegate, UITableViewDa
     var BPMAverage: Double = 0
     var BPMDeviation: Double = 0
     
+    //audio
+    var audioPlayer:AVAudioPlayer!
+
+    
     //grath
     var grathData = LineChartData()
+    var maxXIndex = 0
+    
+    
+    
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -38,12 +47,20 @@ class ResultViewController: UIViewController, UITableViewDelegate, UITableViewDa
         // Do any additional setup after loading the view.
         self.tableView.delegate = self
         self.tableView.dataSource = self
+        self.navigationController?.title = "Heart Rate Result"
         self.setupView()
+        
     }
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
+    }
+    
+    override func viewDidDisappear(animated: Bool) {
+        if let AVP = self.audioPlayer {
+            AVP.pause()
+        }
     }
     
     
@@ -86,7 +103,6 @@ class ResultViewController: UIViewController, UITableViewDelegate, UITableViewDa
         
         //data input
         var qIndex = 0
-        var maxXIndex = 0
         var newDataSet = LineChartDataSet()
         
         for quest in quests {
@@ -124,8 +140,8 @@ class ResultViewController: UIViewController, UITableViewDelegate, UITableViewDa
             
         }
         //add x value
-        for var l = 0 ; l < maxXIndex + 5; l++ {
-            self.grathData.addXValue((l + 1).description)
+        for var l = 0 ; l < maxXIndex + 1; l++ {
+            self.grathData.addXValue(l.description)
         }
         //final input
         self.grathView.data = self.grathData
@@ -139,7 +155,102 @@ class ResultViewController: UIViewController, UITableViewDelegate, UITableViewDa
     }
     
 
-    
+//animate
+    func animateSpotlightLine(lineNumber: Int) {
+        //reload to oringinal data
+        self.grathView.data = self.grathData
+        self.grathView.notifyDataSetChanged()
+        self.grathView.reloadInputViews()
+        
+        if let dataSets = self.grathView.data?.dataSets as? [LineChartDataSet] {
+            print("select row at \(lineNumber)")
+            
+            for var i = 0; i < self.questions.count; i++ {
+                if i == lineNumber {
+                    let visibleSet = dataSets[i]
+                    
+                    visibleSet.lineWidth = 3
+                    visibleSet.drawFilledEnabled = true
+                    visibleSet.fillColor = UIColor.redColor()
+                    //circle
+                    visibleSet.drawCirclesEnabled = true
+                    visibleSet.drawCircleHoleEnabled = false
+                    visibleSet.setColor(UIColor.redColor())
+                    visibleSet.setCircleColor(UIColor.redColor())
+                    visibleSet.circleRadius = 7
+                    //value
+                    visibleSet.drawValuesEnabled = true
+                    
+                    
+                    
+                }else {
+                    let unVisibleSet = dataSets[i]
+                    unVisibleSet.setColor(UIColor.grayColor())
+                    unVisibleSet.lineWidth = 0.5
+                    unVisibleSet.drawCirclesEnabled = false
+                    unVisibleSet.drawValuesEnabled = false
+                    unVisibleSet.drawFilledEnabled = false
+                    
+                }
+            }
+            self.grathView.notifyDataSetChanged()
+            self.grathView.reloadInputViews()
+        }
+    }
+        
+    func animateTimeTrendOfLine(lineNumber: Int) {
+        
+        let quest = self.questions[lineNumber]
+        print("start time: \(quest.startTime)")
+        print("end time: \(quest.endTime)")
+        print("last time: \(quest.dataDates[quest.dataDates.count - 1])")
+        
+        //add oringinal point for time compensation
+        quest.dataDates.insert(quest.startTime, atIndex: 0)
+        quest.dataValues.insert(quest.dataValues[0], atIndex: 0)
+        
+        if quest.dataDates.count > 1 {
+            var dataEntries = [ChartDataEntry]()
+            //input data by 1/10 seconds
+            for var i = 0; i < quest.dataValues.count - 1; i++ {
+                let startTime = Int(quest.dataDates[i].timeIntervalSinceDate(quest.dataDates[0]) * 10)
+                let period = Int(quest.dataDates[i + 1].timeIntervalSinceDate(quest.dataDates[i]) * 10)
+                let delta = (quest.dataValues[i + 1] - quest.dataValues[i]) / Double(period) //去小數點
+                for var j = 0; j < period; j++ {
+                    let value = quest.dataValues[i] + (Double(j) * delta)
+                    let entry = ChartDataEntry(value: value, xIndex: startTime + j)
+                    dataEntries.append(entry)
+                }
+            }
+            
+            //input last entry
+            let lastNumber = quest.dataValues.count - 1
+            let totalTime = quest.dataDates[lastNumber].timeIntervalSinceDate(quest.dataDates[0])
+            let totalXIndex = Int(totalTime * 10)
+            let lastEntry = ChartDataEntry(value: quest.dataValues[lastNumber], xIndex: totalXIndex)
+            dataEntries.append(lastEntry)
+            
+            //xAxis
+            var xAxis = [String]()
+            for var i = 0; i < ((self.maxXIndex + 1) * 10); i++ {
+                xAxis.append((Double(i) / 10).description)
+            }
+            
+            //input set
+            let newDataSet = LineChartDataSet(yVals: dataEntries, label: "Q.\(quest.questIndex)")
+            //set layout
+            newDataSet.setColor(UIColor.redColor())
+            newDataSet.fillColor = UIColor.redColor()
+            newDataSet.drawFilledEnabled = true
+            newDataSet.drawCirclesEnabled = false
+            newDataSet.drawValuesEnabled = false
+            newDataSet.lineWidth = 3
+            
+            self.grathView.data = LineChartData(xVals: xAxis, dataSet: newDataSet)
+            self.grathView.xAxis.setLabelsToSkip(9)
+            self.grathView.animate(xAxisDuration: totalTime, easingOption: ChartEasingOption.Linear)
+        }
+    }
     
     
     
@@ -158,25 +269,41 @@ class ResultViewController: UIViewController, UITableViewDelegate, UITableViewDa
         let quest = self.questions[indexPath.row]
         
         cell.numLabel.text = (indexPath.row + 1).description
-        cell.timeLabel.text = String(format: "%.0f", quest.endTime.timeIntervalSinceDate(quest.startTime)) + "s"
+        cell.maxLabel.text = Int(quest.max).description
+        cell.minLabel.text = Int(quest.min).description
+        let intervalTime = quest.endTime.timeIntervalSinceDate(quest.startTime)
+        var timeText = NSDateComponentsFormatter().stringFromTimeInterval(intervalTime)!
+        if intervalTime < 10 {
+            timeText = "00:0" + timeText
+        }else if intervalTime < 60 {
+            timeText = "00:" + timeText
+        }
+        
+        cell.playButton.setTitle(timeText, forState: UIControlState.Normal)
+        cell.warningSightView.hidden = true
+        cell.playButton.tag = indexPath.row
+        cell.moreButton.tag = indexPath.row
+        
         //if data is enough
-        if let result = quest.isTruth {
+        if quest.isTruth != nil {
             //enough
-            cell.scoreLabel.text = String(format: "%.1f", quest.score)
+            cell.scoreLabel.text = String(format: "%.0f", quest.score * 100) + "%"
             if quest.score > 1 {
                 // prevent from infinite
-                cell.processBar.setProgress(1, animated: true)
-                cell.scoreLabel.text = "Infinite!"
+                cell.progressBar.setProgress(1, animated: true)
+                cell.scoreLabel.text = "100%"
             }else {
-                cell.processBar.setProgress(Float(quest.score), animated: true)
+                if quest.score < 0.5 {
+                    cell.warningSightView.hidden = false
+                }
+                cell.progressBar.setProgress(Float(quest.score), animated: true)
             }
-            cell.resultLabel.text = result ? "True" : "Lie"
+            
         }else {
             //no enough data to analysis
-            cell.processBar.setProgress(1, animated: true)
-            cell.processBar.progressTintColor = UIColor.grayColor()
-            cell.resultLabel.text = ""
-            cell.scoreLabel.text = "not enough data"
+            cell.progressBar.setProgress(1, animated: false)
+            cell.progressBar.progressTintColor = UIColor.grayColor()
+            cell.scoreLabel.text = "-"
         }
         return cell
     }
@@ -192,37 +319,51 @@ class ResultViewController: UIViewController, UITableViewDelegate, UITableViewDa
     }
     
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-        print("select")
-        if let dataSets = self.grathView.data?.dataSets as? [LineChartDataSet] {
-            print("select row at \(indexPath.row)")
-            for var i = 0; i < self.questions.count; i++ {
-                if i == indexPath.row {
-                    let visibleSet = dataSets[i]
-                    
-                    visibleSet.lineWidth = 3
-                    visibleSet.drawFilledEnabled = true
-                    visibleSet.fillColor = UIColor.redColor()
-                    //circle
-                    visibleSet.drawCirclesEnabled = true
-                    visibleSet.drawCircleHoleEnabled = false
-                    visibleSet.setColor(UIColor.redColor())
-                    visibleSet.setCircleColor(UIColor.redColor())
-                    visibleSet.circleRadius = 7
-                    //value
-                    visibleSet.drawValuesEnabled = true
-                    
-                }else {
-                    let unVisibleSet = dataSets[i]
-                    unVisibleSet.setColor(UIColor.grayColor())
-                    unVisibleSet.lineWidth = 0.5
-                    unVisibleSet.drawCirclesEnabled = false
-                    unVisibleSet.drawValuesEnabled = false
-                    unVisibleSet.drawFilledEnabled = false
-                    
-                }
-            }
-            self.grathView.animate(yAxisDuration: 0.05, easingOption: ChartEasingOption.EaseInBack)
+        print("select table row: \(indexPath.row)")
+        //hight light
+        self.animateSpotlightLine(indexPath.row)
+        
+        
+        
+        
+    }
+    
+    
+//audio play
+    
+    func playBackAudioRecord(No: Int) {
+        do {
+            print("playback question.\(No)")
+            try self.audioPlayer = AVAudioPlayer(contentsOfURL: self.questions[No].recordAudio.URL, fileTypeHint: "m4a")
+            self.audioPlayer.volume = 1.0
+            self.audioPlayer.prepareToPlay()
+            self.audioPlayer.play()
+        }catch {
+            print("can't playback Question.\(No)")
         }
+        
+    }
+    
+    func audioPlayerBeginInterruption(player: AVAudioPlayer) {
+        if self.audioPlayer != nil {
+            self.audioPlayer.pause()
+        }
+    }
+    
+    func audioPlayerEndInterruption(player: AVAudioPlayer) {
+        if self.audioPlayer != nil {
+            if !self.audioPlayer.playing {
+                self.audioPlayer.play()
+            }
+        }
+    }
+    
+    func tableView(tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+        return 70
+    }
+    
+    func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
+        return 70
     }
     
     
@@ -275,7 +416,7 @@ class ResultViewController: UIViewController, UITableViewDelegate, UITableViewDa
         //let max = self.getMax(values)
         //let min = self.getMin(values)
         let dev = self.getStandardDeviation(values)
-        let T = self.BPMDeviation
+        let T = 10.0
         
         
         var score: Double = T / (3 * dev)
@@ -317,5 +458,32 @@ class ResultViewController: UIViewController, UITableViewDelegate, UITableViewDa
         // Pass the selected object to the new view controller.
     }
     */
+    
+    
+    
+    
+//button click
 
+    @IBAction func PlayButtonTouch(sender: AnyObject) {
+        if let row = sender.tag {
+            print("press play button on row: \(row)")
+            self.playBackAudioRecord(row)
+            self.animateTimeTrendOfLine(row)
+        }
+        
+    }
+    
+    
+    @IBAction func moreButtonTouch(sender: AnyObject) {
+        if let row = sender.tag {
+            print("press play button on row: \(row)")
+            
+        }
+    }
+    
+    
+    
+    
+    
+    
 }
