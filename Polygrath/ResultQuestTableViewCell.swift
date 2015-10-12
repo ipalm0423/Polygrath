@@ -31,12 +31,14 @@ class ResultQuestTableViewCell: UITableViewCell {
     
     @IBOutlet weak var progressBar: UIProgressView!
     
+    @IBOutlet weak var playIndicator: UIActivityIndicatorView!
     
     
     
     override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code
+        
     }
 
     override func setSelected(selected: Bool, animated: Bool) {

@@ -419,14 +419,14 @@ Press 'Start Button' on both side</string>
                                                             </constraints>
                                                         </imageView>
                                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Truth Rate" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="f7r-N0-krB">
-                                                            <rect key="frame" x="377" y="45" width="70.5" height="18"/>
+                                                            <rect key="frame" x="387" y="45" width="70.5" height="18"/>
                                                             <animations/>
                                                             <fontDescription key="fontDescription" type="system" weight="light" pointSize="15"/>
                                                             <color key="textColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
                                                             <nil key="highlightedColor"/>
                                                         </label>
                                                         <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="percentage-30-vec" translatesAutoresizingMaskIntoConstraints="NO" id="dVu-TL-HLQ">
-                                                            <rect key="frame" x="402" y="25" width="20" height="20"/>
+                                                            <rect key="frame" x="412" y="25" width="20" height="20"/>
                                                             <animations/>
                                                             <constraints>
                                                                 <constraint firstAttribute="height" constant="20" id="UAf-Br-wCd"/>
@@ -460,7 +460,7 @@ Press 'Start Button' on both side</string>
                                                         <constraint firstItem="Sah-CL-pgy" firstAttribute="centerY" secondItem="wdq-iy-5aI" secondAttribute="centerY" id="LCg-sk-39n"/>
                                                         <constraint firstItem="8iK-gz-1bf" firstAttribute="leading" secondItem="wdq-iy-5aI" secondAttribute="leading" constant="100" id="Ln9-2v-ShC"/>
                                                         <constraint firstItem="8iK-gz-1bf" firstAttribute="centerY" secondItem="wdq-iy-5aI" secondAttribute="centerY" id="O6i-Vp-dhd"/>
-                                                        <constraint firstItem="Sah-CL-pgy" firstAttribute="leading" secondItem="dVu-TL-HLQ" secondAttribute="trailing" constant="80" id="SEd-Pi-Vnh"/>
+                                                        <constraint firstItem="Sah-CL-pgy" firstAttribute="leading" secondItem="dVu-TL-HLQ" secondAttribute="trailing" constant="70" id="SEd-Pi-Vnh"/>
                                                         <constraint firstAttribute="trailingMargin" secondItem="Sah-CL-pgy" secondAttribute="trailing" constant="70" id="Sax-q6-JgF"/>
                                                         <constraint firstItem="f7r-N0-krB" firstAttribute="centerX" secondItem="dVu-TL-HLQ" secondAttribute="centerX" id="h8N-Ik-XX5"/>
                                                     </constraints>
@@ -528,7 +528,7 @@ Press 'Start Button' on both side</string>
                                                             </connections>
                                                         </button>
                                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="60%" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="sIJ-En-r3G">
-                                                            <rect key="frame" x="390" y="23.5" width="60" height="23"/>
+                                                            <rect key="frame" x="390" y="23" width="60" height="23"/>
                                                             <animations/>
                                                             <constraints>
                                                                 <constraint firstAttribute="width" constant="60" id="Pau-p2-5eM"/>
@@ -560,6 +560,10 @@ Press 'Start Button' on both side</string>
                                                             <color key="textColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
                                                             <nil key="highlightedColor"/>
                                                         </label>
+                                                        <activityIndicatorView hidden="YES" opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" style="gray" translatesAutoresizingMaskIntoConstraints="NO" id="WEe-vv-Y0u">
+                                                            <rect key="frame" x="5" y="25" width="20" height="20"/>
+                                                            <animations/>
+                                                        </activityIndicatorView>
                                                         <stackView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="249" horizontalCompressionResistancePriority="751" distribution="fillEqually" translatesAutoresizingMaskIntoConstraints="NO" id="q4g-0f-ELA">
                                                             <rect key="frame" x="30" y="18" width="330" height="34"/>
                                                             <subviews>
@@ -630,8 +634,10 @@ Press 'Start Button' on both side</string>
                                                         <constraint firstItem="sIJ-En-r3G" firstAttribute="leading" secondItem="5tp-i3-o9N" secondAttribute="trailing" id="AcA-dZ-p5O"/>
                                                         <constraint firstItem="QIQ-gn-WeC" firstAttribute="leading" secondItem="siK-Gq-Dt7" secondAttribute="trailing" constant="20" id="Adi-9o-rcB"/>
                                                         <constraint firstItem="5tp-i3-o9N" firstAttribute="leading" secondItem="q4g-0f-ELA" secondAttribute="trailing" constant="10" id="CDn-0b-5el"/>
+                                                        <constraint firstItem="WEe-vv-Y0u" firstAttribute="centerY" secondItem="xEN-8v-RO8" secondAttribute="centerY" id="Fen-eN-Brp"/>
                                                         <constraint firstItem="siK-Gq-Dt7" firstAttribute="centerY" secondItem="TxO-0s-y5o" secondAttribute="centerY" id="Qhg-Of-WjE"/>
                                                         <constraint firstItem="UZq-FB-GT1" firstAttribute="leading" secondItem="q4g-0f-ELA" secondAttribute="leading" id="Qhg-YU-3Co"/>
+                                                        <constraint firstItem="WEe-vv-Y0u" firstAttribute="centerX" secondItem="xEN-8v-RO8" secondAttribute="centerX" id="RAd-eg-UeR"/>
                                                         <constraint firstItem="xEN-8v-RO8" firstAttribute="centerY" secondItem="TxO-0s-y5o" secondAttribute="centerY" id="bAD-oL-wSf"/>
                                                         <constraint firstItem="UZq-FB-GT1" firstAttribute="top" secondItem="TxO-0s-y5o" secondAttribute="topMargin" id="bto-7a-7Kx"/>
                                                         <constraint firstItem="xEN-8v-RO8" firstAttribute="leading" secondItem="TxO-0s-y5o" secondAttribute="leading" constant="5" id="iWP-0s-bjb"/>
@@ -652,6 +658,7 @@ Press 'Start Button' on both side</string>
                                                     <outlet property="moreButton" destination="QIQ-gn-WeC" id="Yov-8T-1eH"/>
                                                     <outlet property="numLabel" destination="xEN-8v-RO8" id="uSv-um-FHB"/>
                                                     <outlet property="playButton" destination="siK-Gq-Dt7" id="1z3-oX-aur"/>
+                                                    <outlet property="playIndicator" destination="WEe-vv-Y0u" id="Bhl-do-cja"/>
                                                     <outlet property="progressBar" destination="UZq-FB-GT1" id="BAI-NI-vWz"/>
                                                     <outlet property="scoreLabel" destination="sIJ-En-r3G" id="Ljt-uN-9ba"/>
                                                     <outlet property="warningSightView" destination="5tp-i3-o9N" id="He3-hA-E3m"/>

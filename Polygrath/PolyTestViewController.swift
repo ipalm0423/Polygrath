@@ -190,6 +190,7 @@ class PolyTestViewController: UIViewController, WCSessionDelegate, ChartViewDele
                 if isAsking {
                     dispatch_async(dispatch_get_main_queue(), { () -> Void in
                         self.closeAllAnimate()
+                        self.finishRecording()
                         //alert
                         self.alertStopMessage()
                     })
@@ -308,10 +309,11 @@ class PolyTestViewController: UIViewController, WCSessionDelegate, ChartViewDele
             self.grathView.notifyDataSetChanged()
             
             //scope
-            let firstRange = self.getFirstTenDataRange(self.dataValues)
-            self.grathView.setVisibleYRangeMaximum(CGFloat(firstRange["Range"]!), axis: ChartYAxis.AxisDependency.Left)
-            self.grathView.setVisibleXRangeMaximum(50)
-            self.grathView.moveViewTo(xIndex: self.dataIndex, yValue: CGFloat(firstRange["Target"]!), axis: ChartYAxis.AxisDependency.Left)
+            let yRange = self.getFirstTenDataRange(self.dataValues)
+            let xRange = self.getFirstTenTimeRange(self.dataDates)
+            self.grathView.setVisibleYRangeMaximum(CGFloat(yRange[0]), axis: ChartYAxis.AxisDependency.Left)
+            self.grathView.setVisibleXRangeMaximum(xRange)
+            self.grathView.moveViewTo(xIndex: self.dataIndex, yValue: CGFloat(yRange[1]), axis: ChartYAxis.AxisDependency.Left)
             
             //limit line
             if self.dataDates.count > 3 {
@@ -327,9 +329,7 @@ class PolyTestViewController: UIViewController, WCSessionDelegate, ChartViewDele
     }
     
     func addStaticLine() {
-        if self.dataIndex < 4 {
-            return
-        }
+        
         let avg = self.getAverage(self.dataValues)
         let dev = self.getStandardDeviation(self.dataValues)
         self.grathView.rightAxis.removeAllLimitLines()
@@ -406,16 +406,30 @@ class PolyTestViewController: UIViewController, WCSessionDelegate, ChartViewDele
         return max
     }
     
-    func getFirstTenDataRange(num: [Double]) -> [String : Double] {
+    func getFirstTenDataRange(num: [Double]) -> [Double] {
         var temp = num
         while temp.count > 10 {
-            temp.removeFirst()
+            let delete = temp.count - 10
+            temp.removeFirst(delete)
         }
         let max = self.getMax(temp)
         let min = self.getMin(temp)
         let range = max - min + 10
         let target = ( max + min ) / 2
-        return ["Range" : range, "Target" : target]
+        return [range, target]
+    }
+    
+    func getFirstTenTimeRange(dates: [NSDate]) -> CGFloat {
+        if dates.count <= 10 {
+            return 50
+        }
+        var temp = dates
+        if temp.count > 10 {
+            let delete = temp.count - 10
+            temp.removeFirst(delete)
+        }
+        let range: CGFloat = 5 + CGFloat((temp.last!.timeIntervalSinceDate(temp[0])))
+        return range
     }
     
     func updateMaxMinValue(value: Double) {
@@ -562,7 +576,6 @@ class PolyTestViewController: UIViewController, WCSessionDelegate, ChartViewDele
     
     func closeAllAnimate() {
         //save last question time
-        self.questions[self.questions.count - 1].endTime = NSDate()
         self.stopAnimateSuggestion()
         self.stopAddIndexXTime()
         self.chartIndicator.stopAnimating()
@@ -702,9 +715,14 @@ class PolyTestViewController: UIViewController, WCSessionDelegate, ChartViewDele
     
     func finishRecording() {
         if self.audioRecorder != nil {
+            //updat end time of quest
+            self.questions[self.questions.count - 1].endTime = NSDate()
+            
             print("stop recording...")
             self.audioRecorder.stop()
             self.audioRecorder = nil
+            
+            
         }
     }
     
