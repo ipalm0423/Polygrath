@@ -16,7 +16,7 @@ class PolyTestViewController: UIViewController, WCSessionDelegate, ChartViewDele
     
     @IBOutlet weak var finishedButtonBTMConst: NSLayoutConstraint!
     
-    @IBOutlet weak var chartIndicator: UIActivityIndicatorView!
+    //@IBOutlet weak var chartIndicator: UIActivityIndicatorView!
     
     @IBOutlet weak var askButtonBottomConst: NSLayoutConstraint!
     
@@ -63,15 +63,15 @@ class PolyTestViewController: UIViewController, WCSessionDelegate, ChartViewDele
     var isAsking = false {
         didSet {
             if self.isAsking {
-                self.askButton.setTitle("Next", forState: UIControlState.Normal)
+                //self.askButton.setTitle("Next", forState: UIControlState.Normal)
                 self.askButton.backgroundColor = UIColor(red: 1, green: 0.1, blue: 243 / 255, alpha: 0.9)
                 self.tutorialLabel.text = "Press to start next question"
                 self.startAddXTime()
                 
             }else {
-                self.askButton.setTitle("Ask!", forState: UIControlState.Normal)
+                //self.askButton.setTitle("Ask!", forState: UIControlState.Normal)
                 self.askButton.backgroundColor = UIColor(red: 80 / 255, green: 1, blue: 0, alpha: 0.9)
-                self.tutorialLabel.text = "Press, when you ready to ask question)"
+                self.tutorialLabel.text = "Press when you ready to ask question"
                 
             }
         }
@@ -108,7 +108,7 @@ class PolyTestViewController: UIViewController, WCSessionDelegate, ChartViewDele
         //setup
         self.isAsking = false
         self.questionLabel.text = "Need some hints for question ?"
-        self.chartIndicator.startAnimating()
+        //self.chartIndicator.hidden = true
         self.setupRecorder()
         
         //layer
@@ -209,6 +209,10 @@ class PolyTestViewController: UIViewController, WCSessionDelegate, ChartViewDele
     
     func sendCMDStopWatch() {
         if self.session!.reachable {
+            // going to stop
+            self.closeAllAnimate()
+            self.finishRecording()
+            
             //send cmd to watch
             self.session?.sendMessage(["cmd" : "stop"], replyHandler: { (reply) -> Void in
                 if let response = reply["cmdResponse"] as? Bool {
@@ -222,13 +226,9 @@ class PolyTestViewController: UIViewController, WCSessionDelegate, ChartViewDele
                     print(error)
             })
             
-            //going to stop
-            if isAsking {
-                self.closeAllAnimate()
-                self.finishRecording()
-                //segue
-                self.performSegueWithIdentifier("ResultSegue", sender: self)
-            }
+            //segue
+            self.performSegueWithIdentifier("ResultSegue", sender: self)
+            
         }else {
             //unReachable, alert manually close
             self.alertStopMannualOnWatch()
@@ -244,28 +244,50 @@ class PolyTestViewController: UIViewController, WCSessionDelegate, ChartViewDele
         //setup grath
         self.grathView.delegate = self
         self.grathView.noDataText = ""
-        self.grathView.descriptionText = ""
         self.startTime = NSDate()
-        //self.chartDataSet.colors = [UIColor(red: 230/255, green: 125/255, blue: 34/255, alpha: 1.0)]
+        self.grathView.backgroundColor = UIColor.clearColor()
+        self.grathView.descriptionText = ""
+        self.grathView.descriptionTextColor = UIColor.grayColor()
+        self.grathView.descriptionFont = UIFont.systemFontOfSize(14, weight: UIFontWeightRegular)
         
         //axis
-        self.grathView.xAxis.labelPosition = .Bottom
+        
         self.grathView.getAxis(ChartYAxis.AxisDependency.Right).enabled = false
+        self.grathView.leftAxis.enabled = false
+        /*
         let yAxisLeft = self.grathView.getAxis(ChartYAxis.AxisDependency.Left)
-        yAxisLeft.spaceTop = 10
-        yAxisLeft.spaceBottom = 10
-        yAxisLeft.setLabelCount(3, force: true)
-        yAxisLeft.showOnlyMinMaxEnabled = true
+        yAxisLeft.spaceTop = 20
+        yAxisLeft.spaceBottom = 20
+        yAxisLeft.setLabelCount(2, force: true)
+        //yAxisLeft.showOnlyMinMaxEnabled = true
         yAxisLeft.drawGridLinesEnabled = false
+        //modify
+        yAxisLeft.drawAxisLineEnabled = false
+        yAxisLeft.labelTextColor = UIColor.grayColor()
+        yAxisLeft.labelFont = UIFont.systemFontOfSize(11, weight: UIFontWeightLight)
+        yAxisLeft.labelPosition = .OutsideChart
+        */
+        
         let xAxis = self.grathView.xAxis
         xAxis.drawGridLinesEnabled = false
         xAxis.avoidFirstLastClippingEnabled = true
         xAxis.drawLabelsEnabled = true
-        
+        //modify
+        xAxis.drawAxisLineEnabled = false
+        xAxis.labelTextColor = UIColor.grayColor()
+        xAxis.labelFont = UIFont.systemFontOfSize(11, weight: UIFontWeightLight)
+        xAxis.labelPosition = .Bottom
+        xAxis.spaceBetweenLabels = 30
         self.grathView.setVisibleXRangeMaximum(10)
-        self.grathView.rightAxis.drawLimitLinesBehindDataEnabled = true
+        self.grathView.leftAxis.drawLimitLinesBehindDataEnabled = true
         
-        
+        //legend
+        let legend = self.grathView.legend
+        legend.position = .LeftOfChartInside
+        legend.font = UIFont.systemFontOfSize(15, weight: UIFontWeightBold)
+        legend.textColor = UIColor.grayColor()
+        legend.form = .Circle
+        legend.xOffset = 30
         
         // test
         /*
@@ -281,12 +303,23 @@ class PolyTestViewController: UIViewController, WCSessionDelegate, ChartViewDele
         
         //setup first data
         let chartDataSet = LineChartDataSet(yVals: [ChartDataEntry()], label: "Heart Rate (BPM)")
-        chartDataSet.drawFilledEnabled = true
-        let data = LineChartData(xVals: ["0"], dataSet: chartDataSet)
+        
+        
+        let data = LineChartData(xVals: ["0:00"], dataSet: chartDataSet)
         print("setup new grath data: \(data)")
         self.grathView.data = data
         
-
+        //layout
+        chartDataSet.drawCircleHoleEnabled = false
+        chartDataSet.drawVerticalHighlightIndicatorEnabled = true
+        chartDataSet.drawValuesEnabled = false
+        chartDataSet.valueFont = UIFont.systemFontOfSize(9, weight: UIFontWeightLight)
+        chartDataSet.valueTextColor = UIColor.grayColor()
+        chartDataSet.lineWidth = 3
+        chartDataSet.circleRadius = 5
+        chartDataSet.drawCubicEnabled = true
+        chartDataSet.cubicIntensity = 0.1
+        chartDataSet.drawFilledEnabled = true
     }
     
     
@@ -308,19 +341,29 @@ class PolyTestViewController: UIViewController, WCSessionDelegate, ChartViewDele
             data.addEntry(entry, dataSetIndex: 0)
             self.grathView.notifyDataSetChanged()
             
-            //scope
-            let yRange = self.getFirstTenDataRange(self.dataValues)
-            let xRange = self.getFirstTenTimeRange(self.dataDates)
-            self.grathView.setVisibleYRangeMaximum(CGFloat(yRange[0]), axis: ChartYAxis.AxisDependency.Left)
-            self.grathView.setVisibleXRangeMaximum(xRange)
-            self.grathView.moveViewTo(xIndex: self.dataIndex, yValue: CGFloat(yRange[1]), axis: ChartYAxis.AxisDependency.Left)
-            
             //limit line
             if self.dataDates.count > 3 {
                 self.addStaticLine()
             }
+            
+            //scope
+            let yRange = self.getFirstTenDataRange(self.dataValues)
+            let xRange = self.getFirstTenTimeRange(self.dataDates)
+            let yAxis = self.grathView.leftAxis
+            yAxis.enabled = false
+            yAxis.startAtZeroEnabled = false
+            yAxis.customAxisMax = yRange[0]
+            yAxis.customAxisMin = yRange[1]
+    
+            //self.grathView.setVisibleYRangeMaximum(CGFloat(yRange[0]), axis: ChartYAxis.AxisDependency.Left)
+            data.dataSets[0].drawValuesEnabled = true
+            self.grathView.setVisibleXRangeMaximum(xRange)
+            self.grathView.moveViewToX(self.dataIndex)
             self.grathView.setScaleEnabled(true)
             self.grathView.setScaleMinima(1, scaleY: 1)
+            
+            
+            
             
             //animate
             self.animateHeart(value)
@@ -332,23 +375,30 @@ class PolyTestViewController: UIViewController, WCSessionDelegate, ChartViewDele
         
         let avg = self.getAverage(self.dataValues)
         let dev = self.getStandardDeviation(self.dataValues)
-        self.grathView.rightAxis.removeAllLimitLines()
+        self.grathView.leftAxis.removeAllLimitLines()
         self.addYLimitLine(avg, name: "Average")
         self.addYLimitLine(avg + dev, name: "Truth Limit")
     }
     
     func addYLimitLine(value: Double, name: String) {
         let limitLine = ChartLimitLine(limit: value, label: name)
-        limitLine.lineWidth = 1
-        self.grathView.rightAxis.addLimitLine(limitLine)
+        limitLine.lineWidth = 0.5
+        limitLine.lineDashPhase = 50
+        limitLine.lineDashLengths = [2]
+        limitLine.valueFont = UIFont.italicSystemFontOfSize(11)
+        limitLine.valueTextColor = UIColor.grayColor()
+        limitLine.lineColor = UIColor.grayColor()
+        self.grathView.leftAxis.addLimitLine(limitLine)
     }
     
     func addQuestionLimitLine(quest: question) {
         
         let Xindex: Double = quest.startTime.timeIntervalSinceDate(self.startTime)
-        let limitline = ChartLimitLine(limit: Xindex, label: "Q.\(quest.questIndex)")
-        
+        let limitline = ChartLimitLine(limit: Xindex, label: "Qestion.\(quest.questIndex)")
+        limitline.labelPosition = .RightBottom
         limitline.lineColor = ChartColorTemplates.joyful()[quest.questIndex % 5]
+        limitline.valueFont = UIFont.italicSystemFontOfSize(14)
+        limitline.valueTextColor = UIColor.grayColor()
         limitline.lineWidth = 5
         self.grathView.xAxis.addLimitLine(limitline)
         self.grathView.animate(xAxisDuration: 0.3, easingOption: ChartEasingOption.EaseInBounce)
@@ -412,11 +462,11 @@ class PolyTestViewController: UIViewController, WCSessionDelegate, ChartViewDele
             let delete = temp.count - 10
             temp.removeFirst(delete)
         }
-        let max = self.getMax(temp)
-        let min = self.getMin(temp)
-        let range = max - min + 10
-        let target = ( max + min ) / 2
-        return [range, target]
+        let max = self.getMax(temp) + 3
+        let min = self.getMin(temp) - 6
+        
+        
+        return [max, min]
     }
     
     func getFirstTenTimeRange(dates: [NSDate]) -> CGFloat {
@@ -476,9 +526,15 @@ class PolyTestViewController: UIViewController, WCSessionDelegate, ChartViewDele
             let diff = Int(NSDate().timeIntervalSinceDate(self.startTime)) - self.dataIndex
             for var i = 0; i < diff + 2; i++ {
                 self.dataIndex++
-                //let timeString = self.formatter.stringFromDate(dic.0)
-                //self.dataString.append(timeString)
-                data.addXValue(self.dataIndex.description)
+                //var timeString = self.formatter.stringFromDate(self.dataIndex)
+                var timeText = NSDateComponentsFormatter().stringFromTimeInterval(Double(self.dataIndex))!
+                if self.dataIndex < 10 {
+                    timeText = "0:0" + timeText
+                }else if self.dataIndex < 60 {
+                    timeText = "0:" + timeText
+                }
+                
+                data.addXValue(timeText)
             }
             self.grathView.notifyDataSetChanged()
             self.grathView.reloadInputViews()
@@ -578,7 +634,7 @@ class PolyTestViewController: UIViewController, WCSessionDelegate, ChartViewDele
         //save last question time
         self.stopAnimateSuggestion()
         self.stopAddIndexXTime()
-        self.chartIndicator.stopAnimating()
+        //self.chartIndicator.stopAnimating()
         self.snapHeart.layer.removeAllAnimations()
         self.snapHeart.removeFromSuperview()
         self.isAsking = false

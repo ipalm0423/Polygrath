@@ -171,32 +171,10 @@ Press 'Start Button' on both side</string>
                         <subviews>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="cHr-c8-kC3" userLabel="HeartGrath" customClass="LineChartView" customModule="Charts">
                                 <rect key="frame" x="10" y="124" width="580" height="240"/>
-                                <subviews>
-                                    <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" hidesWhenStopped="YES" animating="YES" style="gray" translatesAutoresizingMaskIntoConstraints="NO" id="eyq-tF-zU8">
-                                        <rect key="frame" x="30" y="10" width="40" height="40"/>
-                                        <animations/>
-                                        <constraints>
-                                            <constraint firstAttribute="width" constant="40" id="Wsk-cX-41F"/>
-                                            <constraint firstAttribute="height" constant="40" id="cMG-H9-fqY"/>
-                                        </constraints>
-                                    </activityIndicatorView>
-                                </subviews>
                                 <animations/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                <constraints>
-                                    <constraint firstItem="eyq-tF-zU8" firstAttribute="centerX" secondItem="cHr-c8-kC3" secondAttribute="centerX" id="3Fi-Lv-CKW"/>
-                                    <constraint firstItem="eyq-tF-zU8" firstAttribute="leading" secondItem="cHr-c8-kC3" secondAttribute="leading" constant="30" id="Pmu-Mq-GlT"/>
-                                    <constraint firstItem="eyq-tF-zU8" firstAttribute="centerY" secondItem="cHr-c8-kC3" secondAttribute="centerY" id="QLp-AD-die"/>
-                                    <constraint firstItem="eyq-tF-zU8" firstAttribute="top" secondItem="cHr-c8-kC3" secondAttribute="top" constant="10" id="aRl-WU-RLy"/>
-                                </constraints>
-                                <variation key="default">
-                                    <mask key="constraints">
-                                        <exclude reference="3Fi-Lv-CKW"/>
-                                        <exclude reference="QLp-AD-die"/>
-                                    </mask>
-                                </variation>
                             </view>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Zb7-H8-Sr4">
+                            <button opaque="NO" contentMode="scaleAspectFit" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Zb7-H8-Sr4">
                                 <rect key="frame" x="260" y="440" width="80" height="80"/>
                                 <animations/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -204,8 +182,7 @@ Press 'Start Button' on both side</string>
                                     <constraint firstAttribute="width" constant="80" id="A21-7V-bDp"/>
                                     <constraint firstAttribute="height" constant="80" id="eGg-yX-vCt"/>
                                 </constraints>
-                                <fontDescription key="fontDescription" type="system" pointSize="20"/>
-                                <state key="normal" title="Ask!"/>
+                                <state key="normal" image="mic-60-vec"/>
                                 <connections>
                                     <action selector="askButtonTouch:" destination="wYw-Wg-Y1Y" eventType="touchUpInside" id="MpK-bL-l0t"/>
                                 </connections>
@@ -229,9 +206,10 @@ Press 'Start Button' on both side</string>
                                 </connections>
                             </label>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="6Oc-Nt-5hb">
-                                <rect key="frame" x="379" y="550" width="201" height="30"/>
+                                <rect key="frame" x="540" y="542" width="40" height="38"/>
                                 <animations/>
-                                <state key="normal" title="I'm finished, check out result."/>
+                                <fontDescription key="fontDescription" type="system" pointSize="21"/>
+                                <state key="normal" title="Quit"/>
                                 <connections>
                                     <action selector="finishedButtonTouch:" destination="wYw-Wg-Y1Y" eventType="touchUpInside" id="mmU-hP-pQS"/>
                                 </connections>
@@ -239,7 +217,7 @@ Press 'Start Button' on both side</string>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="idU-jf-8JG">
                                 <rect key="frame" x="20" y="530" width="560" height="17"/>
                                 <animations/>
-                                <fontDescription key="fontDescription" type="system" weight="thin" pointSize="14"/>
+                                <fontDescription key="fontDescription" type="system" weight="light" pointSize="14"/>
                                 <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
@@ -270,7 +248,6 @@ Press 'Start Button' on both side</string>
                         <outlet property="QuestionLabelTopConst" destination="462-Yj-V9l" id="RN3-W9-jva"/>
                         <outlet property="askButton" destination="Zb7-H8-Sr4" id="Jss-fv-xgJ"/>
                         <outlet property="askButtonBottomConst" destination="X3Z-BG-otr" id="1iL-0T-3Me"/>
-                        <outlet property="chartIndicator" destination="eyq-tF-zU8" id="YLD-Q5-LBY"/>
                         <outlet property="finishedButton" destination="6Oc-Nt-5hb" id="m0M-C7-DT4"/>
                         <outlet property="finishedButtonBTMConst" destination="TqR-R1-Ygk" id="HGB-Ou-Zfh"/>
                         <outlet property="grathView" destination="cHr-c8-kC3" id="Sm7-YP-9cU"/>
@@ -749,6 +726,7 @@ Press 'Start Button' on both side</string>
         <image name="dot-30-vec" width="30" height="30"/>
         <image name="heart-80-vec" width="80" height="80"/>
         <image name="mic-30-vec" width="30" height="30"/>
+        <image name="mic-60-vec" width="60" height="60"/>
         <image name="percentage-30-vec" width="30" height="30"/>
         <image name="play-30-vec" width="30" height="30"/>
         <image name="warning-30-vec" width="30" height="30"/>
