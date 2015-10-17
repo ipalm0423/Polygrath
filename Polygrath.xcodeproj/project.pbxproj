@@ -10,6 +10,7 @@
 		5E4EC7BFE4A8EA17D7BC421C /* Pods_Polygrath.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = ECA21D86324B26463EF8D046 /* Pods_Polygrath.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
 		AC06ECF41BB68BCC0087586E /* ResultQuestTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = AC06ECF31BB68BCC0087586E /* ResultQuestTableViewCell.swift */; settings = {ASSET_TAGS = (); }; };
 		AC06ECF61BB692C90087586E /* TitleTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = AC06ECF51BB692C90087586E /* TitleTableViewCell.swift */; settings = {ASSET_TAGS = (); }; };
+		AC9105E91BCFA5A100817F40 /* VideoTestViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = AC9105E81BCFA5A100817F40 /* VideoTestViewController.swift */; settings = {ASSET_TAGS = (); }; };
 		ACB4E08A1BAAB6B60044EB72 /* PolyTestViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = ACB4E0891BAAB6B60044EB72 /* PolyTestViewController.swift */; settings = {ASSET_TAGS = (); }; };
 		ACBC3F6D1B9EC9D7007AC186 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = ACBC3F6C1B9EC9D7007AC186 /* AppDelegate.swift */; };
 		ACBC3F6F1B9EC9D7007AC186 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = ACBC3F6E1B9EC9D7007AC186 /* ViewController.swift */; };
@@ -95,6 +96,7 @@
 		631EC294364B209FAE69CA46 /* Pods-Polygrath.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Polygrath.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Polygrath/Pods-Polygrath.debug.xcconfig"; sourceTree = "<group>"; };
 		AC06ECF31BB68BCC0087586E /* ResultQuestTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ResultQuestTableViewCell.swift; sourceTree = "<group>"; };
 		AC06ECF51BB692C90087586E /* TitleTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TitleTableViewCell.swift; sourceTree = "<group>"; };
+		AC9105E81BCFA5A100817F40 /* VideoTestViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VideoTestViewController.swift; sourceTree = "<group>"; };
 		ACB4E0891BAAB6B60044EB72 /* PolyTestViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PolyTestViewController.swift; sourceTree = "<group>"; };
 		ACBC3F691B9EC9D7007AC186 /* Polygrath.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Polygrath.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		ACBC3F6C1B9EC9D7007AC186 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -217,6 +219,7 @@
 				ACDE3ADC1B9F378000917E97 /* Polygrath.entitlements */,
 				ACBC3F6C1B9EC9D7007AC186 /* AppDelegate.swift */,
 				ACBC3F6E1B9EC9D7007AC186 /* ViewController.swift */,
+				AC9105E81BCFA5A100817F40 /* VideoTestViewController.swift */,
 				ACDE08561BA7A1BD00D3ECB7 /* FrontHeartViewController.swift */,
 				ACB4E0891BAAB6B60044EB72 /* PolyTestViewController.swift */,
 				ACBC3F701B9EC9D7007AC186 /* Main.storyboard */,
@@ -548,6 +551,7 @@
 				ACB4E08A1BAAB6B60044EB72 /* PolyTestViewController.swift in Sources */,
 				ACC81A501BB4FB25006377F6 /* questions.swift in Sources */,
 				AC06ECF41BB68BCC0087586E /* ResultQuestTableViewCell.swift in Sources */,
+				AC9105E91BCFA5A100817F40 /* VideoTestViewController.swift in Sources */,
 				ACBC3F751B9EC9D7007AC186 /* Polygrath.xcdatamodeld in Sources */,
 				AC06ECF61BB692C90087586E /* TitleTableViewCell.swift in Sources */,
 				ACC81A4E1BB4E973006377F6 /* ResultViewController.swift in Sources */,

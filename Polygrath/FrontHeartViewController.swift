@@ -9,6 +9,7 @@
 import UIKit
 import Foundation
 import WatchConnectivity
+import AVFoundation
 
 class FrontHeartViewController: UIViewController,WCSessionDelegate {
 
@@ -52,8 +53,78 @@ class FrontHeartViewController: UIViewController,WCSessionDelegate {
         }
     }
     
+//alert
+    func alertAuthorizeCamera() {
+        let alert = UIAlertController(title: "Authorize", message: "We need to access camera", preferredStyle: UIAlertControllerStyle.Alert)
+        alert.addAction(UIAlertAction(title: "OK", style: UIAlertActionStyle.Default, handler: { (act) -> Void in
+            switch act.style {
+            case .Default:
+                print("alert for access health data", terminator: "")
+                self.authorizeCamera()
+                
+            case .Cancel:
+                print("cancel", terminator: "")
+                
+            case .Destructive:
+                print("destructive", terminator: "")
+            }
+        }))
+        self.presentViewController(alert, animated: true, completion: nil)
+    }
+    
+    func alertAuthorizeCameraFail() {
+        let alert = UIAlertController(title: "Fail", message: "We can't access camera", preferredStyle: UIAlertControllerStyle.Alert)
+        alert.addAction(UIAlertAction(title: "OK", style: UIAlertActionStyle.Default, handler: nil))
+        self.presentViewController(alert, animated: true, completion: nil)
+    }
     
     
+//camera
+    func checkCameraAuthorize() -> Bool {
+        if AVCaptureDevice.authorizationStatusForMediaType(AVMediaTypeVideo) == AVAuthorizationStatus.Authorized {
+            return true
+        }else {
+            return false
+        }
+    }
+    
+    func authorizeCamera() {
+        if AVCaptureDevice.authorizationStatusForMediaType(AVMediaTypeVideo) ==  AVAuthorizationStatus.Authorized {
+            // Already Authorized
+            print("user already authorize camera access")
+            //setup
+            /*
+            let availableCameraDevices = AVCaptureDevice.devicesWithMediaType(AVMediaTypeVideo)
+            for device in availableCameraDevices as! [AVCaptureDevice] {
+                if device.position == .Back {
+                    backCameraDevice = device
+                }
+                else if device.position == .Front {
+                    frontCameraDevice = device
+                }
+            }*/
+            //perform segue
+            self.performSegueWithIdentifier("VideoSegue", sender: self)
+        }
+        else {
+            print("user haven't authorize camera access")
+            //request
+            AVCaptureDevice.requestAccessForMediaType(AVMediaTypeVideo, completionHandler: { (granted :Bool) -> Void in if granted == true {
+                    // User granted
+                print("user authorize camera access")
+                self.performSegueWithIdentifier("VideoSegue", sender: self)
+                
+                }
+                else {
+                    // User Rejected
+                print("user not allow camera authorize")
+                self.alertAuthorizeCameraFail()
+                return
+                }
+            });
+        }
+        
+    }
 
     
     
@@ -83,6 +154,19 @@ class FrontHeartViewController: UIViewController,WCSessionDelegate {
     }
     
     
+    @IBAction func StartVideoTestButton(sender: AnyObject) {
+        print("startVideoButton touch")
+        if self.checkCameraAuthorize() {
+            self.performSegueWithIdentifier("VideoSegue", sender: self)
+        }else {
+            self.alertAuthorizeCamera()
+        }
+        
+    }
+    
+    
+    
+    
     /*
     // MARK: - Navigation
 
@@ -95,49 +179,5 @@ class FrontHeartViewController: UIViewController,WCSessionDelegate {
 
 }
 
-extension UIView {
-    /**
-    Set x Position
-    
-    - parameter x: CGFloat
-    by DaRk-_-D0G
-    */
-    func setX(x:CGFloat) {
-        var frame:CGRect = self.frame
-        frame.origin.x = x
-        self.frame = frame
-    }
-    /**
-    Set y Position
-    
-    - parameter y: CGFloat
-    by DaRk-_-D0G
-    */
-    func setY(y:CGFloat) {
-        var frame:CGRect = self.frame
-        frame.origin.y = y
-        self.frame = frame
-    }
-    /**
-    Set Width
-    
-    - parameter width: CGFloat
-    by DaRk-_-D0G
-    */
-    func setWidth(width:CGFloat) {
-        var frame:CGRect = self.frame
-        frame.size.width = width
-        self.frame = frame
-    }
-    /**
-    Set Height
-    
-    - parameter height: CGFloat
-    by DaRk-_-D0G
-    */
-    func setHeight(height:CGFloat) {
-        var frame:CGRect = self.frame
-        frame.size.height = height
-        self.frame = frame
-    }
-}
+
+
