@@ -10,6 +10,7 @@ import UIKit
 import Foundation
 import WatchConnectivity
 import AVFoundation
+import Photos
 
 class FrontHeartViewController: UIViewController,WCSessionDelegate {
 
@@ -61,7 +62,8 @@ class FrontHeartViewController: UIViewController,WCSessionDelegate {
             case .Default:
                 print("alert for access health data", terminator: "")
                 self.authorizeCamera()
-                
+                self.authorizeAudio()
+                self.authorizeCameraRoll()
             case .Cancel:
                 print("cancel", terminator: "")
                 
@@ -73,22 +75,15 @@ class FrontHeartViewController: UIViewController,WCSessionDelegate {
     }
     
     func alertAuthorizeCameraFail() {
-        let alert = UIAlertController(title: "Fail", message: "We can't access camera", preferredStyle: UIAlertControllerStyle.Alert)
+        let alert = UIAlertController(title: "Warning", message: "We need to access your camera and camera roll", preferredStyle: UIAlertControllerStyle.Alert)
         alert.addAction(UIAlertAction(title: "OK", style: UIAlertActionStyle.Default, handler: nil))
         self.presentViewController(alert, animated: true, completion: nil)
     }
     
     
 //camera
-    func checkCameraAuthorize() -> Bool {
-        if AVCaptureDevice.authorizationStatusForMediaType(AVMediaTypeVideo) == AVAuthorizationStatus.Authorized {
-            return true
-        }else {
-            return false
-        }
-    }
     
-    func authorizeCamera() {
+    func authorizeCamera() -> Bool {
         if AVCaptureDevice.authorizationStatusForMediaType(AVMediaTypeVideo) ==  AVAuthorizationStatus.Authorized {
             // Already Authorized
             print("user already authorize camera access")
@@ -103,30 +98,72 @@ class FrontHeartViewController: UIViewController,WCSessionDelegate {
                     frontCameraDevice = device
                 }
             }*/
-            //perform segue
-            self.performSegueWithIdentifier("VideoSegue", sender: self)
-        }
-        else {
+            
+            return true
+        }else {
             print("user haven't authorize camera access")
             //request
-            AVCaptureDevice.requestAccessForMediaType(AVMediaTypeVideo, completionHandler: { (granted :Bool) -> Void in if granted == true {
-                    // User granted
-                print("user authorize camera access")
-                self.performSegueWithIdentifier("VideoSegue", sender: self)
-                
+            AVCaptureDevice.requestAccessForMediaType(AVMediaTypeVideo, completionHandler: { (bool) -> Void in
+                if bool {
+                    print("user authorize camera access")
+                    return
+                    
+                }else {
+                    print("user not allow camera authorize")
+                    self.alertAuthorizeCameraFail()
+                    return
+                    
                 }
-                else {
-                    // User Rejected
-                print("user not allow camera authorize")
-                self.alertAuthorizeCameraFail()
-                return
-                }
-            });
+            })
+            return false
         }
-        
+    }
+    
+    func authorizeAudio() -> Bool {
+        if AVCaptureDevice.authorizationStatusForMediaType(AVMediaTypeAudio) == AVAuthorizationStatus.Authorized {
+            print("user already authorize audio access")
+            
+            return true
+        }else {
+            print("user haven't authorize audio access")
+            //request
+            AVCaptureDevice.requestAccessForMediaType(AVMediaTypeAudio, completionHandler: { (bool) -> Void in
+                if bool {
+                    //authorized
+                    return
+                    
+                }else {
+                    //user rejected
+                    print("user not allow audio authorize")
+                    self.alertAuthorizeCameraFail()
+                    return
+                    
+                }
+            })
+            return false
+        }
     }
 
-    
+    func authorizeCameraRoll() -> Bool {
+        if PHPhotoLibrary.authorizationStatus() == PHAuthorizationStatus.Authorized {
+            print("user already authorize camera roll access")
+            return true
+        }else {
+            print("user haven't authorize camera roll access")
+            PHPhotoLibrary.requestAuthorization({ (status) -> Void in
+                
+                if status == PHAuthorizationStatus.Authorized {
+                    print("user allow camera roll access")
+                    return
+                }else {
+                    print("user didn't allow camera roll access")
+                    self.alertAuthorizeCameraFail()
+                    return
+                }
+            })
+        }
+        return false
+    }
     
     @IBAction func startButtonTouch(sender: AnyObject) {
         /*
@@ -156,7 +193,7 @@ class FrontHeartViewController: UIViewController,WCSessionDelegate {
     
     @IBAction func StartVideoTestButton(sender: AnyObject) {
         print("startVideoButton touch")
-        if self.checkCameraAuthorize() {
+        if self.authorizeCamera() && self.authorizeAudio() && self.authorizeCameraRoll() {
             self.performSegueWithIdentifier("VideoSegue", sender: self)
         }else {
             self.alertAuthorizeCamera()
@@ -164,7 +201,11 @@ class FrontHeartViewController: UIViewController,WCSessionDelegate {
         
     }
     
-    
+    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+        if segue.identifier == "VideoSegue" {
+            Singleton.sharedInstance.createAlbum()
+        }
+    }
     
     
     /*

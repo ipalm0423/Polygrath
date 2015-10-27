@@ -734,7 +734,7 @@ class PolyTestViewController: UIViewController, WCSessionDelegate, ChartViewDele
         let dirPath = NSSearchPathForDirectoriesInDomains(.DocumentDirectory,.UserDomainMask,true)[0] as String
         
         //Name the file with date/time to be unique
-        let currentDateTime=NSDate();
+        let currentDateTime = NSDate();
         let formatter = NSDateFormatter();
         formatter.dateFormat = "ddMMyyyy-HHmmss";
         let recordingName = formatter.stringFromDate(currentDateTime)+".m4a"
