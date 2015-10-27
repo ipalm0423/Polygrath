@@ -191,6 +191,7 @@ Press 'Start Button' on both side</string>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="NfC-fF-U3p">
                                         <rect key="frame" x="244" y="451" width="113" height="60"/>
                                         <animations/>
+                                        <color key="backgroundColor" red="0.0" green="1" blue="0.50196081400000003" alpha="1" colorSpace="calibratedRGB"/>
                                         <state key="normal" title="record" image="mic-60-vec">
                                             <color key="titleColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                         </state>
@@ -200,7 +201,7 @@ Press 'Start Button' on both side</string>
                                     </button>
                                 </subviews>
                                 <animations/>
-                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <color key="backgroundColor" red="0.50196081400000003" green="0.50196081400000003" blue="0.50196081400000003" alpha="1" colorSpace="calibratedRGB"/>
                                 <constraints>
                                     <constraint firstItem="NfC-fF-U3p" firstAttribute="centerX" secondItem="c0H-py-Oj7" secondAttribute="centerX" id="9fn-bA-lM0"/>
                                     <constraint firstAttribute="bottom" secondItem="NfC-fF-U3p" secondAttribute="bottom" constant="25" id="tWq-aI-c8E"/>

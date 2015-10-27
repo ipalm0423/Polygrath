@@ -40,6 +40,9 @@ class VideoTestViewController: UIViewController, AVCaptureVideoDataOutputSampleB
         return CIContext(EAGLContext: eaglContext, options: options)
         }()
     */
+    
+//audio
+    var avAssetWriterAudioInput: AVAssetWriterInput!
 
     
 //queue
@@ -171,8 +174,11 @@ class VideoTestViewController: UIViewController, AVCaptureVideoDataOutputSampleB
             
             //preview camera
             let previewLayer = AVCaptureVideoPreviewLayer(session: self.captureSession)
-            previewLayer.frame = self.view.layer.frame
-            self.view.layer.addSublayer(previewLayer)
+            previewLayer.frame = self.view.bounds
+            previewLayer.videoGravity = AVLayerVideoGravityResizeAspectFill
+            self.cameraView.layer.addSublayer(previewLayer)
+            self.cameraView.addSubview(self.recordButton)
+            
             self.captureSession.startRunning()
             
         }catch {
@@ -297,7 +303,7 @@ class VideoTestViewController: UIViewController, AVCaptureVideoDataOutputSampleB
             self.currentVideoDimensions = CMVideoFormatDescriptionGetDimensions(format)
             self.currentSampleTime = CMSampleBufferGetOutputPresentationTimeStamp(sampleBuffer)
             
-            let image = self.captureImage(sampleBuffer)
+            //let image = self.captureImage(sampleBuffer)
             
             //fine tune video
             
@@ -323,10 +329,11 @@ class VideoTestViewController: UIViewController, AVCaptureVideoDataOutputSampleB
             
         }else if connection == self.audioCaptureConnection {
             //audio
-            if self.avAssetWriterPixelBufferInput?.assetWriterInput.readyForMoreMediaData == true {
-                
+            if self.isRecord {
+                if self.avAssetWriterAudioInput?.readyForMoreMediaData == true {
+                    self.avAssetWriterAudioInput.appendSampleBuffer(sampleBuffer)
+                }
             }
-            
         }
     }
     
@@ -356,19 +363,23 @@ class VideoTestViewController: UIViewController, AVCaptureVideoDataOutputSampleB
             self.avAssetWriterPixelBufferInput = AVAssetWriterInputPixelBufferAdaptor(assetWriterInput: assetWriterVideoInput, sourcePixelBufferAttributes: sourcePixelBufferAttributesDictionary)
             
             //audio
-            let audioSettings: [String: AnyObject]? = nil
+            let audioSettings: [String: AnyObject] = [
+                AVFormatIDKey: NSNumber(unsignedInt: kAudioFormatMPEG4AAC),
+                AVNumberOfChannelsKey: 1,
+                AVSampleRateKey: 44100.0,
+                AVEncoderBitRateKey: 64000
+            ]
+            self.avAssetWriterAudioInput = AVAssetWriterInput(mediaType: AVMediaTypeAudio, outputSettings: audioSettings)
+            self.avAssetWriterAudioInput.expectsMediaDataInRealTime = true
             
-            let assetWriterAudioInput = AVAssetWriterInput(mediaType: AVMediaTypeAudio, outputSettings: audioSettings)
-            assetWriterAudioInput.expectsMediaDataInRealTime = true
             
             
             
-            
-            if self.avAssetWriter!.canAddInput(assetWriterVideoInput) && self.avAssetWriter!.canAddInput(assetWriterAudioInput) {
+            if self.avAssetWriter!.canAddInput(assetWriterVideoInput) && self.avAssetWriter!.canAddInput(self.avAssetWriterAudioInput) {
                 self.avAssetWriter!.addInput(assetWriterVideoInput)
-                self.avAssetWriter!.addInput(assetWriterAudioInput)
+                self.avAssetWriter!.addInput(self.avAssetWriterAudioInput)
             } else {
-                print("不能添加视频writer的input \(assetWriterVideoInput), \(assetWriterAudioInput)")
+                print("不能添加视频writer的input \(assetWriterVideoInput), \(self.avAssetWriterAudioInput)")
             }
             
             

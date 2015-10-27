@@ -40,48 +40,55 @@ class Singleton: NSObject {
         //Get the place to store the recorded file in the app's memory
         let dirPath = NSSearchPathForDirectoriesInDomains(.DocumentDirectory,.UserDomainMask,true)[0] as NSString
         dirPath.stringByAppendingPathComponent("temp")
-        let pathString = String(dirPath)
-        
-        //create temp folder
-        let fileManager = NSFileManager.defaultManager()
-        if !fileManager.fileExistsAtPath(pathString) {
-            //create folder temp
-            do {
-                print("create temp fold for save video")
-                try fileManager.createDirectoryAtPath(pathString, withIntermediateDirectories: false, attributes: nil)
-            }catch {
-                print(error)
-            }
-            
-        }
-        
-        //Name the file with date/time to be unique
+        //add time component
         let currentDateTime = NSDate();
         let formatter = NSDateFormatter();
         formatter.dateFormat = "ddMMyyyy-HHmmss";
-        let recordingName = formatter.stringFromDate(currentDateTime)+".mov"
-        let pathArray: [String] = [pathString, recordingName]
+        let recordingVideoName = formatter.stringFromDate(currentDateTime)+".mov"
+        //let recordingAudioName = formatter.stringFromDate(currentDateTime) + ".m4a"
+        //path
+        let pathVideo = dirPath.stringByAppendingPathComponent(recordingVideoName)
+        //let pathAudio = dirPath.stringByAppendingPathComponent(recordingAudioName)
+       
         
-        print("create url: \(recordingName)")
+        //Name the file with date/time to be unique
+        //create temp folder
+        let fileManager = NSFileManager.defaultManager()
+        if fileManager.fileExistsAtPath(String(dirPath)) {
+            //exist old folder, check duplicate file
+            self.removeFileFromURL(NSURL.fileURLWithPath(pathVideo))
+            //self.removeFileFromURL(NSURL.fileURLWithPath(pathAudio))
+            
+        }else {
+            //create folder temp
+            do {
+                print("create temp fold for save video")
+                try fileManager.createDirectoryAtPath(String(dirPath), withIntermediateDirectories: false, attributes: nil)
+            }catch {
+                print(error)
+            }
+        }
+        print("create url: \(recordingVideoName)")
         
-        return NSURL.fileURLWithPathComponents(pathArray)!
+        return NSURL.fileURLWithPath(pathVideo)
     }
-    
     
     
     func removeAllVideoTemp() {
         let dirPath = NSSearchPathForDirectoriesInDomains(.DocumentDirectory,.UserDomainMask,true)[0] as String
         let url = NSURL.fileURLWithPathComponents([dirPath, "temp"])!
-        self.removeVideoFromURL(url)
+        self.removeFileFromURL(url)
         print("delete all temp video")
     }
     
-    func removeVideoFromURL(url: NSURL) {
+    func removeFileFromURL(url: NSURL) {
         let filemanager = NSFileManager.defaultManager()
-        do {
-            try filemanager.removeItemAtURL(url)
-        }catch {
-            print("delete video file")
+        if filemanager.fileExistsAtPath(url.path!) {
+            do {
+                try filemanager.removeItemAtURL(url)
+            }catch {
+                print("error with delete file")
+            }
         }
     }
     
