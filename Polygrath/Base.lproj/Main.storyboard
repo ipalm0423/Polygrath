@@ -199,11 +199,21 @@ Press 'Start Button' on both side</string>
                                             <action selector="recordButtonTouch:" destination="vg2-cG-mDi" eventType="touchUpInside" id="ldd-O7-Iol"/>
                                         </connections>
                                     </button>
+                                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="heart-80-vec" translatesAutoresizingMaskIntoConstraints="NO" id="TgH-H4-C02">
+                                        <rect key="frame" x="260" y="228" width="80" height="80"/>
+                                        <animations/>
+                                        <constraints>
+                                            <constraint firstAttribute="width" constant="80" id="KwS-Yv-sph"/>
+                                            <constraint firstAttribute="height" constant="80" id="l3H-fa-EWy"/>
+                                        </constraints>
+                                    </imageView>
                                 </subviews>
                                 <animations/>
                                 <color key="backgroundColor" red="0.50196081400000003" green="0.50196081400000003" blue="0.50196081400000003" alpha="1" colorSpace="calibratedRGB"/>
                                 <constraints>
                                     <constraint firstItem="NfC-fF-U3p" firstAttribute="centerX" secondItem="c0H-py-Oj7" secondAttribute="centerX" id="9fn-bA-lM0"/>
+                                    <constraint firstItem="TgH-H4-C02" firstAttribute="centerY" secondItem="c0H-py-Oj7" secondAttribute="centerY" id="R3m-rA-K7m"/>
+                                    <constraint firstItem="TgH-H4-C02" firstAttribute="centerX" secondItem="c0H-py-Oj7" secondAttribute="centerX" id="q3x-du-duM"/>
                                     <constraint firstAttribute="bottom" secondItem="NfC-fF-U3p" secondAttribute="bottom" constant="25" id="tWq-aI-c8E"/>
                                 </constraints>
                             </view>
@@ -219,6 +229,7 @@ Press 'Start Button' on both side</string>
                     </view>
                     <connections>
                         <outlet property="cameraView" destination="c0H-py-Oj7" id="87F-Qx-j00"/>
+                        <outlet property="heartImage" destination="TgH-H4-C02" id="HfD-c1-h7f"/>
                         <outlet property="recordButton" destination="NfC-fF-U3p" id="oHY-Dr-Vzj"/>
                     </connections>
                 </viewController>

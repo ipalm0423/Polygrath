@@ -163,4 +163,35 @@ class Singleton: NSObject {
     }
     
     
+//CALayer func
+    func createTextCALayer(text: String, uiFont: UIFont, color: UIColor, width: CGFloat, x: CGFloat, y: CGFloat) -> CALayer {
+        
+        //create
+        let subtitle = CATextLayer()
+        subtitle.frame  = CGRectMake(x, y, width, uiFont.pointSize)
+        subtitle.contentsScale = UIScreen.mainScreen().scale
+        
+        //attribute
+        subtitle.wrapped = true
+        subtitle.string = text
+        subtitle.alignmentMode = kCAAlignmentCenter
+        subtitle.foregroundColor = color.CGColor
+        //font
+        let fontName: CFStringRef = uiFont.fontName as CFStringRef
+        let fontRef: CGFontRef = CGFontCreateWithFontName(fontName)!
+        subtitle.font = fontRef
+        subtitle.fontSize = uiFont.pointSize
+        
+        return subtitle
+    }
+    
+    func createUIImageCALayer(image: UIImage, width: CGFloat, height: CGFloat, x: CGFloat, y: CGFloat) -> CALayer {
+        let newLayer = CALayer()
+        newLayer.contents = image.CGImage
+        newLayer.frame = CGRectMake(x, y, width, height)
+        newLayer.masksToBounds = true
+        
+        return newLayer
+    }
+    
 }

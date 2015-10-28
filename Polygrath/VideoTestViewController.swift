@@ -32,6 +32,19 @@ class VideoTestViewController: UIViewController, AVCaptureVideoDataOutputSampleB
     var currentSampleTime: CMTime?
     var currentVideoDimensions: CMVideoDimensions?
     var tempURL: NSURL!
+    
+//extra pattern
+    
+    lazy var context: CIContext = {
+        let eaglContext = EAGLContext(API: EAGLRenderingAPI.OpenGLES2)
+        let options = [kCIContextWorkingColorSpace : NSNull()]
+        return CIContext(EAGLContext: eaglContext, options: options)
+        }()
+    
+//image
+    @IBOutlet weak var heartImage: UIImageView!
+    
+    
     /*
     var stillImage: CIImage!
     lazy var context: CIContext = {
@@ -178,6 +191,7 @@ class VideoTestViewController: UIViewController, AVCaptureVideoDataOutputSampleB
             previewLayer.videoGravity = AVLayerVideoGravityResizeAspectFill
             self.cameraView.layer.addSublayer(previewLayer)
             self.cameraView.addSubview(self.recordButton)
+            self.cameraView.addSubview(self.heartImage)
             
             self.captureSession.startRunning()
             
@@ -303,27 +317,37 @@ class VideoTestViewController: UIViewController, AVCaptureVideoDataOutputSampleB
             self.currentVideoDimensions = CMVideoFormatDescriptionGetDimensions(format)
             self.currentSampleTime = CMSampleBufferGetOutputPresentationTimeStamp(sampleBuffer)
             
-            //let image = self.captureImage(sampleBuffer)
+            //original image
+            var tempCIImage: CIImage = CIImage(CVPixelBuffer: CMSampleBufferGetImageBuffer(sampleBuffer)!)
             
-            //fine tune video
-            
-            
-            
-            //preview video
-            /*
+            //add-on image
+            tempCIImage = self.addOnCIImage(tempCIImage, addOn: self.heartImage.image!)
+    
+            //change content preview layer
             dispatch_sync(dispatch_get_main_queue(), {
-                self.previewLayer.contents = image
-                let textLayer = CALayer(layer: self.createTextCALayer("hello world"))
-                textLayer.frame = CGRectMake(0, 0, self.view.frame.width, 50)
-                self.previewLayer.addSublayer(textLayer)
-            })*/
+                //change to CGImage
+                self.previewLayer.contents = self.context.createCGImage(tempCIImage, fromRect: tempCIImage.extent)
+            })
             
             //record video
             if self.isRecord {
                 
                 if self.avAssetWriterPixelBufferInput?.assetWriterInput.readyForMoreMediaData == true {
-                    //oringinal
-                    self.avAssetWriterPixelBufferInput?.assetWriterInput.appendSampleBuffer(sampleBuffer)
+                    //<oringinal type>
+                    //self.avAssetWriterPixelBufferInput?.assetWriterInput.appendSampleBuffer(sampleBuffer)
+                    
+                    //<modify type>
+                    //change CIImage to buffer for saving
+                    var newPixelBuffer: CVPixelBuffer? = nil
+                    CVPixelBufferPoolCreatePixelBuffer(nil, self.avAssetWriterPixelBufferInput!.pixelBufferPool!, &(newPixelBuffer))
+                    self.context.render(tempCIImage, toCVPixelBuffer: newPixelBuffer!, bounds: tempCIImage.extent, colorSpace: nil)
+                    
+                    if let success = self.avAssetWriterPixelBufferInput?.appendPixelBuffer(newPixelBuffer!, withPresentationTime: self.currentSampleTime!) {
+                        if !success {
+                            //fail to append buff
+                            print("fail to append buffer with modify")
+                        }
+                    }
                 }
             }
             
@@ -406,54 +430,21 @@ class VideoTestViewController: UIViewController, AVCaptureVideoDataOutputSampleB
         })
     }
     
-//CALayer
-    func createTextCALayer(text: String) -> CALayer {
-        let subtitle = CATextLayer()
-        subtitle.font = UIFont.boldSystemFontOfSize(30)
-        subtitle.frame  = CGRectMake(0, 0, self.view.frame.width, 50)
-        subtitle.string = text
-        subtitle.alignmentMode = kCAAlignmentCenter
-        subtitle.foregroundColor = UIColor.redColor().CGColor
+
+//image add-on
+    func addOnCIImage(backgroundImage: CIImage, addOn: UIImage) -> CIImage {
         
-        return subtitle
+        let addOnImage = CIImage(image: addOn)!
+        print("uiimage frame: \(self.heartImage.frame)")
+        print("uiimage bounds: \(self.heartImage.bounds)")
+        print("CIImage: \(addOnImage.extent)")
+        
+        let resultImage = addOnImage.imageByCompositingOverImage(backgroundImage)
+        
+        return resultImage
     }
     
-    func createUIImageCALayer(image: UIImage) -> CALayer {
-        let newLayer = CALayer()
-        newLayer.contents = image
-        newLayer.frame = CGRectMake(0, 0, 100, 100)
-        newLayer.masksToBounds = true
-        
-        return newLayer
-    }
-    
-    
-    
-//File
-    
-    /*
-    func saveVideoToCameraRoll(url: NSURL) {
-        
-        if PHPhotoLibrary.authorizationStatus() == PHAuthorizationStatus.Authorized {
-            print("save video to camera roll")
-            PHPhotoLibrary.sharedPhotoLibrary().performChanges({ () -> Void in
-                let option: PHAssetResourceCreationOptions = PHAssetResourceCreationOptions()
-                option.shouldMoveFile = true
-                let changeRequest = PHAssetCreationRequest.creationRequestForAsset()
-                changeRequest.addResourceWithType(PHAssetResourceType.Video, fileURL: url, options: option)
-                
-                }, completionHandler: { (result, error) -> Void in
-                    if !result {
-                        print("can't save video")
-                        print(error)
-                        self.alertError("Can't save video.")
-                    }
-            })
-        }else {
-            //user not allow access camera roll
-            self.alertError("We can't access camera roll")
-        }
-    }*/
+
     
     
     
