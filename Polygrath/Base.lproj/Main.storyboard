@@ -185,51 +185,26 @@ Press 'Start Button' on both side</string>
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="c0H-py-Oj7">
-                                <rect key="frame" x="0.0" y="64" width="600" height="536"/>
-                                <subviews>
-                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="NfC-fF-U3p">
-                                        <rect key="frame" x="244" y="451" width="113" height="60"/>
-                                        <animations/>
-                                        <color key="backgroundColor" red="0.0" green="1" blue="0.50196081400000003" alpha="1" colorSpace="calibratedRGB"/>
-                                        <state key="normal" title="record" image="mic-60-vec">
-                                            <color key="titleColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
-                                        </state>
-                                        <connections>
-                                            <action selector="recordButtonTouch:" destination="vg2-cG-mDi" eventType="touchUpInside" id="ldd-O7-Iol"/>
-                                        </connections>
-                                    </button>
-                                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="heart-80-vec" translatesAutoresizingMaskIntoConstraints="NO" id="TgH-H4-C02">
-                                        <rect key="frame" x="260" y="228" width="80" height="80"/>
-                                        <animations/>
-                                        <constraints>
-                                            <constraint firstAttribute="width" constant="80" id="KwS-Yv-sph"/>
-                                            <constraint firstAttribute="height" constant="80" id="l3H-fa-EWy"/>
-                                        </constraints>
-                                    </imageView>
-                                </subviews>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="NfC-fF-U3p">
+                                <rect key="frame" x="243" y="510" width="113" height="60"/>
                                 <animations/>
-                                <color key="backgroundColor" red="0.50196081400000003" green="0.50196081400000003" blue="0.50196081400000003" alpha="1" colorSpace="calibratedRGB"/>
-                                <constraints>
-                                    <constraint firstItem="NfC-fF-U3p" firstAttribute="centerX" secondItem="c0H-py-Oj7" secondAttribute="centerX" id="9fn-bA-lM0"/>
-                                    <constraint firstItem="TgH-H4-C02" firstAttribute="centerY" secondItem="c0H-py-Oj7" secondAttribute="centerY" id="R3m-rA-K7m"/>
-                                    <constraint firstItem="TgH-H4-C02" firstAttribute="centerX" secondItem="c0H-py-Oj7" secondAttribute="centerX" id="q3x-du-duM"/>
-                                    <constraint firstAttribute="bottom" secondItem="NfC-fF-U3p" secondAttribute="bottom" constant="25" id="tWq-aI-c8E"/>
-                                </constraints>
-                            </view>
+                                <color key="backgroundColor" red="0.0" green="1" blue="0.50196081400000003" alpha="1" colorSpace="calibratedRGB"/>
+                                <state key="normal" title="record" image="mic-60-vec">
+                                    <color key="titleColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                </state>
+                                <connections>
+                                    <action selector="recordButtonTouch:" destination="vg2-cG-mDi" eventType="touchUpInside" id="ldd-O7-Iol"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <animations/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
-                            <constraint firstItem="c0H-py-Oj7" firstAttribute="top" secondItem="BBY-Uy-Eiu" secondAttribute="bottom" id="1b9-V5-mBh"/>
-                            <constraint firstAttribute="trailing" secondItem="c0H-py-Oj7" secondAttribute="trailing" id="QGP-Hg-3QW"/>
-                            <constraint firstItem="Eia-G7-nO3" firstAttribute="top" secondItem="c0H-py-Oj7" secondAttribute="bottom" id="jis-HX-ewk"/>
-                            <constraint firstItem="c0H-py-Oj7" firstAttribute="leading" secondItem="Ok9-FT-77G" secondAttribute="leading" id="neS-Vw-DtS"/>
+                            <constraint firstItem="Eia-G7-nO3" firstAttribute="top" secondItem="NfC-fF-U3p" secondAttribute="bottom" constant="30" id="EXw-HD-RLu"/>
+                            <constraint firstItem="NfC-fF-U3p" firstAttribute="centerX" secondItem="Ok9-FT-77G" secondAttribute="centerX" id="ae4-Cs-tEC"/>
                         </constraints>
                     </view>
                     <connections>
-                        <outlet property="cameraView" destination="c0H-py-Oj7" id="87F-Qx-j00"/>
-                        <outlet property="heartImage" destination="TgH-H4-C02" id="HfD-c1-h7f"/>
                         <outlet property="recordButton" destination="NfC-fF-U3p" id="oHY-Dr-Vzj"/>
                     </connections>
                 </viewController>

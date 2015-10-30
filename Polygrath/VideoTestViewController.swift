@@ -19,7 +19,7 @@ class VideoTestViewController: UIViewController, AVCaptureVideoDataOutputSampleB
     
     
 //camera
-    @IBOutlet weak var cameraView: UIView!
+    
     var backCameraDevice: AVCaptureDevice!
     var frontCameraDevice: AVCaptureDevice!
     var captureSession: AVCaptureSession!
@@ -42,7 +42,7 @@ class VideoTestViewController: UIViewController, AVCaptureVideoDataOutputSampleB
         }()
     
 //image
-    @IBOutlet weak var heartImage: UIImageView!
+    
     
     
     /*
@@ -186,12 +186,14 @@ class VideoTestViewController: UIViewController, AVCaptureVideoDataOutputSampleB
             captureSession.commitConfiguration()
             
             //preview camera
-            let previewLayer = AVCaptureVideoPreviewLayer(session: self.captureSession)
-            previewLayer.frame = self.view.bounds
-            previewLayer.videoGravity = AVLayerVideoGravityResizeAspectFill
-            self.cameraView.layer.addSublayer(previewLayer)
-            self.cameraView.addSubview(self.recordButton)
-            self.cameraView.addSubview(self.heartImage)
+            previewLayer.anchorPoint = CGPointZero
+            previewLayer.bounds = view.bounds
+            previewLayer.contentsGravity = kCAGravityResizeAspectFill
+            self.view.layer.addSublayer(previewLayer)
+            self.view.clipsToBounds = true
+            
+            //button
+            self.view.bringSubviewToFront(self.recordButton)
             
             self.captureSession.startRunning()
             
@@ -219,6 +221,7 @@ class VideoTestViewController: UIViewController, AVCaptureVideoDataOutputSampleB
         self.captureSession = nil
         self.frontCameraDevice = nil
         self.backCameraDevice = nil
+        self.previewLayer.removeFromSuperlayer()
     }
     
     func takeStillPicture(){
@@ -273,6 +276,24 @@ class VideoTestViewController: UIViewController, AVCaptureVideoDataOutputSampleB
         
     }
     
+    func rotateCGImageByDeviceOrientation(inputImage: CIImage, biasDegree: Double) -> CIImage {
+        //depends on device rotate
+        let orientation = UIDevice.currentDevice().orientation
+        let biasRadian = biasDegree * M_PI / 180.0
+        var t: CGAffineTransform!
+        if orientation == UIDeviceOrientation.Portrait {
+            t = CGAffineTransformMakeRotation(CGFloat((-M_PI / 2.0) + biasRadian))
+        } else if orientation == UIDeviceOrientation.PortraitUpsideDown {
+            t = CGAffineTransformMakeRotation(CGFloat((M_PI / 2.0) + biasRadian))
+        } else if (orientation == UIDeviceOrientation.LandscapeRight) {
+            t = CGAffineTransformMakeRotation(CGFloat(M_PI + biasRadian))
+        } else {
+            t = CGAffineTransformMakeRotation(CGFloat(0 + biasRadian))
+        }
+        
+        return inputImage.imageByApplyingTransform(t)
+    }
+    
     func captureImage(sampleBuffer:CMSampleBufferRef) -> UIImage{
         
         // Sampling Bufferから画像を取得
@@ -321,20 +342,29 @@ class VideoTestViewController: UIViewController, AVCaptureVideoDataOutputSampleB
             var tempCIImage: CIImage = CIImage(CVPixelBuffer: CMSampleBufferGetImageBuffer(sampleBuffer)!)
             
             //add-on image
-            tempCIImage = self.addOnCIImage(tempCIImage, addOn: self.heartImage.image!)
-    
-            //change content preview layer
-            dispatch_sync(dispatch_get_main_queue(), {
-                //change to CGImage
-                self.previewLayer.contents = self.context.createCGImage(tempCIImage, fromRect: tempCIImage.extent)
-            })
+            tempCIImage = self.addOnUIImage(tempCIImage, addUIImage: UIImage(named: "heart-80-vec")!, center: self.view.center, width: 100, height: 100)
             
-            //record video
+//record video
             if self.isRecord {
                 
                 if self.avAssetWriterPixelBufferInput?.assetWriterInput.readyForMoreMediaData == true {
+                    //draw water mark
+                    //tempCIImage = self.drawWaterMark(tempCIImage)
+                    
                     //<oringinal type>
                     //self.avAssetWriterPixelBufferInput?.assetWriterInput.appendSampleBuffer(sampleBuffer)
+                    
+                    
+                    //test
+                    /*
+                    if let newBuffer = self.createPixelFromImage(cgimage) {
+                        if let success = self.avAssetWriterPixelBufferInput?.appendPixelBuffer(newBuffer, withPresentationTime: self.currentSampleTime!) {
+                            if !success {
+                                //fail to append buff
+                                print("fail to append buffer with modify")
+                            }
+                        }
+                    }*/
                     
                     //<modify type>
                     //change CIImage to buffer for saving
@@ -350,6 +380,19 @@ class VideoTestViewController: UIViewController, AVCaptureVideoDataOutputSampleB
                     }
                 }
             }
+        
+//preview
+            tempCIImage = self.rotateCGImageByDeviceOrientation(tempCIImage, biasDegree: 0.0)
+            
+            //change content preview layer
+            let cgimage = self.context.createCGImage_(tempCIImage, fromRect: tempCIImage.extent)
+            
+            dispatch_sync(dispatch_get_main_queue(), {
+                //change to CGImage
+                self.previewLayer.contents = cgimage
+                self.previewLayer.bounds = self.view.bounds
+                
+            })
             
         }else if connection == self.audioCaptureConnection {
             //audio
@@ -360,6 +403,7 @@ class VideoTestViewController: UIViewController, AVCaptureVideoDataOutputSampleB
             }
         }
     }
+    
     
     
     
@@ -432,19 +476,57 @@ class VideoTestViewController: UIViewController, AVCaptureVideoDataOutputSampleB
     
 
 //image add-on
-    func addOnCIImage(backgroundImage: CIImage, addOn: UIImage) -> CIImage {
+    func addOnUIImage(backgroundImage: CIImage, addUIImage: UIImage, center: CGPoint, width: CGFloat, height: CGFloat) -> CIImage {
         
-        let addOnImage = CIImage(image: addOn)!
-        print("uiimage frame: \(self.heartImage.frame)")
-        print("uiimage bounds: \(self.heartImage.bounds)")
-        print("CIImage: \(addOnImage.extent)")
-        
-        let resultImage = addOnImage.imageByCompositingOverImage(backgroundImage)
-        
-        return resultImage
+        //transffer
+        if var oringinalImage = CIImage(image: addUIImage) {
+            //orient
+            let orientation = UIDevice.currentDevice().orientation
+            var t: CGAffineTransform!
+            switch orientation {
+            case UIDeviceOrientation.Portrait:
+                t = CGAffineTransformMakeRotation(CGFloat((M_PI / 2.0)))
+            case UIDeviceOrientation.LandscapeLeft:
+                t = CGAffineTransformMakeRotation(0)
+            case UIDeviceOrientation.LandscapeRight:
+                t = CGAffineTransformMakeRotation(CGFloat(M_PI))
+            default:
+                t = CGAffineTransformMakeRotation(CGFloat((-M_PI / 2.0)))
+            }
+            
+            
+            oringinalImage = oringinalImage.imageByApplyingTransform(t)
+            let ciFrame = backgroundImage.extent
+            let uiViewFrame = self.view.bounds
+            let portionX = ciFrame.maxX / uiViewFrame.maxX
+            let portionY = ciFrame.maxY / uiViewFrame.maxY
+            let newCenter = CGPoint(x: center.x * portionX, y: center.y * portionY)
+            let halfWidth = width / 2
+            let halfHeight = height / 2
+            let filter = CIFilter(name: "CIPerspectiveTransform")
+            let topleft = CIVector(x: newCenter.x - halfWidth, y: newCenter.y + halfHeight)
+            let topright = CIVector(x: newCenter.x + halfWidth, y: newCenter.y + halfHeight)
+            let btmright = CIVector(x: newCenter.x + halfWidth, y: newCenter.y - halfHeight)
+            let btmleft = CIVector(x: newCenter.x - halfWidth, y: newCenter.y - halfHeight)
+            //let setting: [String: AnyObject] = ["inputImage" : oringinalImage, "inputTopLeft": btmleft, "inputTopRight": topleft, "inputBottomRight": topright, "inputBottomLeft": btmright]
+            let setting: [String: AnyObject] = ["inputImage" : oringinalImage, "inputTopLeft": topleft, "inputTopRight": topright, "inputBottomRight": btmright, "inputBottomLeft": btmleft]
+            filter?.setValuesForKeysWithDictionary(setting)
+            let modifyAddOnImage = filter?.outputImage
+            
+            //combine to background
+            return modifyAddOnImage!.imageByCompositingOverImage(backgroundImage)
+        }else {
+            return backgroundImage
+        }
     }
     
-
+    func drawWaterMark(image: CIImage) {
+        //wait update
+        
+        
+        
+        return
+    }
     
     
     
@@ -468,4 +550,22 @@ class VideoTestViewController: UIViewController, AVCaptureVideoDataOutputSampleB
     }
     */
 
+}
+
+extension CIContext {
+    func createCGImage_(image:CIImage, fromRect:CGRect) -> CGImage {
+        let width = Int(fromRect.width)
+        let height = Int(fromRect.height)
+        
+        let rawData =  UnsafeMutablePointer<UInt8>.alloc(width * height * 4)
+        render(image, toBitmap: rawData, rowBytes: width * 4, bounds: fromRect, format: kCIFormatRGBA8, colorSpace: CGColorSpaceCreateDeviceRGB())
+        let dataProvider = CGDataProviderCreateWithData(nil, rawData, height * width * 4) {info, data, size in UnsafeMutablePointer<UInt8>(data).dealloc(size)}
+        return CGImageCreate(width, height, 8, 32, width * 4, CGColorSpaceCreateDeviceRGB(), CGBitmapInfo(rawValue: CGImageAlphaInfo.PremultipliedLast.rawValue), dataProvider, nil, false, .RenderingIntentDefault)!
+    }
+}
+
+extension Int {
+    var degreesToRadians : CGFloat {
+        return CGFloat(self) * CGFloat(M_PI) / 180.0
+    }
 }
