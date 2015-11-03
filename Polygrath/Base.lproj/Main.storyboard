@@ -196,16 +196,29 @@ Press 'Start Button' on both side</string>
                                     <action selector="recordButtonTouch:" destination="vg2-cG-mDi" eventType="touchUpInside" id="ldd-O7-Iol"/>
                                 </connections>
                             </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="egV-5L-V3R">
+                                <rect key="frame" x="551" y="74" width="39" height="27"/>
+                                <animations/>
+                                <color key="backgroundColor" red="0.40000000600000002" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="12"/>
+                                <state key="normal" title="Switch"/>
+                                <connections>
+                                    <action selector="switchButtonTouch:" destination="vg2-cG-mDi" eventType="touchUpInside" id="zQe-kk-dli"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <animations/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
                             <constraint firstItem="Eia-G7-nO3" firstAttribute="top" secondItem="NfC-fF-U3p" secondAttribute="bottom" constant="30" id="EXw-HD-RLu"/>
+                            <constraint firstAttribute="trailing" secondItem="egV-5L-V3R" secondAttribute="trailing" constant="10" id="Ojw-JP-F4Q"/>
+                            <constraint firstItem="egV-5L-V3R" firstAttribute="top" secondItem="BBY-Uy-Eiu" secondAttribute="bottom" constant="10" id="Xae-cS-II5"/>
                             <constraint firstItem="NfC-fF-U3p" firstAttribute="centerX" secondItem="Ok9-FT-77G" secondAttribute="centerX" id="ae4-Cs-tEC"/>
                         </constraints>
                     </view>
                     <connections>
                         <outlet property="recordButton" destination="NfC-fF-U3p" id="oHY-Dr-Vzj"/>
+                        <outlet property="switchButton" destination="egV-5L-V3R" id="Vyg-Nh-2LL"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="TqG-Wf-csK" userLabel="First Responder" sceneMemberID="firstResponder"/>

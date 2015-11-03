@@ -856,6 +856,10 @@ class PolyTestViewController: UIViewController, WCSessionDelegate, ChartViewDele
         
     }
     
+    
+    
+    
+    
     @IBOutlet weak var finishedButton: UIButton!
     
     @IBAction func finishedButtonTouch(sender: AnyObject) {

@@ -26,7 +26,9 @@ class VideoTestViewController: UIViewController, AVCaptureVideoDataOutputSampleB
     var frontCameraDevice: AVCaptureDevice!
     var captureSession: AVCaptureSession!
     var previewLayer = CALayer()
+    var isBackCamera = true
     var isRecord = false
+    var isPreviewing = false
     
 //video
     var avAssetWriter: AVAssetWriter?
@@ -62,7 +64,7 @@ class VideoTestViewController: UIViewController, AVCaptureVideoDataOutputSampleB
     
 //audio
     var avAssetWriterAudioInput: AVAssetWriterInput!
-
+    var avAssetWriterVideoInput: AVAssetWriterInput!
     
 //queue
     let audioQueue = dispatch_queue_create("AudioQueue", DISPATCH_QUEUE_SERIAL)
@@ -83,6 +85,9 @@ class VideoTestViewController: UIViewController, AVCaptureVideoDataOutputSampleB
         self.navigationController?.navigationBarHidden = false
         Singleton.sharedInstance.removeAllVideoTemp()
         self.setupCamera(true)
+        
+        //idle time disable
+        UIApplication.sharedApplication().idleTimerDisabled = true
         
         //setup navi bar height
         if let navigationHeight = self.navigationController?.navigationBar.frame.height {
@@ -118,6 +123,12 @@ class VideoTestViewController: UIViewController, AVCaptureVideoDataOutputSampleB
         
     }
     
+    @IBOutlet weak var switchButton: UIButton!
+    
+    @IBAction func switchButtonTouch(sender: AnyObject) {
+        self.switchCamera()
+    }
+    
 //camera
     
     func setupCamera(isBackCamera: Bool) {
@@ -133,13 +144,13 @@ class VideoTestViewController: UIViewController, AVCaptureVideoDataOutputSampleB
                 self.frontCameraDevice = device
             }
         }
-        
+        self.isBackCamera = isBackCamera
         //setup session
         self.captureSession = AVCaptureSession()
         self.captureSession.beginConfiguration()
-        if captureSession.canSetSessionPreset(AVCaptureSessionPresetMedium) {
+        if captureSession.canSetSessionPreset(AVCaptureSessionPresetiFrame1280x720) {
             print("preset session medium")
-            self.captureSession.sessionPreset = AVCaptureSessionPresetMedium
+            self.captureSession.sessionPreset = AVCaptureSessionPresetiFrame1280x720
         }
         
         do {
@@ -181,9 +192,10 @@ class VideoTestViewController: UIViewController, AVCaptureVideoDataOutputSampleB
             
             //frame rate
             
-            let frameDuration = CMTimeMake(1, 30)
+            let frameDuration = CMTimeMake(1, 15)
+            print("device max frame: \(videoDevice.activeVideoMaxFrameDuration)")
             if videoDevice.activeVideoMaxFrameDuration > frameDuration {
-                print("setup frame rate: 30")
+                print("setup frame rate: 15")
                 try videoDevice.lockForConfiguration()
                 videoDevice.activeVideoMaxFrameDuration = frameDuration
                 videoDevice.activeVideoMinFrameDuration = frameDuration
@@ -196,6 +208,7 @@ class VideoTestViewController: UIViewController, AVCaptureVideoDataOutputSampleB
             captureSession.commitConfiguration()
             
             //preview camera
+            
             previewLayer.anchorPoint = CGPointZero
             previewLayer.bounds = view.bounds
             previewLayer.contentsGravity = kCAGravityResizeAspectFill
@@ -209,7 +222,7 @@ class VideoTestViewController: UIViewController, AVCaptureVideoDataOutputSampleB
             print("preview center: \(view.center)")
             //button
             self.view.bringSubviewToFront(self.recordButton)
-            
+            self.view.bringSubviewToFront(self.switchButton)
             self.captureSession.startRunning()
             
         }catch {
@@ -237,6 +250,18 @@ class VideoTestViewController: UIViewController, AVCaptureVideoDataOutputSampleB
         self.frontCameraDevice = nil
         self.backCameraDevice = nil
         self.previewLayer.removeFromSuperlayer()
+    }
+    
+    func switchCamera() {
+        if !self.isRecord {
+            self.closeCamera()
+            if isBackCamera {
+                self.setupCamera(false)
+            }else {
+                self.setupCamera(true)
+            }
+            self.isPreviewing = false
+        }
     }
     
     func takeStillPicture(){
@@ -331,11 +356,18 @@ class VideoTestViewController: UIViewController, AVCaptureVideoDataOutputSampleB
     func captureOutput(captureOutput: AVCaptureOutput!, didOutputSampleBuffer sampleBuffer: CMSampleBuffer!, fromConnection connection: AVCaptureConnection!) {
         
         
+        
         if connection == self.videoCaptureConnection {
             //parameter setup
             let format = CMSampleBufferGetFormatDescription(sampleBuffer)!
             self.currentVideoDimensions = CMVideoFormatDescriptionGetDimensions(format)
             self.currentSampleTime = CMSampleBufferGetOutputPresentationTimeStamp(sampleBuffer)
+            
+            //preview layer is ready
+            if !self.isPreviewing {
+                self.setupAVAssetWriter()
+                self.isPreviewing = true
+            }
             
             //original image
             var tempCIImage: CIImage = CIImage(CVPixelBuffer: CMSampleBufferGetImageBuffer(sampleBuffer)!)
@@ -391,7 +423,6 @@ class VideoTestViewController: UIViewController, AVCaptureVideoDataOutputSampleB
             dispatch_sync(dispatch_get_main_queue(), {
                 //change to CGImage
                 self.previewLayer.contents = cgimage
-                self.previewLayer.bounds = self.view.bounds
                 
             })
             
@@ -406,10 +437,7 @@ class VideoTestViewController: UIViewController, AVCaptureVideoDataOutputSampleB
     }
     
     
-    
-    
-    func createAVAssetWriter() {
-        
+    func setupAVAssetWriter() {
         do {
             let url = Singleton.sharedInstance.getNewFileURL()
             self.tempURL = url
@@ -422,14 +450,14 @@ class VideoTestViewController: UIViewController, AVCaptureVideoDataOutputSampleB
                 AVVideoHeightKey : Int(currentVideoDimensions!.height)
             ]
             
-            let assetWriterVideoInput = AVAssetWriterInput(mediaType: AVMediaTypeVideo, outputSettings: videoSettings)
-            assetWriterVideoInput.expectsMediaDataInRealTime = true
-            assetWriterVideoInput.transform = CGAffineTransformMakeRotation(CGFloat(M_PI / 2.0))
+            self.avAssetWriterVideoInput = AVAssetWriterInput(mediaType: AVMediaTypeVideo, outputSettings: videoSettings)
+            avAssetWriterVideoInput.expectsMediaDataInRealTime = true
+            avAssetWriterVideoInput.transform = CGAffineTransformMakeRotation(CGFloat(M_PI / 2.0))
             
             let sourcePixelBufferAttributesDictionary: [String : AnyObject] = [String(kCVPixelBufferPixelFormatTypeKey): NSNumber(unsignedInt: kCVPixelFormatType_32BGRA), String(kCVPixelBufferWidthKey) : Int(currentVideoDimensions!.width),
                 String(kCVPixelBufferHeightKey) : Int(currentVideoDimensions!.height)]
             
-            self.avAssetWriterPixelBufferInput = AVAssetWriterInputPixelBufferAdaptor(assetWriterInput: assetWriterVideoInput, sourcePixelBufferAttributes: sourcePixelBufferAttributesDictionary)
+            self.avAssetWriterPixelBufferInput = AVAssetWriterInputPixelBufferAdaptor(assetWriterInput: self.avAssetWriterVideoInput, sourcePixelBufferAttributes: sourcePixelBufferAttributesDictionary)
             
             //audio
             let audioSettings: [String: AnyObject] = [
@@ -444,16 +472,40 @@ class VideoTestViewController: UIViewController, AVCaptureVideoDataOutputSampleB
             
             
             
-            if self.avAssetWriter!.canAddInput(assetWriterVideoInput) && self.avAssetWriter!.canAddInput(self.avAssetWriterAudioInput) {
-                self.avAssetWriter!.addInput(assetWriterVideoInput)
+            if self.avAssetWriter!.canAddInput(self.avAssetWriterVideoInput) && self.avAssetWriter!.canAddInput(self.avAssetWriterAudioInput) {
+                self.avAssetWriter!.addInput(self.avAssetWriterVideoInput)
                 self.avAssetWriter!.addInput(self.avAssetWriterAudioInput)
             } else {
-                print("不能添加视频writer的input \(assetWriterVideoInput), \(self.avAssetWriterAudioInput)")
+                print("不能添加视频writer的input \(self.avAssetWriterVideoInput), \(self.avAssetWriterAudioInput)")
             }
             
             
         }catch {
-            print("create AVAssetWriter fail")
+            print("setup AVAssetWriter fail")
+            print(error)
+            return
+        }
+    }
+    
+    func createNewAVAssetWriter() {
+        
+        do {
+            //new url
+            let url = Singleton.sharedInstance.getNewFileURL()
+            self.tempURL = url
+            self.avAssetWriter = try AVAssetWriter(URL: url, fileType: AVFileTypeQuickTimeMovie)
+            
+            //input
+            if self.avAssetWriter!.canAddInput(self.avAssetWriterVideoInput) && self.avAssetWriter!.canAddInput(self.avAssetWriterAudioInput) {
+                self.avAssetWriter!.addInput(self.avAssetWriterVideoInput)
+                self.avAssetWriter!.addInput(self.avAssetWriterAudioInput)
+            } else {
+                print("不能添加视频writer的input \(self.avAssetWriterVideoInput), \(self.avAssetWriterAudioInput)")
+            }
+            
+            
+        }catch {
+            print("create new AVAssetWriter fail")
             print(error)
             return
         }
@@ -461,7 +513,8 @@ class VideoTestViewController: UIViewController, AVCaptureVideoDataOutputSampleB
     }
     
     func startRecordVideo() {
-        self.createAVAssetWriter()
+        
+        self.createNewAVAssetWriter()
         self.avAssetWriter?.startWriting()
         self.avAssetWriter?.startSessionAtSourceTime(currentSampleTime!)
         self.isRecord = true
@@ -515,7 +568,7 @@ class VideoTestViewController: UIViewController, AVCaptureVideoDataOutputSampleB
         //heart image
         let heartImage = UIImage(named: "heart-80-vec")!
         let heartRadius = self.getHeartRadiusByFrame()
-        print("heart radius: \(heartRadius)")
+        
         //text image
         let bpmTextImage = Singleton.sharedInstance.createTextCIImage(bpm.description, font: UIFont.italicSystemFontOfSize(26))
         let textFrame = bpmTextImage.extent
