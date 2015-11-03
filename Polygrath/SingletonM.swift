@@ -194,4 +194,84 @@ class Singleton: NSObject {
         return newLayer
     }
     
+//CIImage func
+    func createTextCIImage(text: String, font: UIFont) -> CIImage {
+        
+        // setting attr: font name, color, alignment...etc.
+        //shadow
+        let shadow = NSShadow()
+        shadow.shadowColor = UIColor.lightTextColor()
+        shadow.shadowOffset = CGSizeMake (0.2, 0.4)
+        shadow.shadowBlurRadius = 1
+        //alignment
+        let paragraphStyle = NSMutableParagraphStyle()
+        paragraphStyle.alignment = NSTextAlignment.Center
+        //create attribute
+        let attr = [NSFontAttributeName: font, NSForegroundColorAttributeName:UIColor.redColor(), NSParagraphStyleAttributeName : paragraphStyle, NSKernAttributeName : 0.0, NSShadowAttributeName: shadow]
+        
+        //calculate width and height
+        let sizeOfText = text.sizeWithAttributes(attr)
+        
+        //drawing to context
+        UIGraphicsBeginImageContextWithOptions(CGSize(width: sizeOfText.width, height: sizeOfText.height), false, 0)
+        let wordStamp = NSMutableAttributedString(string: text, attributes: attr)
+        wordStamp.drawInRect(CGRectMake(0, 0, sizeOfText.width, sizeOfText.height))
+        
+        // getting an image from it
+        let newImage = UIGraphicsGetImageFromCurrentImageContext();
+        UIGraphicsEndImageContext()
+        
+        return CIImage(CGImage: newImage.CGImage!)
+    }
+    
+    func drawCIImageOnSource(sourceImage: CIImage, addCIImage: CIImage?, center: CGPoint, halfWidth: CGFloat, halfHeight: CGFloat, shrinkPortion: CGFloat, xbias: CGFloat, ybias: CGFloat) -> CIImage {
+        
+        //transffer
+        if var addOnImage = addCIImage {
+            //rotate addon image
+            let t = CGAffineTransformMakeRotation(CGFloat((M_PI / 2.0)))
+            addOnImage = addOnImage.imageByApplyingTransform(t)
+            
+            //reverse X, Y
+            let boundHalfWidth = halfHeight * shrinkPortion
+            let boundHalfHeight = halfWidth * shrinkPortion
+            let newCenter = CGPoint(x: center.y * shrinkPortion + ybias, y: center.x * shrinkPortion + xbias)
+            
+            let filter = CIFilter(name: "CIPerspectiveTransform")
+            let topleft = CIVector(x: newCenter.x - boundHalfWidth, y: newCenter.y + boundHalfHeight)
+            let topright = CIVector(x: newCenter.x + boundHalfWidth, y: newCenter.y + boundHalfHeight)
+            let btmright = CIVector(x: newCenter.x + boundHalfWidth, y: newCenter.y - boundHalfHeight)
+            let btmleft = CIVector(x: newCenter.x - boundHalfWidth, y: newCenter.y - boundHalfHeight)
+            
+            //let setting: [String: AnyObject] = ["inputImage" : oringinalImage, "inputTopLeft": btmleft, "inputTopRight": topleft, "inputBottomRight": topright, "inputBottomLeft": btmright]
+            let setting: [String: AnyObject] = ["inputImage" : addOnImage, "inputTopLeft": topleft, "inputTopRight": topright, "inputBottomRight": btmright, "inputBottomLeft": btmleft]
+            filter?.setValuesForKeysWithDictionary(setting)
+            let modifyAddOnImage = filter?.outputImage
+            
+            //combine to background
+            return modifyAddOnImage!.imageByCompositingOverImage(sourceImage)
+        }else {
+            return sourceImage
+        }
+    }
+    
+    func rotateCGImageByDeviceOrientation(inputImage: CIImage, biasDegree: Double) -> CIImage {
+        //depends on device rotate
+        let orientation = UIDevice.currentDevice().orientation
+        let biasRadian = biasDegree * M_PI / 180.0
+        var t: CGAffineTransform!
+        if orientation == UIDeviceOrientation.Portrait {
+            t = CGAffineTransformMakeRotation(CGFloat((-M_PI / 2.0) + biasRadian))
+        } else if orientation == UIDeviceOrientation.PortraitUpsideDown {
+            t = CGAffineTransformMakeRotation(CGFloat((M_PI / 2.0) + biasRadian))
+        } else if (orientation == UIDeviceOrientation.LandscapeRight) {
+            t = CGAffineTransformMakeRotation(CGFloat(M_PI + biasRadian))
+        } else {
+            t = CGAffineTransformMakeRotation(CGFloat(0 + biasRadian))
+        }
+        
+        return inputImage.imageByApplyingTransform(t)
+    }
+    
+    
 }

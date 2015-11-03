@@ -14,7 +14,9 @@ import Photos
 class VideoTestViewController: UIViewController, AVCaptureVideoDataOutputSampleBufferDelegate, AVCaptureAudioDataOutputSampleBufferDelegate {
 
     
-    
+//health kit
+    var bpm: Int = 100
+    var isLying = false
     
     
     
@@ -41,10 +43,14 @@ class VideoTestViewController: UIViewController, AVCaptureVideoDataOutputSampleB
         return CIContext(EAGLContext: eaglContext, options: options)
         }()
     
-//image
+//ciimage coordinate
+    var naviationHeight:CGFloat = 0.0
+    var shrinkPortion: CGFloat = 0.0
+    var XBias: CGFloat = 0.0
+    var YBias: CGFloat = 0.0
     
-    
-    
+//animate const
+    var heartDegree = 0
     /*
     var stillImage: CIImage!
     lazy var context: CIContext = {
@@ -78,6 +84,10 @@ class VideoTestViewController: UIViewController, AVCaptureVideoDataOutputSampleB
         Singleton.sharedInstance.removeAllVideoTemp()
         self.setupCamera(true)
         
+        //setup navi bar height
+        if let navigationHeight = self.navigationController?.navigationBar.frame.height {
+            self.naviationHeight = navigationHeight
+        }
         
     }
 
@@ -192,6 +202,11 @@ class VideoTestViewController: UIViewController, AVCaptureVideoDataOutputSampleB
             self.view.layer.addSublayer(previewLayer)
             self.view.clipsToBounds = true
             
+            //setup image portion
+            
+            print("preview frame: \(previewLayer.frame)")
+            print("view frame: \(self.view.frame)")
+            print("preview center: \(view.center)")
             //button
             self.view.bringSubviewToFront(self.recordButton)
             
@@ -276,23 +291,7 @@ class VideoTestViewController: UIViewController, AVCaptureVideoDataOutputSampleB
         
     }
     
-    func rotateCGImageByDeviceOrientation(inputImage: CIImage, biasDegree: Double) -> CIImage {
-        //depends on device rotate
-        let orientation = UIDevice.currentDevice().orientation
-        let biasRadian = biasDegree * M_PI / 180.0
-        var t: CGAffineTransform!
-        if orientation == UIDeviceOrientation.Portrait {
-            t = CGAffineTransformMakeRotation(CGFloat((-M_PI / 2.0) + biasRadian))
-        } else if orientation == UIDeviceOrientation.PortraitUpsideDown {
-            t = CGAffineTransformMakeRotation(CGFloat((M_PI / 2.0) + biasRadian))
-        } else if (orientation == UIDeviceOrientation.LandscapeRight) {
-            t = CGAffineTransformMakeRotation(CGFloat(M_PI + biasRadian))
-        } else {
-            t = CGAffineTransformMakeRotation(CGFloat(0 + biasRadian))
-        }
-        
-        return inputImage.imageByApplyingTransform(t)
-    }
+    
     
     func captureImage(sampleBuffer:CMSampleBufferRef) -> UIImage{
         
@@ -340,9 +339,9 @@ class VideoTestViewController: UIViewController, AVCaptureVideoDataOutputSampleB
             
             //original image
             var tempCIImage: CIImage = CIImage(CVPixelBuffer: CMSampleBufferGetImageBuffer(sampleBuffer)!)
-            
+        
             //add-on image
-            tempCIImage = self.addOnUIImage(tempCIImage, addUIImage: UIImage(named: "heart-80-vec")!, center: self.view.center, width: 100, height: 100)
+            tempCIImage = self.drawAnimationByFrame(tempCIImage)
             
 //record video
             if self.isRecord {
@@ -382,7 +381,9 @@ class VideoTestViewController: UIViewController, AVCaptureVideoDataOutputSampleB
             }
         
 //preview
-            tempCIImage = self.rotateCGImageByDeviceOrientation(tempCIImage, biasDegree: 0.0)
+            //rotate to portait
+            let t = CGAffineTransformMakeRotation(CGFloat((-M_PI / 2.0)))
+            tempCIImage = tempCIImage.imageByApplyingTransform(t)
             
             //change content preview layer
             let cgimage = self.context.createCGImage_(tempCIImage, fromRect: tempCIImage.extent)
@@ -475,59 +476,76 @@ class VideoTestViewController: UIViewController, AVCaptureVideoDataOutputSampleB
     }
     
 
-//image add-on
-    func addOnUIImage(backgroundImage: CIImage, addUIImage: UIImage, center: CGPoint, width: CGFloat, height: CGFloat) -> CIImage {
-        
-        //transffer
-        if var oringinalImage = CIImage(image: addUIImage) {
-            //orient
-            let orientation = UIDevice.currentDevice().orientation
-            var t: CGAffineTransform!
-            switch orientation {
-            case UIDeviceOrientation.Portrait:
-                t = CGAffineTransformMakeRotation(CGFloat((M_PI / 2.0)))
-            case UIDeviceOrientation.LandscapeLeft:
-                t = CGAffineTransformMakeRotation(0)
-            case UIDeviceOrientation.LandscapeRight:
-                t = CGAffineTransformMakeRotation(CGFloat(M_PI))
-            default:
-                t = CGAffineTransformMakeRotation(CGFloat((-M_PI / 2.0)))
+//image modify
+    func setupImagePortion(cameraRect: CGRect) {
+        //calculate portion
+        if self.shrinkPortion == 0.0 {
+            //first setup
+            let uiViewFrame = self.view.frame
+            let rawImageFrame = cameraRect
+            //reverse X,Y
+            let portionY = cameraRect.width / uiViewFrame.height
+            let portionX = cameraRect.height / uiViewFrame.width
+            if abs(1 - portionX) > abs(1 - portionY) {
+                //height(y) will be larger
+                self.shrinkPortion = portionX
+                //reverse x, y
+                self.YBias = -((uiViewFrame.height * self.shrinkPortion) - rawImageFrame.width) / 2
+            }else {
+                //width(x) will be larger
+                self.shrinkPortion = portionY
+                //reverse x, y
+                XBias = -((uiViewFrame.width * self.shrinkPortion) - rawImageFrame.height) / 2
+                
             }
-            
-            
-            oringinalImage = oringinalImage.imageByApplyingTransform(t)
-            let ciFrame = backgroundImage.extent
-            let uiViewFrame = self.view.bounds
-            let portionX = ciFrame.maxX / uiViewFrame.maxX
-            let portionY = ciFrame.maxY / uiViewFrame.maxY
-            let newCenter = CGPoint(x: center.x * portionX, y: center.y * portionY)
-            let halfWidth = width / 2
-            let halfHeight = height / 2
-            let filter = CIFilter(name: "CIPerspectiveTransform")
-            let topleft = CIVector(x: newCenter.x - halfWidth, y: newCenter.y + halfHeight)
-            let topright = CIVector(x: newCenter.x + halfWidth, y: newCenter.y + halfHeight)
-            let btmright = CIVector(x: newCenter.x + halfWidth, y: newCenter.y - halfHeight)
-            let btmleft = CIVector(x: newCenter.x - halfWidth, y: newCenter.y - halfHeight)
-            //let setting: [String: AnyObject] = ["inputImage" : oringinalImage, "inputTopLeft": btmleft, "inputTopRight": topleft, "inputBottomRight": topright, "inputBottomLeft": btmright]
-            let setting: [String: AnyObject] = ["inputImage" : oringinalImage, "inputTopLeft": topleft, "inputTopRight": topright, "inputBottomRight": btmright, "inputBottomLeft": btmleft]
-            filter?.setValuesForKeysWithDictionary(setting)
-            let modifyAddOnImage = filter?.outputImage
-            
-            //combine to background
-            return modifyAddOnImage!.imageByCompositingOverImage(backgroundImage)
-        }else {
-            return backgroundImage
         }
-    }
-    
-    func drawWaterMark(image: CIImage) {
-        //wait update
-        
-        
         
         return
     }
     
+    func drawAnimationByFrame(image: CIImage) -> CIImage {
+        //frame
+        let uiviewFrame = self.view.frame
+        
+        //shrink
+        self.setupImagePortion(image.extent)
+        
+        //temp image
+        var tempImage = image
+        //heart image
+        let heartImage = UIImage(named: "heart-80-vec")!
+        let heartRadius = self.getHeartRadiusByFrame()
+        print("heart radius: \(heartRadius)")
+        //text image
+        let bpmTextImage = Singleton.sharedInstance.createTextCIImage(bpm.description, font: UIFont.italicSystemFontOfSize(26))
+        let textFrame = bpmTextImage.extent
+        
+        //coordinate, original = (0, 0)
+        let heartCenter = CGPoint(x: 60 , y:  self.naviationHeight + 10 + 60 )
+        let textCenter = CGPoint(x: (uiviewFrame.width - (20 + textFrame.width / 2)), y: (self.naviationHeight + 10 + 20 + textFrame.height / 2))
+        
+        //setup heart animation
+        tempImage = Singleton.sharedInstance.drawCIImageOnSource(image, addCIImage: CIImage(image: heartImage), center: heartCenter, halfWidth: heartRadius, halfHeight: heartRadius, shrinkPortion: self.shrinkPortion, xbias: self.XBias, ybias: self.YBias)
+        //setup text animation
+        tempImage = Singleton.sharedInstance.drawCIImageOnSource(tempImage, addCIImage: bpmTextImage, center: textCenter, halfWidth: textFrame.width / 2, halfHeight: textFrame.height / 2, shrinkPortion: self.shrinkPortion, xbias: self.XBias, ybias: self.YBias)
+        
+        return tempImage
+    }
+    
+    
+    
+//culculation
+    func getHeartRadiusByFrame() -> CGFloat {
+        let range = CGFloat(self.bpm) * 0.3
+        var heartRadius: CGFloat = 20 + abs(cos((self.heartDegree.degreesToRadians)) * range)
+        if self.isLying {
+            heartRadius = heartRadius * 1.2
+        }
+        //ratio is from 12~24
+        self.heartDegree += 12 * (self.bpm / 60)
+        
+        return heartRadius
+    }
     
     
     

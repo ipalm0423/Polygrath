@@ -8,11 +8,11 @@
 
 /* Begin PBXBuildFile section */
 		5E4EC7BFE4A8EA17D7BC421C /* Pods_Polygrath.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = ECA21D86324B26463EF8D046 /* Pods_Polygrath.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
-		AC06ECF41BB68BCC0087586E /* ResultQuestTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = AC06ECF31BB68BCC0087586E /* ResultQuestTableViewCell.swift */; settings = {ASSET_TAGS = (); }; };
-		AC06ECF61BB692C90087586E /* TitleTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = AC06ECF51BB692C90087586E /* TitleTableViewCell.swift */; settings = {ASSET_TAGS = (); }; };
-		AC648BCB1BDF1C6C0063CD1D /* SingletonM.swift in Sources */ = {isa = PBXBuildFile; fileRef = AC648BCA1BDF1C6C0063CD1D /* SingletonM.swift */; settings = {ASSET_TAGS = (); }; };
-		AC9105E91BCFA5A100817F40 /* VideoTestViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = AC9105E81BCFA5A100817F40 /* VideoTestViewController.swift */; settings = {ASSET_TAGS = (); }; };
-		ACB4E08A1BAAB6B60044EB72 /* PolyTestViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = ACB4E0891BAAB6B60044EB72 /* PolyTestViewController.swift */; settings = {ASSET_TAGS = (); }; };
+		AC06ECF41BB68BCC0087586E /* ResultQuestTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = AC06ECF31BB68BCC0087586E /* ResultQuestTableViewCell.swift */; };
+		AC06ECF61BB692C90087586E /* TitleTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = AC06ECF51BB692C90087586E /* TitleTableViewCell.swift */; };
+		AC648BCB1BDF1C6C0063CD1D /* SingletonM.swift in Sources */ = {isa = PBXBuildFile; fileRef = AC648BCA1BDF1C6C0063CD1D /* SingletonM.swift */; };
+		AC9105E91BCFA5A100817F40 /* VideoTestViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = AC9105E81BCFA5A100817F40 /* VideoTestViewController.swift */; };
+		ACB4E08A1BAAB6B60044EB72 /* PolyTestViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = ACB4E0891BAAB6B60044EB72 /* PolyTestViewController.swift */; };
 		ACBC3F6D1B9EC9D7007AC186 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = ACBC3F6C1B9EC9D7007AC186 /* AppDelegate.swift */; };
 		ACBC3F6F1B9EC9D7007AC186 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = ACBC3F6E1B9EC9D7007AC186 /* ViewController.swift */; };
 		ACBC3F721B9EC9D7007AC186 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = ACBC3F701B9EC9D7007AC186 /* Main.storyboard */; };
@@ -30,8 +30,8 @@
 		ACBC3FB91B9ECA2B007AC186 /* Polygrath-iWatch.app in Embed Watch Content */ = {isa = PBXBuildFile; fileRef = ACBC3F9F1B9ECA2B007AC186 /* Polygrath-iWatch.app */; };
 		ACBC3FC31B9ECC65007AC186 /* TestInterfaceController.swift in Sources */ = {isa = PBXBuildFile; fileRef = ACBC3FC21B9ECC65007AC186 /* TestInterfaceController.swift */; };
 		ACBC3FC61B9ED277007AC186 /* HealthKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = ACBC3FC51B9ED277007AC186 /* HealthKit.framework */; };
-		ACC81A4E1BB4E973006377F6 /* ResultViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = ACC81A4D1BB4E973006377F6 /* ResultViewController.swift */; settings = {ASSET_TAGS = (); }; };
-		ACC81A501BB4FB25006377F6 /* questions.swift in Sources */ = {isa = PBXBuildFile; fileRef = ACC81A4F1BB4FB25006377F6 /* questions.swift */; settings = {ASSET_TAGS = (); }; };
+		ACC81A4E1BB4E973006377F6 /* ResultViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = ACC81A4D1BB4E973006377F6 /* ResultViewController.swift */; };
+		ACC81A501BB4FB25006377F6 /* questions.swift in Sources */ = {isa = PBXBuildFile; fileRef = ACC81A4F1BB4FB25006377F6 /* questions.swift */; };
 		ACDE08571BA7A1BD00D3ECB7 /* FrontHeartViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = ACDE08561BA7A1BD00D3ECB7 /* FrontHeartViewController.swift */; };
 		ACDE3ADE1B9F378100917E97 /* HealthKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = ACDE3ADD1B9F378100917E97 /* HealthKit.framework */; };
 /* End PBXBuildFile section */
