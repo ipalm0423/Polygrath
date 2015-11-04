@@ -8,6 +8,7 @@
 
 import Foundation
 import Photos
+import AVKit
 
 class Singleton: NSObject {
     class var sharedInstance: Singleton {
@@ -272,6 +273,96 @@ class Singleton: NSObject {
         
         return inputImage.imageByApplyingTransform(t)
     }
+    
+
+//Calculation
+    func getMin(values: [Double]) -> Double {
+        var min:Double = 200
+        for value in values {
+            if value < min && value != 0 {
+                min = value
+            }
+        }
+        return min
+    }
+    
+    func getMax(values: [Double]) -> Double {
+        var max:Double = 0
+        for value in values {
+            if value > max {
+                max = value
+            }
+        }
+        return max
+    }
+    
+    func getAverage(nums: [Double]) -> Double {
+        var total = 0.0
+        //use the parameter-array instead of the global variable votes
+        for vote in nums{
+            total += Double(vote)
+        }
+        let votesTotal = Double(nums.count)
+        let avg = total / votesTotal
+        
+        print("calculate average: \(avg)")
+        return avg
+    }
+    
+    func getStandardDeviation(arr : [Double]) -> Double {
+        let length = Double(arr.count)
+        let avg = arr.reduce(0, combine: {$0 + $1}) / length
+        let sumOfSquaredAvgDiff = arr.map { pow($0 - avg, 2.0)}.reduce(0, combine: {$0 + $1})
+        let dev = sqrt(sumOfSquaredAvgDiff / length)
+        
+        print("calculate deviation: \(dev)")
+        return dev
+    }
+    
+    
+    
+    
+    
+//sound effect
+    var audioPlayer = AVAudioPlayer()
+    let heartSound = NSURL(fileURLWithPath: NSBundle.mainBundle().pathForResource("heartbeat", ofType: "mp3")!)
+    
+    func setupAudioPlayer() {
+        do {
+            try audioPlayer = AVAudioPlayer(contentsOfURL: heartSound, fileTypeHint: nil)
+            audioPlayer.prepareToPlay()
+        }catch {
+            print("can't play heart beat sound effect")
+            print(error)
+        }
+    }
+    
+    func playHeartBeatEffect() {
+        self.stopPlayingEffect()
+        do {
+            print(self.heartSound)
+            try audioPlayer = AVAudioPlayer(contentsOfURL: heartSound, fileTypeHint: AVFileTypeMPEGLayer3)
+            audioPlayer.prepareToPlay()
+            audioPlayer.play()
+            print("play heart beat sound effect")
+        }catch {
+            print("can't play heart beat sound effect")
+            print(error)
+        }
+    }
+    
+    func stopPlayingEffect() {
+        
+        if self.audioPlayer.playing {
+            self.audioPlayer.stop()
+        }
+    }
+    
+
+    
+
+    
+    
     
     
 }

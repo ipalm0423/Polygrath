@@ -28,11 +28,11 @@ class question {
     var max: Double = 0
     var min: Double = 0
     var isTruth: Bool?
-    var recordAudio = RecordedAudio()
+    var file = RecordedFile()
 }
 
 
-class RecordedAudio:NSObject {
+class RecordedFile:NSObject {
     var title:String!
     var URL:NSURL!
 }

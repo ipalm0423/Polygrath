@@ -378,7 +378,7 @@ class ResultViewController: UIViewController, UITableViewDelegate, UITableViewDa
     func playBackAudioRecord(No: Int) {
         do {
             self.stopAnimatePlayIndicator()
-            try self.audioPlayer = AVAudioPlayer(contentsOfURL: self.questions[No].recordAudio.URL, fileTypeHint: "m4a")
+            try self.audioPlayer = AVAudioPlayer(contentsOfURL: self.questions[No].file.URL, fileTypeHint: "m4a")
             self.audioPlayer.delegate = self
             self.audioPlayer.volume = 1.0
             self.audioPlayer.prepareToPlay()

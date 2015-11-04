@@ -2,6 +2,7 @@
 <document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="9059" systemVersion="15B42" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="7K4-Zl-XeZ">
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="9049"/>
+        <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
         <capability name="Constraints with non-1.0 multipliers" minToolsVersion="5.1"/>
     </dependencies>
@@ -206,17 +207,38 @@ Press 'Start Button' on both side</string>
                                     <action selector="switchButtonTouch:" destination="vg2-cG-mDi" eventType="touchUpInside" id="zQe-kk-dli"/>
                                 </connections>
                             </button>
+                            <progressView opaque="NO" alpha="0.90000000000000002" contentMode="scaleToFill" verticalHuggingPriority="750" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="1zl-ut-uN4">
+                                <rect key="frame" x="20" y="400" width="560" height="40"/>
+                                <animations/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="40" id="19r-rd-1ug"/>
+                                </constraints>
+                                <color key="progressTintColor" red="1" green="0.16571869017338048" blue="0.10544234841068745" alpha="1" colorSpace="calibratedRGB"/>
+                                <color key="trackTintColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                            </progressView>
                         </subviews>
                         <animations/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
+                            <constraint firstAttribute="trailingMargin" secondItem="1zl-ut-uN4" secondAttribute="trailing" id="3fg-Gx-2nR"/>
                             <constraint firstItem="Eia-G7-nO3" firstAttribute="top" secondItem="NfC-fF-U3p" secondAttribute="bottom" constant="30" id="EXw-HD-RLu"/>
+                            <constraint firstItem="1zl-ut-uN4" firstAttribute="width" secondItem="Ok9-FT-77G" secondAttribute="height" multiplier="1:4" id="Eft-H0-9se"/>
+                            <constraint firstItem="1zl-ut-uN4" firstAttribute="centerX" secondItem="Ok9-FT-77G" secondAttribute="centerX" id="Igh-zE-V7I"/>
                             <constraint firstAttribute="trailing" secondItem="egV-5L-V3R" secondAttribute="trailing" constant="10" id="Ojw-JP-F4Q"/>
                             <constraint firstItem="egV-5L-V3R" firstAttribute="top" secondItem="BBY-Uy-Eiu" secondAttribute="bottom" constant="10" id="Xae-cS-II5"/>
                             <constraint firstItem="NfC-fF-U3p" firstAttribute="centerX" secondItem="Ok9-FT-77G" secondAttribute="centerX" id="ae4-Cs-tEC"/>
+                            <constraint firstItem="1zl-ut-uN4" firstAttribute="leading" secondItem="Ok9-FT-77G" secondAttribute="leadingMargin" id="dEJ-ki-XjL"/>
+                            <constraint firstItem="1zl-ut-uN4" firstAttribute="centerY" secondItem="Ok9-FT-77G" secondAttribute="centerY" multiplier="1.4" id="mny-mO-nd7"/>
                         </constraints>
+                        <variation key="default">
+                            <mask key="constraints">
+                                <exclude reference="Eft-H0-9se"/>
+                                <exclude reference="Igh-zE-V7I"/>
+                            </mask>
+                        </variation>
                     </view>
                     <connections>
+                        <outlet property="progressLieBar" destination="1zl-ut-uN4" id="vg3-OZ-5H1"/>
                         <outlet property="recordButton" destination="NfC-fF-U3p" id="oHY-Dr-Vzj"/>
                         <outlet property="switchButton" destination="egV-5L-V3R" id="Vyg-Nh-2LL"/>
                     </connections>

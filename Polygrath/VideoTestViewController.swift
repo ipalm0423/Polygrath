@@ -10,13 +10,47 @@ import UIKit
 import AVFoundation
 import AssetsLibrary
 import Photos
+import WatchConnectivity
 
-class VideoTestViewController: UIViewController, AVCaptureVideoDataOutputSampleBufferDelegate, AVCaptureAudioDataOutputSampleBufferDelegate {
+class VideoTestViewController: UIViewController, AVCaptureVideoDataOutputSampleBufferDelegate, AVCaptureAudioDataOutputSampleBufferDelegate, WCSessionDelegate {
+
+//WatchConnection
+    var wcSession: WCSession? = WCSession.isSupported() ? WCSession.defaultSession() : nil {
+        didSet{
+            if wcSession == nil {
+                self.alertError("Your device is not support! Please update iOS.")
+            }
+        }
+    }
+    
 
     
 //health kit
-    var bpm: Int = 100
-    var isLying = false
+    var bpm: Int = 0
+    var isLying = false {
+        didSet{
+            if self.isLying {
+                Singleton.sharedInstance.playHeartBeatEffect()
+                AudioServicesPlaySystemSound(kSystemSoundID_Vibrate)
+                print("user is lying, vibrate and play sound")
+            }else {
+                Singleton.sharedInstance.stopPlayingEffect()
+            }
+        }
+    }
+    var dataDates = [NSDate]()
+    var dataValues = [Double]()
+    var questions: [question] = []
+    var bpmMax: Double = 0
+    var bpmMin: Double = 200
+    var average: Double = 0
+    var deviation: Double = 0
+    var truthRate = 0.0
+
+    @IBOutlet weak var progressLieBar: UIProgressView!
+    
+//time
+    let startTime = NSDate()
     
     
     
@@ -27,8 +61,19 @@ class VideoTestViewController: UIViewController, AVCaptureVideoDataOutputSampleB
     var captureSession: AVCaptureSession!
     var previewLayer = CALayer()
     var isBackCamera = true
-    var isRecord = false
-    var isPreviewing = false
+    var isRecord = false {
+        didSet {
+            //change button icon
+            if self.isRecord {
+                self.recordButton.setTitle("Stop", forState: UIControlState.Normal)
+                self.recordButton.backgroundColor = UIColor(red: 1, green: 0.1, blue: 243 / 255, alpha: 0.9)
+            }else {
+                self.recordButton.setTitle("Record", forState: UIControlState.Normal)
+                self.recordButton.backgroundColor = UIColor(red: 80 / 255, green: 1, blue: 0, alpha: 0.9)
+            }
+        }
+    }
+    var isCameraOn = false
     
 //video
     var avAssetWriter: AVAssetWriter?
@@ -37,6 +82,7 @@ class VideoTestViewController: UIViewController, AVCaptureVideoDataOutputSampleB
     var currentVideoDimensions: CMVideoDimensions?
     var tempURL: NSURL!
     
+    
 //extra pattern
     
     lazy var context: CIContext = {
@@ -44,6 +90,14 @@ class VideoTestViewController: UIViewController, AVCaptureVideoDataOutputSampleB
         let options = [kCIContextWorkingColorSpace : NSNull()]
         return CIContext(EAGLContext: eaglContext, options: options)
         }()
+    /*
+    var stillImage: CIImage!
+    lazy var context: CIContext = {
+    let eaglContext = EAGLContext(API: EAGLRenderingAPI.OpenGLES2)
+    let options = [kCIContextWorkingColorSpace : NSNull()]
+    return CIContext(EAGLContext: eaglContext, options: options)
+    }()
+    */
     
 //ciimage coordinate
     var naviationHeight:CGFloat = 0.0
@@ -53,14 +107,7 @@ class VideoTestViewController: UIViewController, AVCaptureVideoDataOutputSampleB
     
 //animate const
     var heartDegree = 0
-    /*
-    var stillImage: CIImage!
-    lazy var context: CIContext = {
-        let eaglContext = EAGLContext(API: EAGLRenderingAPI.OpenGLES2)
-        let options = [kCIContextWorkingColorSpace : NSNull()]
-        return CIContext(EAGLContext: eaglContext, options: options)
-        }()
-    */
+    
     
 //audio
     var avAssetWriterAudioInput: AVAssetWriterInput!
@@ -84,8 +131,9 @@ class VideoTestViewController: UIViewController, AVCaptureVideoDataOutputSampleB
         // Do any additional setup after loading the view.
         self.navigationController?.navigationBarHidden = false
         Singleton.sharedInstance.removeAllVideoTemp()
+        self.setupWCConnection()
         self.setupCamera(true)
-        
+        Singleton.sharedInstance.setupAudioPlayer()
         //idle time disable
         UIApplication.sharedApplication().idleTimerDisabled = true
         
@@ -102,6 +150,7 @@ class VideoTestViewController: UIViewController, AVCaptureVideoDataOutputSampleB
     }
     
     override func viewDidDisappear(animated: Bool) {
+        self.stopRecordVideo()
         self.closeCamera()
     }
 
@@ -117,8 +166,20 @@ class VideoTestViewController: UIViewController, AVCaptureVideoDataOutputSampleB
         print("record button touch")
         if self.isRecord {
             self.stopRecordVideo()
+            //Save question file url, end time.
+            let lastQuest = self.questions[self.questions.count - 1]
+            let recordFile = RecordedFile()
+            recordFile.title = self.tempURL.lastPathComponent
+            recordFile.URL = self.tempURL
+            lastQuest.file = recordFile
+            lastQuest.endTime = NSDate()
+            
         }else {
             self.startRecordVideo()
+            //new a question
+            let newQuest = question()
+            newQuest.questIndex = self.questions.count + 1
+            self.questions.append(newQuest)
         }
         
     }
@@ -126,7 +187,158 @@ class VideoTestViewController: UIViewController, AVCaptureVideoDataOutputSampleB
     @IBOutlet weak var switchButton: UIButton!
     
     @IBAction func switchButtonTouch(sender: AnyObject) {
+        self.isLying = !self.isLying
         self.switchCamera()
+    }
+    
+    
+//WC SESSION
+    func setupWCConnection() {
+        if WCSession.isSupported() {
+            self.wcSession?.delegate = self
+            self.wcSession?.activateSession()
+            if let isConnect = self.wcSession?.reachable {
+                print("session reachable: \(isConnect)")
+            }else {
+                self.alertWatchConnection()
+            }
+        }
+    }
+    
+    func session(session: WCSession, didReceiveUserInfo userInfo: [String : AnyObject]) {
+        
+        //geting data from watch
+        if let dics = userInfo["heartRateData"] as? [NSDate : Double] {
+            //sort by time
+            let dicsSort = dics.sort({ (a, b) -> Bool in
+                if a.0.timeIntervalSince1970 > b.0.timeIntervalSince1970 {
+                    return false
+                }
+                return true
+            })
+            print("got new heart rate data: \(dicsSort)")
+            //add to grath
+            dispatch_sync(dispatch_get_main_queue()) { () -> Void in
+                //save
+                for dic in dicsSort {
+                    self.dataDates.append(dic.0)
+                    self.dataValues.append(dic.1)
+                
+                    //set bpm data
+                    self.bpm = Int(dic.1)
+                    if dic.1 > self.bpmMax {
+                        self.bpmMax = dic.1
+                    }
+                    if dic.1 < self.bpmMin {
+                        self.bpmMin = dic.1
+                    }
+                    
+                    //calculate
+                    self.updateQuestionData(dic.0, value: dic.1)
+                    if self.getTruthRate() < 0.5 {
+                        self.isLying = true
+                    }else {
+                        self.isLying = false
+                    }
+                    self.progressLieBar.setProgress(Float(1 - self.truthRate), animated: true)
+                }
+            }
+        }
+    }
+    
+    func session(session: WCSession, didReceiveMessage message: [String : AnyObject]) {
+        print(message)
+        
+        // get command from watch
+        if let cmd = message["cmd"] as? String {
+            if cmd == "stop" {
+                print("recieve cmd from watch: stop")
+                dispatch_async(dispatch_get_main_queue(), { () -> Void in
+                    self.stopRecordVideo()
+                    //alert
+                    self.alertMessage("Test was stop by iWatch", type: 0)
+                })
+            }
+        }
+    }
+    
+    
+    
+    func sendCMDStopWatch() {
+        if self.wcSession!.reachable {
+            //send cmd to watch
+            self.wcSession?.sendMessage(["cmd" : "stop"], replyHandler: { (reply) -> Void in
+                if let response = reply["cmdResponse"] as? Bool {
+                    if response {
+                        print("got 'stop' cmd response from watch: \(response)")
+                        
+                    }
+                }
+                }, errorHandler: { (error) -> Void in
+                    print(error)
+            })
+        }else {
+            //unReachable, alert manually close
+            self.alertStopMannualOnWatch()
+            return
+        }
+    }
+
+    
+    
+//data analyse
+    func updateQuestionData(time: NSDate, value: Double) {
+        if self.questions.count > 0 {
+            for quest in self.questions {
+                
+                if time.timeIntervalSinceDate(quest.startTime) > 0 && quest.endTime.timeIntervalSinceDate(time) > 0 {
+                    //data is in previous time range
+                    quest.dataValues.append(value)
+                    quest.dataDates.append(time)
+                    print("add data to Q.\(quest.questIndex)")
+                    return
+                }
+            }
+            //data is in the last time range
+            self.questions[questions.count - 1].dataValues.append(value)
+            self.questions[questions.count - 1].dataDates.append(time)
+            print("add data to Q.\(self.questions.count)")
+        }
+    }
+    
+    func getTruthRate() -> Double {
+        self.average = Singleton.sharedInstance.getAverage(self.dataValues)
+        self.deviation = Singleton.sharedInstance.getStandardDeviation(self.dataValues)
+        let oneDeviation = self.average + self.deviation
+        self.truthRate = 1.0
+        let count = self.dataValues.count
+        
+        if count > 2 {
+            let delta = self.dataValues.last! - self.dataValues[count - 2]
+            if delta > 4 {
+                self.truthRate = self.truthRate - 0.2 * (delta - 4)
+            }else if delta < -7 {
+                //comedown
+                self.truthRate = self.truthRate * 1.2
+            }
+            if self.dataValues.last > oneDeviation {
+                self.truthRate = self.truthRate * 0.4
+            }
+            //previous 2 point
+            for var i = 2; i < 4; i++ {
+                if self.dataValues[count - i] > oneDeviation {
+                    self.truthRate = self.truthRate * 0.9
+                }
+            }
+            
+        }
+        
+        //return 100%
+        if self.truthRate > 1 {
+            self.truthRate = 1
+        }
+        
+        return truthRate
     }
     
 //camera
@@ -223,6 +435,7 @@ class VideoTestViewController: UIViewController, AVCaptureVideoDataOutputSampleB
             //button
             self.view.bringSubviewToFront(self.recordButton)
             self.view.bringSubviewToFront(self.switchButton)
+            self.view.bringSubviewToFront(self.progressLieBar)
             self.captureSession.startRunning()
             
         }catch {
@@ -250,6 +463,8 @@ class VideoTestViewController: UIViewController, AVCaptureVideoDataOutputSampleB
         self.frontCameraDevice = nil
         self.backCameraDevice = nil
         self.previewLayer.removeFromSuperlayer()
+        self.isCameraOn = false
+        
     }
     
     func switchCamera() {
@@ -260,7 +475,7 @@ class VideoTestViewController: UIViewController, AVCaptureVideoDataOutputSampleB
             }else {
                 self.setupCamera(true)
             }
-            self.isPreviewing = false
+            self.isCameraOn = false
         }
     }
     
@@ -363,15 +578,16 @@ class VideoTestViewController: UIViewController, AVCaptureVideoDataOutputSampleB
             self.currentVideoDimensions = CMVideoFormatDescriptionGetDimensions(format)
             self.currentSampleTime = CMSampleBufferGetOutputPresentationTimeStamp(sampleBuffer)
             
-            //preview layer is ready
-            if !self.isPreviewing {
-                self.setupAVAssetWriter()
-                self.isPreviewing = true
-            }
-            
             //original image
             var tempCIImage: CIImage = CIImage(CVPixelBuffer: CMSampleBufferGetImageBuffer(sampleBuffer)!)
         
+            //preview layer is ready
+            if !self.isCameraOn {
+                self.setupAVAssetWriter()
+                self.setupImagePortion(tempCIImage.extent)
+                self.isCameraOn = true
+            }
+            
             //add-on image
             tempCIImage = self.drawAnimationByFrame(tempCIImage)
             
@@ -513,44 +729,45 @@ class VideoTestViewController: UIViewController, AVCaptureVideoDataOutputSampleB
     }
     
     func startRecordVideo() {
-        
-        self.createNewAVAssetWriter()
-        self.avAssetWriter?.startWriting()
-        self.avAssetWriter?.startSessionAtSourceTime(currentSampleTime!)
-        self.isRecord = true
+        if !self.isRecord {
+            self.createNewAVAssetWriter()
+            self.avAssetWriter?.startWriting()
+            self.avAssetWriter?.startSessionAtSourceTime(currentSampleTime!)
+            self.isRecord = true
+        }
     }
     
     func stopRecordVideo() {
-        self.isRecord = false
-        self.avAssetWriter?.finishWritingWithCompletionHandler({ () -> Void in
-            print("錄製完成")
-            Singleton.sharedInstance.saveVideoToCameraRoll(self.tempURL)
-        })
+        if self.isRecord {
+            self.isRecord = false
+            self.avAssetWriter?.finishWritingWithCompletionHandler({ () -> Void in
+                print("錄製完成")
+                Singleton.sharedInstance.saveVideoToCameraRoll(self.tempURL)
+            })
+        }
     }
     
 
 //image modify
     func setupImagePortion(cameraRect: CGRect) {
         //calculate portion
-        if self.shrinkPortion == 0.0 {
-            //first setup
-            let uiViewFrame = self.view.frame
-            let rawImageFrame = cameraRect
-            //reverse X,Y
-            let portionY = cameraRect.width / uiViewFrame.height
-            let portionX = cameraRect.height / uiViewFrame.width
-            if abs(1 - portionX) > abs(1 - portionY) {
-                //height(y) will be larger
-                self.shrinkPortion = portionX
-                //reverse x, y
-                self.YBias = -((uiViewFrame.height * self.shrinkPortion) - rawImageFrame.width) / 2
-            }else {
-                //width(x) will be larger
-                self.shrinkPortion = portionY
-                //reverse x, y
-                XBias = -((uiViewFrame.width * self.shrinkPortion) - rawImageFrame.height) / 2
-                
-            }
+        //first setup
+        let uiViewFrame = self.view.frame
+        let rawImageFrame = cameraRect
+        //reverse X,Y
+        let portionY = cameraRect.width / uiViewFrame.height
+        let portionX = cameraRect.height / uiViewFrame.width
+        if abs(1 - portionX) > abs(1 - portionY) {
+            //height(y) will be larger
+            self.shrinkPortion = portionX
+            //reverse x, y
+            self.YBias = -((uiViewFrame.height * self.shrinkPortion) - rawImageFrame.width) / 2
+        }else {
+            //width(x) will be larger
+            self.shrinkPortion = portionY
+            //reverse x, y
+            XBias = -((uiViewFrame.width * self.shrinkPortion) - rawImageFrame.height) / 2
+            
         }
         
         return
@@ -559,9 +776,6 @@ class VideoTestViewController: UIViewController, AVCaptureVideoDataOutputSampleB
     func drawAnimationByFrame(image: CIImage) -> CIImage {
         //frame
         let uiviewFrame = self.view.frame
-        
-        //shrink
-        self.setupImagePortion(image.extent)
         
         //temp image
         var tempImage = image
@@ -601,7 +815,6 @@ class VideoTestViewController: UIViewController, AVCaptureVideoDataOutputSampleB
     }
     
     
-    
 //alert
     func alertError(error: String) {
         print("alert error message: \(error)")
@@ -610,7 +823,41 @@ class VideoTestViewController: UIViewController, AVCaptureVideoDataOutputSampleB
         self.presentViewController(alert, animated: true, completion: nil)
     }
     
+    func alertWatchConnection() {
+        
+    }
     
+    func alertStopMessage() {
+        print("alert message: stop")
+        let alert = UIAlertController(title: "Alert", message: "Program is stop by iWatch", preferredStyle: UIAlertControllerStyle.Alert)
+        
+        alert.addAction(UIAlertAction(title: "OK", style: .Default, handler: { action in
+            switch action.style{
+            case .Default:
+                print("test is stop by watch, jump to result", terminator: "")
+                //segue
+                self.performSegueWithIdentifier("ResultSegue", sender: self)
+                
+            case .Cancel:
+                print("cancel", terminator: "")
+                
+            case .Destructive:
+                print("destructive", terminator: "")
+            }
+        }))
+        self.presentViewController(alert, animated: true, completion: nil)
+    }
+    
+    func alertStopMannualOnWatch() {
+        print("alert message: stop mannully")
+        let alert = UIAlertController(title: "Alert", message: "Press 'Stop' button on your iWatch", preferredStyle: UIAlertControllerStyle.Alert)
+        alert.addAction(UIAlertAction(title: "OK", style: UIAlertActionStyle.Default, handler: nil))
+        self.presentViewController(alert, animated: true, completion: nil)
+    }
+    
+    func alertMessage(message: String, type: Int) {
+        
+    }
     /*
     // MARK: - Navigation
 
@@ -620,6 +867,18 @@ class VideoTestViewController: UIViewController, AVCaptureVideoDataOutputSampleB
         // Pass the selected object to the new view controller.
     }
     */
+    
+    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+        if segue.identifier == "ResultSegue" {
+            if let VC = segue.destinationViewController as? ResultViewController {
+                VC.BPMAverage = self.average
+                VC.BPMDeviation = self.deviation
+                VC.BPMmax = self.bpmMax
+                VC.BPMmin = self.bpmMin
+                VC.questions = self.questions
+            }
+        }
+    }
 
 }
 

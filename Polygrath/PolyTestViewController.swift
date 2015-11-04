@@ -55,7 +55,7 @@ class PolyTestViewController: UIViewController, WCSessionDelegate, ChartViewDele
     
     //AV record
     var audioRecorder:AVAudioRecorder!
-    var recordedAudio:RecordedAudio!
+    var recordedAudio:RecordedFile!
     var recordCount = 0
     
     
@@ -785,10 +785,10 @@ class PolyTestViewController: UIViewController, WCSessionDelegate, ChartViewDele
     func audioRecorderDidFinishRecording(recorder: AVAudioRecorder, successfully flag: Bool) {
         if flag {
             //save to record array
-            let recordedAudio = RecordedAudio()
+            let recordedAudio = RecordedFile()
             recordedAudio.URL = recorder.url
             recordedAudio.title = recorder.url.lastPathComponent
-            self.questions[self.recordCount].recordAudio = recordedAudio
+            self.questions[self.recordCount].file = recordedAudio
             print("record stop, save to quest.\(self.recordCount + 1)")
             self.recordCount++
             
