@@ -142,6 +142,9 @@ class VideoTestViewController: UIViewController, AVCaptureVideoDataOutputSampleB
             self.naviationHeight = navigationHeight
         }
         
+        //animate
+        self.startAnimatieProgressBar()
+        
     }
 
     override func didReceiveMemoryWarning() {
@@ -187,9 +190,21 @@ class VideoTestViewController: UIViewController, AVCaptureVideoDataOutputSampleB
     @IBOutlet weak var switchButton: UIButton!
     
     @IBAction func switchButtonTouch(sender: AnyObject) {
+        print("switch button touch")
         self.isLying = !self.isLying
         self.switchCamera()
     }
+    
+    
+    @IBOutlet weak var finishedButton: UIButton!
+    
+    @IBAction func finishedButtonTouch(sender: AnyObject) {
+        print("finished button touch")
+        
+        self.sendCMDStopWatch()
+        self.performSegueWithIdentifier("VideoResultSegue", sender: self)
+    }
+    
     
     
 //WC SESSION
@@ -256,7 +271,8 @@ class VideoTestViewController: UIViewController, AVCaptureVideoDataOutputSampleB
                 dispatch_async(dispatch_get_main_queue(), { () -> Void in
                     self.stopRecordVideo()
                     //alert
-                    self.alertMessage("Test was stop by iWatch", type: 0)
+                    self.alertStopMessage()
+                    
                 })
             }
         }
@@ -436,6 +452,7 @@ class VideoTestViewController: UIViewController, AVCaptureVideoDataOutputSampleB
             self.view.bringSubviewToFront(self.recordButton)
             self.view.bringSubviewToFront(self.switchButton)
             self.view.bringSubviewToFront(self.progressLieBar)
+            self.view.bringSubviewToFront(self.finishedButton)
             self.captureSession.startRunning()
             
         }catch {
@@ -742,7 +759,7 @@ class VideoTestViewController: UIViewController, AVCaptureVideoDataOutputSampleB
             self.isRecord = false
             self.avAssetWriter?.finishWritingWithCompletionHandler({ () -> Void in
                 print("錄製完成")
-                Singleton.sharedInstance.saveVideoToCameraRoll(self.tempURL)
+                
             })
         }
     }
@@ -815,6 +832,33 @@ class VideoTestViewController: UIViewController, AVCaptureVideoDataOutputSampleB
     }
     
     
+//animation
+    var progressBarTimer: NSTimer?
+    func animateProgressbar() {
+        let diceRoll = Float(Double(arc4random_uniform(11) + 1) * 0.01)
+        UIView.animateWithDuration(0.2, delay: 0.0, options: UIViewAnimationOptions.CurveEaseIn, animations: { () -> Void in
+            self.progressLieBar.progress += diceRoll
+            self.view.layoutIfNeeded()
+            }, completion: nil)
+        UIView.animateWithDuration(0.3, delay: 0.2, options: UIViewAnimationOptions.CurveEaseOut, animations: { () -> Void in
+            self.progressLieBar.progress -= diceRoll
+            self.view.layoutIfNeeded()
+            }, completion: nil)
+    }
+    func startAnimatieProgressBar() {
+        print("animate progress bar")
+        self.progressBarTimer = NSTimer.scheduledTimerWithTimeInterval(0.5, target: self, selector: Selector("animateProgressbar"), userInfo: nil, repeats: true)
+        
+        
+    }
+    
+    func stopAnimatieProgressBar() {
+        self.progressBarTimer?.invalidate()
+        self.progressBarTimer = nil
+    }
+    
+    
+    
 //alert
     func alertError(error: String) {
         print("alert error message: \(error)")
@@ -836,7 +880,7 @@ class VideoTestViewController: UIViewController, AVCaptureVideoDataOutputSampleB
             case .Default:
                 print("test is stop by watch, jump to result", terminator: "")
                 //segue
-                self.performSegueWithIdentifier("ResultSegue", sender: self)
+                self.performSegueWithIdentifier("VideoResultSegue", sender: self)
                 
             case .Cancel:
                 print("cancel", terminator: "")
@@ -855,9 +899,7 @@ class VideoTestViewController: UIViewController, AVCaptureVideoDataOutputSampleB
         self.presentViewController(alert, animated: true, completion: nil)
     }
     
-    func alertMessage(message: String, type: Int) {
-        
-    }
+    
     /*
     // MARK: - Navigation
 
@@ -869,7 +911,20 @@ class VideoTestViewController: UIViewController, AVCaptureVideoDataOutputSampleB
     */
     
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-        if segue.identifier == "ResultSegue" {
+        if segue.identifier == "VideoResultSegue" {
+            //save last video
+            if self.isRecord {
+                //stop record the last video
+                self.stopRecordVideo()
+                //Save question file url, end time.
+                let lastQuest = self.questions.last!
+                let recordFile = RecordedFile()
+                recordFile.title = self.tempURL.lastPathComponent
+                recordFile.URL = self.tempURL
+                lastQuest.file = recordFile
+                lastQuest.endTime = NSDate()
+                
+            }
             if let VC = segue.destinationViewController as? ResultViewController {
                 VC.BPMAverage = self.average
                 VC.BPMDeviation = self.deviation

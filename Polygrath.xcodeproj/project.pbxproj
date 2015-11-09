@@ -12,6 +12,7 @@
 		AC06ECF61BB692C90087586E /* TitleTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = AC06ECF51BB692C90087586E /* TitleTableViewCell.swift */; };
 		AC648BCB1BDF1C6C0063CD1D /* SingletonM.swift in Sources */ = {isa = PBXBuildFile; fileRef = AC648BCA1BDF1C6C0063CD1D /* SingletonM.swift */; };
 		AC8DEABE1BE9B27800E60B62 /* heartbeat.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = AC8DEABD1BE9B27800E60B62 /* heartbeat.mp3 */; };
+		AC8DEAC21BEB249400E60B62 /* PlayVideoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = AC8DEAC11BEB249400E60B62 /* PlayVideoViewController.swift */; };
 		AC9105E91BCFA5A100817F40 /* VideoTestViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = AC9105E81BCFA5A100817F40 /* VideoTestViewController.swift */; };
 		ACB4E08A1BAAB6B60044EB72 /* PolyTestViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = ACB4E0891BAAB6B60044EB72 /* PolyTestViewController.swift */; };
 		ACBC3F6D1B9EC9D7007AC186 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = ACBC3F6C1B9EC9D7007AC186 /* AppDelegate.swift */; };
@@ -100,6 +101,7 @@
 		AC06ECF51BB692C90087586E /* TitleTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TitleTableViewCell.swift; sourceTree = "<group>"; };
 		AC648BCA1BDF1C6C0063CD1D /* SingletonM.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SingletonM.swift; sourceTree = "<group>"; };
 		AC8DEABD1BE9B27800E60B62 /* heartbeat.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = heartbeat.mp3; sourceTree = "<group>"; };
+		AC8DEAC11BEB249400E60B62 /* PlayVideoViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PlayVideoViewController.swift; sourceTree = "<group>"; };
 		AC9105E81BCFA5A100817F40 /* VideoTestViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VideoTestViewController.swift; sourceTree = "<group>"; };
 		ACB4E0891BAAB6B60044EB72 /* PolyTestViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PolyTestViewController.swift; sourceTree = "<group>"; };
 		ACBC3F691B9EC9D7007AC186 /* Polygrath.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Polygrath.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -231,6 +233,7 @@
 				AC06ECF51BB692C90087586E /* TitleTableViewCell.swift */,
 				AC648BCA1BDF1C6C0063CD1D /* SingletonM.swift */,
 				ACC81A4D1BB4E973006377F6 /* ResultViewController.swift */,
+				AC8DEAC11BEB249400E60B62 /* PlayVideoViewController.swift */,
 				ACC81A4F1BB4FB25006377F6 /* questions.swift */,
 				ACBC3F761B9EC9D7007AC186 /* Assets.xcassets */,
 				ACBC3F781B9EC9D7007AC186 /* LaunchScreen.storyboard */,
@@ -562,6 +565,7 @@
 				ACBC3F751B9EC9D7007AC186 /* Polygrath.xcdatamodeld in Sources */,
 				AC648BCB1BDF1C6C0063CD1D /* SingletonM.swift in Sources */,
 				AC06ECF61BB692C90087586E /* TitleTableViewCell.swift in Sources */,
+				AC8DEAC21BEB249400E60B62 /* PlayVideoViewController.swift in Sources */,
 				ACC81A4E1BB4E973006377F6 /* ResultViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

@@ -187,7 +187,7 @@ Press 'Start Button' on both side</string>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="NfC-fF-U3p">
-                                <rect key="frame" x="243" y="510" width="113" height="60"/>
+                                <rect key="frame" x="243" y="480" width="113" height="60"/>
                                 <animations/>
                                 <color key="backgroundColor" red="0.0" green="1" blue="0.50196081400000003" alpha="1" colorSpace="calibratedRGB"/>
                                 <state key="normal" title="record" image="mic-60-vec">
@@ -216,14 +216,24 @@ Press 'Start Button' on both side</string>
                                 <color key="progressTintColor" red="1" green="0.16571869017338048" blue="0.10544234841068745" alpha="1" colorSpace="calibratedRGB"/>
                                 <color key="trackTintColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                             </progressView>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="B9f-pe-WDc">
+                                <rect key="frame" x="512" y="550" width="58" height="30"/>
+                                <animations/>
+                                <state key="normal" title="Finished"/>
+                                <connections>
+                                    <action selector="finishedButtonTouch:" destination="vg2-cG-mDi" eventType="touchUpInside" id="1bk-Es-Eoh"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <animations/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
                             <constraint firstAttribute="trailingMargin" secondItem="1zl-ut-uN4" secondAttribute="trailing" id="3fg-Gx-2nR"/>
-                            <constraint firstItem="Eia-G7-nO3" firstAttribute="top" secondItem="NfC-fF-U3p" secondAttribute="bottom" constant="30" id="EXw-HD-RLu"/>
+                            <constraint firstItem="Eia-G7-nO3" firstAttribute="top" secondItem="NfC-fF-U3p" secondAttribute="bottom" constant="60" id="EXw-HD-RLu"/>
                             <constraint firstItem="1zl-ut-uN4" firstAttribute="width" secondItem="Ok9-FT-77G" secondAttribute="height" multiplier="1:4" id="Eft-H0-9se"/>
+                            <constraint firstItem="Eia-G7-nO3" firstAttribute="top" secondItem="B9f-pe-WDc" secondAttribute="bottom" constant="20" id="Hc6-UX-hu1"/>
                             <constraint firstItem="1zl-ut-uN4" firstAttribute="centerX" secondItem="Ok9-FT-77G" secondAttribute="centerX" id="Igh-zE-V7I"/>
+                            <constraint firstAttribute="trailing" secondItem="B9f-pe-WDc" secondAttribute="trailing" constant="30" id="Lfb-a8-nCa"/>
                             <constraint firstAttribute="trailing" secondItem="egV-5L-V3R" secondAttribute="trailing" constant="10" id="Ojw-JP-F4Q"/>
                             <constraint firstItem="egV-5L-V3R" firstAttribute="top" secondItem="BBY-Uy-Eiu" secondAttribute="bottom" constant="10" id="Xae-cS-II5"/>
                             <constraint firstItem="NfC-fF-U3p" firstAttribute="centerX" secondItem="Ok9-FT-77G" secondAttribute="centerX" id="ae4-Cs-tEC"/>
@@ -238,9 +248,11 @@ Press 'Start Button' on both side</string>
                         </variation>
                     </view>
                     <connections>
+                        <outlet property="finishedButton" destination="B9f-pe-WDc" id="ZZg-st-Clp"/>
                         <outlet property="progressLieBar" destination="1zl-ut-uN4" id="vg3-OZ-5H1"/>
                         <outlet property="recordButton" destination="NfC-fF-U3p" id="oHY-Dr-Vzj"/>
                         <outlet property="switchButton" destination="egV-5L-V3R" id="Vyg-Nh-2LL"/>
+                        <segue destination="pcs-oQ-Wb1" kind="show" identifier="VideoResultSegue" id="qQL-CL-a88"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="TqG-Wf-csK" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -756,7 +768,7 @@ Press 'Start Button' on both side</string>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="qWN-eN-JuS" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1771" y="1639"/>
+            <point key="canvasLocation" x="1819" y="1639"/>
         </scene>
         <!--Statement View Controller-->
         <scene sceneID="tqr-bE-hI1">
@@ -821,4 +833,7 @@ Press 'Start Button' on both side</string>
         <image name="play-30-vec" width="30" height="30"/>
         <image name="warning-30-vec" width="30" height="30"/>
     </resources>
+    <inferredMetricsTieBreakers>
+        <segue reference="qQL-CL-a88"/>
+    </inferredMetricsTieBreakers>
 </document>

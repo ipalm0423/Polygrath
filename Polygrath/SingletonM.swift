@@ -320,6 +320,8 @@ class Singleton: NSObject {
     }
     
     
+//play video
+    
     
     
     

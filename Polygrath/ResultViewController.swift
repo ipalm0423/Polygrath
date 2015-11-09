@@ -9,6 +9,7 @@
 import UIKit
 import Charts
 import AVFoundation
+import AVKit
 
 class ResultViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, ChartViewDelegate, AVAudioPlayerDelegate {
 
@@ -29,7 +30,7 @@ class ResultViewController: UIViewController, UITableViewDelegate, UITableViewDa
     var BPMmin: Double = 0
     var BPMAverage: Double = 0
     var BPMDeviation: Double = 0
-    
+    var seletedRow = 0
     //audio
     var audioPlayer:AVAudioPlayer!
     var rowInPlay = -1
@@ -357,6 +358,13 @@ class ResultViewController: UIViewController, UITableViewDelegate, UITableViewDa
     
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         print("select table row: \(indexPath.row)")
+        
+        
+        
+        
+        
+        
+        /*audio
         //stop previous AV
         if self.audioPlayer != nil {
             if self.audioPlayer.playing {
@@ -366,7 +374,7 @@ class ResultViewController: UIViewController, UITableViewDelegate, UITableViewDa
         }
         //hight light
         self.animateSpotlightLine(indexPath.row)
-        
+        */
         
         
         
@@ -423,7 +431,20 @@ class ResultViewController: UIViewController, UITableViewDelegate, UITableViewDa
         return 70
     }
     
-    
+//video play
+    func playBackVideo(url: NSURL) {
+        
+        let player = AVPlayer(URL: url)
+        let playerViewController = AVPlayerViewController()
+        playerViewController.player = player
+        /*
+        self.presentViewController(playerViewController, animated: true) {
+            playerViewController.player!.play()
+        }*/
+        if let navi = self.navigationController {
+            navi.pushViewController(playerViewController, animated: true)
+        }
+    }
     
 //calculate
     func getAverage(nums: [Double]) -> Double {
@@ -516,13 +537,24 @@ class ResultViewController: UIViewController, UITableViewDelegate, UITableViewDa
     }
     */
     
-    
+    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+        if segue.identifier == "PlaySegue" {
+            if let VC = segue.destinationViewController as? PlayVideoViewController {
+                VC.quest = self.questions[self.seletedRow]
+            }
+        }
+    }
     
     
 //button click
 
     @IBAction func PlayButtonTouch(sender: AnyObject) {
         if let row = sender.tag {
+            //play back video
+            self.playBackVideo(self.questions[row].file.URL)
+            
+            
+            /*
             //pause if start
             if row == self.rowInPlay {
                 if let AV = self.audioPlayer {
@@ -537,15 +569,54 @@ class ResultViewController: UIViewController, UITableViewDelegate, UITableViewDa
             print("press play button on row: \(row)")
             self.playBackAudioRecord(row)
             self.animateTimeTrendOfLine(row)
+            */
         }
-        
+
     }
     
     
     @IBAction func moreButtonTouch(sender: AnyObject) {
         if let row = sender.tag {
             print("press play button on row: \(row)")
+            let alert = UIAlertController(title: "Share Video", message: nil, preferredStyle: UIAlertControllerStyle.ActionSheet)
             
+            //camera roll
+            let actionSaveToCamera = UIAlertAction(title: "Save to Camera Roll", style: UIAlertActionStyle.Default, handler: { (action) -> Void in
+                print("save question.\(row) to camera roll")
+                Singleton.sharedInstance.saveVideoToCameraRoll(self.questions[row].file.URL)
+            })
+            
+            //facebook
+            let actionShareFB = UIAlertAction(title: "Facebook", style: UIAlertActionStyle.Default, handler: { (action) -> Void in
+                print("share question.\(row) to facebook")
+                
+            })
+            
+            //messenger
+            let actionShareMessenger = UIAlertAction(title: "Messenger", style: UIAlertActionStyle.Default, handler: { (action) -> Void in
+                print("share question.\(row) to Messenger")
+                
+            })
+            
+            //whatsapp
+            let actionShareWhatsapp = UIAlertAction(title: "WhatsApp", style: UIAlertActionStyle.Default, handler: { (action) -> Void in
+                print("share question.\(row) to WhatsApp")
+                
+            })
+            
+            //cancel
+            let actionCancel = UIAlertAction(title: "Cancel", style: UIAlertActionStyle.Cancel, handler: { (action) -> Void in
+                print("cancel to share video")
+                
+            })
+            
+            //add to alert
+            alert.addAction(actionSaveToCamera)
+            alert.addAction(actionShareFB)
+            alert.addAction(actionShareMessenger)
+            alert.addAction(actionShareWhatsapp)
+            alert.addAction(actionCancel)
+            self.presentViewController(alert, animated: true, completion: nil)
         }
     }
     
