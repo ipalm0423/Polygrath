@@ -35,4 +35,5 @@ class question {
 class RecordedFile:NSObject {
     var title:String!
     var URL:NSURL!
+    var assetURL: NSURL?
 }

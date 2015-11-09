@@ -9,6 +9,8 @@
 import Foundation
 import Photos
 import AVKit
+import FBSDKMessengerShareKit
+import FBSDKShareKit
 
 class Singleton: NSObject {
     class var sharedInstance: Singleton {
@@ -135,32 +137,41 @@ class Singleton: NSObject {
         return collection.firstObject as! PHAssetCollection?
     }
     
-    func saveVideoToCameraRoll(url: NSURL) -> Bool {
-        var isSave = false
-        var haveAlbum = false
+    func saveVideoToCameraRoll(url: NSURL, completion: ((identifier: NSString, newUrl: NSURL) -> Void)?) {
+        
+        var identifier: NSString?
+        var assetPlaceholder: PHObjectPlaceholder!
         PHPhotoLibrary.sharedPhotoLibrary().performChanges({ () -> Void in
             //create album and save video
+            
             if let collection = self.createAlbum() {
-                haveAlbum = true
-                let asset = PHAsset.fetchAssetsInAssetCollection(collection, options: nil)
                 
+                let asset = PHAsset.fetchAssetsInAssetCollection(collection, options: nil)
                 let assetRequest = PHAssetChangeRequest.creationRequestForAssetFromVideoAtFileURL(url)!
-                let assetPlaceholder = assetRequest.placeholderForCreatedAsset
+                assetPlaceholder = assetRequest.placeholderForCreatedAsset!
                 let albumChangeRequest = PHAssetCollectionChangeRequest(forAssetCollection: collection, assets: asset)
-                albumChangeRequest?.addAssets([assetPlaceholder!])
+                albumChangeRequest?.addAssets([assetPlaceholder])
             }else {
                 print("can't create album")
+                
             }
             }) { (success, error) -> Void in
-                isSave = success
-                if isSave && haveAlbum {
-                    print("save video success")
+                
+                if success {
+                    
+                    identifier = assetPlaceholder.localIdentifier
+                    print("save video success, identifier: \(identifier)")
+                    let uuid = identifier!.substringToIndex(36)
+                    let stringURL = "assets-library://asset/asset.MOV?id=\(uuid)&ext=MOV"
+                    let newUrl = NSURL(string: stringURL)!
+                    completion?(identifier: identifier!, newUrl: newUrl)
+                    
                 }else {
                     print("can't save video")
                 }
                 print(error)
         }
-        return (isSave && haveAlbum)
+        
     }
     
     
@@ -361,7 +372,49 @@ class Singleton: NSObject {
     }
     
 
+//facebook
+    func shareVideoToMessenger(url: NSURL) {
+        if let videoData = NSData(contentsOfURL: url) {
+            FBSDKMessengerSharer.shareVideo(videoData, withOptions: nil)
+        }
+    }
     
+    func shareVideoToMessengerAndCameraRoll(url: NSURL, completion: ((url: NSURL) -> Void )?) {
+        if let videoData = NSData(contentsOfURL: url) {
+            self.saveVideoToCameraRoll(url, completion: { (identifier, newUrl) -> Void in
+                //save to question
+                completion?(url: newUrl)
+                
+                //share to messenger
+                FBSDKMessengerSharer.shareVideo(videoData, withOptions: nil)
+            })
+        }
+    }
+    
+    func shareVideoToFacebook(assetURL: NSURL, targetVC: UIViewController) {
+        let video = FBSDKShareVideo()
+        video.videoURL = assetURL
+        let content = FBSDKShareVideoContent()
+        content.video = video
+        
+        //perfrom dialog
+        let dialog = FBSDKShareDialog()
+        dialog.shareContent = content
+        dialog.fromViewController = targetVC
+        dialog.mode = FBSDKShareDialogMode.Native
+        dialog.show()
+    }
+    
+    func shareVideoToFacebookAndCameraRoll(url: NSURL, targetVC: UIViewController, completion: ((newURL: NSURL) -> Void )?) {
+        self.saveVideoToCameraRoll(url) { (identifier, newUrl) -> Void in
+            print("share video to facebook: \(newUrl)")
+            //save to question
+            completion?(newURL: newUrl)
+            
+            //facebook func
+            self.shareVideoToFacebook(newUrl, targetVC: targetVC)
+        }
+    }
 
     
     

@@ -200,9 +200,9 @@ class VideoTestViewController: UIViewController, AVCaptureVideoDataOutputSampleB
     
     @IBAction func finishedButtonTouch(sender: AnyObject) {
         print("finished button touch")
-        
-        self.sendCMDStopWatch()
         self.performSegueWithIdentifier("VideoResultSegue", sender: self)
+        self.sendCMDStopWatch()
+        
     }
     
     

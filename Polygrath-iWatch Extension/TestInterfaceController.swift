@@ -216,6 +216,7 @@ class TestInterfaceController: WKInterfaceController, WCSessionDelegate, HKWorko
                 print("cmd from iphone: stop")
                 replyHandler(["cmdResponse" : true])
                 self.testIsStart = false
+                self.popToRootController()
                 
             case "start" :
                 print("cmd from iphone: start")

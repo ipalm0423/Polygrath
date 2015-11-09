@@ -10,6 +10,7 @@ import UIKit
 import Charts
 import AVFoundation
 import AVKit
+import FBSDKShareKit
 
 class ResultViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, ChartViewDelegate, AVAudioPlayerDelegate {
 
@@ -539,9 +540,7 @@ class ResultViewController: UIViewController, UITableViewDelegate, UITableViewDa
     
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
         if segue.identifier == "PlaySegue" {
-            if let VC = segue.destinationViewController as? PlayVideoViewController {
-                VC.quest = self.questions[self.seletedRow]
-            }
+            
         }
     }
     
@@ -583,19 +582,42 @@ class ResultViewController: UIViewController, UITableViewDelegate, UITableViewDa
             //camera roll
             let actionSaveToCamera = UIAlertAction(title: "Save to Camera Roll", style: UIAlertActionStyle.Default, handler: { (action) -> Void in
                 print("save question.\(row) to camera roll")
-                Singleton.sharedInstance.saveVideoToCameraRoll(self.questions[row].file.URL)
+                let url = self.questions[row].file.URL
+                Singleton.sharedInstance.saveVideoToCameraRoll(url, completion: { (identifier, newUrl) -> Void in
+                    self.questions[row].file.assetURL = newUrl
+                })
             })
             
             //facebook
             let actionShareFB = UIAlertAction(title: "Facebook", style: UIAlertActionStyle.Default, handler: { (action) -> Void in
                 print("share question.\(row) to facebook")
                 
+                if let assetUrl = self.self.questions[row].file.assetURL {
+                    //already save to camera roll
+                    Singleton.sharedInstance.shareVideoToFacebook(assetUrl, targetVC: self)
+                }else {
+                    //save to camera roll first
+                    let url = self.questions[row].file.URL
+                    Singleton.sharedInstance.shareVideoToFacebookAndCameraRoll(url, targetVC: self, completion: { (newURL) -> Void in
+                        self.questions[row].file.assetURL = newURL
+                    })
+                }
+                
             })
             
             //messenger
             let actionShareMessenger = UIAlertAction(title: "Messenger", style: UIAlertActionStyle.Default, handler: { (action) -> Void in
                 print("share question.\(row) to Messenger")
-                
+                let url = self.questions[row].file.URL
+                if let assetUrl = self.self.questions[row].file.assetURL {
+                    //already save to camera roll
+                    Singleton.sharedInstance.shareVideoToMessenger(url)
+                }else {
+                    //save to camera roll first
+                    Singleton.sharedInstance.shareVideoToMessengerAndCameraRoll(url, completion: { (newURL) -> Void in
+                        self.questions[row].file.assetURL = newURL
+                    })
+                }
             })
             
             //whatsapp
@@ -614,7 +636,7 @@ class ResultViewController: UIViewController, UITableViewDelegate, UITableViewDa
             alert.addAction(actionSaveToCamera)
             alert.addAction(actionShareFB)
             alert.addAction(actionShareMessenger)
-            alert.addAction(actionShareWhatsapp)
+            //alert.addAction(actionShareWhatsapp)
             alert.addAction(actionCancel)
             self.presentViewController(alert, animated: true, completion: nil)
         }
