@@ -207,6 +207,57 @@ class Singleton: NSObject {
     }
     
 //CIImage func
+    func createHeartCIImage(bpm: Double, frameCount: Int, width: CGFloat, height: CGFloat) -> CIImage {
+        //constant
+        let period = 60 / bpm //seconds
+        let percentage = cos((Double(frameCount) * 0.133) * M_PI / period) //frame = 15/1 s
+        var heartHeight = CGFloat(percentage * (bpm / 110)) * height
+        print("percent: \(percentage)")
+        
+        //set height as max
+        if heartHeight > height / 2 {
+            heartHeight = height / 2
+        }
+        
+        let controlPoint1: CGPoint = CGPoint(x: width * 0.5, y: heartHeight)
+        let controlPoint2: CGPoint = CGPoint(x: width * 0.5, y: -heartHeight)
+        
+        //set path
+        let heartPath = UIBezierPath()
+        heartPath.moveToPoint(CGPoint(x: 0, y: 0))
+        heartPath.addCurveToPoint(CGPoint(x: width, y: 0), controlPoint1: controlPoint1, controlPoint2: controlPoint2)
+        heartPath.stroke()
+        
+        let arc = CAShapeLayer()
+        arc.path = heartPath.CGPath
+        arc.position = CGPoint(x: 0, y: height / 2)
+        arc.fillColor = UIColor.clearColor().CGColor
+        arc.strokeColor = UIColor.purpleColor().CGColor
+        arc.lineWidth = 10
+        arc.lineCap = kCALineCapRound ; //线条拐角
+        arc.lineJoin = kCALineJoinRound
+        
+        //set gradient color
+        let gradientLayer = CAGradientLayer()
+        gradientLayer.frame = CGRect(x: 0, y: 0, width: width, height: height)
+        gradientLayer.colors = [UIColor.yellowColor().CGColor, UIColor.redColor().CGColor, UIColor.yellowColor().CGColor]
+        gradientLayer.startPoint = CGPoint(x: 0, y: 0)
+        gradientLayer.endPoint = CGPoint(x: 0, y: 1)
+        gradientLayer.mask = arc
+        
+        //start drawing to context
+        UIGraphicsBeginImageContextWithOptions(CGSize(width: width, height: height), false, 0)
+        
+        //render
+        gradientLayer.renderInContext(UIGraphicsGetCurrentContext()!)
+        
+        // getting an image from it
+        let newImage = UIGraphicsGetImageFromCurrentImageContext();
+        UIGraphicsEndImageContext()
+        
+        return CIImage(image: newImage)!
+    }
+    
     func createTextCIImage(text: String, font: UIFont) -> CIImage {
         
         // setting attr: font name, color, alignment...etc.
@@ -266,6 +317,8 @@ class Singleton: NSObject {
             return sourceImage
         }
     }
+    
+    
     
     func rotateCGImageByDeviceOrientation(inputImage: CIImage, biasDegree: Double) -> CIImage {
         //depends on device rotate

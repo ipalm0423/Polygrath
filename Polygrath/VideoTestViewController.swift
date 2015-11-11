@@ -26,7 +26,7 @@ class VideoTestViewController: UIViewController, AVCaptureVideoDataOutputSampleB
 
     
 //health kit
-    var bpm: Int = 0
+    var bpm: Double = 0
     var isLying = false {
         didSet{
             if self.isLying {
@@ -107,7 +107,7 @@ class VideoTestViewController: UIViewController, AVCaptureVideoDataOutputSampleB
     
 //animate const
     var heartDegree = 0
-    
+    var frameCount = 0
     
 //audio
     var avAssetWriterAudioInput: AVAssetWriterInput!
@@ -120,14 +120,13 @@ class VideoTestViewController: UIViewController, AVCaptureVideoDataOutputSampleB
     var videoCaptureConnection: AVCaptureConnection?
     
     
-    
+
     
     
     
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
         // Do any additional setup after loading the view.
         self.navigationController?.navigationBarHidden = false
         Singleton.sharedInstance.removeAllVideoTemp()
@@ -207,6 +206,8 @@ class VideoTestViewController: UIViewController, AVCaptureVideoDataOutputSampleB
     
     
     
+    
+    
 //WC SESSION
     func setupWCConnection() {
         if WCSession.isSupported() {
@@ -240,7 +241,7 @@ class VideoTestViewController: UIViewController, AVCaptureVideoDataOutputSampleB
                     self.dataValues.append(dic.1)
                 
                     //set bpm data
-                    self.bpm = Int(dic.1)
+                    self.bpm = (dic.1)
                     if dic.1 > self.bpmMax {
                         self.bpmMax = dic.1
                     }
@@ -453,6 +454,7 @@ class VideoTestViewController: UIViewController, AVCaptureVideoDataOutputSampleB
             self.view.bringSubviewToFront(self.switchButton)
             self.view.bringSubviewToFront(self.progressLieBar)
             self.view.bringSubviewToFront(self.finishedButton)
+    
             self.captureSession.startRunning()
             
         }catch {
@@ -466,14 +468,15 @@ class VideoTestViewController: UIViewController, AVCaptureVideoDataOutputSampleB
     }
     
     func closeCamera() {
-        self.captureSession.stopRunning()
-        
-        for output in self.captureSession.outputs {
-            self.captureSession.removeOutput(output as? AVCaptureOutput)
-        }
-        
-        for input in self.captureSession.inputs {
-            self.captureSession.removeInput(input as? AVCaptureInput)
+        if self.captureSession != nil {
+            self.captureSession.stopRunning()
+            for output in self.captureSession.outputs {
+                self.captureSession.removeOutput(output as? AVCaptureOutput)
+            }
+            
+            for input in self.captureSession.inputs {
+                self.captureSession.removeInput(input as? AVCaptureInput)
+            }
         }
         
         self.captureSession = nil
@@ -793,27 +796,33 @@ class VideoTestViewController: UIViewController, AVCaptureVideoDataOutputSampleB
     func drawAnimationByFrame(image: CIImage) -> CIImage {
         //frame
         let uiviewFrame = self.view.frame
+        self.frameCount++
         
-        //temp image
-        var tempImage = image
-        //heart image
-        let heartImage = UIImage(named: "heart-80-vec")!
+        //heart animation image
+        let heartImage = UIImage(named: "heart-1")!
         let heartRadius = self.getHeartRadiusByFrame()
         
-        //text image
+        //text animation image
         let bpmTextImage = Singleton.sharedInstance.createTextCIImage(bpm.description, font: UIFont.italicSystemFontOfSize(26))
         let textFrame = bpmTextImage.extent
+        
+        //heart line animtation image
+        let heartLineImage = Singleton.sharedInstance.createHeartCIImage(Double(bpm), frameCount: self.frameCount, width: uiviewFrame.width, height: 200) //set height = 200
+        let heartLineCenter = CGPoint(x: uiviewFrame.width / 2, y: uiviewFrame.height - 100) //height = 200
         
         //coordinate, original = (0, 0)
         let heartCenter = CGPoint(x: 60 , y:  self.naviationHeight + 10 + 60 )
         let textCenter = CGPoint(x: (uiviewFrame.width - (20 + textFrame.width / 2)), y: (self.naviationHeight + 10 + 20 + textFrame.height / 2))
         
         //setup heart animation
-        tempImage = Singleton.sharedInstance.drawCIImageOnSource(image, addCIImage: CIImage(image: heartImage), center: heartCenter, halfWidth: heartRadius, halfHeight: heartRadius, shrinkPortion: self.shrinkPortion, xbias: self.XBias, ybias: self.YBias)
+        let animate1Image = Singleton.sharedInstance.drawCIImageOnSource(image, addCIImage: CIImage(image: heartImage), center: heartCenter, halfWidth: heartRadius, halfHeight: heartRadius, shrinkPortion: self.shrinkPortion, xbias: self.XBias, ybias: self.YBias)
         //setup text animation
-        tempImage = Singleton.sharedInstance.drawCIImageOnSource(tempImage, addCIImage: bpmTextImage, center: textCenter, halfWidth: textFrame.width / 2, halfHeight: textFrame.height / 2, shrinkPortion: self.shrinkPortion, xbias: self.XBias, ybias: self.YBias)
+        let animate2Image = Singleton.sharedInstance.drawCIImageOnSource(animate1Image, addCIImage: bpmTextImage, center: textCenter, halfWidth: textFrame.width / 2, halfHeight: textFrame.height / 2, shrinkPortion: self.shrinkPortion, xbias: self.XBias, ybias: self.YBias)
+        //setup heartLine animation
+        let animate3Image = Singleton.sharedInstance.drawCIImageOnSource(animate2Image, addCIImage: heartLineImage, center: heartLineCenter, halfWidth: uiviewFrame.width / 2, halfHeight: 100, shrinkPortion: self.shrinkPortion, xbias: self.XBias, ybias: self.YBias) //height = 200
         
-        return tempImage
+        
+        return animate3Image
     }
     
     
@@ -826,7 +835,7 @@ class VideoTestViewController: UIViewController, AVCaptureVideoDataOutputSampleB
             heartRadius = heartRadius * 1.2
         }
         //ratio is from 12~24
-        self.heartDegree += 12 * (self.bpm / 60)
+        self.heartDegree += 12 * Int(self.bpm / 60)
         
         return heartRadius
     }
