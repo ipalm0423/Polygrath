@@ -45,7 +45,7 @@ class ResultViewController: UIViewController, UITableViewDelegate, UITableViewDa
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+        self.navigationController?.navigationBarHidden = false
         // Do any additional setup after loading the view.
         self.tableView.delegate = self
         self.tableView.dataSource = self
@@ -307,14 +307,7 @@ class ResultViewController: UIViewController, UITableViewDelegate, UITableViewDa
         cell.numLabel.text = (indexPath.row + 1).description
         cell.maxLabel.text = Int(quest.max).description
         cell.minLabel.text = Int(quest.min).description
-        let intervalTime = quest.endTime.timeIntervalSinceDate(quest.startTime)
-        var timeText = NSDateComponentsFormatter().stringFromTimeInterval(intervalTime)!
-        if intervalTime < 10 {
-            timeText = "00:0" + timeText
-        }else if intervalTime < 60 {
-            timeText = "00:" + timeText
-        }
-        
+        let timeText = Singleton.sharedInstance.getTimeString(quest.startTime, stopTime: quest.endTime)
         cell.playButton.setTitle(timeText, forState: UIControlState.Normal)
         cell.warningSightView.hidden = true
         cell.playButton.tag = indexPath.row

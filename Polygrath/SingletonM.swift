@@ -24,6 +24,19 @@ class Singleton: NSObject {
         return Static.instance!
     }
     
+    //time func
+    func getTimeString(startTime: NSDate, stopTime: NSDate) -> String {
+        let intervalTime = stopTime.timeIntervalSinceDate(startTime)
+        var timeText = NSDateComponentsFormatter().stringFromTimeInterval(intervalTime)!
+        if intervalTime < 10 {
+            timeText = "00:0" + timeText
+        }else if intervalTime < 60 {
+            timeText = "00:" + timeText
+        }
+        return timeText
+    }
+    
+    
 //file func
     func getFileSize(url: NSURL) -> NSNumber {
         var size:NSNumber = 0
@@ -207,10 +220,108 @@ class Singleton: NSObject {
     }
     
 //CIImage func
-    func createHeartCIImage(bpm: Double, frameCount: Int, width: CGFloat, height: CGFloat) -> CIImage {
+    var frameCount = 0
+    func drawAllAnimationInCIImage(width: CGFloat, height: CGFloat, bpm: Double, truthRate: Double, recordTime: NSDate?) -> CIImage? {
+        frameCount++
+        //Constraints
+        let topConstraint:CGFloat = 20
+        let sideConstraint:CGFloat = 30
+        let truthText2HeartImage: CGFloat = 65
+        let constraintHeartLineDown:CGFloat = 30
+        let centerPoint = CGPoint(x: width / 2, y: height / 2)
+        let topFont = UIFont(name: "HelveticaNeue", size: 18)!
+        let midFont = UIFont(name: "HelveticaNeue", size: 50)!
+        let heartLineHeight: CGFloat = 200
+        
+        //BPM text
+        let BPMText = createTextString(Int(bpm).description, font: midFont)
+        let sizeOfBPMText = BPMText.size()
+        //time text
+        
+        var timeText: NSMutableAttributedString?
+        if let startTime = recordTime {
+            let timeString = getTimeString(startTime, stopTime: NSDate())
+            timeText = createTextString(timeString, font: topFont)
+        }
+        let sizeOfTimeText = timeText?.size()
+        
+        //brand text
+        let brandText = createTextString("Polygraph", font: topFont)
+        let sizeOfBrandText = brandText.size()
+
+        //truth label
+        var truthText: NSMutableAttributedString?
+        if truthRate < 0.5 {
+            truthText = createTextString("\"untruth\"", font: topFont)
+        }
+        let sizeOfTruthText = truthText?.size()
+        
+        //heart line
+        let heartLineLayer = createHeartLineLayer(bpm, frameCount: frameCount, width: width, height: heartLineHeight)
+        
+        //heart animate
+        let heartRadius = getHeartRadius(bpm, truthRate: truthRate)
+        let heartImage = UIImage(named: "heart-1")!
+        
+        
+        
+        
+        //new a context and start drawing
+        UIGraphicsBeginImageContextWithOptions(CGSize(width: width, height: height), false, 0)
+        let CTX = UIGraphicsGetCurrentContext()!
+        
+        //TOP
+        
+        brandText.drawInRect(CGRect(x: sideConstraint, y: topConstraint, width: sizeOfBrandText.width, height: sizeOfBrandText.height))
+        
+        if let timetext = timeText {
+            timetext.drawInRect(CGRectMake(width - sideConstraint - (sizeOfTimeText!.width / 2), topConstraint, sizeOfTimeText!.width, sizeOfTimeText!.height))
+        }
+        
+        
+        //MID
+        //heart animate
+        //heartImage.drawInRect(CGRect(x: centerPoint.x - (heartRadius * 1.1627), y: centerPoint.y - heartRadius, width: (heartRadius * 1.1627 ) * 2, height: heartRadius * 2))
+        //BPM text
+        //BPMText.drawInRect(CGRect(x: (width - sizeOfBPMText.width) / 2, y: (height - sizeOfBPMText.height) / 2 - 7, width: sizeOfBPMText.width, height: sizeOfBPMText.height))
+        
+        //truth text
+        if let truthtext =  truthText {
+            truthtext.drawInRect(CGRect(x: (width - sizeOfTruthText!.width) / 2, y: (height - sizeOfTruthText!.height) / 2 + truthText2HeartImage, width: sizeOfTruthText!.width, height: sizeOfTruthText!.height)) //bias 65 for heart image
+        }
+
+        //heart line
+        CGContextTranslateCTM(CTX, 0, height - (heartLineHeight + constraintHeartLineDown)) // change CTM position
+        heartLineLayer.renderInContext(UIGraphicsGetCurrentContext()!)
+        
+        
+        // getting an image from it
+        //let newImage = UIGraphicsGetImageFromCurrentImageContext();
+        UIGraphicsEndImageContext()
+
+        return nil
+    }
+    
+    
+    func getHeartRadius(bpm: Double, truthRate: Double) -> CGFloat {
+        
+        //time movement
+        let period = 60 / bpm //seconds
+        let percentage:CGFloat = CGFloat(abs(cos(Double(frameCount) * 0.0333 * M_PI / period))) //frame = 30/1 s
+        //heart radius
+        let range = CGFloat(bpm) * 0.3
+        var heartRadius: CGFloat = 20 + (percentage) * range
+        if truthRate < 0.5 {
+            heartRadius = heartRadius * 1.2
+        }
+        
+        return heartRadius
+    }
+    
+    func createHeartLineLayer(bpm: Double, frameCount: Int, width: CGFloat, height: CGFloat) -> CALayer {
         //constant
         let period = 60 / bpm //seconds
-        let percentage = cos((Double(frameCount) * 0.133) * M_PI / period) //frame = 15/1 s
+        let percentage = cos((Double(frameCount) * 0.0666) * M_PI / period) //frame = 30/1 s
         var heartHeight = CGFloat(percentage * (bpm / 110)) * height
         print("percent: \(percentage)")
         
@@ -244,47 +355,32 @@ class Singleton: NSObject {
         gradientLayer.startPoint = CGPoint(x: 0, y: 0)
         gradientLayer.endPoint = CGPoint(x: 0, y: 1)
         gradientLayer.mask = arc
-        
-        //start drawing to context
-        UIGraphicsBeginImageContextWithOptions(CGSize(width: width, height: height), false, 0)
-        
-        //render
-        gradientLayer.renderInContext(UIGraphicsGetCurrentContext()!)
-        
-        // getting an image from it
-        let newImage = UIGraphicsGetImageFromCurrentImageContext();
-        UIGraphicsEndImageContext()
-        
-        return CIImage(image: newImage)!
+        gradientLayer.opacity = 0.5
+        return gradientLayer
     }
     
-    func createTextCIImage(text: String, font: UIFont) -> CIImage {
+    
+    func createTextString(text: String, font: UIFont) -> NSMutableAttributedString {
         
         // setting attr: font name, color, alignment...etc.
+        /*
         //shadow
         let shadow = NSShadow()
         shadow.shadowColor = UIColor.lightTextColor()
         shadow.shadowOffset = CGSizeMake (0.2, 0.4)
         shadow.shadowBlurRadius = 1
+        */
+        
         //alignment
         let paragraphStyle = NSMutableParagraphStyle()
         paragraphStyle.alignment = NSTextAlignment.Center
         //create attribute
-        let attr = [NSFontAttributeName: font, NSForegroundColorAttributeName:UIColor.redColor(), NSParagraphStyleAttributeName : paragraphStyle, NSKernAttributeName : 0.0, NSShadowAttributeName: shadow]
+        let attr = [NSFontAttributeName: font, NSForegroundColorAttributeName:UIColor.whiteColor(), NSParagraphStyleAttributeName : paragraphStyle, NSKernAttributeName : 0.0] // [NSShadowAttributeName: shadow]
         
         //calculate width and height
-        let sizeOfText = text.sizeWithAttributes(attr)
+        //let sizeOfText = text.sizeWithAttributes(attr)
         
-        //drawing to context
-        UIGraphicsBeginImageContextWithOptions(CGSize(width: sizeOfText.width, height: sizeOfText.height), false, 0)
-        let wordStamp = NSMutableAttributedString(string: text, attributes: attr)
-        wordStamp.drawInRect(CGRectMake(0, 0, sizeOfText.width, sizeOfText.height))
-        
-        // getting an image from it
-        let newImage = UIGraphicsGetImageFromCurrentImageContext();
-        UIGraphicsEndImageContext()
-        
-        return CIImage(CGImage: newImage.CGImage!)
+        return NSMutableAttributedString(string: text, attributes: attr)
     }
     
     func drawCIImageOnSource(sourceImage: CIImage, addCIImage: CIImage?, center: CGPoint, halfWidth: CGFloat, halfHeight: CGFloat, shrinkPortion: CGFloat, xbias: CGFloat, ybias: CGFloat) -> CIImage {
@@ -340,6 +436,11 @@ class Singleton: NSObject {
     
 
 //Calculation
+    func getRamdom(maxDice: UInt32) -> Double {
+        let diceRoll = (Double(arc4random_uniform(maxDice) + 1))
+        return diceRoll
+    }
+    
     func getMin(values: [Double]) -> Double {
         var min:Double = 200
         for value in values {

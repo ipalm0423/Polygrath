@@ -26,15 +26,27 @@ class VideoTestViewController: UIViewController, AVCaptureVideoDataOutputSampleB
 
     
 //health kit
-    var bpm: Double = 0
+    @IBOutlet weak var truthLabel: UILabel!
+    
+    @IBOutlet weak var heartImage: UIImageView!
+    
+    @IBOutlet weak var bpmLabel: UILabel!
+    
+    var bpm: Double = 0 {
+        didSet{
+            self.bpmLabel.text = Int(self.bpm).description
+        }
+    }
     var isLying = false {
         didSet{
             if self.isLying {
                 Singleton.sharedInstance.playHeartBeatEffect()
                 AudioServicesPlaySystemSound(kSystemSoundID_Vibrate)
                 print("user is lying, vibrate and play sound")
+                self.truthLabel.alpha = 1.0
             }else {
                 Singleton.sharedInstance.stopPlayingEffect()
+                self.truthLabel.alpha = 0
             }
         }
     }
@@ -47,11 +59,11 @@ class VideoTestViewController: UIViewController, AVCaptureVideoDataOutputSampleB
     var deviation: Double = 0
     var truthRate = 0.0
 
-    @IBOutlet weak var progressLieBar: UIProgressView!
+    
     
 //time
-    let startTime = NSDate()
-    
+    var timeLabelTimer: NSTimer?
+    @IBOutlet weak var timeLabel: UILabel!
     
     
 //camera
@@ -65,11 +77,13 @@ class VideoTestViewController: UIViewController, AVCaptureVideoDataOutputSampleB
         didSet {
             //change button icon
             if self.isRecord {
-                self.recordButton.setTitle("Stop", forState: UIControlState.Normal)
-                self.recordButton.backgroundColor = UIColor(red: 1, green: 0.1, blue: 243 / 255, alpha: 0.9)
+                self.recordButton.setImage(UIImage(named: "pause.png"), forState: UIControlState.Normal)
+                self.startCountRecordTime()
+                
             }else {
-                self.recordButton.setTitle("Record", forState: UIControlState.Normal)
-                self.recordButton.backgroundColor = UIColor(red: 80 / 255, green: 1, blue: 0, alpha: 0.9)
+                self.stopCountRecordTime()
+                self.recordButton.setImage(UIImage(named: "recording.png"), forState: UIControlState.Normal)
+                
             }
         }
     }
@@ -90,14 +104,7 @@ class VideoTestViewController: UIViewController, AVCaptureVideoDataOutputSampleB
         let options = [kCIContextWorkingColorSpace : NSNull()]
         return CIContext(EAGLContext: eaglContext, options: options)
         }()
-    /*
-    var stillImage: CIImage!
-    lazy var context: CIContext = {
-    let eaglContext = EAGLContext(API: EAGLRenderingAPI.OpenGLES2)
-    let options = [kCIContextWorkingColorSpace : NSNull()]
-    return CIContext(EAGLContext: eaglContext, options: options)
-    }()
-    */
+    
     
 //ciimage coordinate
     var naviationHeight:CGFloat = 0.0
@@ -108,6 +115,7 @@ class VideoTestViewController: UIViewController, AVCaptureVideoDataOutputSampleB
 //animate const
     var heartDegree = 0
     var frameCount = 0
+    var animationCIImage: CIImage?
     
 //audio
     var avAssetWriterAudioInput: AVAssetWriterInput!
@@ -128,21 +136,14 @@ class VideoTestViewController: UIViewController, AVCaptureVideoDataOutputSampleB
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
-        self.navigationController?.navigationBarHidden = false
+        self.navigationController?.navigationBarHidden = true
         Singleton.sharedInstance.removeAllVideoTemp()
         self.setupWCConnection()
-        self.setupCamera(true)
+        //self.setupCamera(true)
         Singleton.sharedInstance.setupAudioPlayer()
         //idle time disable
         UIApplication.sharedApplication().idleTimerDisabled = true
         
-        //setup navi bar height
-        if let navigationHeight = self.navigationController?.navigationBar.frame.height {
-            self.naviationHeight = navigationHeight
-        }
-        
-        //animate
-        self.startAnimatieProgressBar()
         
     }
 
@@ -157,7 +158,10 @@ class VideoTestViewController: UIViewController, AVCaptureVideoDataOutputSampleB
     }
 
     
-    
+    override func viewDidAppear(animated: Bool) {
+        self.setupCamera(true)
+        self.navigationController?.navigationBarHidden = true
+    }
     
     
     
@@ -168,13 +172,7 @@ class VideoTestViewController: UIViewController, AVCaptureVideoDataOutputSampleB
         print("record button touch")
         if self.isRecord {
             self.stopRecordVideo()
-            //Save question file url, end time.
-            let lastQuest = self.questions[self.questions.count - 1]
-            let recordFile = RecordedFile()
-            recordFile.title = self.tempURL.lastPathComponent
-            recordFile.URL = self.tempURL
-            lastQuest.file = recordFile
-            lastQuest.endTime = NSDate()
+            
             
         }else {
             self.startRecordVideo()
@@ -199,6 +197,11 @@ class VideoTestViewController: UIViewController, AVCaptureVideoDataOutputSampleB
     
     @IBAction func finishedButtonTouch(sender: AnyObject) {
         print("finished button touch")
+        if self.questions.count == 0 {
+            //no ask
+            self.navigationController?.popViewControllerAnimated(true)
+            return
+        }
         self.performSegueWithIdentifier("VideoResultSegue", sender: self)
         self.sendCMDStopWatch()
         
@@ -256,7 +259,7 @@ class VideoTestViewController: UIViewController, AVCaptureVideoDataOutputSampleB
                     }else {
                         self.isLying = false
                     }
-                    self.progressLieBar.setProgress(Float(1 - self.truthRate), animated: true)
+                    
                 }
             }
         }
@@ -377,9 +380,9 @@ class VideoTestViewController: UIViewController, AVCaptureVideoDataOutputSampleB
         //setup session
         self.captureSession = AVCaptureSession()
         self.captureSession.beginConfiguration()
-        if captureSession.canSetSessionPreset(AVCaptureSessionPresetiFrame1280x720) {
+        if captureSession.canSetSessionPreset(AVCaptureSessionPreset640x480) {
             print("preset session medium")
-            self.captureSession.sessionPreset = AVCaptureSessionPresetiFrame1280x720
+            self.captureSession.sessionPreset = AVCaptureSessionPreset640x480
         }
         
         do {
@@ -421,11 +424,11 @@ class VideoTestViewController: UIViewController, AVCaptureVideoDataOutputSampleB
             
             //frame rate
             
-            let frameDuration = CMTimeMake(1, 15)
+            let frameDuration = CMTimeMake(1, 30)
             print("device max frame: \(videoDevice.activeVideoMaxFrameDuration)")
-            if videoDevice.activeVideoMaxFrameDuration > frameDuration {
-                print("setup frame rate: 15")
+            if videoDevice.activeVideoMaxFrameDuration < frameDuration {
                 try videoDevice.lockForConfiguration()
+                print("setupframe")
                 videoDevice.activeVideoMaxFrameDuration = frameDuration
                 videoDevice.activeVideoMinFrameDuration = frameDuration
                 videoDevice.unlockForConfiguration()
@@ -433,8 +436,8 @@ class VideoTestViewController: UIViewController, AVCaptureVideoDataOutputSampleB
             
             
             
-            
             captureSession.commitConfiguration()
+            print("setup frame rate:\(videoDevice.activeVideoMaxFrameDuration)")
             
             //preview camera
             
@@ -452,9 +455,11 @@ class VideoTestViewController: UIViewController, AVCaptureVideoDataOutputSampleB
             //button
             self.view.bringSubviewToFront(self.recordButton)
             self.view.bringSubviewToFront(self.switchButton)
-            self.view.bringSubviewToFront(self.progressLieBar)
             self.view.bringSubviewToFront(self.finishedButton)
-    
+            self.view.bringSubviewToFront(self.timeLabel)
+            self.view.bringSubviewToFront(self.truthLabel)
+            self.view.bringSubviewToFront(self.heartImage)
+            self.view.bringSubviewToFront(self.bpmLabel)
             self.captureSession.startRunning()
             
         }catch {
@@ -477,14 +482,12 @@ class VideoTestViewController: UIViewController, AVCaptureVideoDataOutputSampleB
             for input in self.captureSession.inputs {
                 self.captureSession.removeInput(input as? AVCaptureInput)
             }
+            self.captureSession = nil
+            self.frontCameraDevice = nil
+            self.backCameraDevice = nil
+            self.previewLayer.removeFromSuperlayer()
+            self.isCameraOn = false
         }
-        
-        self.captureSession = nil
-        self.frontCameraDevice = nil
-        self.backCameraDevice = nil
-        self.previewLayer.removeFromSuperlayer()
-        self.isCameraOn = false
-        
     }
     
     func switchCamera() {
@@ -607,9 +610,6 @@ class VideoTestViewController: UIViewController, AVCaptureVideoDataOutputSampleB
                 self.setupImagePortion(tempCIImage.extent)
                 self.isCameraOn = true
             }
-            
-            //add-on image
-            tempCIImage = self.drawAnimationByFrame(tempCIImage)
             
 //record video
             if self.isRecord {
@@ -762,9 +762,36 @@ class VideoTestViewController: UIViewController, AVCaptureVideoDataOutputSampleB
             self.isRecord = false
             self.avAssetWriter?.finishWritingWithCompletionHandler({ () -> Void in
                 print("錄製完成")
-                
+                //Save question file url, end time.
+                let lastQuest = self.questions.last!
+                let recordFile = RecordedFile()
+                recordFile.title = self.tempURL.lastPathComponent
+                recordFile.URL = self.tempURL
+                lastQuest.file = recordFile
+                lastQuest.endTime = NSDate()
             })
         }
+    }
+    
+    
+    
+//time
+    func startCountRecordTime() {
+        self.timeLabelTimer = NSTimer.scheduledTimerWithTimeInterval(1, target: self, selector: Selector("countRecordingTime"), userInfo: nil, repeats: true)
+    }
+    
+    func countRecordingTime() {
+        if self.isRecord {
+            let timeString = Singleton.sharedInstance.getTimeString(self.questions.last!.startTime, stopTime: NSDate())
+            self.timeLabel.text = timeString
+        }
+    }
+    
+    func stopCountRecordTime() {
+        self.timeLabel.text = "00:00"
+        self.timeLabelTimer?.invalidate()
+        self.timeLabelTimer = nil
+    
     }
     
 
@@ -794,78 +821,38 @@ class VideoTestViewController: UIViewController, AVCaptureVideoDataOutputSampleB
     }
     
     func drawAnimationByFrame(image: CIImage) -> CIImage {
+        self.frameCount++
         //frame
         let uiviewFrame = self.view.frame
-        self.frameCount++
+        let targetFrame = image.extent
+        print("ui view frame: \(uiviewFrame) ")
+        print("ciimage view frame: \(targetFrame) ")
         
-        //heart animation image
-        let heartImage = UIImage(named: "heart-1")!
-        let heartRadius = self.getHeartRadiusByFrame()
+        //get bias
+        self.setupImagePortion(targetFrame)
         
-        //text animation image
-        let bpmTextImage = Singleton.sharedInstance.createTextCIImage(bpm.description, font: UIFont.italicSystemFontOfSize(26))
-        let textFrame = bpmTextImage.extent
-        
-        //heart line animtation image
-        let heartLineImage = Singleton.sharedInstance.createHeartCIImage(Double(bpm), frameCount: self.frameCount, width: uiviewFrame.width, height: 200) //set height = 200
-        let heartLineCenter = CGPoint(x: uiviewFrame.width / 2, y: uiviewFrame.height - 100) //height = 200
-        
-        //coordinate, original = (0, 0)
-        let heartCenter = CGPoint(x: 60 , y:  self.naviationHeight + 10 + 60 )
-        let textCenter = CGPoint(x: (uiviewFrame.width - (20 + textFrame.width / 2)), y: (self.naviationHeight + 10 + 20 + textFrame.height / 2))
-        
-        //setup heart animation
-        let animate1Image = Singleton.sharedInstance.drawCIImageOnSource(image, addCIImage: CIImage(image: heartImage), center: heartCenter, halfWidth: heartRadius, halfHeight: heartRadius, shrinkPortion: self.shrinkPortion, xbias: self.XBias, ybias: self.YBias)
-        //setup text animation
-        let animate2Image = Singleton.sharedInstance.drawCIImageOnSource(animate1Image, addCIImage: bpmTextImage, center: textCenter, halfWidth: textFrame.width / 2, halfHeight: textFrame.height / 2, shrinkPortion: self.shrinkPortion, xbias: self.XBias, ybias: self.YBias)
-        //setup heartLine animation
-        let animate3Image = Singleton.sharedInstance.drawCIImageOnSource(animate2Image, addCIImage: heartLineImage, center: heartLineCenter, halfWidth: uiviewFrame.width / 2, halfHeight: 100, shrinkPortion: self.shrinkPortion, xbias: self.XBias, ybias: self.YBias) //height = 200
-        
-        
-        return animate3Image
-    }
-    
-    
-    
-//culculation
-    func getHeartRadiusByFrame() -> CGFloat {
-        let range = CGFloat(self.bpm) * 0.3
-        var heartRadius: CGFloat = 20 + abs(cos((self.heartDegree.degreesToRadians)) * range)
-        if self.isLying {
-            heartRadius = heartRadius * 1.2
+        //generate all animate on new CIImage
+        var recordStartTime: NSDate? = nil
+        if self.isRecord {
+            recordStartTime = self.questions.last!.startTime
         }
-        //ratio is from 12~24
-        self.heartDegree += 12 * Int(self.bpm / 60)
         
-        return heartRadius
-    }
-    
-    
-//animation
-    var progressBarTimer: NSTimer?
-    func animateProgressbar() {
-        let diceRoll = Float(Double(arc4random_uniform(11) + 1) * 0.01)
-        UIView.animateWithDuration(0.2, delay: 0.0, options: UIViewAnimationOptions.CurveEaseIn, animations: { () -> Void in
-            self.progressLieBar.progress += diceRoll
-            self.view.layoutIfNeeded()
-            }, completion: nil)
-        UIView.animateWithDuration(0.3, delay: 0.2, options: UIViewAnimationOptions.CurveEaseOut, animations: { () -> Void in
-            self.progressLieBar.progress -= diceRoll
-            self.view.layoutIfNeeded()
-            }, completion: nil)
-    }
-    func startAnimatieProgressBar() {
-        print("animate progress bar")
-        self.progressBarTimer = NSTimer.scheduledTimerWithTimeInterval(0.5, target: self, selector: Selector("animateProgressbar"), userInfo: nil, repeats: true)
+        if self.frameCount % 5 == 1{
+            self.animationCIImage = Singleton.sharedInstance.drawAllAnimationInCIImage(targetFrame.height, height: targetFrame.width, bpm: self.bpm, truthRate: self.truthRate, recordTime: recordStartTime)
+        }
+        
+        //var animateImage = Singleton.sharedInstance.drawCIImageOnSource(image, addCIImage: CIImage(image: heartImage), center: heartCenter, halfWidth: heartRadius, halfHeight: heartRadius, shrinkPortion: self.shrinkPortion, xbias: self.XBias, ybias: self.YBias)
+        
+        //setup text animation
+        //animateImage = Singleton.sharedInstance.drawCIImageOnSource(animateImage, addCIImage: bpmTextImage, center: textCenter, halfWidth: textFrame.width / 2, halfHeight: textFrame.height / 2, shrinkPortion: self.shrinkPortion, xbias: self.XBias, ybias: self.YBias)
+        //setup heartLine animation
+        //animateImage = Singleton.sharedInstance.drawCIImageOnSource(animateImage, addCIImage: heartLineImage, center: heartLineCenter, halfWidth: uiviewFrame.width / 2, halfHeight: 100, shrinkPortion: self.shrinkPortion, xbias: self.XBias, ybias: self.YBias) //height = 200
+        //setup final animation
         
         
+        
+        return image
     }
-    
-    func stopAnimatieProgressBar() {
-        self.progressBarTimer?.invalidate()
-        self.progressBarTimer = nil
-    }
-    
     
     
 //alert
@@ -925,13 +912,7 @@ class VideoTestViewController: UIViewController, AVCaptureVideoDataOutputSampleB
             if self.isRecord {
                 //stop record the last video
                 self.stopRecordVideo()
-                //Save question file url, end time.
-                let lastQuest = self.questions.last!
-                let recordFile = RecordedFile()
-                recordFile.title = self.tempURL.lastPathComponent
-                recordFile.URL = self.tempURL
-                lastQuest.file = recordFile
-                lastQuest.endTime = NSDate()
+                
                 
             }
             if let VC = segue.destinationViewController as? ResultViewController {

@@ -1,8 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="9059" systemVersion="15B42" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="7K4-Zl-XeZ">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="9060" systemVersion="15B42" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="7K4-Zl-XeZ">
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="9049"/>
-        <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="9051"/>
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
         <capability name="Constraints with non-1.0 multipliers" minToolsVersion="5.1"/>
     </dependencies>
@@ -187,10 +186,13 @@ Press 'Start Button' on both side</string>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="NfC-fF-U3p">
-                                <rect key="frame" x="243" y="480" width="113" height="60"/>
+                                <rect key="frame" x="192" y="485" width="95" height="95"/>
                                 <animations/>
-                                <color key="backgroundColor" red="0.0" green="1" blue="0.50196081400000003" alpha="1" colorSpace="calibratedRGB"/>
-                                <state key="normal" title="record" image="mic-60-vec">
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="95" id="5rq-h4-ANz"/>
+                                    <constraint firstAttribute="height" constant="95" id="szA-Qh-vKT"/>
+                                </constraints>
+                                <state key="normal" image="recording">
                                     <color key="titleColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                 </state>
                                 <connections>
@@ -198,7 +200,7 @@ Press 'Start Button' on both side</string>
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="egV-5L-V3R">
-                                <rect key="frame" x="551" y="74" width="39" height="27"/>
+                                <rect key="frame" x="551" y="104" width="39" height="27"/>
                                 <animations/>
                                 <color key="backgroundColor" red="0.40000000600000002" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="12"/>
@@ -207,51 +209,87 @@ Press 'Start Button' on both side</string>
                                     <action selector="switchButtonTouch:" destination="vg2-cG-mDi" eventType="touchUpInside" id="zQe-kk-dli"/>
                                 </connections>
                             </button>
-                            <progressView opaque="NO" alpha="0.90000000000000002" contentMode="scaleToFill" verticalHuggingPriority="750" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="1zl-ut-uN4">
-                                <rect key="frame" x="20" y="400" width="560" height="40"/>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="B9f-pe-WDc">
+                                <rect key="frame" x="324" y="497" width="71" height="71"/>
                                 <animations/>
                                 <constraints>
-                                    <constraint firstAttribute="height" constant="40" id="19r-rd-1ug"/>
+                                    <constraint firstAttribute="height" constant="71" id="SD3-VT-rWi"/>
+                                    <constraint firstAttribute="width" constant="71" id="bna-8J-kLk"/>
                                 </constraints>
-                                <color key="progressTintColor" red="1" green="0.16571869017338048" blue="0.10544234841068745" alpha="1" colorSpace="calibratedRGB"/>
-                                <color key="trackTintColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
-                            </progressView>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="B9f-pe-WDc">
-                                <rect key="frame" x="512" y="550" width="58" height="30"/>
-                                <animations/>
-                                <state key="normal" title="Finished"/>
+                                <state key="normal" image="finish"/>
                                 <connections>
                                     <action selector="finishedButtonTouch:" destination="vg2-cG-mDi" eventType="touchUpInside" id="1bk-Es-Eoh"/>
                                 </connections>
                             </button>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="heart-1" translatesAutoresizingMaskIntoConstraints="NO" id="1ic-Lh-fju">
+                                <rect key="frame" x="225" y="235" width="150" height="129"/>
+                                <animations/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="150" id="b71-e5-7ZN"/>
+                                    <constraint firstAttribute="height" constant="129" id="fCj-O7-ebi"/>
+                                </constraints>
+                            </imageView>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="0" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="DN4-5Z-0s7">
+                                <rect key="frame" x="254" y="257" width="92" height="64.5"/>
+                                <animations/>
+                                <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="55"/>
+                                <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="00:00" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="oxS-rS-KW5">
+                                <rect key="frame" x="544" y="74" width="45.5" height="21"/>
+                                <animations/>
+                                <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="18"/>
+                                <color key="textColor" red="0.90196079019999997" green="0.90196079019999997" blue="0.90196079019999997" alpha="1" colorSpace="calibratedRGB"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="untruth" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="4OL-kc-ojG">
+                                <rect key="frame" x="272" y="374" width="57.5" height="21"/>
+                                <animations/>
+                                <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="18"/>
+                                <color key="textColor" red="0.90196079019999997" green="0.90196079019999997" blue="0.90196079019999997" alpha="1" colorSpace="calibratedRGB"/>
+                                <nil key="highlightedColor"/>
+                            </label>
                         </subviews>
                         <animations/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
-                            <constraint firstAttribute="trailingMargin" secondItem="1zl-ut-uN4" secondAttribute="trailing" id="3fg-Gx-2nR"/>
-                            <constraint firstItem="Eia-G7-nO3" firstAttribute="top" secondItem="NfC-fF-U3p" secondAttribute="bottom" constant="60" id="EXw-HD-RLu"/>
-                            <constraint firstItem="1zl-ut-uN4" firstAttribute="width" secondItem="Ok9-FT-77G" secondAttribute="height" multiplier="1:4" id="Eft-H0-9se"/>
+                            <constraint firstItem="DN4-5Z-0s7" firstAttribute="centerY" secondItem="1ic-Lh-fju" secondAttribute="centerY" constant="-10" id="0uZ-dx-edI"/>
+                            <constraint firstItem="4OL-kc-ojG" firstAttribute="centerY" secondItem="Ok9-FT-77G" secondAttribute="centerY" id="2RS-lY-XdU"/>
+                            <constraint firstItem="1ic-Lh-fju" firstAttribute="centerY" secondItem="Ok9-FT-77G" secondAttribute="centerY" id="459-PI-yN4"/>
+                            <constraint firstItem="B9f-pe-WDc" firstAttribute="centerY" secondItem="NfC-fF-U3p" secondAttribute="centerY" id="4qT-b8-uIp"/>
+                            <constraint firstItem="Eia-G7-nO3" firstAttribute="top" secondItem="NfC-fF-U3p" secondAttribute="bottom" constant="20" id="EXw-HD-RLu"/>
+                            <constraint firstItem="1ic-Lh-fju" firstAttribute="centerX" secondItem="Ok9-FT-77G" secondAttribute="centerX" id="EZG-hO-CP1"/>
+                            <constraint firstAttribute="trailing" secondItem="oxS-rS-KW5" secondAttribute="trailing" constant="10" id="FOC-9e-jMt"/>
                             <constraint firstItem="Eia-G7-nO3" firstAttribute="top" secondItem="B9f-pe-WDc" secondAttribute="bottom" constant="20" id="Hc6-UX-hu1"/>
-                            <constraint firstItem="1zl-ut-uN4" firstAttribute="centerX" secondItem="Ok9-FT-77G" secondAttribute="centerX" id="Igh-zE-V7I"/>
+                            <constraint firstItem="4OL-kc-ojG" firstAttribute="centerX" secondItem="Ok9-FT-77G" secondAttribute="centerX" id="Hxf-kv-4ft"/>
                             <constraint firstAttribute="trailing" secondItem="B9f-pe-WDc" secondAttribute="trailing" constant="30" id="Lfb-a8-nCa"/>
                             <constraint firstAttribute="trailing" secondItem="egV-5L-V3R" secondAttribute="trailing" constant="10" id="Ojw-JP-F4Q"/>
-                            <constraint firstItem="egV-5L-V3R" firstAttribute="top" secondItem="BBY-Uy-Eiu" secondAttribute="bottom" constant="10" id="Xae-cS-II5"/>
-                            <constraint firstItem="NfC-fF-U3p" firstAttribute="centerX" secondItem="Ok9-FT-77G" secondAttribute="centerX" id="ae4-Cs-tEC"/>
-                            <constraint firstItem="1zl-ut-uN4" firstAttribute="leading" secondItem="Ok9-FT-77G" secondAttribute="leadingMargin" id="dEJ-ki-XjL"/>
-                            <constraint firstItem="1zl-ut-uN4" firstAttribute="centerY" secondItem="Ok9-FT-77G" secondAttribute="centerY" multiplier="1.4" id="mny-mO-nd7"/>
+                            <constraint firstItem="egV-5L-V3R" firstAttribute="top" secondItem="BBY-Uy-Eiu" secondAttribute="bottom" constant="40" id="Xae-cS-II5"/>
+                            <constraint firstItem="NfC-fF-U3p" firstAttribute="centerX" secondItem="Ok9-FT-77G" secondAttribute="centerX" constant="-60" id="ae4-Cs-tEC"/>
+                            <constraint firstItem="4OL-kc-ojG" firstAttribute="trailing" secondItem="1ic-Lh-fju" secondAttribute="trailing" id="dLe-br-u4f"/>
+                            <constraint firstItem="oxS-rS-KW5" firstAttribute="top" secondItem="BBY-Uy-Eiu" secondAttribute="bottom" constant="10" id="dQQ-ox-jFn"/>
+                            <constraint firstItem="DN4-5Z-0s7" firstAttribute="centerX" secondItem="1ic-Lh-fju" secondAttribute="centerX" id="h5o-9e-o6i"/>
+                            <constraint firstItem="B9f-pe-WDc" firstAttribute="centerX" secondItem="Ok9-FT-77G" secondAttribute="centerX" constant="60" id="xdy-Tq-TTX"/>
+                            <constraint firstItem="4OL-kc-ojG" firstAttribute="top" secondItem="1ic-Lh-fju" secondAttribute="bottom" constant="10" id="xgn-Wa-uhR"/>
                         </constraints>
                         <variation key="default">
                             <mask key="constraints">
-                                <exclude reference="Eft-H0-9se"/>
-                                <exclude reference="Igh-zE-V7I"/>
+                                <exclude reference="2RS-lY-XdU"/>
+                                <exclude reference="dLe-br-u4f"/>
+                                <exclude reference="Lfb-a8-nCa"/>
+                                <exclude reference="Hc6-UX-hu1"/>
                             </mask>
                         </variation>
                     </view>
                     <connections>
+                        <outlet property="bpmLabel" destination="DN4-5Z-0s7" id="FX7-Rq-QYt"/>
                         <outlet property="finishedButton" destination="B9f-pe-WDc" id="ZZg-st-Clp"/>
-                        <outlet property="progressLieBar" destination="1zl-ut-uN4" id="vg3-OZ-5H1"/>
+                        <outlet property="heartImage" destination="1ic-Lh-fju" id="4Qh-Ao-WMu"/>
                         <outlet property="recordButton" destination="NfC-fF-U3p" id="oHY-Dr-Vzj"/>
                         <outlet property="switchButton" destination="egV-5L-V3R" id="Vyg-Nh-2LL"/>
+                        <outlet property="timeLabel" destination="oxS-rS-KW5" id="21H-wY-H1i"/>
+                        <outlet property="truthLabel" destination="4OL-kc-ojG" id="khl-C6-rCR"/>
                         <segue destination="pcs-oQ-Wb1" kind="show" identifier="VideoResultSegue" id="qQL-CL-a88"/>
                     </connections>
                 </viewController>
@@ -826,11 +864,14 @@ Press 'Start Button' on both side</string>
     </scenes>
     <resources>
         <image name="dot-30-vec" width="30" height="30"/>
+        <image name="finish" width="71" height="71"/>
+        <image name="heart-1" width="150" height="129"/>
         <image name="heart-80-vec" width="80" height="80"/>
         <image name="mic-30-vec" width="30" height="30"/>
         <image name="mic-60-vec" width="60" height="60"/>
         <image name="percentage-30-vec" width="30" height="30"/>
         <image name="play-30-vec" width="30" height="30"/>
+        <image name="recording" width="95" height="95"/>
         <image name="warning-30-vec" width="30" height="30"/>
     </resources>
     <inferredMetricsTieBreakers>
