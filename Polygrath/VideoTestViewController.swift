@@ -71,7 +71,7 @@ class VideoTestViewController: UIViewController, AVCaptureVideoDataOutputSampleB
     var backCameraDevice: AVCaptureDevice!
     var frontCameraDevice: AVCaptureDevice!
     var captureSession: AVCaptureSession!
-    var previewLayer = CALayer()
+    var previewLayer = AVCaptureVideoPreviewLayer()
     var isBackCamera = true
     var isRecord = false {
         didSet {
@@ -97,26 +97,12 @@ class VideoTestViewController: UIViewController, AVCaptureVideoDataOutputSampleB
     var tempURL: NSURL!
     
     
-//extra pattern
-    
-    lazy var context: CIContext = {
-        let eaglContext = EAGLContext(API: EAGLRenderingAPI.OpenGLES2)
-        let options = [kCIContextWorkingColorSpace : NSNull()]
-        return CIContext(EAGLContext: eaglContext, options: options)
-        }()
-    
-    
-//ciimage coordinate
-    var naviationHeight:CGFloat = 0.0
-    var shrinkPortion: CGFloat = 0.0
-    var XBias: CGFloat = 0.0
-    var YBias: CGFloat = 0.0
+
     
 //animate const
-    var heartDegree = 0
+    @IBOutlet weak var heartLineView: UIView!
+    var heartLineLayer = CALayer()
     var frameCount = 0
-    var animationCIImage: CIImage?
-    
 //audio
     var avAssetWriterAudioInput: AVAssetWriterInput!
     var avAssetWriterVideoInput: AVAssetWriterInput!
@@ -285,23 +271,25 @@ class VideoTestViewController: UIViewController, AVCaptureVideoDataOutputSampleB
     
     
     func sendCMDStopWatch() {
-        if self.wcSession!.reachable {
-            //send cmd to watch
-            self.wcSession?.sendMessage(["cmd" : "stop"], replyHandler: { (reply) -> Void in
-                if let response = reply["cmdResponse"] as? Bool {
-                    if response {
-                        print("got 'stop' cmd response from watch: \(response)")
-                        
-                    }
+        //send cmd to watch
+        self.wcSession?.sendMessage(["cmd" : "stop"], replyHandler: { (reply) -> Void in
+            if let response = reply["cmdResponse"] as? Bool {
+                if response {
+                    print("got 'stop' cmd response from watch: \(response)")
+                    
                 }
-                }, errorHandler: { (error) -> Void in
-                    print(error)
-            })
+            }
+            }, errorHandler: { (error) -> Void in
+                print(error)
+        })
+        /*
+        if self.wcSession!.reachable {
+            
         }else {
             //unReachable, alert manually close
             self.alertStopMannualOnWatch()
             return
-        }
+        }*/
     }
 
     
@@ -439,13 +427,23 @@ class VideoTestViewController: UIViewController, AVCaptureVideoDataOutputSampleB
             captureSession.commitConfiguration()
             print("setup frame rate:\(videoDevice.activeVideoMaxFrameDuration)")
             
-            //preview camera
+            //setup preview camera layer
+            self.previewLayer = AVCaptureVideoPreviewLayer(session: self.captureSession)
+            previewLayer.videoGravity = AVLayerVideoGravityResizeAspectFill
+            previewLayer.frame = self.view.bounds
             
-            previewLayer.anchorPoint = CGPointZero
-            previewLayer.bounds = view.bounds
-            previewLayer.contentsGravity = kCAGravityResizeAspectFill
+            //previewLayer.anchorPoint = CGPointZero
+            //previewLayer.bounds = view.bounds
+            //previewLayer.contentsGravity = kCAGravityResizeAspectFill
+            
             self.view.layer.addSublayer(previewLayer)
             self.view.clipsToBounds = true
+            
+            //setup heart line layer
+            //self.heartLineLayer.frame = self.heartLineView.bounds
+            //self.heartLineLayer.contentsGravity = kCAGravityCenter
+            //self.heartLineView.layer.addSublayer(self.heartLineLayer)
+            self.heartLineView.clipsToBounds = true
             
             //setup image portion
             
@@ -453,6 +451,7 @@ class VideoTestViewController: UIViewController, AVCaptureVideoDataOutputSampleB
             print("view frame: \(self.view.frame)")
             print("preview center: \(view.center)")
             //button
+            self.view.bringSubviewToFront(self.heartLineView)
             self.view.bringSubviewToFront(self.recordButton)
             self.view.bringSubviewToFront(self.switchButton)
             self.view.bringSubviewToFront(self.finishedButton)
@@ -537,59 +536,7 @@ class VideoTestViewController: UIViewController, AVCaptureVideoDataOutputSampleB
 
 //video
     
-    func createPixelFromImage(image: CGImageRef) -> CVPixelBufferRef? {
-        
-        let option: NSDictionary = [
-            String(kCVPixelBufferCGImageCompatibilityKey): NSNumber(bool: true),
-            String(kCVPixelBufferCGBitmapContextCompatibilityKey) : NSNumber(bool: true)]
-        var pixelBuffer: CVPixelBufferRef? = nil
-        
-        let status: CVReturn = CVPixelBufferCreate(kCFAllocatorDefault, Int(currentVideoDimensions!.width), Int(currentVideoDimensions!.height), kCVPixelFormatType_32ARGB, option, &pixelBuffer)
-        
-        if status == kCVReturnSuccess && pixelBuffer != nil {
-            return pixelBuffer!
-        }else {
-            return nil
-        }
-        
-    }
     
-    
-    
-    func captureImage(sampleBuffer:CMSampleBufferRef) -> UIImage{
-        
-        // Sampling Bufferから画像を取得
-        let imageBuffer:CVImageBufferRef = CMSampleBufferGetImageBuffer(sampleBuffer)!
-        
-        
-        // pixel buffer のベースアドレスをロック
-        CVPixelBufferLockBaseAddress(imageBuffer, 0)
-        
-        let baseAddress:UnsafeMutablePointer<Void> = CVPixelBufferGetBaseAddressOfPlane(imageBuffer, 0)
-        let bytesPerRow:Int = CVPixelBufferGetBytesPerRow(imageBuffer)
-        let width:Int = CVPixelBufferGetWidth(imageBuffer)
-        let height:Int = CVPixelBufferGetHeight(imageBuffer)
-        
-        
-        // 色空間
-        let colorSpace:CGColorSpaceRef = CGColorSpaceCreateDeviceRGB()!
-        
-        
-        // swift 2.0
-        let newContext:CGContextRef = CGBitmapContextCreate(baseAddress, width, height, 8, bytesPerRow, colorSpace,  CGImageAlphaInfo.PremultipliedFirst.rawValue|CGBitmapInfo.ByteOrder32Little.rawValue)!
-        
-        //CGImage
-        let imageRef:CGImageRef = CGBitmapContextCreateImage(newContext)!
-        //UIImage
-        let resultImage = UIImage(CGImage: imageRef, scale: 1.0, orientation: UIImageOrientation.Right)
-        //CIImage
-        //var outputImage = CIImage(CVPixelBuffer: imageBuffer)
-        
-        //unlock
-        CVPixelBufferUnlockBaseAddress(imageBuffer, 0)
-        
-        return resultImage
-    }
     
     func captureOutput(captureOutput: AVCaptureOutput!, didOutputSampleBuffer sampleBuffer: CMSampleBuffer!, fromConnection connection: AVCaptureConnection!) {
         
@@ -602,24 +549,25 @@ class VideoTestViewController: UIViewController, AVCaptureVideoDataOutputSampleB
             self.currentSampleTime = CMSampleBufferGetOutputPresentationTimeStamp(sampleBuffer)
             
             //original image
-            var tempCIImage: CIImage = CIImage(CVPixelBuffer: CMSampleBufferGetImageBuffer(sampleBuffer)!)
+            //var tempCIImage: CIImage = CIImage(CVPixelBuffer: CMSampleBufferGetImageBuffer(sampleBuffer)!)
         
             //preview layer is ready
             if !self.isCameraOn {
                 self.setupAVAssetWriter()
-                self.setupImagePortion(tempCIImage.extent)
                 self.isCameraOn = true
             }
             
+            //animate heart Line
+            dispatch_sync(dispatch_get_main_queue(), {
+                self.animateHeartLine()
+            })
 //record video
             if self.isRecord {
                 
                 if self.avAssetWriterPixelBufferInput?.assetWriterInput.readyForMoreMediaData == true {
-                    //draw water mark
-                    //tempCIImage = self.drawWaterMark(tempCIImage)
                     
                     //<oringinal type>
-                    //self.avAssetWriterPixelBufferInput?.assetWriterInput.appendSampleBuffer(sampleBuffer)
+                    self.avAssetWriterPixelBufferInput?.assetWriterInput.appendSampleBuffer(sampleBuffer)
                     
                     
                     //test
@@ -634,6 +582,7 @@ class VideoTestViewController: UIViewController, AVCaptureVideoDataOutputSampleB
                     }*/
                     
                     //<modify type>
+                    /*
                     //change CIImage to buffer for saving
                     var newPixelBuffer: CVPixelBuffer? = nil
                     CVPixelBufferPoolCreatePixelBuffer(nil, self.avAssetWriterPixelBufferInput!.pixelBufferPool!, &(newPixelBuffer))
@@ -645,10 +594,12 @@ class VideoTestViewController: UIViewController, AVCaptureVideoDataOutputSampleB
                             print("fail to append buffer with modify")
                         }
                     }
+                    */
                 }
             }
         
 //preview
+            /*
             //rotate to portait
             let t = CGAffineTransformMakeRotation(CGFloat((-M_PI / 2.0)))
             tempCIImage = tempCIImage.imageByApplyingTransform(t)
@@ -661,7 +612,7 @@ class VideoTestViewController: UIViewController, AVCaptureVideoDataOutputSampleB
                 self.previewLayer.contents = cgimage
                 
             })
-            
+            */
         }else if connection == self.audioCaptureConnection {
             //audio
             if self.isRecord {
@@ -795,63 +746,12 @@ class VideoTestViewController: UIViewController, AVCaptureVideoDataOutputSampleB
     }
     
 
-//image modify
-    func setupImagePortion(cameraRect: CGRect) {
-        //calculate portion
-        //first setup
-        let uiViewFrame = self.view.frame
-        let rawImageFrame = cameraRect
-        //reverse X,Y
-        let portionY = cameraRect.width / uiViewFrame.height
-        let portionX = cameraRect.height / uiViewFrame.width
-        if abs(1 - portionX) > abs(1 - portionY) {
-            //height(y) will be larger
-            self.shrinkPortion = portionX
-            //reverse x, y
-            self.YBias = -((uiViewFrame.height * self.shrinkPortion) - rawImageFrame.width) / 2
-        }else {
-            //width(x) will be larger
-            self.shrinkPortion = portionY
-            //reverse x, y
-            XBias = -((uiViewFrame.width * self.shrinkPortion) - rawImageFrame.height) / 2
-            
-        }
-        
-        return
-    }
-    
-    func drawAnimationByFrame(image: CIImage) -> CIImage {
+//heart line
+    func animateHeartLine() {
         self.frameCount++
-        //frame
-        let uiviewFrame = self.view.frame
-        let targetFrame = image.extent
-        print("ui view frame: \(uiviewFrame) ")
-        print("ciimage view frame: \(targetFrame) ")
-        
-        //get bias
-        self.setupImagePortion(targetFrame)
-        
-        //generate all animate on new CIImage
-        var recordStartTime: NSDate? = nil
-        if self.isRecord {
-            recordStartTime = self.questions.last!.startTime
-        }
-        
-        if self.frameCount % 5 == 1{
-            self.animationCIImage = Singleton.sharedInstance.drawAllAnimationInCIImage(targetFrame.height, height: targetFrame.width, bpm: self.bpm, truthRate: self.truthRate, recordTime: recordStartTime)
-        }
-        
-        //var animateImage = Singleton.sharedInstance.drawCIImageOnSource(image, addCIImage: CIImage(image: heartImage), center: heartCenter, halfWidth: heartRadius, halfHeight: heartRadius, shrinkPortion: self.shrinkPortion, xbias: self.XBias, ybias: self.YBias)
-        
-        //setup text animation
-        //animateImage = Singleton.sharedInstance.drawCIImageOnSource(animateImage, addCIImage: bpmTextImage, center: textCenter, halfWidth: textFrame.width / 2, halfHeight: textFrame.height / 2, shrinkPortion: self.shrinkPortion, xbias: self.XBias, ybias: self.YBias)
-        //setup heartLine animation
-        //animateImage = Singleton.sharedInstance.drawCIImageOnSource(animateImage, addCIImage: heartLineImage, center: heartLineCenter, halfWidth: uiviewFrame.width / 2, halfHeight: 100, shrinkPortion: self.shrinkPortion, xbias: self.XBias, ybias: self.YBias) //height = 200
-        //setup final animation
-        
-        
-        
-        return image
+        self.heartLineLayer.removeFromSuperlayer()
+        self.heartLineLayer = Singleton.sharedInstance.createHeartLineLayer(self.bpm, frameCount: self.frameCount, width: self.heartLineView.frame.width, height: self.heartLineView.frame.height)
+        self.heartLineView.layer.addSublayer(self.heartLineLayer)
     }
     
     
@@ -939,8 +839,3 @@ extension CIContext {
     }
 }
 
-extension Int {
-    var degreesToRadians : CGFloat {
-        return CGFloat(self) * CGFloat(M_PI) / 180.0
-    }
-}

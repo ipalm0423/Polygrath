@@ -24,7 +24,7 @@ class Singleton: NSObject {
         return Static.instance!
     }
     
-    //time func
+//time func
     func getTimeString(startTime: NSDate, stopTime: NSDate) -> String {
         let intervalTime = stopTime.timeIntervalSinceDate(startTime)
         var timeText = NSDateComponentsFormatter().stringFromTimeInterval(intervalTime)!
@@ -219,6 +219,12 @@ class Singleton: NSObject {
         return newLayer
     }
     
+    
+    
+    
+    
+    
+    
 //CIImage func
     var frameCount = 0
     func drawAllAnimationInCIImage(width: CGFloat, height: CGFloat, bpm: Double, truthRate: Double, recordTime: NSDate?) -> CIImage? {
@@ -319,13 +325,14 @@ class Singleton: NSObject {
     }
     
     func createHeartLineLayer(bpm: Double, frameCount: Int, width: CGFloat, height: CGFloat) -> CALayer {
+        print("create heart line from count: \(frameCount)")
         //constant
         let period = 60 / bpm //seconds
-        let percentage = cos((Double(frameCount) * 0.0666) * M_PI / period) //frame = 30/1 s
-        var heartHeight = CGFloat(percentage * (bpm / 110)) * height
+        let percentage = cos((Double(frameCount) * 0.03333) * (2 * M_PI) / period) //frame = 30/1 s
+        var heartHeight = CGFloat(percentage * (bpm / 110)) * height // max bpm is 110
         print("percent: \(percentage)")
         
-        //set height as max
+        //set view height as max line height
         if heartHeight > height / 2 {
             heartHeight = height / 2
         }
@@ -355,7 +362,7 @@ class Singleton: NSObject {
         gradientLayer.startPoint = CGPoint(x: 0, y: 0)
         gradientLayer.endPoint = CGPoint(x: 0, y: 1)
         gradientLayer.mask = arc
-        gradientLayer.opacity = 0.5
+        gradientLayer.opacity = 0.8 //transparency
         return gradientLayer
     }
     
@@ -488,7 +495,132 @@ class Singleton: NSObject {
 //play video
     
     
+//image func
+    //constant
+    //ciimage coordinate
+    var naviationHeight:CGFloat = 0.0
+    var shrinkPortion: CGFloat = 0.0
+    var XBias: CGFloat = 0.0
+    var YBias: CGFloat = 0.0
     
+    //extra pattern
+    
+    lazy var context: CIContext = {
+        let eaglContext = EAGLContext(API: EAGLRenderingAPI.OpenGLES2)
+        let options = [kCIContextWorkingColorSpace : NSNull()]
+        return CIContext(EAGLContext: eaglContext, options: options)
+    }()
+    
+    
+
+    
+    func createPixelBuffFromImage(image: CGImageRef, currentVideoDimensions: CMVideoDimensions) -> CVPixelBufferRef? {
+        
+        let option: NSDictionary = [
+            String(kCVPixelBufferCGImageCompatibilityKey): NSNumber(bool: true),
+            String(kCVPixelBufferCGBitmapContextCompatibilityKey) : NSNumber(bool: true)]
+        var pixelBuffer: CVPixelBufferRef? = nil
+        
+        let status: CVReturn = CVPixelBufferCreate(kCFAllocatorDefault, Int(currentVideoDimensions.width), Int(currentVideoDimensions.height), kCVPixelFormatType_32ARGB, option, &pixelBuffer)
+        
+        if status == kCVReturnSuccess && pixelBuffer != nil {
+            return pixelBuffer!
+        }else {
+            return nil
+        }
+        
+    }
+    
+    func captureImage(sampleBuffer:CMSampleBufferRef) -> UIImage{
+        
+        // Sampling Bufferから画像を取得
+        let imageBuffer:CVImageBufferRef = CMSampleBufferGetImageBuffer(sampleBuffer)!
+        
+        
+        // pixel buffer のベースアドレスをロック
+        CVPixelBufferLockBaseAddress(imageBuffer, 0)
+        
+        let baseAddress:UnsafeMutablePointer<Void> = CVPixelBufferGetBaseAddressOfPlane(imageBuffer, 0)
+        let bytesPerRow:Int = CVPixelBufferGetBytesPerRow(imageBuffer)
+        let width:Int = CVPixelBufferGetWidth(imageBuffer)
+        let height:Int = CVPixelBufferGetHeight(imageBuffer)
+        
+        
+        // 色空間
+        let colorSpace:CGColorSpaceRef = CGColorSpaceCreateDeviceRGB()!
+        
+        
+        // swift 2.0
+        let newContext:CGContextRef = CGBitmapContextCreate(baseAddress, width, height, 8, bytesPerRow, colorSpace,  CGImageAlphaInfo.PremultipliedFirst.rawValue|CGBitmapInfo.ByteOrder32Little.rawValue)!
+        
+        //CGImage
+        let imageRef:CGImageRef = CGBitmapContextCreateImage(newContext)!
+        //UIImage
+        let resultImage = UIImage(CGImage: imageRef, scale: 1.0, orientation: UIImageOrientation.Right)
+        //CIImage
+        //var outputImage = CIImage(CVPixelBuffer: imageBuffer)
+        
+        //unlock
+        CVPixelBufferUnlockBaseAddress(imageBuffer, 0)
+        
+        return resultImage
+    }
+    
+    func setupImagePortion(cameraRect: CGRect, view: UIView) {
+        //calculate portion
+        //first setup
+        let uiViewFrame = view.frame
+        let rawImageFrame = cameraRect
+        //reverse X,Y
+        let portionY = cameraRect.width / uiViewFrame.height
+        let portionX = cameraRect.height / uiViewFrame.width
+        if abs(1 - portionX) > abs(1 - portionY) {
+            //height(y) will be larger
+            //self.shrinkPortion = portionX
+            //reverse x, y
+            //self.YBias = -((uiViewFrame.height * self.shrinkPortion) - rawImageFrame.width) / 2
+        }else {
+            //width(x) will be larger
+            //self.shrinkPortion = portionY
+            //reverse x, y
+            //XBias = -((uiViewFrame.width * self.shrinkPortion) - rawImageFrame.height) / 2
+            
+        }
+        
+        return
+    }
+    
+    func drawAnimationByFrame(image: CIImage, view: UIView) -> CIImage {
+        
+        //frame
+        let uiviewFrame = view.frame
+        let targetFrame = image.extent
+        print("ui view frame: \(uiviewFrame) ")
+        print("ciimage view frame: \(targetFrame) ")
+        
+        //get bias
+        self.setupImagePortion(targetFrame, view: view)
+        
+        //generate all animate on new CIImage
+        var recordStartTime: NSDate? = nil
+        //recordStartTime = self.questions.last!.startTime
+        
+        
+        //merge
+        //let animationCIImage = Singleton.sharedInstance.drawAllAnimationInCIImage(targetFrame.height, height: targetFrame.width, bpm: self.bpm, truthRate: self.truthRate, recordTime: recordStartTime)
+        
+        //var animateImage = Singleton.sharedInstance.drawCIImageOnSource(image, addCIImage: CIImage(image: heartImage), center: heartCenter, halfWidth: heartRadius, halfHeight: heartRadius, shrinkPortion: self.shrinkPortion, xbias: self.XBias, ybias: self.YBias)
+        
+        //setup text animation
+        //animateImage = Singleton.sharedInstance.drawCIImageOnSource(animateImage, addCIImage: bpmTextImage, center: textCenter, halfWidth: textFrame.width / 2, halfHeight: textFrame.height / 2, shrinkPortion: self.shrinkPortion, xbias: self.XBias, ybias: self.YBias)
+        //setup heartLine animation
+        //animateImage = Singleton.sharedInstance.drawCIImageOnSource(animateImage, addCIImage: heartLineImage, center: heartLineCenter, halfWidth: uiviewFrame.width / 2, halfHeight: 100, shrinkPortion: self.shrinkPortion, xbias: self.XBias, ybias: self.YBias) //height = 200
+        //setup final animation
+        
+        
+        
+        return image
+    }
     
 //sound effect
     var audioPlayer = AVAudioPlayer()
@@ -574,4 +706,12 @@ class Singleton: NSObject {
     
     
     
+}
+
+
+
+extension Int {
+    var degreesToRadians : CGFloat {
+        return CGFloat(self) * CGFloat(M_PI) / 180.0
+    }
 }
