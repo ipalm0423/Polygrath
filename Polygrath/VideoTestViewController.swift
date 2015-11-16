@@ -122,6 +122,7 @@ class VideoTestViewController: UIViewController, AVCaptureVideoDataOutputSampleB
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
+        self.setupCamera(true)
         self.navigationController?.navigationBarHidden = true
         Singleton.sharedInstance.removeAllVideoTemp()
         self.setupWCConnection()
@@ -145,7 +146,9 @@ class VideoTestViewController: UIViewController, AVCaptureVideoDataOutputSampleB
 
     
     override func viewDidAppear(animated: Bool) {
-        self.setupCamera(true)
+        if !self.isCameraOn {
+            self.setupCamera(true)
+        }
         self.navigationController?.navigationBarHidden = true
     }
     
@@ -188,7 +191,7 @@ class VideoTestViewController: UIViewController, AVCaptureVideoDataOutputSampleB
             self.navigationController?.popViewControllerAnimated(true)
             return
         }
-        self.performSegueWithIdentifier("VideoResultSegue", sender: self)
+        self.performSegueWithIdentifier("ResultSegue", sender: self)
         self.sendCMDStopWatch()
         
     }
@@ -776,7 +779,7 @@ class VideoTestViewController: UIViewController, AVCaptureVideoDataOutputSampleB
             case .Default:
                 print("test is stop by watch, jump to result", terminator: "")
                 //segue
-                self.performSegueWithIdentifier("VideoResultSegue", sender: self)
+                self.performSegueWithIdentifier("ResultSegue", sender: self)
                 
             case .Cancel:
                 print("cancel", terminator: "")
@@ -807,7 +810,7 @@ class VideoTestViewController: UIViewController, AVCaptureVideoDataOutputSampleB
     */
     
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-        if segue.identifier == "VideoResultSegue" {
+        if segue.identifier == "ResultSegue" {
             //save last video
             if self.isRecord {
                 //stop record the last video
@@ -815,7 +818,7 @@ class VideoTestViewController: UIViewController, AVCaptureVideoDataOutputSampleB
                 
                 
             }
-            if let VC = segue.destinationViewController as? ResultViewController {
+            if let VC = segue.destinationViewController as? ResultPageViewController {
                 VC.BPMAverage = self.average
                 VC.BPMDeviation = self.deviation
                 VC.BPMmax = self.bpmMax

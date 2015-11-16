@@ -24,6 +24,35 @@ class Singleton: NSObject {
         return Static.instance!
     }
     
+//color
+    
+    func getBackgroundGradientLayer(frame: CGRect) -> CALayer {
+        
+        let gradient: CAGradientLayer = CAGradientLayer()
+        gradient.frame = frame
+        gradient.colors = [UIColor(red: 24 / 255, green: 33 / 255, blue: 44 / 255, alpha: 1.0).CGColor, UIColor(red: 11 / 255, green: 37 / 255, blue: 78 / 255, alpha: 1.0).CGColor]
+        gradient.startPoint = CGPoint(x: 0, y: 0)
+        gradient.endPoint = CGPoint(x: 0, y: 1)
+        return gradient
+    }
+    
+    func getNaviBarGradientLayer(frame: CGRect) -> UIImage {
+        
+        let gradient: CAGradientLayer = CAGradientLayer()
+        gradient.frame = frame
+        gradient.colors = [UIColor(red: 179 / 255, green: 5 / 255, blue: 19 / 255, alpha: 1.0).CGColor, UIColor(red: 229 / 255, green: 45 / 255, blue: 60 / 255, alpha: 1.0).CGColor]
+        gradient.startPoint = CGPoint(x: 0, y: 0)
+        gradient.endPoint = CGPoint(x: 0, y: 1)
+        UIGraphicsBeginImageContextWithOptions(CGSize(width: gradient.bounds.width, height: gradient.bounds.height), false, 0)
+        let CTX = UIGraphicsGetCurrentContext()!
+        gradient.renderInContext(CTX)
+        let image = UIGraphicsGetImageFromCurrentImageContext()
+        UIGraphicsEndImageContext()
+        
+        return image
+    }
+    
+    
 //time func
     func getTimeString(startTime: NSDate, stopTime: NSDate) -> String {
         let intervalTime = stopTime.timeIntervalSinceDate(startTime)
@@ -351,14 +380,14 @@ class Singleton: NSObject {
         arc.position = CGPoint(x: 0, y: height / 2)
         arc.fillColor = UIColor.clearColor().CGColor
         arc.strokeColor = UIColor.purpleColor().CGColor
-        arc.lineWidth = 10
+        arc.lineWidth = 4
         arc.lineCap = kCALineCapRound ; //线条拐角
         arc.lineJoin = kCALineJoinRound
         
         //set gradient color
         let gradientLayer = CAGradientLayer()
         gradientLayer.frame = CGRect(x: 0, y: 0, width: width, height: height)
-        gradientLayer.colors = [UIColor.yellowColor().CGColor, UIColor.redColor().CGColor, UIColor.yellowColor().CGColor]
+        gradientLayer.colors = [UIColor.redColor().CGColor, UIColor.yellowColor().CGColor, UIColor.redColor().CGColor]
         gradientLayer.startPoint = CGPoint(x: 0, y: 0)
         gradientLayer.endPoint = CGPoint(x: 0, y: 1)
         gradientLayer.mask = arc
