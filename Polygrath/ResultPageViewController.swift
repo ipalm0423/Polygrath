@@ -10,13 +10,8 @@ import UIKit
 
 class ResultPageViewController: UIViewController {
     
+    //controll button action
     
-    //constant
-    var BPMAverage: Double = 0
-    var BPMDeviation: Double = 0
-    var BPMmax: Double = 0
-    var BPMmin: Double = 0
-    var questions = [question]()
     
     
 
@@ -24,7 +19,7 @@ class ResultPageViewController: UIViewController {
         super.viewDidLoad()
 
         // Do any additional setup after loading the view.
-        self.setupView()
+        Singleton.sharedInstance.setupGradientColorView(self)
     }
 
     override func didReceiveMemoryWarning() {
@@ -32,24 +27,10 @@ class ResultPageViewController: UIViewController {
         // Dispose of any resources that can be recreated.
     }
     
-    func setupView() {
-        let gradientLayer = Singleton.sharedInstance.getBackgroundGradientLayer(self.view.bounds)
-        self.view.layer.insertSublayer(gradientLayer, atIndex: 0)
-        if let bar = self.navigationController?.navigationBar {
-            print("navi color setup")
-            self.navigationController?.navigationBarHidden = false
-            let naviImage = Singleton.sharedInstance.getNaviBarGradientLayer(bar.bounds)
-            bar.translucent = false
-            let fontDictionary: [String: AnyObject] = [ NSForegroundColorAttributeName:UIColor(red: 242 / 255, green: 242 / 255, blue: 242 / 255, alpha: 1.0), NSFontAttributeName: UIFont(name: "HelveticaNeue", size: 24)! ]
-            bar.titleTextAttributes = fontDictionary
-            bar.tintColor = UIColor(red: 242 / 255, green: 242 / 255, blue: 242 / 255, alpha: 1.0)
-            bar.setBackgroundImage(naviImage, forBarMetrics: UIBarMetrics.Default)
-            
-            
-        }
+    
         
         
-    }
+    
 
     
     
@@ -62,11 +43,19 @@ class ResultPageViewController: UIViewController {
     @IBAction func reportButtonTouch(sender: AnyObject) {
         print("report button touch")
         NSNotificationCenter.defaultCenter().postNotificationName("pageMoveBackward", object: nil)
+        //animate
+        
+        
+        
+        
     }
     
     @IBAction func recordButtonTouch(sender: AnyObject) {
         print("record button touch")
         NSNotificationCenter.defaultCenter().postNotificationName("pageMoveForward", object: nil)
+        //animate
+        
+        
     }
     
     /*

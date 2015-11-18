@@ -309,17 +309,17 @@ Press 'Start Button' on both side</string>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="keO-IA-F9B" userLabel="ringView">
-                                <rect key="frame" x="220" y="220" width="160" height="160"/>
+                                <rect key="frame" x="200" y="80" width="200" height="200"/>
                                 <subviews>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="80" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="MEv-S1-7WM">
-                                        <rect key="frame" x="37" y="42" width="71.5" height="76"/>
+                                        <rect key="frame" x="57" y="62" width="71.5" height="76"/>
                                         <animations/>
                                         <fontDescription key="fontDescription" name="HelveticaNeue-Light" family="Helvetica Neue" pointSize="64"/>
                                         <color key="textColor" red="0.94901960784313721" green="0.94901960784313721" blue="0.94901960784313721" alpha="1" colorSpace="calibratedRGB"/>
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="%" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="iS8-JP-gur">
-                                        <rect key="frame" x="109" y="72" width="27" height="35.5"/>
+                                        <rect key="frame" x="129" y="92" width="27" height="35.5"/>
                                         <animations/>
                                         <fontDescription key="fontDescription" name="HelveticaNeue-Light" family="Helvetica Neue" pointSize="30"/>
                                         <color key="textColor" red="0.94901960780000005" green="0.94901960780000005" blue="0.94901960780000005" alpha="1" colorSpace="calibratedRGB"/>
@@ -331,14 +331,14 @@ Press 'Start Button' on both side</string>
                                 <constraints>
                                     <constraint firstItem="iS8-JP-gur" firstAttribute="bottom" secondItem="MEv-S1-7WM" secondAttribute="bottom" constant="-10" id="Eqe-cF-lOl"/>
                                     <constraint firstItem="MEv-S1-7WM" firstAttribute="centerY" secondItem="keO-IA-F9B" secondAttribute="centerY" id="GSi-jq-wDG"/>
-                                    <constraint firstAttribute="height" constant="160" id="RrX-bE-I7c"/>
-                                    <constraint firstAttribute="width" constant="160" id="TSG-ym-rwa"/>
+                                    <constraint firstAttribute="height" constant="200" id="RrX-bE-I7c"/>
+                                    <constraint firstAttribute="width" constant="200" id="TSG-ym-rwa"/>
                                     <constraint firstItem="iS8-JP-gur" firstAttribute="leading" secondItem="MEv-S1-7WM" secondAttribute="trailing" id="k5o-M8-3tf"/>
                                     <constraint firstItem="MEv-S1-7WM" firstAttribute="centerX" secondItem="keO-IA-F9B" secondAttribute="centerX" constant="-7" id="zDn-Rx-dON"/>
                                 </constraints>
                             </view>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="You are a liar" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="R48-YE-jKS">
-                                <rect key="frame" x="10" y="400" width="580" height="28"/>
+                                <rect key="frame" x="10" y="300" width="580" height="28"/>
                                 <animations/>
                                 <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="24"/>
                                 <color key="textColor" red="0.94901960780000005" green="0.94901960780000005" blue="0.94901960780000005" alpha="1" colorSpace="calibratedRGB"/>
@@ -355,6 +355,9 @@ Press 'Start Button' on both side</string>
                                 <state key="normal" title="Start a new test">
                                     <color key="titleColor" red="0.94901960784313721" green="0.94901960784313721" blue="0.94901960784313721" alpha="1" colorSpace="calibratedRGB"/>
                                 </state>
+                                <connections>
+                                    <action selector="reStartButtonTouch:" destination="ESy-oN-dBB" eventType="touchUpInside" id="b3n-CG-Fg7"/>
+                                </connections>
                             </button>
                         </subviews>
                         <animations/>
@@ -364,16 +367,23 @@ Press 'Start Button' on both side</string>
                             <constraint firstItem="R48-YE-jKS" firstAttribute="leading" secondItem="7HP-No-IHB" secondAttribute="leading" constant="10" id="Gt0-xG-1ln"/>
                             <constraint firstItem="R48-YE-jKS" firstAttribute="top" secondItem="keO-IA-F9B" secondAttribute="bottom" constant="20" id="SEB-Rn-ilF"/>
                             <constraint firstAttribute="trailing" secondItem="R48-YE-jKS" secondAttribute="trailing" constant="10" id="U8d-64-lBd"/>
+                            <constraint firstItem="keO-IA-F9B" firstAttribute="top" secondItem="Pj4-0O-5r7" secondAttribute="bottom" constant="60" id="aZV-SY-vMU"/>
                             <constraint firstAttribute="trailing" secondItem="pBY-Xj-sCZ" secondAttribute="trailing" constant="60" id="juG-UG-c3J"/>
                             <constraint firstItem="Gng-ZH-RCl" firstAttribute="top" secondItem="pBY-Xj-sCZ" secondAttribute="bottom" constant="50" id="pMT-Jw-j7q"/>
                             <constraint firstItem="pBY-Xj-sCZ" firstAttribute="leading" secondItem="7HP-No-IHB" secondAttribute="leading" constant="60" id="qUY-Fh-qdp"/>
                             <constraint firstItem="keO-IA-F9B" firstAttribute="centerY" secondItem="7HP-No-IHB" secondAttribute="centerY" id="uof-c8-aIq"/>
                         </constraints>
+                        <variation key="default">
+                            <mask key="constraints">
+                                <exclude reference="uof-c8-aIq"/>
+                            </mask>
+                        </variation>
                     </view>
                     <connections>
-                        <outlet property="BPMLabel" destination="MEv-S1-7WM" id="Vyw-ht-Qwu"/>
+                        <outlet property="circleView" destination="keO-IA-F9B" id="vza-2c-iAi"/>
                         <outlet property="reStartButton" destination="pBY-Xj-sCZ" id="ll1-Bq-kK0"/>
                         <outlet property="truthLabel" destination="R48-YE-jKS" id="hOh-FF-Owh"/>
+                        <outlet property="truthRateLabel" destination="MEv-S1-7WM" id="2Tz-aP-ONX"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="mND-AI-sGc" userLabel="First Responder" sceneMemberID="firstResponder"/>

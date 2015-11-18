@@ -25,6 +25,7 @@ class ResultContainerPageViewController: UIViewController, UIPageViewControllerD
 
         // Do any additional setup after loading the view.
         self.setupPageView()
+        
     }
 
     override func didReceiveMemoryWarning() {
@@ -112,16 +113,18 @@ class ResultContainerPageViewController: UIViewController, UIPageViewControllerD
     }
     
     func pageViewController(pageViewController: UIPageViewController, didFinishAnimating finished: Bool, previousViewControllers: [UIViewController], transitionCompleted completed: Bool) {
+        print("move page to ")
         if let identifier = pageViewController.viewControllers![0].restorationIdentifier {
             switch identifier {
                 
             case "ResultSummaryViewController" :
                 self.pageControl = 0
-                
+                print(".0")
             case "RecordTableViewController" :
                 self.pageControl = 1
-                
+                print(".1")
             default :
+                print("unable to change page")
                 return
             }
         }
@@ -140,21 +143,25 @@ class ResultContainerPageViewController: UIViewController, UIPageViewControllerD
         
     }
     
-    func pageMoveForward() {
+    func pageMoveForward(note: NSNotification) {
+        print("move page from.\(self.pageControl)")
         //max page = 1
         if self.pageControl < 1 {
             if let pageContentViewController = self.getViewControllerAtIndex(self.pageControl + 1) {
                 self.pageViewController.setViewControllers([pageContentViewController], direction: UIPageViewControllerNavigationDirection.Forward, animated: true, completion: nil)
+                self.pageControl++
                 return
             }
         }
     }
     
-    func pageMoveBackward() {
+    func pageMoveBackward(note: NSNotification) {
+        print("move page from.\(self.pageControl)")
         //min page = 0
         if self.pageControl > 0 {
             if let pageContentViewController = self.getViewControllerAtIndex(self.pageControl - 1) {
                 self.pageViewController.setViewControllers([pageContentViewController], direction: UIPageViewControllerNavigationDirection.Reverse, animated: true, completion: nil)
+                self.pageControl--
                 return
             }
         }

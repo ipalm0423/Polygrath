@@ -24,7 +24,50 @@ class Singleton: NSObject {
         return Static.instance!
     }
     
-//color
+//question
+    var BPMmax: Double = 0
+    var BPMmin: Double = 0
+    var BPMAverage: Double = 0
+    var BPMDeviation: Double = 0
+    var totalTruthRate: Double = 0
+    var questions = [question]() {
+        didSet{
+            //progress data
+            var truthScores = [Double]()
+            for quest in self.questions {
+                var i = 0
+                if quest.dataValues.count > 0 {
+                    quest.questIndex = i 
+                    i++
+                    //find min
+                    quest.max = self.getMax(quest.dataValues)
+                    //find max
+                    quest.min = self.getMin(quest.dataValues)
+                    //find average
+                    quest.average = self.getAverage(quest.dataValues)
+                    //find score
+                    quest.score = self.getTruthRate(quest.dataValues, BPMAverage: self.BPMAverage, BPMDeviation: self.BPMDeviation)
+                    quest.isTruth = quest.score > 0.5 ? true : false
+                    
+                    truthScores.append(quest.score)
+                }else {
+                    //no data to process
+                    quest.isTruth = nil
+                }
+                
+                //calculate total truth rate
+                if truthScores.count > 0 {
+                    self.totalTruthRate = self.getAverage(truthScores)
+                }
+                
+            }
+        }
+    }
+    
+    
+    
+    
+//color view
     
     func getBackgroundGradientLayer(frame: CGRect) -> CALayer {
         
@@ -52,6 +95,25 @@ class Singleton: NSObject {
         return image
     }
     
+    func setupGradientColorView(VC: UIViewController) {
+        //setup background color
+        let gradientLayer = Singleton.sharedInstance.getBackgroundGradientLayer(VC.view.bounds)
+        VC.view.layer.insertSublayer(gradientLayer, atIndex: 0)
+        //setup navi bar color
+        if let bar = VC.navigationController?.navigationBar {
+            print("navi color setup")
+            VC.navigationController?.navigationBarHidden = false
+            let naviImage = Singleton.sharedInstance.getNaviBarGradientLayer(bar.bounds)
+            bar.translucent = false
+            let fontDictionary: [String: AnyObject] = [ NSForegroundColorAttributeName:UIColor(red: 242 / 255, green: 242 / 255, blue: 242 / 255, alpha: 1.0), NSFontAttributeName: UIFont(name: "HelveticaNeue", size: 24)! ]
+            bar.titleTextAttributes = fontDictionary
+            bar.tintColor = UIColor(red: 242 / 255, green: 242 / 255, blue: 242 / 255, alpha: 1.0)
+            bar.setBackgroundImage(naviImage, forBarMetrics: UIBarMetrics.Default)
+            
+            
+        }
+    
+    }
     
 //time func
     func getTimeString(startTime: NSDate, stopTime: NSDate) -> String {
@@ -518,6 +580,23 @@ class Singleton: NSObject {
         
         print("calculate deviation: \(dev)")
         return dev
+    }
+    
+    func getTruthRate(values: [Double], BPMAverage: Double, BPMDeviation: Double) -> Double {
+        
+        let avg = self.getAverage(values)
+        //let max = self.getMax(values)
+        //let min = self.getMin(values)
+        let dev = self.getStandardDeviation(values)
+        let T = 5.0
+        
+        
+        var score: Double = T / (3 * dev)
+        
+        if avg > BPMAverage + 0.2 * BPMDeviation {
+            score = score * 0.8
+        }
+        return score
     }
     
     

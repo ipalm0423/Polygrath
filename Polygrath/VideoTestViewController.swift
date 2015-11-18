@@ -819,11 +819,11 @@ class VideoTestViewController: UIViewController, AVCaptureVideoDataOutputSampleB
                 
             }
             if let VC = segue.destinationViewController as? ResultPageViewController {
-                VC.BPMAverage = self.average
-                VC.BPMDeviation = self.deviation
-                VC.BPMmax = self.bpmMax
-                VC.BPMmin = self.bpmMin
-                VC.questions = self.questions
+                Singleton.sharedInstance.BPMAverage = self.average
+                Singleton.sharedInstance.BPMDeviation = self.deviation
+                Singleton.sharedInstance.BPMmax = self.bpmMax
+                Singleton.sharedInstance.BPMmin = self.bpmMin
+                Singleton.sharedInstance.questions = self.questions
             }
         }
     }
