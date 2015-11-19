@@ -45,24 +45,33 @@ class ResultSummaryViewController: UIViewController {
         self.reStartButton.layer.cornerRadius = self.reStartButton.frame.height / 2
         self.reStartButton.clipsToBounds = true
         
-        //circle
-        let totalTruthRate = (Singleton.sharedInstance.totalTruthRate)
-        let circle = self.getCircleGradientLayer(self.circleView.bounds, percent: (1 - totalTruthRate), lineWidth: 5)
-        self.circleView.layer.insertSublayer(circle, atIndex: 0)
-        
-        //text
-        self.truthRateLabel.text = String(format: "%.0f", totalTruthRate)
-        if totalTruthRate > 0.8 {
-            self.truthLabel.text = "Honest"
-        }else if totalTruthRate > 0.6 {
-            self.truthLabel.text = "Something hide"
-        }else if totalTruthRate > 0.4 {
-            self.truthLabel.text = "Sly"
-        }else if totalTruthRate > 0.2 {
-            self.truthLabel.text = "Cheater"
+        //have data enough
+        if let totalTruthRate = (Singleton.sharedInstance.totalTruthRate) {
+            print("total truth rate: \(totalTruthRate)")
+            let circle = self.getCircleGradientLayer(self.circleView.bounds, percent: (1 - totalTruthRate), lineWidth: 5)
+            self.circleView.layer.insertSublayer(circle, atIndex: 0)
+            
+            //text
+            self.truthRateLabel.text = String(format: "%.0f", totalTruthRate * 100)
+            if totalTruthRate > 0.8 {
+                self.truthLabel.text = "Honest"
+            }else if totalTruthRate > 0.6 {
+                self.truthLabel.text = "Something hide"
+            }else if totalTruthRate > 0.4 {
+                self.truthLabel.text = "Sly"
+            }else if totalTruthRate > 0.2 {
+                self.truthLabel.text = "Cheater"
+            }else {
+                self.truthLabel.text = "Big Liar"
+            }
         }else {
-            self.truthLabel.text = "Big Liar"
+            //no data
+            self.truthLabel.text = "Not enough data"
+            self.truthRateLabel.text = "0"
         }
+        
+        
+        
     }
     
 //view
@@ -96,11 +105,7 @@ class ResultSummaryViewController: UIViewController {
     
     @IBAction func reStartButtonTouch(sender: AnyObject) {
         print("re-start button touch")
-        //back to restart, don't save anything
-        let count = self.navigationController!.viewControllers.count
-        if let switchViewController = self.navigationController?.viewControllers[count - 3] as? VideoTestViewController {
-            self.navigationController?.popToViewController(switchViewController, animated: true)
-        }
+        NSNotificationCenter.defaultCenter().postNotificationName("restartButtonTouch", object: nil)
         
     }
     

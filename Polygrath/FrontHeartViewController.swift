@@ -35,8 +35,12 @@ class FrontHeartViewController: UIViewController,WCSessionDelegate {
     
     override func viewDidAppear(animated: Bool) {
         self.animateHeart()
+        
     }
     
+    override func viewWillAppear(animated: Bool) {
+        self.navigationController?.navigationBarHidden = false
+    }
     
 //animate
     func animateHeart() {

@@ -19,7 +19,11 @@ class ResultPageViewController: UIViewController {
         super.viewDidLoad()
 
         // Do any additional setup after loading the view.
-        Singleton.sharedInstance.setupGradientColorView(self)
+        self.navigationController?.navigationBarHidden = false
+        Singleton.sharedInstance.setupBackgroundGradientColor(self)
+        
+        
+        
     }
 
     override func didReceiveMemoryWarning() {
@@ -28,8 +32,16 @@ class ResultPageViewController: UIViewController {
     }
     
     
+    override func viewDidAppear(animated: Bool) {
+        self.setupNotify()
         
-        
+    }
+    
+    override func viewDidDisappear(animated: Bool) {
+        self.removeNotify()
+    }
+    
+    
     
 
     
@@ -44,9 +56,7 @@ class ResultPageViewController: UIViewController {
         print("report button touch")
         NSNotificationCenter.defaultCenter().postNotificationName("pageMoveBackward", object: nil)
         //animate
-        
-        
-        
+        self.reportButtonAnimate()
         
     }
     
@@ -54,9 +64,68 @@ class ResultPageViewController: UIViewController {
         print("record button touch")
         NSNotificationCenter.defaultCenter().postNotificationName("pageMoveForward", object: nil)
         //animate
-        
+        self.recordButtonAnimation()
         
     }
+
+    
+    
+    
+//notifycation
+    func setupNotify() {
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: Selector("reportButtonNotify:"), name: "reportButtonTouch", object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: Selector("recordButtonNotify:"), name: "recordButtonTouch", object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: Selector("restartButtonNotify:"), name: "restartButtonTouch", object: nil)
+    }
+    
+    func removeNotify() {
+        NSNotificationCenter.defaultCenter().removeObserver(self, name: "reportButtonTouch", object: nil)
+        NSNotificationCenter.defaultCenter().removeObserver(self, name: "recordButtonTouch", object: nil)
+        NSNotificationCenter.defaultCenter().removeObserver(self, name: "restartButtonTouch", object: nil)
+    }
+    func reportButtonNotify(notify: NSNotification) {
+        self.reportButtonAnimate()
+    }
+    
+    func recordButtonNotify(notify: NSNotification) {
+        self.recordButtonAnimation()
+    }
+    
+    func restartButtonNotify(notify: NSNotification) {
+        print("restart test")
+        //back to restart, don't save anything
+        let count = self.navigationController!.viewControllers.count
+        if let switchViewController = self.navigationController?.viewControllers[count - 3] as? FrontHeartViewController {
+            print("restart test: sucess")
+            self.navigationController?.popToViewController(switchViewController, animated: true)
+        }
+    }
+    
+    
+    
+    
+    
+//animation
+    
+    func reportButtonAnimate() {
+        self.reportButton.setImage(UIImage(named: "report-press"), forState: UIControlState.Normal)
+        self.reportButton.setTitleColor(UIColor(red: 242 / 255, green: 242 / 255, blue: 242 / 255, alpha: 1.0), forState: UIControlState.Normal)
+        self.reportButton.backgroundColor = UIColor.clearColor()
+        self.recordButton.setImage(UIImage(named: "record-unpress"), forState: UIControlState.Normal)
+        self.recordButton.setTitleColor(UIColor(red: 170 / 255, green: 170 / 255, blue: 170 / 255, alpha: 1.0), forState: UIControlState.Normal)
+        self.recordButton.backgroundColor = UIColor(red: 190 / 255, green: 190 / 255, blue: 190 / 255, alpha: 0.2)
+    }
+    
+    func recordButtonAnimation() {
+        self.reportButton.setImage(UIImage(named: "report-unpress"), forState: UIControlState.Normal)
+        self.reportButton.setTitleColor(UIColor(red: 170 / 255, green: 170 / 255, blue: 170 / 255, alpha: 1.0), forState: UIControlState.Normal)
+        self.reportButton.backgroundColor = UIColor(red: 190 / 255, green: 190 / 255, blue: 190 / 255, alpha: 0.2)
+        self.recordButton.setImage(UIImage(named: "record-press"), forState: UIControlState.Normal)
+        self.recordButton.setTitleColor(UIColor(red: 242 / 255, green: 242 / 255, blue: 242 / 255, alpha: 1.0), forState: UIControlState.Normal)
+        self.recordButton.backgroundColor = UIColor.clearColor()
+    }
+    
+    
     
     /*
     // MARK: - Navigation

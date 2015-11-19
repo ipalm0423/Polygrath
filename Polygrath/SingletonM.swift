@@ -29,7 +29,7 @@ class Singleton: NSObject {
     var BPMmin: Double = 0
     var BPMAverage: Double = 0
     var BPMDeviation: Double = 0
-    var totalTruthRate: Double = 0
+    var totalTruthRate: Double? = 0
     var questions = [question]() {
         didSet{
             //progress data
@@ -50,14 +50,20 @@ class Singleton: NSObject {
                     quest.isTruth = quest.score > 0.5 ? true : false
                     
                     truthScores.append(quest.score)
+                    print("truth score: \(truthScores)")
                 }else {
                     //no data to process
                     quest.isTruth = nil
+                    
+
                 }
                 
                 //calculate total truth rate
                 if truthScores.count > 0 {
                     self.totalTruthRate = self.getAverage(truthScores)
+                    
+                }else {
+                    self.totalTruthRate = nil
                 }
                 
             }
@@ -95,24 +101,24 @@ class Singleton: NSObject {
         return image
     }
     
-    func setupGradientColorView(VC: UIViewController) {
+    func setupBackgroundGradientColor(VC: UIViewController) {
         //setup background color
         let gradientLayer = Singleton.sharedInstance.getBackgroundGradientLayer(VC.view.bounds)
         VC.view.layer.insertSublayer(gradientLayer, atIndex: 0)
+        
+    }
+    
+    func setupNaviBarColor(VC: ViewController) {
         //setup navi bar color
         if let bar = VC.navigationController?.navigationBar {
             print("navi color setup")
-            VC.navigationController?.navigationBarHidden = false
             let naviImage = Singleton.sharedInstance.getNaviBarGradientLayer(bar.bounds)
             bar.translucent = false
             let fontDictionary: [String: AnyObject] = [ NSForegroundColorAttributeName:UIColor(red: 242 / 255, green: 242 / 255, blue: 242 / 255, alpha: 1.0), NSFontAttributeName: UIFont(name: "HelveticaNeue", size: 24)! ]
             bar.titleTextAttributes = fontDictionary
             bar.tintColor = UIColor(red: 242 / 255, green: 242 / 255, blue: 242 / 255, alpha: 1.0)
             bar.setBackgroundImage(naviImage, forBarMetrics: UIBarMetrics.Default)
-            
-            
         }
-    
     }
     
 //time func
@@ -584,19 +590,32 @@ class Singleton: NSObject {
     
     func getTruthRate(values: [Double], BPMAverage: Double, BPMDeviation: Double) -> Double {
         
-        let avg = self.getAverage(values)
-        //let max = self.getMax(values)
-        //let min = self.getMin(values)
-        let dev = self.getStandardDeviation(values)
-        let T = 5.0
-        
-        
-        var score: Double = T / (3 * dev)
-        
-        if avg > BPMAverage + 0.2 * BPMDeviation {
-            score = score * 0.8
+        if values.count > 0 {
+            let avg = self.getAverage(values)
+            //let max = self.getMax(values)
+            //let min = self.getMin(values)
+            let dev = self.getStandardDeviation(values)
+            let T = 5.0
+            var score: Double = 1
+            
+            //have deviation difference
+            if dev > 0 {
+                score = T / (3 * dev)
+                if avg > BPMAverage + 0.2 * BPMDeviation {
+                    score = score * 0.8
+                }
+            }
+            
+            
+            //max score = 1
+            if score > 1 {
+                score = 1
+            }
+            
+            return score
         }
-        return score
+        //not enough data
+        return 1
     }
     
     

@@ -22,7 +22,8 @@ class ViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
-        
+        self.navigationController?.navigationBarHidden = true
+        Singleton.sharedInstance.setupNaviBarColor(self)
         self.alertHealthWarning()
         
     }
@@ -37,7 +38,9 @@ class ViewController: UIViewController {
     }
     
     
-    
+    override func viewWillAppear(animated: Bool) {
+        self.navigationController?.navigationBarHidden = true
+    }
 
     
     

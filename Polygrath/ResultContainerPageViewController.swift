@@ -34,11 +34,11 @@ class ResultContainerPageViewController: UIViewController, UIPageViewControllerD
     }
     
     override func viewDidAppear(animated: Bool) {
-        self.setupListener()
+        self.setupNotify()
     }
     
     override func viewDidDisappear(animated: Bool) {
-        self.removeListener()
+        self.removeNotify()
     }
     
     
@@ -119,10 +119,14 @@ class ResultContainerPageViewController: UIViewController, UIPageViewControllerD
                 
             case "ResultSummaryViewController" :
                 self.pageControl = 0
+                NSNotificationCenter.defaultCenter().postNotificationName("reportButtonTouch", object: self)
                 print(".0")
+                
             case "RecordTableViewController" :
                 self.pageControl = 1
+                NSNotificationCenter.defaultCenter().postNotificationName("recordButtonTouch", object: nil)
                 print(".1")
+                
             default :
                 print("unable to change page")
                 return
@@ -132,12 +136,12 @@ class ResultContainerPageViewController: UIViewController, UIPageViewControllerD
     
     
 //notifycation + page move
-    func setupListener() {
+    func setupNotify() {
         NSNotificationCenter.defaultCenter().addObserver(self, selector: Selector("pageMoveForward:"), name:"pageMoveForward", object: nil)
         NSNotificationCenter.defaultCenter().addObserver(self, selector: Selector("pageMoveBackward:"), name:"pageMoveBackward", object: nil)
     }
     
-    func removeListener() {
+    func removeNotify() {
         NSNotificationCenter.defaultCenter().removeObserver(self, name: "pageMoveForward", object: nil)
         NSNotificationCenter.defaultCenter().removeObserver(self, name: "pageMoveBackward", object: nil)
         
