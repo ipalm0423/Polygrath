@@ -142,14 +142,18 @@ class VideoTestViewController: UIViewController, AVCaptureVideoDataOutputSampleB
     override func viewDidDisappear(animated: Bool) {
         self.stopRecordVideo()
         self.closeCamera()
+        Singleton.sharedInstance.stopPlayingEffect()
     }
 
+    override func viewWillAppear(animated: Bool) {
+        self.navigationController?.navigationBarHidden = true
+    }
     
     override func viewDidAppear(animated: Bool) {
         if !self.isCameraOn {
             self.setupCamera(true)
         }
-        self.navigationController?.navigationBarHidden = true
+        
     }
     
     

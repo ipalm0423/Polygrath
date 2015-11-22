@@ -14,7 +14,7 @@ class ResultContainerPageViewController: UIViewController, UIPageViewControllerD
     
 //page VC
     var pageViewController: UIPageViewController!
-    var identifiers = ["ResultSummaryViewController", "RecordTableViewController"]
+    var identifiers = ["ResultSummaryViewController", "RecordViewController"]
     var pageControl = 0
     
     
@@ -72,7 +72,7 @@ class ResultContainerPageViewController: UIViewController, UIPageViewControllerD
         
         //second view controller
         if index == 1 {
-            let VC = self.storyboard?.instantiateViewControllerWithIdentifier("RecordTableViewController") as! RecordTableViewController
+            let VC = self.storyboard?.instantiateViewControllerWithIdentifier("RecordViewController") as! RecordViewController
             //setup
             
             return VC
@@ -85,7 +85,7 @@ class ResultContainerPageViewController: UIViewController, UIPageViewControllerD
     //setup page view data source
     func pageViewController(pageViewController: UIPageViewController, viewControllerAfterViewController viewController: UIViewController) -> UIViewController? {
         //final page
-        if let VC = viewController as? RecordTableViewController {
+        if let VC = viewController as? RecordViewController {
             return nil
         }
         //page1
@@ -99,7 +99,7 @@ class ResultContainerPageViewController: UIViewController, UIPageViewControllerD
     }
     
     func pageViewController(pageViewController: UIPageViewController, viewControllerBeforeViewController viewController: UIViewController) -> UIViewController? {
-        if let VC = viewController as? RecordTableViewController {
+        if let VC = viewController as? RecordViewController {
             
             //increment the index to get the viewController after the current index
             return self.getViewControllerAtIndex(0)
@@ -122,7 +122,7 @@ class ResultContainerPageViewController: UIViewController, UIPageViewControllerD
                 NSNotificationCenter.defaultCenter().postNotificationName("reportButtonTouch", object: self)
                 print(".0")
                 
-            case "RecordTableViewController" :
+            case "RecordViewController" :
                 self.pageControl = 1
                 NSNotificationCenter.defaultCenter().postNotificationName("recordButtonTouch", object: nil)
                 print(".1")

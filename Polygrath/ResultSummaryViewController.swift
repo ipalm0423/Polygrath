@@ -26,12 +26,25 @@ class ResultSummaryViewController: UIViewController {
     @IBOutlet weak var circleView: UIView!
     
     
+    @IBOutlet weak var maxLabel: UILabel!
+    
+    @IBOutlet weak var minLabel: UILabel!
+    
+    @IBOutlet weak var averageLabel: UILabel!
+    
+    
+    @IBOutlet weak var stackTableView: UIStackView!
+    
+    
+    
     
     override func viewDidLoad() {
         super.viewDidLoad()
 
         // Do any additional setup after loading the view.
         self.setupView()
+        
+        
     }
 
     override func didReceiveMemoryWarning() {
@@ -45,13 +58,24 @@ class ResultSummaryViewController: UIViewController {
         self.reStartButton.layer.cornerRadius = self.reStartButton.frame.height / 2
         self.reStartButton.clipsToBounds = true
         
+        //table separator
+        self.addTableSeparator()
+        
         //have data enough
         if let totalTruthRate = (Singleton.sharedInstance.totalTruthRate) {
             print("total truth rate: \(totalTruthRate)")
+            //label
+            self.maxLabel.text = String(format: "%.0f", Singleton.sharedInstance.BPMmax)
+            self.minLabel.text = String(format: "%.0f", Singleton.sharedInstance.BPMmin)
+            self.averageLabel.text = String(format: "%.0f", Singleton.sharedInstance.BPMAverage)
+            
+            //circle
             let circle = self.getCircleGradientLayer(self.circleView.bounds, percent: (1 - totalTruthRate), lineWidth: 5)
             self.circleView.layer.insertSublayer(circle, atIndex: 0)
             
-            //text
+            
+            
+            //judgement text
             self.truthRateLabel.text = String(format: "%.0f", totalTruthRate * 100)
             if totalTruthRate > 0.8 {
                 self.truthLabel.text = "Honest"
@@ -68,6 +92,9 @@ class ResultSummaryViewController: UIViewController {
             //no data
             self.truthLabel.text = "Not enough data"
             self.truthRateLabel.text = "0"
+            self.maxLabel.text = "--"
+            self.minLabel.text = "--"
+            self.averageLabel.text = "--"
         }
         
         
@@ -99,6 +126,38 @@ class ResultSummaryViewController: UIViewController {
         return gradient
     }
     
+
+    //table line
+    func addTableSeparator() {
+        let bound = self.view.bounds
+        let final = CGPoint(x: bound.width - 80, y: 0)
+        
+        //set path
+        let path = UIBezierPath()
+        path.moveToPoint(CGPoint(x: 0, y: 0))
+        path.addLineToPoint(final)
+        path.stroke()
+        
+        //change to CALayer
+        let arc = CAShapeLayer()
+        arc.path = path.CGPath
+        arc.lineWidth = 2
+        arc.fillColor = UIColor.clearColor().CGColor
+        arc.strokeColor = UIColor.purpleColor().CGColor
+        arc.lineCap = kCALineCapRound ; //线条拐角
+        arc.lineJoin = kCALineJoinRound
+        
+        let gradientLayer = CAGradientLayer()
+        gradientLayer.frame = self.stackTableView.bounds
+        gradientLayer.colors = [UIColor.redColor().CGColor, UIColor.yellowColor().CGColor]
+        gradientLayer.startPoint = CGPoint(x: 0, y: 0)
+        gradientLayer.endPoint = CGPoint(x: 1, y: 0)
+        gradientLayer.mask = arc
+        gradientLayer.opacity = 0.8
+        
+        //add to view
+        self.stackTableView.layer.insertSublayer(gradientLayer, atIndex: 0)
+    }
 
     
 //button

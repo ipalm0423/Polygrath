@@ -12,7 +12,6 @@
 		AC06ECF61BB692C90087586E /* TitleTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = AC06ECF51BB692C90087586E /* TitleTableViewCell.swift */; };
 		AC2CA7611BF9FE4700D199E4 /* ResultPageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = AC2CA7601BF9FE4700D199E4 /* ResultPageViewController.swift */; };
 		AC2CA7631BF9FF4D00D199E4 /* ResultContainerPageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = AC2CA7621BF9FF4D00D199E4 /* ResultContainerPageViewController.swift */; };
-		AC2CA7651BFA20CA00D199E4 /* RecordTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = AC2CA7641BFA20CA00D199E4 /* RecordTableViewController.swift */; };
 		AC2CA7681BFA219F00D199E4 /* ResultSummaryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = AC2CA7671BFA219F00D199E4 /* ResultSummaryViewController.swift */; };
 		AC648BCB1BDF1C6C0063CD1D /* SingletonM.swift in Sources */ = {isa = PBXBuildFile; fileRef = AC648BCA1BDF1C6C0063CD1D /* SingletonM.swift */; };
 		AC8DEABE1BE9B27800E60B62 /* heartbeat.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = AC8DEABD1BE9B27800E60B62 /* heartbeat.mp3 */; };
@@ -43,6 +42,8 @@
 		ACC81A501BB4FB25006377F6 /* questions.swift in Sources */ = {isa = PBXBuildFile; fileRef = ACC81A4F1BB4FB25006377F6 /* questions.swift */; };
 		ACDE08571BA7A1BD00D3ECB7 /* FrontHeartViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = ACDE08561BA7A1BD00D3ECB7 /* FrontHeartViewController.swift */; };
 		ACDE3ADE1B9F378100917E97 /* HealthKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = ACDE3ADD1B9F378100917E97 /* HealthKit.framework */; };
+		ACFEC9991C017E5D00F99F77 /* RecordTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = ACFEC9981C017E5D00F99F77 /* RecordTableViewCell.swift */; };
+		ACFEC99B1C020FA600F99F77 /* RecordViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = ACFEC99A1C020FA600F99F77 /* RecordViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -108,7 +109,6 @@
 		AC06ECF51BB692C90087586E /* TitleTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TitleTableViewCell.swift; sourceTree = "<group>"; };
 		AC2CA7601BF9FE4700D199E4 /* ResultPageViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ResultPageViewController.swift; sourceTree = "<group>"; };
 		AC2CA7621BF9FF4D00D199E4 /* ResultContainerPageViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ResultContainerPageViewController.swift; sourceTree = "<group>"; };
-		AC2CA7641BFA20CA00D199E4 /* RecordTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RecordTableViewController.swift; sourceTree = "<group>"; };
 		AC2CA7671BFA219F00D199E4 /* ResultSummaryViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ResultSummaryViewController.swift; sourceTree = "<group>"; };
 		AC648BCA1BDF1C6C0063CD1D /* SingletonM.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SingletonM.swift; sourceTree = "<group>"; };
 		AC8DEABD1BE9B27800E60B62 /* heartbeat.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = heartbeat.mp3; sourceTree = "<group>"; };
@@ -150,6 +150,8 @@
 		ACDE3ADC1B9F378000917E97 /* Polygrath.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = Polygrath.entitlements; sourceTree = "<group>"; };
 		ACDE3ADD1B9F378100917E97 /* HealthKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = HealthKit.framework; path = System/Library/Frameworks/HealthKit.framework; sourceTree = SDKROOT; };
 		ACDE3ADF1B9F379100917E97 /* Polygrath-iWatch.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = "Polygrath-iWatch.entitlements"; sourceTree = "<group>"; };
+		ACFEC9981C017E5D00F99F77 /* RecordTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RecordTableViewCell.swift; sourceTree = "<group>"; };
+		ACFEC99A1C020FA600F99F77 /* RecordViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RecordViewController.swift; sourceTree = "<group>"; };
 		ECA21D86324B26463EF8D046 /* Pods_Polygrath.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Polygrath.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
@@ -217,8 +219,9 @@
 			isa = PBXGroup;
 			children = (
 				AC2CA7621BF9FF4D00D199E4 /* ResultContainerPageViewController.swift */,
-				AC2CA7641BFA20CA00D199E4 /* RecordTableViewController.swift */,
 				AC2CA7671BFA219F00D199E4 /* ResultSummaryViewController.swift */,
+				ACFEC99A1C020FA600F99F77 /* RecordViewController.swift */,
+				ACFEC9981C017E5D00F99F77 /* RecordTableViewCell.swift */,
 				AC2CA7601BF9FE4700D199E4 /* ResultPageViewController.swift */,
 			);
 			name = Result;
@@ -594,11 +597,12 @@
 				ACB4E08A1BAAB6B60044EB72 /* PolyTestViewController.swift in Sources */,
 				ACC81A501BB4FB25006377F6 /* questions.swift in Sources */,
 				AC06ECF41BB68BCC0087586E /* ResultQuestTableViewCell.swift in Sources */,
+				ACFEC9991C017E5D00F99F77 /* RecordTableViewCell.swift in Sources */,
 				AC2CA7631BF9FF4D00D199E4 /* ResultContainerPageViewController.swift in Sources */,
 				AC9105E91BCFA5A100817F40 /* VideoTestViewController.swift in Sources */,
+				ACFEC99B1C020FA600F99F77 /* RecordViewController.swift in Sources */,
 				ACBC3F751B9EC9D7007AC186 /* Polygrath.xcdatamodeld in Sources */,
 				AC2CA7611BF9FE4700D199E4 /* ResultPageViewController.swift in Sources */,
-				AC2CA7651BFA20CA00D199E4 /* RecordTableViewController.swift in Sources */,
 				AC648BCB1BDF1C6C0063CD1D /* SingletonM.swift in Sources */,
 				AC2CA7681BFA219F00D199E4 /* ResultSummaryViewController.swift in Sources */,
 				AC06ECF61BB692C90087586E /* TitleTableViewCell.swift in Sources */,
