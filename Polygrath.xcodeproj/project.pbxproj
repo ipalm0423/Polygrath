@@ -44,6 +44,9 @@
 		ACDE3ADE1B9F378100917E97 /* HealthKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = ACDE3ADD1B9F378100917E97 /* HealthKit.framework */; };
 		ACFEC9991C017E5D00F99F77 /* RecordTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = ACFEC9981C017E5D00F99F77 /* RecordTableViewCell.swift */; };
 		ACFEC99B1C020FA600F99F77 /* RecordViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = ACFEC99A1C020FA600F99F77 /* RecordViewController.swift */; };
+		ACFEC99F1C03812200F99F77 /* FrontInterfaceController.swift in Sources */ = {isa = PBXBuildFile; fileRef = ACFEC99E1C03812200F99F77 /* FrontInterfaceController.swift */; };
+		ACFEC9A11C038AC500F99F77 /* Step1InterfaceController.swift in Sources */ = {isa = PBXBuildFile; fileRef = ACFEC9A01C038AC500F99F77 /* Step1InterfaceController.swift */; };
+		ACFEC9A31C038B6C00F99F77 /* Step2InterfaceController.swift in Sources */ = {isa = PBXBuildFile; fileRef = ACFEC9A21C038B6C00F99F77 /* Step2InterfaceController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -152,6 +155,9 @@
 		ACDE3ADF1B9F379100917E97 /* Polygrath-iWatch.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = "Polygrath-iWatch.entitlements"; sourceTree = "<group>"; };
 		ACFEC9981C017E5D00F99F77 /* RecordTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RecordTableViewCell.swift; sourceTree = "<group>"; };
 		ACFEC99A1C020FA600F99F77 /* RecordViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RecordViewController.swift; sourceTree = "<group>"; };
+		ACFEC99E1C03812200F99F77 /* FrontInterfaceController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FrontInterfaceController.swift; sourceTree = "<group>"; };
+		ACFEC9A01C038AC500F99F77 /* Step1InterfaceController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Step1InterfaceController.swift; sourceTree = "<group>"; };
+		ACFEC9A21C038B6C00F99F77 /* Step2InterfaceController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Step2InterfaceController.swift; sourceTree = "<group>"; };
 		ECA21D86324B26463EF8D046 /* Pods_Polygrath.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Polygrath.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
@@ -315,6 +321,9 @@
 				ACBC3FC41B9ED26D007AC186 /* Polygrath-iWatch Extension.entitlements */,
 				ACBC3FB01B9ECA2B007AC186 /* InterfaceController.swift */,
 				ACBC3FC21B9ECC65007AC186 /* TestInterfaceController.swift */,
+				ACFEC9A01C038AC500F99F77 /* Step1InterfaceController.swift */,
+				ACFEC9A21C038B6C00F99F77 /* Step2InterfaceController.swift */,
+				ACFEC99E1C03812200F99F77 /* FrontInterfaceController.swift */,
 				ACBC3FB21B9ECA2B007AC186 /* ExtensionDelegate.swift */,
 				ACBC3FB41B9ECA2B007AC186 /* Assets.xcassets */,
 				ACBC3FB61B9ECA2B007AC186 /* Info.plist */,
@@ -631,8 +640,11 @@
 			buildActionMask = 2147483647;
 			files = (
 				ACBC3FB31B9ECA2B007AC186 /* ExtensionDelegate.swift in Sources */,
+				ACFEC9A11C038AC500F99F77 /* Step1InterfaceController.swift in Sources */,
+				ACFEC9A31C038B6C00F99F77 /* Step2InterfaceController.swift in Sources */,
 				ACBC3FC31B9ECC65007AC186 /* TestInterfaceController.swift in Sources */,
 				ACBC3FB11B9ECA2B007AC186 /* InterfaceController.swift in Sources */,
+				ACFEC99F1C03812200F99F77 /* FrontInterfaceController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
