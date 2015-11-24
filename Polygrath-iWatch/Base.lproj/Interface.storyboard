@@ -64,6 +64,29 @@
             </objects>
             <point key="canvasLocation" x="257" y="581"/>
         </scene>
+        <!--Back-->
+        <scene sceneID="iPi-1G-e1F">
+            <objects>
+                <controller identifier="checkVC" title="Back" id="alZ-ph-hkp">
+                    <items>
+                        <group width="1" height="1" alignment="left" layout="vertical" id="4Nz-er-7rr">
+                            <items>
+                                <label alignment="center" text="Please check the 'Health' app in your iPhone" textAlignment="center" numberOfLines="3" id="Yyu-5N-WSf">
+                                    <fontDescription key="font" type="system" weight="medium" pointSize="16"/>
+                                </label>
+                                <group width="1" height="0.5" alignment="center" id="YiZ-Qg-qM1">
+                                    <items>
+                                        <imageView width="1" alignment="center" verticalAlignment="center" image="Health_icon" contentMode="scaleAspectFit" id="0Xi-DW-QYC"/>
+                                    </items>
+                                </group>
+                            </items>
+                        </group>
+                    </items>
+                    <color key="backgroundColor" red="0.0" green="0.1198503236" blue="0.23984749329999999" alpha="1" colorSpace="calibratedRGB"/>
+                </controller>
+            </objects>
+            <point key="canvasLocation" x="257" y="804"/>
+        </scene>
         <!--Step 1-->
         <scene sceneID="cyg-Jh-jez">
             <objects>
@@ -94,70 +117,64 @@
             </objects>
             <point key="canvasLocation" x="467" y="581"/>
         </scene>
-        <!--Step 2-->
+        <!--Testing-->
         <scene sceneID="PtL-Oe-H7d">
             <objects>
-                <controller title="Step 2" id="2i9-1z-G0i" customClass="Step2InterfaceController" customModule="Polygrath_iWatch_Extension">
+                <controller title="Testing" id="2i9-1z-G0i" customClass="Step2InterfaceController" customModule="Polygrath_iWatch_Extension">
                     <items>
-                        <group width="1" height="1" alignment="left" layout="vertical" spacing="5" id="QAh-Nv-UUx">
+                        <group width="1" height="1" alignment="left" layout="vertical" spacing="2" id="QAh-Nv-UUx">
                             <items>
-                                <group width="1" height="0.65000000000000002" alignment="center" backgroundImage="finger" contentMode="scaleAspectFit" id="VKt-Ej-3JD">
+                                <group width="1" height="0.65000000000000002" alignment="center" backgroundImage="finger" contentMode="scaleAspectFit" spacing="0.0" id="VKt-Ej-3JD">
                                     <items>
                                         <button width="1" height="1" alignment="center" verticalAlignment="center" id="M2o-PI-sYn">
                                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
-                                            <connections>
-                                                <segue destination="ej2-TB-CY4" kind="modal" id="URe-Kj-2yc"/>
-                                            </connections>
                                         </button>
                                     </items>
                                 </group>
-                                <label alignment="center" verticalAlignment="bottom" text="Put Your Finger on screen" textAlignment="center" numberOfLines="2" id="LVm-4M-a0u">
+                                <label alignment="center" text="Keep finger on screen" textAlignment="center" numberOfLines="2" id="LVm-4M-a0u">
                                     <fontDescription key="font" type="system" weight="medium" pointSize="14"/>
                                 </label>
+                                <group width="1" height="1" alignment="center" alpha="0.0" backgroundImage="fingerprint" contentMode="scaleAspectFit" layout="vertical" spacing="0.0" id="c26-4M-U8N">
+                                    <items>
+                                        <button width="1" height="1" alignment="center" verticalAlignment="center" title="Here" id="56T-0d-6z1">
+                                            <color key="titleColor" red="0.94901960780000005" green="0.94901960780000005" blue="0.94901960780000005" alpha="1" colorSpace="calibratedRGB"/>
+                                            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                            <fontDescription key="font" type="boldSystem" pointSize="18"/>
+                                            <connections>
+                                                <action selector="fingerPress" destination="2i9-1z-G0i" id="pIw-PP-zWK"/>
+                                            </connections>
+                                        </button>
+                                    </items>
+                                    <edgeInsets key="margins" left="0.0" right="0.0" top="0.0" bottom="0.0"/>
+                                </group>
+                                <button width="0.90000000000000002" alignment="center" verticalAlignment="bottom" alpha="0.0" title="Stop" id="LI2-gD-fHB">
+                                    <color key="backgroundColor" red="0.85490196080000003" green="0.1019607843" blue="0.16078431369999999" alpha="1" colorSpace="calibratedRGB"/>
+                                    <fontDescription key="font" type="system" weight="medium" pointSize="18"/>
+                                    <connections>
+                                        <action selector="stopButtonTouch" destination="2i9-1z-G0i" id="wqG-rY-5sl"/>
+                                    </connections>
+                                </button>
                             </items>
-                            <edgeInsets key="margins" left="0.0" right="0.0" top="5" bottom="20"/>
+                            <edgeInsets key="margins" left="0.0" right="0.0" top="5" bottom="5"/>
                         </group>
                     </items>
                     <color key="backgroundColor" red="0.0" green="0.1198503236" blue="0.23984749329999999" alpha="1" colorSpace="calibratedRGB"/>
+                    <edgeInsets key="margins" left="0.0" right="0.0" top="0.0" bottom="0.0"/>
                     <connections>
                         <outlet property="group1" destination="VKt-Ej-3JD" id="FVw-2z-JdO"/>
+                        <outlet property="group2" destination="c26-4M-U8N" id="pW5-Du-drV"/>
                         <outlet property="pushButton" destination="M2o-PI-sYn" id="8AJ-ro-lYD"/>
+                        <outlet property="stopButton" destination="LI2-gD-fHB" id="utL-ad-5Dr"/>
+                        <outlet property="textLabel" destination="LVm-4M-a0u" id="DT8-sx-Y9C"/>
                     </connections>
                 </controller>
             </objects>
             <point key="canvasLocation" x="671" y="581"/>
         </scene>
-        <!--Testing-->
-        <scene sceneID="paO-hn-0AW">
-            <objects>
-                <controller identifier="TestVC" title="Testing" id="ej2-TB-CY4">
-                    <items>
-                        <group width="1" height="1" alignment="center" verticalAlignment="center" layout="vertical" id="dac-fx-TLU">
-                            <items>
-                                <group width="0.80000000000000004" height="1" alignment="center" backgroundImage="fingerprint" contentMode="scaleAspectFit" id="FPp-Wb-g6L">
-                                    <items>
-                                        <imageView width="1" alignment="left" image="scan" id="StN-C6-nLB"/>
-                                    </items>
-                                    <edgeInsets key="margins" left="0.0" right="0.0" top="0.0" bottom="0.0"/>
-                                </group>
-                                <button width="1" height="30" alignment="left" title="Stop" id="Qse-SA-Nfs">
-                                    <color key="backgroundColor" red="0.85490196080000003" green="0.1019607843" blue="0.16078431369999999" alpha="1" colorSpace="calibratedRGB"/>
-                                    <connections>
-                                        <segue destination="Tjv-uD-JvQ" kind="modal" id="Oy0-Vo-3zh"/>
-                                    </connections>
-                                </button>
-                            </items>
-                        </group>
-                    </items>
-                    <color key="backgroundColor" red="0.0" green="0.1281903848" blue="0.25653783419999998" alpha="1" colorSpace="calibratedRGB"/>
-                </controller>
-            </objects>
-            <point key="canvasLocation" x="915" y="581"/>
-        </scene>
-        <!--Result-->
+        <!--　-->
         <scene sceneID="n3d-uF-fHj">
             <objects>
-                <controller identifier="ResultVC" title="Result" id="Tjv-uD-JvQ">
+                <controller identifier="ResultVC" title="　" id="Tjv-uD-JvQ" customClass="ResultInterfaceController" customModule="Polygrath_iWatch_Extension">
                     <items>
                         <group width="1" height="1" alignment="center" verticalAlignment="center" layout="vertical" id="2CX-Rq-X2g">
                             <items>
@@ -175,7 +192,7 @@
                                         </group>
                                     </items>
                                 </group>
-                                <label width="1" alignment="center" text="You are a liar" textAlignment="center" numberOfLines="2" id="DhX-ed-6KD">
+                                <label width="1" alignment="center" text="Processing" textAlignment="center" numberOfLines="2" id="DhX-ed-6KD">
                                     <fontDescription key="font" type="system" weight="medium" pointSize="16"/>
                                 </label>
                                 <button width="0.90000000000000002" height="30" alignment="center" verticalAlignment="bottom" title="Restart" id="ZMQ-AC-iHi">
@@ -183,7 +200,8 @@
                                     <color key="backgroundColor" red="0.85490196080000003" green="0.1019607843" blue="0.16078431369999999" alpha="1" colorSpace="calibratedRGB"/>
                                     <fontDescription key="font" type="system" weight="medium" pointSize="18"/>
                                     <connections>
-                                        <segue destination="2i9-1z-G0i" kind="modal" id="XRd-a1-YZV"/>
+                                        <action selector="restartButtonTouch" destination="Tjv-uD-JvQ" id="DSy-G2-zWF"/>
+                                        <segue destination="6e5-FQ-8RQ" kind="modal" id="He1-Yo-2Wh"/>
                                     </connections>
                                 </button>
                             </items>
@@ -194,7 +212,7 @@
                     <color key="backgroundColor" red="0.0" green="0.1198503236" blue="0.23984749329999999" alpha="1" colorSpace="calibratedRGB"/>
                 </controller>
             </objects>
-            <point key="canvasLocation" x="1168" y="581"/>
+            <point key="canvasLocation" x="899" y="581"/>
         </scene>
         <!--Wait-->
         <scene sceneID="u7T-35-igf">
@@ -222,6 +240,6 @@
         </scene>
     </scenes>
     <inferredMetricsTieBreakers>
-        <segue reference="b4e-q4-5ww"/>
+        <segue reference="He1-Yo-2Wh"/>
     </inferredMetricsTieBreakers>
 </document>

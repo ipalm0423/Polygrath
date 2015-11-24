@@ -47,6 +47,8 @@
 		ACFEC99F1C03812200F99F77 /* FrontInterfaceController.swift in Sources */ = {isa = PBXBuildFile; fileRef = ACFEC99E1C03812200F99F77 /* FrontInterfaceController.swift */; };
 		ACFEC9A11C038AC500F99F77 /* Step1InterfaceController.swift in Sources */ = {isa = PBXBuildFile; fileRef = ACFEC9A01C038AC500F99F77 /* Step1InterfaceController.swift */; };
 		ACFEC9A31C038B6C00F99F77 /* Step2InterfaceController.swift in Sources */ = {isa = PBXBuildFile; fileRef = ACFEC9A21C038B6C00F99F77 /* Step2InterfaceController.swift */; };
+		ACFEC9A51C045CDE00F99F77 /* ThumbTouchInterfaceController.swift in Sources */ = {isa = PBXBuildFile; fileRef = ACFEC9A41C045CDE00F99F77 /* ThumbTouchInterfaceController.swift */; };
+		ACFEC9A71C049AB700F99F77 /* ResultInterfaceController.swift in Sources */ = {isa = PBXBuildFile; fileRef = ACFEC9A61C049AB700F99F77 /* ResultInterfaceController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -158,6 +160,8 @@
 		ACFEC99E1C03812200F99F77 /* FrontInterfaceController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FrontInterfaceController.swift; sourceTree = "<group>"; };
 		ACFEC9A01C038AC500F99F77 /* Step1InterfaceController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Step1InterfaceController.swift; sourceTree = "<group>"; };
 		ACFEC9A21C038B6C00F99F77 /* Step2InterfaceController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Step2InterfaceController.swift; sourceTree = "<group>"; };
+		ACFEC9A41C045CDE00F99F77 /* ThumbTouchInterfaceController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ThumbTouchInterfaceController.swift; sourceTree = "<group>"; };
+		ACFEC9A61C049AB700F99F77 /* ResultInterfaceController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ResultInterfaceController.swift; sourceTree = "<group>"; };
 		ECA21D86324B26463EF8D046 /* Pods_Polygrath.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Polygrath.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
@@ -323,6 +327,8 @@
 				ACBC3FC21B9ECC65007AC186 /* TestInterfaceController.swift */,
 				ACFEC9A01C038AC500F99F77 /* Step1InterfaceController.swift */,
 				ACFEC9A21C038B6C00F99F77 /* Step2InterfaceController.swift */,
+				ACFEC9A61C049AB700F99F77 /* ResultInterfaceController.swift */,
+				ACFEC9A41C045CDE00F99F77 /* ThumbTouchInterfaceController.swift */,
 				ACFEC99E1C03812200F99F77 /* FrontInterfaceController.swift */,
 				ACBC3FB21B9ECA2B007AC186 /* ExtensionDelegate.swift */,
 				ACBC3FB41B9ECA2B007AC186 /* Assets.xcassets */,
@@ -644,6 +650,8 @@
 				ACFEC9A31C038B6C00F99F77 /* Step2InterfaceController.swift in Sources */,
 				ACBC3FC31B9ECC65007AC186 /* TestInterfaceController.swift in Sources */,
 				ACBC3FB11B9ECA2B007AC186 /* InterfaceController.swift in Sources */,
+				ACFEC9A51C045CDE00F99F77 /* ThumbTouchInterfaceController.swift in Sources */,
+				ACFEC9A71C049AB700F99F77 /* ResultInterfaceController.swift in Sources */,
 				ACFEC99F1C03812200F99F77 /* FrontInterfaceController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

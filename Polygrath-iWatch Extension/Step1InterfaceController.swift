@@ -8,7 +8,7 @@
 
 import WatchKit
 import Foundation
-
+import HealthKit
 
 class Step1InterfaceController: WKInterfaceController {
 
@@ -21,6 +21,7 @@ class Step1InterfaceController: WKInterfaceController {
     override func willActivate() {
         // This method is called when watch view controller is about to be visible to user
         super.willActivate()
+        
     }
 
     override func didDeactivate() {
@@ -32,6 +33,7 @@ class Step1InterfaceController: WKInterfaceController {
     
     override func didAppear() {
         self.startAnimate()
+        self.setupHealthStore()
     }
     
     @IBOutlet var image1: WKInterfaceImage!
@@ -53,6 +55,62 @@ class Step1InterfaceController: WKInterfaceController {
             self.image1.setRelativeWidth(0.0, withAdjustment: 0)
         }
         
+        
+    }
+    
+    
+    var healthStore = HKHealthStore()
+    
+    func setupHealthStore() -> Bool {
+        if HKHealthStore.isHealthDataAvailable() {
+            let heartRateType = HKSampleType.quantityTypeForIdentifier(HKQuantityTypeIdentifierHeartRate)!
+            let typetoShare = Set(arrayLiteral: heartRateType)
+            let typetoRead = Set(arrayLiteral: heartRateType)
+            let status = healthStore.authorizationStatusForType(HKObjectType.quantityTypeForIdentifier(HKQuantityTypeIdentifierHeartRate)!)
+            
+            if status == HKAuthorizationStatus.NotDetermined || status == HKAuthorizationStatus.SharingDenied {
+                print("HK not authorize")
+                self.healthStore.requestAuthorizationToShareTypes(typetoShare, readTypes: typetoRead, completion: { (bool, error) -> Void in
+                    if let ER = error {
+                        print(ER)
+                    }
+                    if bool {
+                        print("agree HK")
+                        
+                    }else {
+                        print("didn't agree HK")
+                        
+                    }
+                })
+                self.showAlert("Can't Access Health Data", message: "Adjust setting in 'Health' app on your iPhone", completion: { () -> Void in
+                    print("seage to checkVC")
+                    self.presentControllerWithName("checkVC", context: nil)
+                })
+                return false
+                
+            }else {
+                return true
+            }
+            
+        }else {
+            self.showAlert("Please Upgrage", message: "Your device is not support", completion: nil)
+            return false
+        }
+    }
+    
+    
+    
+    
+    
+    //alert
+    func showAlert(title: String, message: String, completion: (() -> Void)?) {
+        
+        let action = WKAlertAction(title: "Ok", style: WKAlertActionStyle.Default) { () -> Void in
+            print("Warning: \(message)")
+            completion?()
+        }
+        
+        presentAlertControllerWithTitle(title, message: message, preferredStyle: .ActionSheet, actions: [action])
         
     }
     

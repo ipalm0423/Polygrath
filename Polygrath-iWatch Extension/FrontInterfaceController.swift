@@ -8,7 +8,7 @@
 
 import WatchKit
 import Foundation
-
+import HealthKit
 
 class FrontInterfaceController: WKInterfaceController {
 
@@ -16,11 +16,13 @@ class FrontInterfaceController: WKInterfaceController {
         super.awakeWithContext(context)
         
         // Configure interface objects here.
+        self.setupHealthStoreWithoutAlert()
     }
 
     override func willActivate() {
         // This method is called when watch view controller is about to be visible to user
         super.willActivate()
+        
     }
 
     override func didDeactivate() {
@@ -33,6 +35,8 @@ class FrontInterfaceController: WKInterfaceController {
     
     override func didAppear() {
         self.startAnimate()
+        print("did appear")
+        
     }
     
     @IBOutlet var image1: WKInterfaceImage!
@@ -56,6 +60,57 @@ class FrontInterfaceController: WKInterfaceController {
     }
     
     
+//health kit
+    var healthStore = HKHealthStore()
     
+    func setupHealthStoreWithoutAlert() -> Bool {
+        if HKHealthStore.isHealthDataAvailable() {
+            let heartRateType = HKSampleType.quantityTypeForIdentifier(HKQuantityTypeIdentifierHeartRate)!
+            let typetoShare = Set(arrayLiteral: heartRateType)
+            let typetoRead = Set(arrayLiteral: heartRateType)
+            let status = healthStore.authorizationStatusForType(HKObjectType.quantityTypeForIdentifier(HKQuantityTypeIdentifierHeartRate)!)
+            
+            if status == HKAuthorizationStatus.NotDetermined || status == HKAuthorizationStatus.SharingDenied {
+                print("HK not authorize")
+                self.healthStore.requestAuthorizationToShareTypes(typetoShare, readTypes: typetoRead, completion: { (bool, error) -> Void in
+                    if let ER = error {
+                        print(ER)
+                    }
+                    if bool {
+                        print("agree HK")
+                        
+                    }else {
+                        print("didn't agree HK")
+                        
+                    }
+                })
+                
+                return false
+                
+            }else {
+                return true
+            }
+            
+        }else {
+            
+            return false
+        }
+    }
+
+    
+    
+    
+    
+//alert
+    func showAlert(title: String, message: String, completion: (() -> Void)?) {
+        
+        let action = WKAlertAction(title: "Ok", style: WKAlertActionStyle.Default) { () -> Void in
+            print("Warning: \(message)")
+            completion?()
+        }
+        
+        presentAlertControllerWithTitle(title, message: message, preferredStyle: .ActionSheet, actions: [action])
+        
+    }
 
 }
