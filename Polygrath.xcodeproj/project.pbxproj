@@ -49,6 +49,7 @@
 		ACFEC9A31C038B6C00F99F77 /* Step2InterfaceController.swift in Sources */ = {isa = PBXBuildFile; fileRef = ACFEC9A21C038B6C00F99F77 /* Step2InterfaceController.swift */; };
 		ACFEC9A51C045CDE00F99F77 /* ThumbTouchInterfaceController.swift in Sources */ = {isa = PBXBuildFile; fileRef = ACFEC9A41C045CDE00F99F77 /* ThumbTouchInterfaceController.swift */; };
 		ACFEC9A71C049AB700F99F77 /* ResultInterfaceController.swift in Sources */ = {isa = PBXBuildFile; fileRef = ACFEC9A61C049AB700F99F77 /* ResultInterfaceController.swift */; };
+		ACFEC9AA1C063FD200F99F77 /* RowController.swift in Sources */ = {isa = PBXBuildFile; fileRef = ACFEC9A91C063FD200F99F77 /* RowController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -162,6 +163,7 @@
 		ACFEC9A21C038B6C00F99F77 /* Step2InterfaceController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Step2InterfaceController.swift; sourceTree = "<group>"; };
 		ACFEC9A41C045CDE00F99F77 /* ThumbTouchInterfaceController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ThumbTouchInterfaceController.swift; sourceTree = "<group>"; };
 		ACFEC9A61C049AB700F99F77 /* ResultInterfaceController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ResultInterfaceController.swift; sourceTree = "<group>"; };
+		ACFEC9A91C063FD200F99F77 /* RowController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RowController.swift; sourceTree = "<group>"; };
 		ECA21D86324B26463EF8D046 /* Pods_Polygrath.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Polygrath.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
@@ -328,6 +330,7 @@
 				ACFEC9A01C038AC500F99F77 /* Step1InterfaceController.swift */,
 				ACFEC9A21C038B6C00F99F77 /* Step2InterfaceController.swift */,
 				ACFEC9A61C049AB700F99F77 /* ResultInterfaceController.swift */,
+				ACFEC9A91C063FD200F99F77 /* RowController.swift */,
 				ACFEC9A41C045CDE00F99F77 /* ThumbTouchInterfaceController.swift */,
 				ACFEC99E1C03812200F99F77 /* FrontInterfaceController.swift */,
 				ACBC3FB21B9ECA2B007AC186 /* ExtensionDelegate.swift */,
@@ -648,6 +651,7 @@
 				ACBC3FB31B9ECA2B007AC186 /* ExtensionDelegate.swift in Sources */,
 				ACFEC9A11C038AC500F99F77 /* Step1InterfaceController.swift in Sources */,
 				ACFEC9A31C038B6C00F99F77 /* Step2InterfaceController.swift in Sources */,
+				ACFEC9AA1C063FD200F99F77 /* RowController.swift in Sources */,
 				ACBC3FC31B9ECC65007AC186 /* TestInterfaceController.swift in Sources */,
 				ACBC3FB11B9ECA2B007AC186 /* InterfaceController.swift in Sources */,
 				ACFEC9A51C045CDE00F99F77 /* ThumbTouchInterfaceController.swift in Sources */,

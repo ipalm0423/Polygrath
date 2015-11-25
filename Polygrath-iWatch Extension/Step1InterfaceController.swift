@@ -14,14 +14,16 @@ class Step1InterfaceController: WKInterfaceController {
 
     override func awakeWithContext(context: AnyObject?) {
         super.awakeWithContext(context)
-        
+        self.DoneButton.setHeight(0)
+        self.DoneButton.setAlpha(0.0)
         // Configure interface objects here.
     }
 
     override func willActivate() {
         // This method is called when watch view controller is about to be visible to user
         super.willActivate()
-        
+        self.animatePulse()
+        self.startAnimate()
     }
 
     override func didDeactivate() {
@@ -32,15 +34,32 @@ class Step1InterfaceController: WKInterfaceController {
 
     
     override func didAppear() {
-        self.startAnimate()
+        
         self.setupHealthStore()
+        //done button
+        let doneTimer = NSTimer.scheduledTimerWithTimeInterval(0, target: self, selector: Selector("doneButtonAnimate"), userInfo: nil, repeats: false)
+        
     }
     
     @IBOutlet var image1: WKInterfaceImage!
     
+    @IBOutlet var DoneButton: WKInterfaceButton!
+    
+    
+    
+    
     var animationTimer: NSTimer?
     
+    func doneButtonAnimate() {
+        self.animateWithDuration(1) { () -> Void in
+            self.DoneButton.setHeight(30)
+            self.DoneButton.setAlpha(1.0)
+        }
+        
+    }
+    
     func startAnimate() {
+        
         self.animationTimer = NSTimer.scheduledTimerWithTimeInterval(2, target: self, selector: Selector("animatePulse"), userInfo: nil, repeats: true)
     }
     

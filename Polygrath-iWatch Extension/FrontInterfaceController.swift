@@ -22,6 +22,7 @@ class FrontInterfaceController: WKInterfaceController {
     override func willActivate() {
         // This method is called when watch view controller is about to be visible to user
         super.willActivate()
+        self.startAnimate()
         
     }
 
@@ -34,7 +35,7 @@ class FrontInterfaceController: WKInterfaceController {
     var animationTimer: NSTimer?
     
     override func didAppear() {
-        self.startAnimate()
+        
         print("did appear")
         
     }

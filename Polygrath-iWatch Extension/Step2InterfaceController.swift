@@ -15,14 +15,15 @@ class Step2InterfaceController: WKInterfaceController, WCSessionDelegate, HKWork
     
     override func awakeWithContext(context: AnyObject?) {
         super.awakeWithContext(context)
-        print("awake with context")
+        print("awake with context: test VC")
         // Configure interface objects here.
         
         //connection & HealthKit setup
         self.setupWCConnection()
         self.setupHeartRateQuery()
         self.checkWCConnectReachable()
-        self.workOutSession.delegate = self
+        
+        
         
     }
 
@@ -33,45 +34,45 @@ class Step2InterfaceController: WKInterfaceController, WCSessionDelegate, HKWork
         if self.testIsStart {
             //test is already start
             self.group1.setRelativeHeight(0.0, withAdjustment: 0)
-            self.textLabel.setHeight(0)
-            self.group2.setRelativeHeight(1.0, withAdjustment: 0)
-            self.group2.setAlpha(1)
-            self.stopButton.setAlpha(0)
+            //show message "keep finger on screen"
+            self.animateFingerPrint()
+            
         }else {
+            //test is not start
             self.group1.setRelativeHeight(0.65, withAdjustment: 0)
             self.group2.setRelativeHeight(1.0, withAdjustment: 0)
             self.textLabel.sizeToFitHeight()
             self.textLabel.setAlpha(1.0)
-            self.textLabel.setText("Keep finger on screen")
+            self.textLabel.setText("Keep your finger on screen")
             //hide for animation
             self.group2.setAlpha(0)
             self.stopButton.setAlpha(0)
             
         }
         
-        print("will active")
+        print("will active: test VC")
     }
 
     override func didDeactivate() {
         // This method is called when watch view controller is no longer visible
         
         
-        //self.textLabel.sizeToFitHeight()
-        //self.textLabel.setAlpha(1.0)
-        //self.group2.setAlpha(0)
-        //self.stopButton.setAlpha(0)
-        print("did deactive")
+        print("did deactive: test VC")
+        self.stopAnimateScan()
         super.didDeactivate()
     }
     
     override func didAppear() {
+        print("did appear: test VC")
         //animation
         if testIsStart {
             
         }else {
             //start test
             self.stopAnimateScan()
-            self.firstAnimationTimer = NSTimer.scheduledTimerWithTimeInterval(1, target: self, selector: Selector("animatePress"), userInfo: nil, repeats: false)
+            self.group2.setAlpha(0)
+            self.firstAnimationTimer = NSTimer.scheduledTimerWithTimeInterval(2, target: self, selector: Selector("animatePress"), userInfo: nil, repeats: false)
+            self.testIsStart = true
         }
         
         
@@ -91,6 +92,7 @@ class Step2InterfaceController: WKInterfaceController, WCSessionDelegate, HKWork
     
     @IBOutlet var stopButton: WKInterfaceButton!
     
+    var dataValue = [Double]()
 
     
 //WC connection
@@ -185,8 +187,11 @@ class Step2InterfaceController: WKInterfaceController, WCSessionDelegate, HKWork
     var testIsStart = false {
         didSet {
             if self.testIsStart {
+                self.dataValue.removeAll()
                 //test is running
                 print("test is start")
+                self.workOutSession = HKWorkoutSession(activityType: HKWorkoutActivityType.CrossTraining, locationType: HKWorkoutSessionLocationType.Indoor)
+                self.workOutSession.delegate = self
                 self.healthStore.startWorkoutSession(self.workOutSession)
                 self.sendCMDStartPhone()
             }else {
@@ -208,7 +213,12 @@ class Step2InterfaceController: WKInterfaceController, WCSessionDelegate, HKWork
             let time = sample.endDate
             var data = [NSDate : Double]()
             data[time] = value
+            
+            //save to local
+            self.dataValue.append(value)
             print(data)
+            
+            //send to iphone
             self.sendDataFile(data)
         }
         
@@ -283,12 +293,12 @@ class Step2InterfaceController: WKInterfaceController, WCSessionDelegate, HKWork
                 self.group1.setRelativeHeight(0.0, withAdjustment: 0)
                 self.group2.setRelativeHeight(1.0, withAdjustment: 0)
                 self.textLabel.setHeight(0)
-                self.textLabel.setText("Keep finger on")
+                self.textLabel.setText("Keep your finger")
                 self.group2.setAlpha(1.0)
             })
             
             self.startAnimateScan()
-            self.testIsStart = true
+            
             
         }
     }
@@ -302,7 +312,7 @@ class Step2InterfaceController: WKInterfaceController, WCSessionDelegate, HKWork
 //scan animation
     var animationTimer: NSTimer?
     func startAnimateScan() {
-        self.animationTimer = NSTimer.scheduledTimerWithTimeInterval(2, target: self, selector: Selector("animateScan"), userInfo: nil, repeats: true)
+        self.animationTimer = NSTimer.scheduledTimerWithTimeInterval(1, target: self, selector: Selector("animateScan"), userInfo: nil, repeats: true)
     }
     
     func stopAnimateScan() {
@@ -316,38 +326,26 @@ class Step2InterfaceController: WKInterfaceController, WCSessionDelegate, HKWork
     
     
     func animateScan() {
-        self.animateWithDuration(1.0) { () -> Void in
+        self.animateWithDuration(0.5) { () -> Void in
             self.group2.setAlpha(0.5)
         }
         
-        let dispatchTime = dispatch_time(DISPATCH_TIME_NOW, Int64(1000 * NSEC_PER_MSEC)) //after 1 seconds
+        let dispatchTime = dispatch_time(DISPATCH_TIME_NOW, Int64(500 * NSEC_PER_MSEC)) //after 1 seconds
         dispatch_after(dispatchTime, dispatch_get_main_queue()) { () -> Void in
             
-            self.animateWithDuration(1, animations: { () -> Void in
+            self.animateWithDuration(0.5, animations: { () -> Void in
                 self.group2.setAlpha(1.0)
             })
         }
         
     }
 
-    
-    
-    
-    
-    
-    
-    
-    
-    
-//button
-    
-    @IBAction func fingerPress() {
-        print("finger press")
+//finger print animation
+    func animateFingerPrint() {
         self.stopAnimateScan()
-        
         //animate button
         self.animateWithDuration(0.3) { () -> Void in
-            
+            self.textLabel.sizeToFitHeight()
             self.group2.setRelativeHeight(0.5, withAdjustment: 0.0)
             self.group2.setAlpha(1.0)
             self.stopButton.setAlpha(1.0)
@@ -359,10 +357,29 @@ class Step2InterfaceController: WKInterfaceController, WCSessionDelegate, HKWork
             self.animateWithDuration(0.5, animations: { () -> Void in
                 self.group2.setRelativeHeight(1.0, withAdjustment: 0)
                 self.stopButton.setAlpha(0.0)
+                self.textLabel.setHeight(0)
                 
             })
+            
+        }
+        
+        let dispatchTime2 = dispatch_time(DISPATCH_TIME_NOW, Int64(4500 * NSEC_PER_MSEC))
+        dispatch_after(dispatchTime2, dispatch_get_main_queue()) { () -> Void in
             self.startAnimateScan()
         }
+    }
+    
+    
+    
+    
+    
+    
+    
+//button
+    
+    @IBAction func fingerPress() {
+        print("finger press")
+        self.animateFingerPrint()
     }
     
     
@@ -380,9 +397,13 @@ class Step2InterfaceController: WKInterfaceController, WCSessionDelegate, HKWork
             
         }else {
             self.sendCMDStopPhone()
-            self.presentControllerWithName("ResultVC", context: nil)
+            
+            //segue with data
+            self.presentControllerWithName("ResultVC", context: self.dataValue)
+            
         }
     }
+    
     
     
     

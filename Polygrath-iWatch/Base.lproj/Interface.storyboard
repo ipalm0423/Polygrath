@@ -87,12 +87,12 @@
             </objects>
             <point key="canvasLocation" x="257" y="804"/>
         </scene>
-        <!--Step 1-->
+        <!--Step1 Interface Controller-->
         <scene sceneID="cyg-Jh-jez">
             <objects>
-                <controller title="Step 1" id="6e5-FQ-8RQ" customClass="Step1InterfaceController" customModule="Polygrath_iWatch_Extension">
+                <controller id="6e5-FQ-8RQ" customClass="Step1InterfaceController" customModule="Polygrath_iWatch_Extension">
                     <items>
-                        <group width="1" height="1" alignment="center" verticalAlignment="center" layout="vertical" id="Mlf-gL-HRu">
+                        <group width="1" height="1" alignment="center" verticalAlignment="center" layout="vertical" spacing="0.0" id="Mlf-gL-HRu">
                             <items>
                                 <label width="1" alignment="center" text="Open Polygrath on your device" textAlignment="center" baselineAdjustment="alignCenters" numberOfLines="0" id="IN5-aA-aHK">
                                     <fontDescription key="font" type="system" weight="medium" pointSize="16"/>
@@ -102,25 +102,33 @@
                                         <imageView width="1" alignment="left" verticalAlignment="center" image="cardiogram" contentMode="right" id="lEl-U6-rBf"/>
                                         <imageView width="1" alignment="left" verticalAlignment="center" image="cardiogram" contentMode="right" id="Jdf-Cu-uQ9"/>
                                     </items>
-                                    <edgeInsets key="margins" left="0.0" right="0.0" top="0.0" bottom="0.0"/>
+                                    <edgeInsets key="margins" left="0.0" right="0.0" top="0.0" bottom="5"/>
                                 </group>
+                                <button width="0.90000000000000002" height="30" alignment="center" verticalAlignment="bottom" title="Done" id="VLT-nk-VXa">
+                                    <color key="titleColor" red="0.94901960780000005" green="0.94901960780000005" blue="0.94901960780000005" alpha="1" colorSpace="calibratedRGB"/>
+                                    <color key="backgroundColor" red="0.85490196080000003" green="0.1019607843" blue="0.16078431369999999" alpha="1" colorSpace="calibratedRGB"/>
+                                    <fontDescription key="font" type="system" weight="medium" pointSize="18"/>
+                                    <connections>
+                                        <segue destination="2i9-1z-G0i" kind="modal" id="39O-FL-1va"/>
+                                    </connections>
+                                </button>
                             </items>
-                            <edgeInsets key="margins" left="0.0" right="0.0" top="24" bottom="6"/>
+                            <edgeInsets key="margins" left="0.0" right="0.0" top="15" bottom="6"/>
                         </group>
                     </items>
                     <color key="backgroundColor" red="0.0" green="0.12819038476603184" blue="0.25653783420202014" alpha="1" colorSpace="calibratedRGB"/>
                     <connections>
+                        <outlet property="DoneButton" destination="VLT-nk-VXa" id="VqD-cb-A9u"/>
                         <outlet property="image1" destination="lEl-U6-rBf" id="dw6-Kt-v7I"/>
-                        <segue destination="2i9-1z-G0i" kind="relationship" relationship="nextPage" id="b4e-q4-5ww"/>
                     </connections>
                 </controller>
             </objects>
             <point key="canvasLocation" x="467" y="581"/>
         </scene>
-        <!--Testing-->
+        <!--Step2 Interface Controller-->
         <scene sceneID="PtL-Oe-H7d">
             <objects>
-                <controller title="Testing" id="2i9-1z-G0i" customClass="Step2InterfaceController" customModule="Polygrath_iWatch_Extension">
+                <controller id="2i9-1z-G0i" customClass="Step2InterfaceController" customModule="Polygrath_iWatch_Extension">
                     <items>
                         <group width="1" height="1" alignment="left" layout="vertical" spacing="2" id="QAh-Nv-UUx">
                             <items>
@@ -134,9 +142,9 @@
                                 <label alignment="center" text="Keep finger on screen" textAlignment="center" numberOfLines="2" id="LVm-4M-a0u">
                                     <fontDescription key="font" type="system" weight="medium" pointSize="14"/>
                                 </label>
-                                <group width="1" height="1" alignment="center" alpha="0.0" backgroundImage="fingerprint" contentMode="scaleAspectFit" layout="vertical" spacing="0.0" id="c26-4M-U8N">
+                                <group width="1" height="1" alignment="center" verticalAlignment="center" alpha="0.0" backgroundImage="fingerprint" contentMode="scaleAspectFit" layout="vertical" spacing="0.0" id="c26-4M-U8N">
                                     <items>
-                                        <button width="1" height="1" alignment="center" verticalAlignment="center" title="Here" id="56T-0d-6z1">
+                                        <button width="1" height="1" alignment="center" verticalAlignment="center" title="Touch Here" id="56T-0d-6z1">
                                             <color key="titleColor" red="0.94901960780000005" green="0.94901960780000005" blue="0.94901960780000005" alpha="1" colorSpace="calibratedRGB"/>
                                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                             <fontDescription key="font" type="boldSystem" pointSize="18"/>
@@ -145,7 +153,7 @@
                                             </connections>
                                         </button>
                                     </items>
-                                    <edgeInsets key="margins" left="0.0" right="0.0" top="0.0" bottom="0.0"/>
+                                    <edgeInsets key="margins" left="0.0" right="0.0" top="5" bottom="0.0"/>
                                 </group>
                                 <button width="0.90000000000000002" alignment="center" verticalAlignment="bottom" alpha="0.0" title="Stop" id="LI2-gD-fHB">
                                     <color key="backgroundColor" red="0.85490196080000003" green="0.1019607843" blue="0.16078431369999999" alpha="1" colorSpace="calibratedRGB"/>
@@ -176,40 +184,61 @@
             <objects>
                 <controller identifier="ResultVC" title="　" id="Tjv-uD-JvQ" customClass="ResultInterfaceController" customModule="Polygrath_iWatch_Extension">
                     <items>
-                        <group width="1" height="1" alignment="center" verticalAlignment="center" layout="vertical" id="2CX-Rq-X2g">
+                        <group width="1" height="1" alignment="center" id="ge5-1l-65P">
                             <items>
-                                <group width="1" height="0.5" alignment="center" contentMode="scaleAspectFit" id="Leu-b2-wSa" userLabel="circleGroup">
-                                    <items>
-                                        <group width="1" alignment="center" verticalAlignment="center" id="8lv-Gk-XZF">
-                                            <items>
-                                                <label alignment="center" verticalAlignment="center" text="0" textAlignment="center" id="w6F-pn-mL9">
-                                                    <fontDescription key="font" type="system" pointSize="36"/>
-                                                </label>
-                                                <label alignment="center" verticalAlignment="center" text="%" textAlignment="left" id="xiX-jc-ShL">
-                                                    <fontDescription key="font" type="boldSystem" pointSize="15"/>
-                                                </label>
-                                            </items>
-                                        </group>
-                                    </items>
-                                </group>
-                                <label width="1" alignment="center" text="Processing" textAlignment="center" numberOfLines="2" id="DhX-ed-6KD">
-                                    <fontDescription key="font" type="system" weight="medium" pointSize="16"/>
+                                <imageView width="1" height="1" alignment="left" verticalAlignment="center" image="heart" contentMode="scaleAspectFit" id="y5j-E9-QBp"/>
+                                <label alignment="center" verticalAlignment="center" text="Heart Rate BPM" textAlignment="center" numberOfLines="2" id="w1h-So-301">
+                                    <color key="textColor" red="0.94901960780000005" green="0.94901960780000005" blue="0.94901960780000005" alpha="1" colorSpace="calibratedRGB"/>
+                                    <fontDescription key="font" type="italicSystem" pointSize="16"/>
                                 </label>
+                            </items>
+                            <edgeInsets key="margins" left="5" right="0.0" top="5" bottom="0.0"/>
+                        </group>
+                        <separator alignment="center" alpha="0.0" id="EnS-x9-e0s"/>
+                        <table alignment="center" alpha="0.0" id="Lxb-FC-mzm">
+                            <items>
+                                <tableRow identifier="dataRow" selectable="NO" id="xZH-AN-krO" customClass="RowController" customModule="Polygrath_iWatch_Extension">
+                                    <group key="rootItem" width="1" alignment="left" id="MIW-ib-9o2">
+                                        <items>
+                                            <label alignment="left" verticalAlignment="center" text="Max" textAlignment="center" id="qOR-fv-Rs5">
+                                                <color key="textColor" red="0.85490196080000003" green="0.1019607843" blue="0.16078431369999999" alpha="1" colorSpace="calibratedRGB"/>
+                                                <fontDescription key="font" type="system" weight="medium" pointSize="18"/>
+                                            </label>
+                                            <label alignment="right" verticalAlignment="center" text="100" textAlignment="center" id="lnZ-zS-uor">
+                                                <color key="textColor" red="0.94901960780000005" green="0.94901960780000005" blue="0.94901960780000005" alpha="1" colorSpace="calibratedRGB"/>
+                                                <fontDescription key="font" type="system" pointSize="24"/>
+                                            </label>
+                                        </items>
+                                    </group>
+                                    <connections>
+                                        <outlet property="dataLabel" destination="lnZ-zS-uor" id="cFa-D0-1EY"/>
+                                        <outlet property="headLabel" destination="qOR-fv-Rs5" id="5wH-WK-SNn"/>
+                                    </connections>
+                                </tableRow>
+                            </items>
+                        </table>
+                        <separator alignment="center" alpha="0.0" id="skH-9f-F67"/>
+                        <group alignment="center" layout="vertical" id="2CX-Rq-X2g">
+                            <items>
                                 <button width="0.90000000000000002" height="30" alignment="center" verticalAlignment="bottom" title="Restart" id="ZMQ-AC-iHi">
                                     <color key="titleColor" red="0.94901960780000005" green="0.94901960780000005" blue="0.94901960780000005" alpha="1" colorSpace="calibratedRGB"/>
                                     <color key="backgroundColor" red="0.85490196080000003" green="0.1019607843" blue="0.16078431369999999" alpha="1" colorSpace="calibratedRGB"/>
                                     <fontDescription key="font" type="system" weight="medium" pointSize="18"/>
                                     <connections>
-                                        <action selector="restartButtonTouch" destination="Tjv-uD-JvQ" id="DSy-G2-zWF"/>
                                         <segue destination="6e5-FQ-8RQ" kind="modal" id="He1-Yo-2Wh"/>
                                     </connections>
                                 </button>
                             </items>
                             <color key="backgroundColor" red="0.0" green="0.1198503236" blue="0.23984749329999999" alpha="1" colorSpace="calibratedRGB"/>
-                            <edgeInsets key="margins" left="0.0" right="0.0" top="10" bottom="10"/>
+                            <edgeInsets key="margins" left="0.0" right="0.0" top="10" bottom="5"/>
                         </group>
                     </items>
                     <color key="backgroundColor" red="0.0" green="0.1198503236" blue="0.23984749329999999" alpha="1" colorSpace="calibratedRGB"/>
+                    <connections>
+                        <outlet property="group1" destination="ge5-1l-65P" id="jfi-pN-cnm"/>
+                        <outlet property="heartImage" destination="y5j-E9-QBp" id="SEy-hN-Bqb"/>
+                        <outlet property="tableOutlet" destination="Lxb-FC-mzm" id="4EQ-2W-n2N"/>
+                    </connections>
                 </controller>
             </objects>
             <point key="canvasLocation" x="899" y="581"/>
