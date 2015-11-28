@@ -17,15 +17,21 @@ class FrontHeartViewController: UIViewController,WCSessionDelegate {
     @IBOutlet weak var heartImage: UIImageView!
     var snapHeart = UIView()
     
+    @IBOutlet weak var checkButton: UIButton!
+    
+    @IBOutlet weak var tempStartButton: UIButton!
+    
+    
+    
     //WCSession
     let session: WCSession? = WCSession.isSupported() ? WCSession.defaultSession() : nil
     
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.navigationController?.navigationBarHidden = false
-        // Do any additional setup after loading the view.
         
+        // Do any additional setup after loading the view.
+        self.setupView()
     }
 
     override func didReceiveMemoryWarning() {
@@ -40,6 +46,16 @@ class FrontHeartViewController: UIViewController,WCSessionDelegate {
     
     override func viewWillAppear(animated: Bool) {
         self.navigationController?.navigationBarHidden = false
+    }
+    
+    
+//view
+    func setupView() {
+        self.navigationController?.navigationBarHidden = false
+        Singleton.sharedInstance.setupBackgroundGradientColor(self)
+        self.checkButton.layer.cornerRadius = self.checkButton.frame.height / 2
+        self.checkButton.clipsToBounds = true
+        self.tempStartButton.hidden = true
     }
     
 //animate

@@ -2,6 +2,7 @@
 <document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="9060" systemVersion="15B42" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="7K4-Zl-XeZ">
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="9051"/>
+        <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
         <capability name="Constraints with non-1.0 multipliers" minToolsVersion="5.1"/>
     </dependencies>
@@ -19,63 +20,76 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Polygrath" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="NL3-E8-xua">
-                                <rect key="frame" x="241" y="116" width="118" height="34"/>
+                                <rect key="frame" x="0.0" y="114" width="600" height="60"/>
                                 <animations/>
-                                <fontDescription key="fontDescription" type="system" pointSize="28"/>
-                                <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                <fontDescription key="fontDescription" name="HelveticaNeue-BoldItalic" family="Helvetica Neue" pointSize="50"/>
+                                <color key="textColor" red="0.94901960780000005" green="0.94901960780000005" blue="0.94901960780000005" alpha="1" colorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Find the truth by your iWatch" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="eoj-PA-1wN">
-                                <rect key="frame" x="189" y="169" width="222" height="21"/>
+                                <rect key="frame" x="20" y="194" width="560" height="21.5"/>
                                 <animations/>
-                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="18"/>
+                                <color key="textColor" red="0.94901960780000005" green="0.94901960780000005" blue="0.94901960780000005" alpha="1" colorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <button opaque="NO" alpha="0.90000000000000002" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Nm4-Ca-daW">
-                                <rect key="frame" x="20" y="540" width="560" height="40"/>
-                                <animations/>
-                                <color key="backgroundColor" red="0.66847840915046275" green="1" blue="0.31211152116244489" alpha="1" colorSpace="calibratedRGB"/>
-                                <constraints>
-                                    <constraint firstAttribute="height" constant="40" id="L56-ja-AUV"/>
-                                </constraints>
-                                <state key="normal" title="Agree with statement"/>
-                                <connections>
-                                    <action selector="startButtonTouch:" destination="BYZ-38-t0r" eventType="touchUpInside" id="b7L-gn-DyA"/>
-                                </connections>
-                            </button>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="nru-0U-MGe">
-                                <rect key="frame" x="246" y="285" width="108" height="30"/>
+                            <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="nru-0U-MGe">
+                                <rect key="frame" x="236" y="283" width="126" height="33"/>
                                 <animations/>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
-                                <state key="normal" title="Read statement"/>
+                                <fontDescription key="fontDescription" name="HelveticaNeue-LightItalic" family="Helvetica Neue" pointSize="18"/>
+                                <state key="normal" title="Read Statement">
+                                    <color key="titleColor" red="0.85490196080000003" green="0.1019607843" blue="0.16078431369999999" alpha="1" colorSpace="calibratedRGB"/>
+                                </state>
                                 <connections>
                                     <segue destination="QZC-y8-dEo" kind="show" id="hmo-W2-iDJ"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" alpha="0.90000000000000002" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Nm4-Ca-daW">
+                                <rect key="frame" x="50" y="500" width="500" height="50"/>
+                                <animations/>
+                                <color key="backgroundColor" red="0.85490196080000003" green="0.1019607843" blue="0.16078431369999999" alpha="1" colorSpace="calibratedRGB"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="50" id="L56-ja-AUV"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" name="HelveticaNeue-Light" family="Helvetica Neue" pointSize="24"/>
+                                <state key="normal" title="Start">
+                                    <color key="titleColor" red="0.94901960780000005" green="0.94901960780000005" blue="0.94901960780000005" alpha="1" colorSpace="calibratedRGB"/>
+                                </state>
+                                <connections>
+                                    <action selector="startButtonTouch:" destination="BYZ-38-t0r" eventType="touchUpInside" id="b7L-gn-DyA"/>
                                 </connections>
                             </button>
                         </subviews>
                         <animations/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                         <constraints>
-                            <constraint firstItem="wfy-db-euE" firstAttribute="top" secondItem="Nm4-Ca-daW" secondAttribute="bottom" constant="20" id="1wv-pD-hcK"/>
+                            <constraint firstItem="wfy-db-euE" firstAttribute="top" secondItem="Nm4-Ca-daW" secondAttribute="bottom" constant="50" id="1wv-pD-hcK"/>
                             <constraint firstItem="NL3-E8-xua" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="CFy-EY-BY1"/>
                             <constraint firstItem="eoj-PA-1wN" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="KrW-4G-CCc"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="eoj-PA-1wN" secondAttribute="trailing" id="LXW-Gy-MsF"/>
                             <constraint firstItem="eoj-PA-1wN" firstAttribute="top" secondItem="NL3-E8-xua" secondAttribute="bottom" constant="20" id="Ogd-Bc-otR"/>
-                            <constraint firstItem="Nm4-Ca-daW" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leading" constant="20" id="Qgc-WT-Q8k"/>
+                            <constraint firstItem="Nm4-Ca-daW" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leading" constant="50" id="Qgc-WT-Q8k"/>
                             <constraint firstItem="nru-0U-MGe" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="RFB-Rm-FIw"/>
-                            <constraint firstAttribute="trailing" secondItem="Nm4-Ca-daW" secondAttribute="trailing" constant="20" id="Y3I-5L-dr8"/>
+                            <constraint firstAttribute="trailing" secondItem="Nm4-Ca-daW" secondAttribute="trailing" constant="50" id="Y3I-5L-dr8"/>
+                            <constraint firstItem="eoj-PA-1wN" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leadingMargin" id="bG5-T1-keS"/>
                             <constraint firstItem="NL3-E8-xua" firstAttribute="centerY" secondItem="8bC-Xf-vdC" secondAttribute="centerY" id="jWf-HS-NXn"/>
-                            <constraint firstItem="NL3-E8-xua" firstAttribute="top" secondItem="y3c-jy-aDJ" secondAttribute="bottom" constant="52" id="om0-zf-5kz"/>
+                            <constraint firstAttribute="trailing" secondItem="NL3-E8-xua" secondAttribute="trailing" id="mec-Cn-u2J"/>
+                            <constraint firstItem="NL3-E8-xua" firstAttribute="top" secondItem="y3c-jy-aDJ" secondAttribute="bottom" constant="50" id="om0-zf-5kz"/>
                             <constraint firstItem="nru-0U-MGe" firstAttribute="centerY" secondItem="8bC-Xf-vdC" secondAttribute="centerY" id="qyF-lY-Owl"/>
+                            <constraint firstItem="NL3-E8-xua" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leading" id="z8c-Lo-ddb"/>
                         </constraints>
                         <variation key="default">
                             <mask key="constraints">
+                                <exclude reference="CFy-EY-BY1"/>
                                 <exclude reference="jWf-HS-NXn"/>
+                                <exclude reference="KrW-4G-CCc"/>
                             </mask>
                         </variation>
                     </view>
                     <navigationItem key="navigationItem" id="Ogh-gO-gLw"/>
                     <connections>
+                        <outlet property="startButton" destination="Nm4-Ca-daW" id="4GS-Wk-LoV"/>
                         <segue destination="5Wn-wh-fws" kind="show" identifier="StartSegue" id="PnB-ay-g4G"/>
                     </connections>
                 </viewController>
@@ -107,52 +121,58 @@
                                     <action selector="startButtonTouch:" destination="5Wn-wh-fws" eventType="touchUpInside" id="xdd-bE-fct"/>
                                 </connections>
                             </button>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="heart-80-vec" translatesAutoresizingMaskIntoConstraints="NO" id="X8e-aO-J1E">
-                                <rect key="frame" x="260" y="94" width="80" height="80"/>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="heart" translatesAutoresizingMaskIntoConstraints="NO" id="X8e-aO-J1E">
+                                <rect key="frame" x="242" y="114" width="116" height="100"/>
                                 <animations/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="100" id="TdN-Pt-YCZ"/>
+                                    <constraint firstAttribute="width" secondItem="X8e-aO-J1E" secondAttribute="height" multiplier="50:43" id="lI2-BS-Nr6"/>
+                                </constraints>
                             </imageView>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Open 'Polygrath' APP on your iWatch" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="5y3-mt-Cau">
-                                <rect key="frame" x="159" y="214" width="282" height="21"/>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Open 'Polygrath' APP on your iWatch" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="5y3-mt-Cau">
+                                <rect key="frame" x="133.5" y="254" width="334" height="23.5"/>
                                 <animations/>
-                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
-                                <nil key="highlightedColor"/>
-                            </label>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="BbP-qB-tmP">
-                                <rect key="frame" x="177" y="274" width="247" height="41"/>
-                                <animations/>
-                                <string key="text">When you are ready 
-Press 'Start Button' on both side</string>
-                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                <fontDescription key="fontDescription" name="HelveticaNeue-Italic" family="Helvetica Neue" pointSize="20"/>
+                                <color key="textColor" red="0.94901960780000005" green="0.94901960780000005" blue="0.94901960780000005" alpha="1" colorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="3cM-pb-xI1">
-                                <rect key="frame" x="20" y="490" width="560" height="30"/>
+                                <rect key="frame" x="50" y="500" width="500" height="50"/>
                                 <animations/>
-                                <color key="backgroundColor" red="1" green="1" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                <color key="backgroundColor" red="0.85490196080000003" green="0.1019607843" blue="0.16078431369999999" alpha="1" colorSpace="calibratedRGB"/>
                                 <constraints>
-                                    <constraint firstAttribute="height" constant="30" id="iyQ-Sr-Pfj"/>
+                                    <constraint firstAttribute="height" constant="50" id="iyQ-Sr-Pfj"/>
                                 </constraints>
-                                <state key="normal" title="Video Capture"/>
+                                <fontDescription key="fontDescription" name="HelveticaNeue-Light" family="Helvetica Neue" pointSize="24"/>
+                                <state key="normal" title="Check">
+                                    <color key="titleColor" red="0.94901960780000005" green="0.94901960780000005" blue="0.94901960780000005" alpha="1" colorSpace="calibratedRGB"/>
+                                </state>
                                 <connections>
                                     <action selector="StartVideoTestButton:" destination="5Wn-wh-fws" eventType="touchUpInside" id="5RK-A0-OZb"/>
                                 </connections>
                             </button>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Help experiment subject wearing iWatch" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="BbP-qB-tmP">
+                                <rect key="frame" x="121.5" y="317" width="359" height="23.5"/>
+                                <animations/>
+                                <fontDescription key="fontDescription" name="HelveticaNeue-Italic" family="Helvetica Neue" pointSize="20"/>
+                                <color key="textColor" red="0.94901960780000005" green="0.94901960780000005" blue="0.94901960780000005" alpha="1" colorSpace="calibratedRGB"/>
+                                <nil key="highlightedColor"/>
+                            </label>
                         </subviews>
                         <animations/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
-                            <constraint firstAttribute="trailing" secondItem="3cM-pb-xI1" secondAttribute="trailing" constant="20" id="1gz-jv-bIQ"/>
+                            <constraint firstAttribute="trailing" secondItem="3cM-pb-xI1" secondAttribute="trailing" constant="50" id="1gz-jv-bIQ"/>
+                            <constraint firstItem="D2C-4P-act" firstAttribute="top" secondItem="3cM-pb-xI1" secondAttribute="bottom" constant="50" id="9Rl-eh-Arq"/>
                             <constraint firstItem="5y3-mt-Cau" firstAttribute="centerX" secondItem="Pvk-P3-l2h" secondAttribute="centerX" id="A2R-uU-j9P"/>
-                            <constraint firstItem="mnn-uX-LOt" firstAttribute="top" secondItem="3cM-pb-xI1" secondAttribute="bottom" constant="20" id="Fkp-RV-uoq"/>
+                            <constraint firstItem="mnn-uX-LOt" firstAttribute="top" secondItem="3cM-pb-xI1" secondAttribute="bottom" constant="50" id="Fkp-RV-uoq"/>
                             <constraint firstAttribute="trailing" secondItem="mnn-uX-LOt" secondAttribute="trailing" constant="20" id="JJH-OF-XVf"/>
                             <constraint firstItem="mnn-uX-LOt" firstAttribute="leading" secondItem="Pvk-P3-l2h" secondAttribute="leading" constant="20" id="QrC-EL-A31"/>
                             <constraint firstItem="BbP-qB-tmP" firstAttribute="top" secondItem="5y3-mt-Cau" secondAttribute="bottom" constant="40" id="UdX-dq-5C3"/>
                             <constraint firstItem="D2C-4P-act" firstAttribute="top" secondItem="mnn-uX-LOt" secondAttribute="bottom" constant="20" id="afl-nB-sLD"/>
-                            <constraint firstItem="3cM-pb-xI1" firstAttribute="leading" secondItem="Pvk-P3-l2h" secondAttribute="leading" constant="20" id="dIw-5i-Gca"/>
+                            <constraint firstItem="3cM-pb-xI1" firstAttribute="leading" secondItem="Pvk-P3-l2h" secondAttribute="leading" constant="50" id="dIw-5i-Gca"/>
                             <constraint firstItem="X8e-aO-J1E" firstAttribute="centerX" secondItem="Pvk-P3-l2h" secondAttribute="centerX" id="f2j-Ql-mVR"/>
-                            <constraint firstItem="X8e-aO-J1E" firstAttribute="top" secondItem="XEh-m7-Nwc" secondAttribute="bottom" constant="30" id="fQ9-aF-T03"/>
+                            <constraint firstItem="X8e-aO-J1E" firstAttribute="top" secondItem="XEh-m7-Nwc" secondAttribute="bottom" constant="50" id="fQ9-aF-T03"/>
                             <constraint firstAttribute="trailingMargin" secondItem="X8e-aO-J1E" secondAttribute="trailing" constant="10" id="mqT-gS-6W6"/>
                             <constraint firstItem="BbP-qB-tmP" firstAttribute="centerX" secondItem="5y3-mt-Cau" secondAttribute="centerX" id="rxv-U2-DbN"/>
                             <constraint firstItem="5y3-mt-Cau" firstAttribute="top" secondItem="X8e-aO-J1E" secondAttribute="bottom" constant="40" id="sL5-Sh-ZWq"/>
@@ -160,11 +180,14 @@ Press 'Start Button' on both side</string>
                         <variation key="default">
                             <mask key="constraints">
                                 <exclude reference="mqT-gS-6W6"/>
+                                <exclude reference="Fkp-RV-uoq"/>
                             </mask>
                         </variation>
                     </view>
                     <connections>
+                        <outlet property="checkButton" destination="3cM-pb-xI1" id="Xc9-sQ-lkd"/>
                         <outlet property="heartImage" destination="X8e-aO-J1E" id="c1p-Rn-kUn"/>
+                        <outlet property="tempStartButton" destination="mnn-uX-LOt" id="XDM-05-4pr"/>
                         <segue destination="wYw-Wg-Y1Y" kind="show" identifier="TestSegue" id="OUx-GC-LLe"/>
                         <segue destination="vg2-cG-mDi" kind="show" identifier="VideoSegue" id="Cc5-pN-lhO"/>
                     </connections>
@@ -344,21 +367,6 @@ Press 'Start Button' on both side</string>
                                 <color key="textColor" red="0.94901960780000005" green="0.94901960780000005" blue="0.94901960780000005" alpha="1" colorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="pBY-Xj-sCZ">
-                                <rect key="frame" x="60" y="500" width="480" height="50"/>
-                                <animations/>
-                                <color key="backgroundColor" red="0.85490196078431369" green="0.10196078431372549" blue="0.16078431372549018" alpha="1" colorSpace="calibratedRGB"/>
-                                <constraints>
-                                    <constraint firstAttribute="height" constant="50" id="UmL-pn-t0g"/>
-                                </constraints>
-                                <fontDescription key="fontDescription" name="HelveticaNeue-Light" family="Helvetica Neue" pointSize="24"/>
-                                <state key="normal" title="Start a new test">
-                                    <color key="titleColor" red="0.94901960784313721" green="0.94901960784313721" blue="0.94901960784313721" alpha="1" colorSpace="calibratedRGB"/>
-                                </state>
-                                <connections>
-                                    <action selector="reStartButtonTouch:" destination="ESy-oN-dBB" eventType="touchUpInside" id="b3n-CG-Fg7"/>
-                                </connections>
-                            </button>
                             <label opaque="NO" userInteractionEnabled="NO" alpha="0.69999999999999996" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Heart Rate (BPM)" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="U9z-VM-g3H">
                                 <rect key="frame" x="40" y="325.5" width="105.5" height="17"/>
                                 <animations/>
@@ -439,6 +447,21 @@ Press 'Start Button' on both side</string>
                                 <color key="textColor" red="0.94901960780000005" green="0.94901960780000005" blue="0.94901960780000005" alpha="1" colorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="pBY-Xj-sCZ">
+                                <rect key="frame" x="50" y="500" width="500" height="50"/>
+                                <animations/>
+                                <color key="backgroundColor" red="0.85490196078431369" green="0.10196078431372549" blue="0.16078431372549018" alpha="1" colorSpace="calibratedRGB"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="50" id="UmL-pn-t0g"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" name="HelveticaNeue-Light" family="Helvetica Neue" pointSize="24"/>
+                                <state key="normal" title="Start a new test">
+                                    <color key="titleColor" red="0.94901960784313721" green="0.94901960784313721" blue="0.94901960784313721" alpha="1" colorSpace="calibratedRGB"/>
+                                </state>
+                                <connections>
+                                    <action selector="reStartButtonTouch:" destination="ESy-oN-dBB" eventType="touchUpInside" id="b3n-CG-Fg7"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <animations/>
                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
@@ -456,11 +479,11 @@ Press 'Start Button' on both side</string>
                             <constraint firstItem="76w-Nl-rmb" firstAttribute="leading" secondItem="7HP-No-IHB" secondAttribute="leading" constant="40" id="UWt-Qk-MdE"/>
                             <constraint firstItem="keO-IA-F9B" firstAttribute="top" secondItem="Pj4-0O-5r7" secondAttribute="bottom" constant="30" id="aZV-SY-vMU"/>
                             <constraint firstAttribute="trailing" secondItem="76w-Nl-rmb" secondAttribute="trailing" constant="40" id="iK9-WY-VPV"/>
-                            <constraint firstAttribute="trailing" secondItem="pBY-Xj-sCZ" secondAttribute="trailing" constant="60" id="juG-UG-c3J"/>
+                            <constraint firstAttribute="trailing" secondItem="pBY-Xj-sCZ" secondAttribute="trailing" constant="50" id="juG-UG-c3J"/>
                             <constraint firstItem="flf-v5-wr2" firstAttribute="leading" secondItem="Qej-QL-GWL" secondAttribute="leading" id="ns0-bZ-Pck"/>
                             <constraint firstItem="U9z-VM-g3H" firstAttribute="leading" secondItem="76w-Nl-rmb" secondAttribute="leading" id="ol8-WX-sfi"/>
                             <constraint firstItem="Gng-ZH-RCl" firstAttribute="top" secondItem="pBY-Xj-sCZ" secondAttribute="bottom" constant="50" id="pMT-Jw-j7q"/>
-                            <constraint firstItem="pBY-Xj-sCZ" firstAttribute="leading" secondItem="7HP-No-IHB" secondAttribute="leading" constant="60" id="qUY-Fh-qdp"/>
+                            <constraint firstItem="pBY-Xj-sCZ" firstAttribute="leading" secondItem="7HP-No-IHB" secondAttribute="leading" constant="50" id="qUY-Fh-qdp"/>
                             <constraint firstItem="VhF-5n-4uq" firstAttribute="leading" secondItem="9cr-CP-xyh" secondAttribute="leading" id="xLp-Gm-wVh"/>
                             <constraint firstItem="U9z-VM-g3H" firstAttribute="bottom" secondItem="76w-Nl-rmb" secondAttribute="top" constant="-5" id="z3v-XI-5za"/>
                             <constraint firstItem="VhF-5n-4uq" firstAttribute="top" secondItem="76w-Nl-rmb" secondAttribute="bottom" id="zLh-Dt-IVn"/>
@@ -1275,7 +1298,7 @@ Press 'Start Button' on both side</string>
         <!--Statement View Controller-->
         <scene sceneID="tqr-bE-hI1">
             <objects>
-                <viewController id="QZC-y8-dEo" userLabel="Statement View Controller" sceneMemberID="viewController">
+                <viewController id="QZC-y8-dEo" userLabel="Statement View Controller" customClass="StatementViewController" customModule="Polygrath" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="MBG-jY-JaI"/>
                         <viewControllerLayoutGuide type="bottom" id="h0d-ag-SRt"/>
@@ -1284,21 +1307,60 @@ Press 'Start Button' on both side</string>
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="Jlh-pC-Luf">
-                                <rect key="frame" x="0.0" y="64" width="600" height="536"/>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Polygraph Introduction" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="HDO-ez-B0M">
+                                <rect key="frame" x="20" y="64" width="560" height="60"/>
                                 <animations/>
-                                <string key="text">Lorem ipsum dolor sit er elit lamet, consectetaur cillium adipisicing pecu, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Nam liber te conscient to factor tum poen legum odioque civiuda.</string>
-                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
-                            </textView>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="60" id="kiq-UA-YLO"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" name="HelveticaNeue-Medium" family="Helvetica Neue" pointSize="24"/>
+                                <color key="textColor" red="0.94901960780000005" green="0.94901960780000005" blue="0.94901960780000005" alpha="1" colorSpace="calibratedRGB"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" showsHorizontalScrollIndicator="NO" translatesAutoresizingMaskIntoConstraints="NO" id="XbQ-SG-HIg">
+                                <rect key="frame" x="0.0" y="124" width="600" height="600"/>
+                                <subviews>
+                                    <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" textAlignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="Jlh-pC-Luf">
+                                        <rect key="frame" x="10" y="0.0" width="580" height="600"/>
+                                        <animations/>
+                                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="600" id="Pn3-bo-LNP"/>
+                                        </constraints>
+                                        <mutableString key="text">The first polygraph, popularly referred to as a lie detector, measures and records several physiological indices such as blood pressure, pulse, respiration, and skin conductivity while the subject is asked and answers a series of questions. 
+
+Polygraph testing can discriminate lying from truth telling at rates above chance, though below perfection. These results apply only to specific events and not to screening where it is assumed that polygraph would work less well. Effectiveness may also be worsened by countermeasures.
+
+Beyond these condition, we create a easy and light polygraph for iWatch. By collecting heart beats of subject who wearing iWatch, we can know if they are nervous in answering question. If subject's heart beat goes faster, they might be telling a lie!
+
+After all, the result of polygrph can only be a refenece. So have fun! Don't be too serious.
+</mutableString>
+                                        <color key="textColor" red="0.94901960780000005" green="0.94901960780000005" blue="0.94901960780000005" alpha="1" colorSpace="calibratedRGB"/>
+                                        <fontDescription key="fontDescription" name="HelveticaNeue-Light" family="Helvetica Neue" pointSize="18"/>
+                                        <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
+                                    </textView>
+                                </subviews>
+                                <animations/>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                <constraints>
+                                    <constraint firstItem="Jlh-pC-Luf" firstAttribute="top" secondItem="XbQ-SG-HIg" secondAttribute="top" id="7ix-uZ-Bun"/>
+                                    <constraint firstItem="Jlh-pC-Luf" firstAttribute="centerY" secondItem="XbQ-SG-HIg" secondAttribute="centerY" id="L5n-OY-cdc"/>
+                                    <constraint firstAttribute="bottom" secondItem="Jlh-pC-Luf" secondAttribute="bottom" id="M8O-If-q0v"/>
+                                    <constraint firstAttribute="trailing" secondItem="Jlh-pC-Luf" secondAttribute="trailing" constant="10" id="Vbp-rQ-CXb"/>
+                                    <constraint firstItem="Jlh-pC-Luf" firstAttribute="centerX" secondItem="XbQ-SG-HIg" secondAttribute="centerX" id="Weg-oU-5E0"/>
+                                    <constraint firstItem="Jlh-pC-Luf" firstAttribute="leading" secondItem="XbQ-SG-HIg" secondAttribute="leading" constant="10" id="ymF-66-MWn"/>
+                                </constraints>
+                            </scrollView>
                         </subviews>
                         <animations/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
-                            <constraint firstItem="Jlh-pC-Luf" firstAttribute="leading" secondItem="xvw-o1-emh" secondAttribute="leading" id="b3r-sm-LPl"/>
-                            <constraint firstItem="Jlh-pC-Luf" firstAttribute="top" secondItem="MBG-jY-JaI" secondAttribute="bottom" id="bV4-cs-gg8"/>
-                            <constraint firstItem="h0d-ag-SRt" firstAttribute="top" secondItem="Jlh-pC-Luf" secondAttribute="bottom" id="gnU-rC-beJ"/>
-                            <constraint firstAttribute="trailing" secondItem="Jlh-pC-Luf" secondAttribute="trailing" id="zNA-mq-NZi"/>
+                            <constraint firstItem="XbQ-SG-HIg" firstAttribute="centerX" secondItem="HDO-ez-B0M" secondAttribute="centerX" id="2ss-jY-EP9"/>
+                            <constraint firstItem="XbQ-SG-HIg" firstAttribute="top" secondItem="HDO-ez-B0M" secondAttribute="bottom" id="BJu-bq-mYU"/>
+                            <constraint firstItem="XbQ-SG-HIg" firstAttribute="leading" secondItem="xvw-o1-emh" secondAttribute="leading" id="GI0-CR-5dY"/>
+                            <constraint firstItem="HDO-ez-B0M" firstAttribute="top" secondItem="MBG-jY-JaI" secondAttribute="bottom" id="Llp-oP-Taq"/>
+                            <constraint firstItem="HDO-ez-B0M" firstAttribute="leading" secondItem="xvw-o1-emh" secondAttribute="leadingMargin" id="Ns9-o6-xGc"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="HDO-ez-B0M" secondAttribute="trailing" id="cKm-8c-Xex"/>
                         </constraints>
                     </view>
                 </viewController>
@@ -1349,6 +1411,7 @@ Press 'Start Button' on both side</string>
         <image name="dot-30-vec" width="30" height="30"/>
         <image name="finish" width="71" height="71"/>
         <image name="forward" width="27" height="25"/>
+        <image name="heart" width="150" height="129"/>
         <image name="heart-1" width="150" height="129"/>
         <image name="heart-80-vec" width="80" height="80"/>
         <image name="mic-30-vec" width="30" height="30"/>

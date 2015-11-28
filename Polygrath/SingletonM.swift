@@ -539,6 +539,10 @@ class Singleton: NSObject {
     }
     
 
+//video progress
+    
+    
+    
 //Calculation
     func getRamdom(maxDice: UInt32) -> Double {
         let diceRoll = (Double(arc4random_uniform(maxDice) + 1))

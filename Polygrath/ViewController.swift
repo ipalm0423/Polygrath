@@ -15,6 +15,7 @@ class ViewController: UIViewController {
     
     var healthStore = HKHealthStore()
     
+    @IBOutlet weak var startButton: UIButton!
     
     
     
@@ -22,8 +23,7 @@ class ViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
-        self.navigationController?.navigationBarHidden = true
-        Singleton.sharedInstance.setupNaviBarColor(self)
+        self.setupView()
         self.alertHealthWarning()
         
     }
@@ -42,6 +42,14 @@ class ViewController: UIViewController {
         self.navigationController?.navigationBarHidden = true
     }
 
+    func setupView() {
+        //navi, background, button
+        self.navigationController?.navigationBarHidden = true
+        Singleton.sharedInstance.setupBackgroundGradientColor(self)
+        Singleton.sharedInstance.setupNaviBarColor(self)
+        self.startButton.layer.cornerRadius = self.startButton.frame.height / 2
+        self.startButton.clipsToBounds = true
+    }
     
     
 //health store
