@@ -161,11 +161,11 @@ class RecordViewController: UIViewController, UITableViewDelegate, UITableViewDa
                 let url = Singleton.sharedInstance.questions[row].file.URL
                 if let assetUrl = Singleton.sharedInstance.questions[row].file.assetURL {
                     //already save to camera roll
-                    Singleton.sharedInstance.shareVideoToMessenger(url)
+                    Singleton.sharedInstance.shareVideoToMessenger(assetUrl)
                 }else {
                     //save to camera roll first
-                    Singleton.sharedInstance.shareVideoToMessengerAndCameraRoll(url, completion: { (newURL) -> Void in
-                        Singleton.sharedInstance.questions[row].file.assetURL = newURL
+                    Singleton.sharedInstance.shareVideoToMessengerAndCameraRoll(url, completion: { (assetUrl) -> Void in
+                        Singleton.sharedInstance.questions[row].file.assetURL = assetUrl
                     })
                 }
             })
@@ -173,6 +173,15 @@ class RecordViewController: UIViewController, UITableViewDelegate, UITableViewDa
             //whatsapp
             let actionShareWhatsapp = UIAlertAction(title: "WhatsApp", style: UIAlertActionStyle.Default, handler: { (action) -> Void in
                 print("share question.\(row) to WhatsApp")
+                
+            })
+            
+            //test
+            let actionTest = UIAlertAction(title: "test", style: UIAlertActionStyle.Default, handler: { (action) -> Void in
+                let url = Singleton.sharedInstance.questions[row].file.URL
+                Singleton.sharedInstance.videoComposeWithQuestion(url)
+                
+                
                 
             })
             
@@ -186,6 +195,7 @@ class RecordViewController: UIViewController, UITableViewDelegate, UITableViewDa
             alert.addAction(actionSaveToCamera)
             alert.addAction(actionShareFB)
             alert.addAction(actionShareMessenger)
+            alert.addAction(actionTest)
             //alert.addAction(actionShareWhatsapp)
             alert.addAction(actionCancel)
             self.presentViewController(alert, animated: true, completion: nil)

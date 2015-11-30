@@ -12,6 +12,7 @@ import AVKit
 import FBSDKMessengerShareKit
 import FBSDKShareKit
 
+
 class Singleton: NSObject {
     class var sharedInstance: Singleton {
         struct Static {
@@ -70,7 +71,7 @@ class Singleton: NSObject {
         }
     }
     
-    
+
     
     
 //color view
@@ -247,7 +248,7 @@ class Singleton: NSObject {
         return collection.firstObject as! PHAssetCollection?
     }
     
-    func saveVideoToCameraRoll(url: NSURL, completion: ((identifier: NSString, newUrl: NSURL) -> Void)?) {
+    func saveVideoToCameraRoll(url: NSURL, completion: ((identifier: NSString, assetUrl: NSURL) -> Void)?) {
         
         var identifier: NSString?
         var assetPlaceholder: PHObjectPlaceholder!
@@ -273,8 +274,8 @@ class Singleton: NSObject {
                     print("save video success, identifier: \(identifier)")
                     let uuid = identifier!.substringToIndex(36)
                     let stringURL = "assets-library://asset/asset.MOV?id=\(uuid)&ext=MOV"
-                    let newUrl = NSURL(string: stringURL)!
-                    completion?(identifier: identifier!, newUrl: newUrl)
+                    let assetUrl = NSURL(string: stringURL)!
+                    completion?(identifier: identifier!, assetUrl: assetUrl)
                     
                 }else {
                     print("can't save video")
@@ -286,11 +287,16 @@ class Singleton: NSObject {
     
     
 //CALayer func
-    func createTextCALayer(text: String, uiFont: UIFont, color: UIColor, width: CGFloat, x: CGFloat, y: CGFloat) -> CALayer {
+    func createTextCALayer(text: String, uiFont: UIFont, color: UIColor, x: CGFloat, y: CGFloat) -> CALayer {
+        //calculate width and height
+        let paragraphStyle = NSMutableParagraphStyle()
+        paragraphStyle.alignment = NSTextAlignment.Center //alignment
+        let attr = [NSFontAttributeName: uiFont, NSForegroundColorAttributeName:UIColor.whiteColor(), NSParagraphStyleAttributeName : paragraphStyle] // [NSShadowAttributeName: shadow]
+        let sizeOfText = text.sizeWithAttributes(attr)
         
-        //create
+        //create CALayer
         let subtitle = CATextLayer()
-        subtitle.frame  = CGRectMake(x, y, width, uiFont.pointSize)
+        subtitle.frame  = CGRectMake(x, y, sizeOfText.width, sizeOfText.height)
         subtitle.contentsScale = UIScreen.mainScreen().scale
         
         //attribute
@@ -316,7 +322,19 @@ class Singleton: NSObject {
         return newLayer
     }
     
-    
+    func getWaterMarkLayer(size: CGSize) -> CALayer {
+        //create CALayer
+        let textColor = UIColor(red: 242 / 255, green: 242 / 255, blue: 242 / 255, alpha: 1.0)
+        let textLayer = self.createTextCALayer("Polygraph", uiFont: UIFont(name: "Helvetica-Bold", size: 18)!, color: textColor, x: 10, y: 10) //constraint = 10, 10
+        
+        //put into a size
+        let overlayLayer = CALayer()
+        overlayLayer.frame =  CGRect(x: 0, y: 0, width: size.width, height: size.height)
+        overlayLayer.addSublayer(textLayer)
+        overlayLayer.masksToBounds = true
+        
+        return overlayLayer
+    }
     
     
     
@@ -540,6 +558,175 @@ class Singleton: NSObject {
     
 
 //video progress
+    
+    //oriented from transform
+    func getOrientationFromTransform(transform: CGAffineTransform) -> (orientation: UIImageOrientation, isPortrait: Bool) {
+        var assetOrientation = UIImageOrientation.Up
+        print("asset preference transferom is : \(transform)")
+        var isPortrait = false
+        if transform.a == 0 && transform.b == 1.0 && transform.c == -1.0 && transform.d == 0 {
+            assetOrientation = .Right
+            isPortrait = true
+        } else if transform.a == 0 && transform.b == -1.0 && transform.c == 1.0 && transform.d == 0 {
+            assetOrientation = .Left
+            isPortrait = true
+        } else if transform.a == 1.0 && transform.b == 0 && transform.c == 0 && transform.d == 1.0 {
+            assetOrientation = .Up
+        } else if transform.a == -1.0 && transform.b == 0 && transform.c == 0 && transform.d == -1.0 {
+            assetOrientation = .Down
+        }
+        return (assetOrientation, isPortrait)
+    }
+    
+    
+    
+    func getMediaCompositionOfURL(URL: NSURL) -> AVMutableComposition? {
+        //new a composition. track
+        let composition = AVMutableComposition()
+        let videoTrack:AVMutableCompositionTrack = composition.addMutableTrackWithMediaType(AVMediaTypeVideo, preferredTrackID: Int32(kCMPersistentTrackID_Invalid))
+        let audioTrack:AVMutableCompositionTrack = composition.addMutableTrackWithMediaType(AVMediaTypeAudio, preferredTrackID: Int32(kCMPersistentTrackID_Invalid))
+        
+        //get source video/audio tracks
+        let sourceAsset = AVAsset(URL: URL)
+        let tracks = sourceAsset.tracksWithMediaType(AVMediaTypeVideo)
+        let audios = sourceAsset.tracksWithMediaType(AVMediaTypeAudio)
+        
+        
+        //input source video/audio
+        if tracks.count > 0{
+            print("get composition for tracks count: \(tracks.count)")
+            do {
+                try videoTrack.insertTimeRange(CMTimeRangeMake(kCMTimeZero,sourceAsset.duration), ofTrack: tracks[0], atTime: kCMTimeZero)
+                
+                print("get composition for size: \(videoTrack.naturalSize)")
+                print("get composition for frame: \(videoTrack.nominalFrameRate)")
+                
+            }catch {
+                print(error)
+            }
+        }
+        if audios.count > 0{
+            do {
+                try audioTrack.insertTimeRange(CMTimeRangeMake(kCMTimeZero,sourceAsset.duration), ofTrack: audios[0], atTime: kCMTimeZero)
+            }catch {
+                print(error)
+            }
+        }
+        
+        if tracks.count > 0 {
+            
+            return composition
+        }
+        
+        return nil
+    }
+    
+    func mixCompositionWithAnimationLayer(composition: AVMutableVideoComposition, size: CGSize) {
+        print("mix animation layer to video compostition: \(size)")
+        //create  CALayer
+        let parentLayer = CALayer()
+        let videoLayer = CALayer()
+        let videoFrame = CGRect(x: 0, y: 0, width: size.width, height: size.height)
+        parentLayer.frame = videoFrame
+        videoLayer.frame = videoFrame
+        
+        //create watermark layer
+        let watermarkLayer = self.getWaterMarkLayer(size)
+        
+        
+        //create time label
+        
+        
+        //create heart beat
+        
+        
+        //create bpm label
+        
+        
+        //create heart line
+        
+        
+        
+        
+        
+        //input animation layer by postion
+        parentLayer.addSublayer(videoLayer)
+        parentLayer.addSublayer(watermarkLayer)
+        
+        //add to tools
+        composition.animationTool = AVVideoCompositionCoreAnimationTool(postProcessingAsVideoLayer: videoLayer, inLayer: parentLayer)
+        
+    }
+    
+    func exportAndSaveComposistion(composition: AVMutableComposition, mixVideoComposistion: AVMutableVideoComposition) {
+        let newURL = self.getNewFileURL()
+        if let exporter = AVAssetExportSession(asset: composition, presetName: AVAssetExportPresetHighestQuality) {
+            print("create new composition success: \(newURL)")
+            exporter.outputURL = newURL
+            exporter.outputFileType = AVFileTypeQuickTimeMovie
+            exporter.shouldOptimizeForNetworkUse = true
+            //exporter.audioMix
+            exporter.videoComposition = mixVideoComposistion
+            
+            exporter.exportAsynchronouslyWithCompletionHandler({ () -> Void in
+                //save to album
+                self.saveVideoToCameraRoll(newURL, completion: { (identifier, newUrl) -> Void in
+                    print("save video to camera roll success: \(newUrl)")
+                    //alert for done
+                    dispatch_async(dispatch_get_main_queue(), { () -> Void in
+                        //alert.....
+                        
+                    })
+                })
+            })
+        }
+    }
+    
+    func videoComposeWithQuestion(assetURL: NSURL) {
+        print("start to compose video...")
+        
+        let sourceAsset = AVAsset(URL: assetURL)
+        let assetTrack = sourceAsset.tracksWithMediaType(AVMediaTypeVideo)[0]
+        
+        //create source composition and get the size
+        if let sourceComposition = self.getMediaCompositionOfURL(assetURL) {
+            let videoTrack = sourceComposition.tracksWithMediaType(AVMediaTypeVideo)[0]
+            
+            //setup instruction
+            let videoInstruction = AVMutableVideoCompositionInstruction()
+            videoInstruction.timeRange = CMTimeRangeMake(kCMTimeZero,sourceComposition.duration)
+            let videoLayerInstruction = AVMutableVideoCompositionLayerInstruction(assetTrack: videoTrack) //setup instruction layer
+            
+            //add rotate instruction layer
+            let rotatePrefer = self.getOrientationFromTransform(assetTrack.preferredTransform)
+            var concat = CGAffineTransformConcat((assetTrack.preferredTransform), CGAffineTransformMakeTranslation(assetTrack.naturalSize.height, 0))
+            videoLayerInstruction.setTransform(concat, atTime: kCMTimeZero)
+            videoInstruction.layerInstructions = [videoLayerInstruction]
+            
+        //create video composition for animation, rotate
+            let videoComposition = AVMutableVideoComposition()
+            videoComposition.frameDuration = CMTimeMake(1, 30)
+            var videoRotateSize = CGSize() //roate by orientation
+            //render size with orientation
+            print("rotate status: \(rotatePrefer)")
+            if rotatePrefer.isPortrait {
+                videoRotateSize = CGSizeMake(assetTrack.naturalSize.height, assetTrack.naturalSize.width)
+            }else {
+                videoRotateSize = CGSizeMake(assetTrack.naturalSize.width, assetTrack.naturalSize.height)
+            }
+            print("after rotate size: \(videoRotateSize)")
+            videoComposition.renderSize = videoRotateSize
+            
+            //add instrucion to composition
+            videoComposition.instructions = [videoInstruction]
+            
+            //add animation CALayer
+            self.mixCompositionWithAnimationLayer(videoComposition, size: videoRotateSize)
+            
+            
+            self.exportAndSaveComposistion(sourceComposition, mixVideoComposistion: videoComposition)
+        }
+    }
     
     
     
@@ -796,11 +983,11 @@ class Singleton: NSObject {
         }
     }
     
-    func shareVideoToMessengerAndCameraRoll(url: NSURL, completion: ((url: NSURL) -> Void )?) {
+    func shareVideoToMessengerAndCameraRoll(url: NSURL, completion: ((assetUrl: NSURL) -> Void )?) {
         if let videoData = NSData(contentsOfURL: url) {
-            self.saveVideoToCameraRoll(url, completion: { (identifier, newUrl) -> Void in
+            self.saveVideoToCameraRoll(url, completion: { (identifier, assetUrl) -> Void in
                 //save to question
-                completion?(url: newUrl)
+                completion?(assetUrl: assetUrl)
                 
                 //share to messenger
                 FBSDKMessengerSharer.shareVideo(videoData, withOptions: nil)
@@ -823,13 +1010,13 @@ class Singleton: NSObject {
     }
     
     func shareVideoToFacebookAndCameraRoll(url: NSURL, targetVC: UIViewController, completion: ((newURL: NSURL) -> Void )?) {
-        self.saveVideoToCameraRoll(url) { (identifier, newUrl) -> Void in
-            print("share video to facebook: \(newUrl)")
+        self.saveVideoToCameraRoll(url) { (identifier, assetUrl) -> Void in
+            print("share video to facebook: \(assetUrl)")
             //save to question
-            completion?(newURL: newUrl)
+            completion?(newURL: assetUrl)
             
             //facebook func
-            self.shareVideoToFacebook(newUrl, targetVC: targetVC)
+            self.shareVideoToFacebook(assetUrl, targetVC: targetVC)
         }
     }
 

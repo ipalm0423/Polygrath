@@ -237,15 +237,19 @@ class VideoTestViewController: UIViewController, AVCaptureVideoDataOutputSampleB
                     self.dataValues.append(dic.1)
                 
                     //set bpm data
-                    self.bpm = (dic.1)
                     if dic.1 > self.bpmMax {
                         self.bpmMax = dic.1
                     }
                     if dic.1 < self.bpmMin {
                         self.bpmMin = dic.1
                     }
+                    if dic.1 != self.bpm {
+                        self.bpm = (dic.1)
+                        self.animateHeartImage(self.bpm)
+                    }
                     
-                    //calculate
+                    
+                    //calculation
                     self.updateQuestionData(dic.0, value: dic.1)
                     if self.getTruthRate() < 0.5 {
                         self.isLying = true
@@ -760,7 +764,28 @@ class VideoTestViewController: UIViewController, AVCaptureVideoDataOutputSampleB
         self.heartLineLayer = Singleton.sharedInstance.createHeartLineLayer(self.bpm, frameCount: self.frameCount, width: self.heartLineView.frame.width, height: self.heartLineView.frame.height)
         self.heartLineView.layer.addSublayer(self.heartLineLayer)
     }
-    
+   
+//heart image
+    var snapHeart = UIView()
+    func animateHeartImage(bpm: Double) {
+        self.snapHeart.layer.removeAllAnimations()
+        self.snapHeart.removeFromSuperview()
+        self.snapHeart = self.heartImage.snapshotViewAfterScreenUpdates(true)
+        self.snapHeart.frame = self.heartImage.frame
+        self.view.addSubview(self.snapHeart)
+        self.view.bringSubviewToFront(self.bpmLabel)
+        //constant
+        let scale = CGFloat(1 + 0.6 * bpm / 100)
+        var period = self.isLying ? 30 / bpm * 0.6 : 30 / bpm * 0.9 // enhance ratio = 0.9 or 0.6
+        
+        
+        UIView.animateWithDuration(period, delay: 0, options: [UIViewAnimationOptions.CurveEaseIn, UIViewAnimationOptions.Autoreverse, UIViewAnimationOptions.Repeat], animations: { () -> Void in
+            
+            self.snapHeart.transform = CGAffineTransformMakeScale(scale, scale)
+            }) { (Bool) -> Void in
+                
+        }
+    }
     
 //alert
     func alertError(error: String) {
