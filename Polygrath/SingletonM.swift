@@ -313,6 +313,7 @@ class Singleton: NSObject {
         return subtitle
     }
     
+    
     func createUIImageCALayer(image: UIImage, width: CGFloat, height: CGFloat, x: CGFloat, y: CGFloat) -> CALayer {
         let newLayer = CALayer()
         newLayer.contents = image.CGImage
@@ -337,6 +338,83 @@ class Singleton: NSObject {
     }
     
     
+    
+    
+    func getHeartBeatLayerWithAnimation(questionNO: Int, parentViewSize: CGSize) -> CALayer {
+    
+        let heartLayer = self.createUIImageCALayer(UIImage(named: "heart")!, width: 140, height: 120, x: parentViewSize.width / 2 - 70, y: parentViewSize.height / 2 - 60)
+        var heartAnimation = [CAKeyframeAnimation]()
+        
+        //if have question
+        if self.questions.count > questionNO {
+            let quest = self.questions[questionNO]
+            var i = 0
+            
+            var tempData = [Double]()
+            for data in quest.dataValues {
+                let animation = CAKeyframeAnimation(keyPath: "transform.scale")
+                var duration: CFTimeInterval!
+                var halfPeriod = 60 / data / 2
+                var heartScaleRatio = NSNumber(double: data / 60)
+                var delay:CFTimeInterval = 0
+                tempData.append(data)
+                
+                //score calculate
+                var truthRate: Double = 1
+                if i > 1 {
+                    truthRate = self.getTruthRate(tempData, BPMAverage: self.BPMAverage, BPMDeviation: self.BPMDeviation)
+                    //turth effect ratio
+                    if truthRate < 0.3 {
+                        heartScaleRatio = NSNumber(double: 1.2 * Double(heartScaleRatio)) // ratio = 1.2
+                        halfPeriod = halfPeriod * 0.7
+                    }else if truthRate < 0.5 {
+                        heartScaleRatio = NSNumber(double: 1.1 * Double(heartScaleRatio)) // ratio = 1.2
+                        halfPeriod = halfPeriod * 0.85
+                    }
+                }
+                
+                //time calculate
+                if i == 0 {
+                    //first data
+                    duration = quest.dataDates[i].timeIntervalSinceDate(quest.startTime)
+                    delay = 0
+                }else if i == quest.dataValues.count - 1 {
+                    //last data
+                    duration = quest.endTime.timeIntervalSinceDate(quest.dataDates[i - 1])
+                    delay = quest.dataDates[i - 1].timeIntervalSinceDate(quest.startTime)
+                }else {
+                    //have previous data
+                    duration = quest.dataDates[i].timeIntervalSinceDate(quest.dataDates[i - 1])
+                    delay = quest.dataDates[i - 1].timeIntervalSinceDate(quest.startTime)
+                }
+                
+                
+                animation.duration = halfPeriod
+                animation.values = [NSNumber(float: 1.0), NSNumber(double: data / 70)] //heart scale
+                animation.autoreverses = true
+                animation.repeatDuration = duration
+                animation.removedOnCompletion = false
+                animation.beginTime = AVCoreAnimationBeginTimeAtZero + delay
+                
+                heartAnimation.append(animation)
+                i++
+            }
+            
+            
+            
+        }
+        print("heart animation:\(heartAnimation)")
+        
+        //add animation
+        var j = 0
+        for animation in heartAnimation {
+            heartLayer.addAnimation(animation, forKey: "heartbeat animation no.\(j)")
+            j++
+        }
+        
+        
+        return heartLayer
+    }
     
     
     
@@ -438,6 +516,7 @@ class Singleton: NSObject {
         
         return heartRadius
     }
+    
     
     func createHeartLineLayer(bpm: Double, frameCount: Int, width: CGFloat, height: CGFloat) -> CALayer {
         print("create heart line from count: \(frameCount)")
@@ -621,7 +700,7 @@ class Singleton: NSObject {
         return nil
     }
     
-    func mixCompositionWithAnimationLayer(composition: AVMutableVideoComposition, size: CGSize) {
+    func mixCompositionWithAnimationLayer(composition: AVMutableVideoComposition, size: CGSize, questNO: Int) {
         print("mix animation layer to video compostition: \(size)")
         //create  CALayer
         let parentLayer = CALayer()
@@ -637,8 +716,9 @@ class Singleton: NSObject {
         //create time label
         
         
-        //create heart beat
-        
+        //create heart beat scale animation
+        let heartBeatLayer = self.getHeartBeatLayerWithAnimation(questNO, parentViewSize: size)
+        print("heart layer back animation: \(heartBeatLayer.animationKeys())")
         
         //create bpm label
         
@@ -652,7 +732,7 @@ class Singleton: NSObject {
         //input animation layer by postion
         parentLayer.addSublayer(videoLayer)
         parentLayer.addSublayer(watermarkLayer)
-        
+        parentLayer.addSublayer(heartBeatLayer)
         //add to tools
         composition.animationTool = AVVideoCompositionCoreAnimationTool(postProcessingAsVideoLayer: videoLayer, inLayer: parentLayer)
         
@@ -682,14 +762,15 @@ class Singleton: NSObject {
         }
     }
     
-    func videoComposeWithQuestion(assetURL: NSURL) {
+    func videoComposeWithQuestion(questionNO: Int) {
         print("start to compose video...")
         
-        let sourceAsset = AVAsset(URL: assetURL)
+        let url = self.questions[questionNO].file.URL
+        let sourceAsset = AVAsset(URL: url)
         let assetTrack = sourceAsset.tracksWithMediaType(AVMediaTypeVideo)[0]
         
         //create source composition and get the size
-        if let sourceComposition = self.getMediaCompositionOfURL(assetURL) {
+        if let sourceComposition = self.getMediaCompositionOfURL(url) {
             let videoTrack = sourceComposition.tracksWithMediaType(AVMediaTypeVideo)[0]
             
             //setup instruction
@@ -721,7 +802,7 @@ class Singleton: NSObject {
             videoComposition.instructions = [videoInstruction]
             
             //add animation CALayer
-            self.mixCompositionWithAnimationLayer(videoComposition, size: videoRotateSize)
+            self.mixCompositionWithAnimationLayer(videoComposition, size: videoRotateSize, questNO: questionNO)
             
             
             self.exportAndSaveComposistion(sourceComposition, mixVideoComposistion: videoComposition)

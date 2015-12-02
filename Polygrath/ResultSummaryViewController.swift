@@ -129,13 +129,15 @@ class ResultSummaryViewController: UIViewController {
 
     //table line
     func addTableSeparator() {
-        let bound = self.view.bounds
-        let final = CGPoint(x: bound.width - 80, y: 0)
+        let bound = self.stackTableView.bounds
+        let width = self.view.frame.width - 80
         
         //set path
         let path = UIBezierPath()
         path.moveToPoint(CGPoint(x: 0, y: 0))
-        path.addLineToPoint(final)
+        path.addLineToPoint(CGPoint(x: width, y: 0))
+        path.moveToPoint(CGPoint(x: 0, y: bound.height))
+        path.addLineToPoint(CGPoint(x: width, y: bound.height - 1))
         path.stroke()
         
         //change to CALayer
@@ -148,7 +150,7 @@ class ResultSummaryViewController: UIViewController {
         arc.lineJoin = kCALineJoinRound
         
         let gradientLayer = CAGradientLayer()
-        gradientLayer.frame = self.stackTableView.bounds
+        gradientLayer.frame = bound
         gradientLayer.colors = [UIColor.redColor().CGColor, UIColor.yellowColor().CGColor]
         gradientLayer.startPoint = CGPoint(x: 0, y: 0)
         gradientLayer.endPoint = CGPoint(x: 1, y: 0)

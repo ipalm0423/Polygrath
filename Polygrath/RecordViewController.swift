@@ -178,8 +178,10 @@ class RecordViewController: UIViewController, UITableViewDelegate, UITableViewDa
             
             //test
             let actionTest = UIAlertAction(title: "test", style: UIAlertActionStyle.Default, handler: { (action) -> Void in
-                let url = Singleton.sharedInstance.questions[row].file.URL
-                Singleton.sharedInstance.videoComposeWithQuestion(url)
+                //check if video progress before
+                
+                
+                Singleton.sharedInstance.videoComposeWithQuestion(row)
                 
                 
                 
