@@ -39,10 +39,10 @@
 		ACBC3FB91B9ECA2B007AC186 /* Polygrath-iWatch.app in Embed Watch Content */ = {isa = PBXBuildFile; fileRef = ACBC3F9F1B9ECA2B007AC186 /* Polygrath-iWatch.app */; };
 		ACBC3FC31B9ECC65007AC186 /* TestInterfaceController.swift in Sources */ = {isa = PBXBuildFile; fileRef = ACBC3FC21B9ECC65007AC186 /* TestInterfaceController.swift */; };
 		ACBC3FC61B9ED277007AC186 /* HealthKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = ACBC3FC51B9ED277007AC186 /* HealthKit.framework */; };
+		ACBE705F1C14935400A15BF8 /* HealthKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = ACBE705E1C14935400A15BF8 /* HealthKit.framework */; };
 		ACC81A4E1BB4E973006377F6 /* ResultViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = ACC81A4D1BB4E973006377F6 /* ResultViewController.swift */; };
 		ACC81A501BB4FB25006377F6 /* questions.swift in Sources */ = {isa = PBXBuildFile; fileRef = ACC81A4F1BB4FB25006377F6 /* questions.swift */; };
 		ACDE08571BA7A1BD00D3ECB7 /* FrontHeartViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = ACDE08561BA7A1BD00D3ECB7 /* FrontHeartViewController.swift */; };
-		ACDE3ADE1B9F378100917E97 /* HealthKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = ACDE3ADD1B9F378100917E97 /* HealthKit.framework */; };
 		ACFEC9991C017E5D00F99F77 /* RecordTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = ACFEC9981C017E5D00F99F77 /* RecordTableViewCell.swift */; };
 		ACFEC99B1C020FA600F99F77 /* RecordViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = ACFEC99A1C020FA600F99F77 /* RecordViewController.swift */; };
 		ACFEC99F1C03812200F99F77 /* FrontInterfaceController.swift in Sources */ = {isa = PBXBuildFile; fileRef = ACFEC99E1C03812200F99F77 /* FrontInterfaceController.swift */; };
@@ -152,11 +152,11 @@
 		ACBC3FC21B9ECC65007AC186 /* TestInterfaceController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TestInterfaceController.swift; sourceTree = "<group>"; };
 		ACBC3FC41B9ED26D007AC186 /* Polygrath-iWatch Extension.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = "Polygrath-iWatch Extension.entitlements"; sourceTree = "<group>"; };
 		ACBC3FC51B9ED277007AC186 /* HealthKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = HealthKit.framework; path = Platforms/WatchOS.platform/Developer/SDKs/WatchOS2.0.sdk/System/Library/Frameworks/HealthKit.framework; sourceTree = DEVELOPER_DIR; };
+		ACBE705E1C14935400A15BF8 /* HealthKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = HealthKit.framework; path = System/Library/Frameworks/HealthKit.framework; sourceTree = SDKROOT; };
 		ACC81A4D1BB4E973006377F6 /* ResultViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ResultViewController.swift; sourceTree = "<group>"; };
 		ACC81A4F1BB4FB25006377F6 /* questions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = questions.swift; sourceTree = "<group>"; };
 		ACDE08561BA7A1BD00D3ECB7 /* FrontHeartViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FrontHeartViewController.swift; sourceTree = "<group>"; };
 		ACDE3ADC1B9F378000917E97 /* Polygrath.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = Polygrath.entitlements; sourceTree = "<group>"; };
-		ACDE3ADD1B9F378100917E97 /* HealthKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = HealthKit.framework; path = System/Library/Frameworks/HealthKit.framework; sourceTree = SDKROOT; };
 		ACDE3ADF1B9F379100917E97 /* Polygrath-iWatch.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = "Polygrath-iWatch.entitlements"; sourceTree = "<group>"; };
 		ACFEC9981C017E5D00F99F77 /* RecordTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RecordTableViewCell.swift; sourceTree = "<group>"; };
 		ACFEC99A1C020FA600F99F77 /* RecordViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RecordViewController.swift; sourceTree = "<group>"; };
@@ -174,10 +174,10 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				ACDE3ADE1B9F378100917E97 /* HealthKit.framework in Frameworks */,
 				AC8DEAC61BF04E9E00E60B62 /* FBSDKCoreKit.framework in Frameworks */,
 				AC8DEAC81BF04E9E00E60B62 /* FBSDKShareKit.framework in Frameworks */,
 				AC8DEAC71BF04E9E00E60B62 /* FBSDKLoginKit.framework in Frameworks */,
+				ACBE705F1C14935400A15BF8 /* HealthKit.framework in Frameworks */,
 				AC8DEACA1BF0528600E60B62 /* FBSDKMessengerShareKit.framework in Frameworks */,
 				5E4EC7BFE4A8EA17D7BC421C /* Pods_Polygrath.framework in Frameworks */,
 			);
@@ -211,6 +211,7 @@
 		4A2FDE4EA48429FC655A26BB /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				ACBE705E1C14935400A15BF8 /* HealthKit.framework */,
 				AC8DEAC91BF0528600E60B62 /* FBSDKMessengerShareKit.framework */,
 				AC8DEAC31BF04E9E00E60B62 /* FBSDKCoreKit.framework */,
 				AC8DEAC41BF04E9E00E60B62 /* FBSDKLoginKit.framework */,
@@ -254,7 +255,6 @@
 		ACBC3F601B9EC9D7007AC186 = {
 			isa = PBXGroup;
 			children = (
-				ACDE3ADD1B9F378100917E97 /* HealthKit.framework */,
 				ACBC3FC51B9ED277007AC186 /* HealthKit.framework */,
 				ACBC3F6B1B9EC9D7007AC186 /* Polygrath */,
 				ACBC3F831B9EC9D7007AC186 /* PolygrathTests */,

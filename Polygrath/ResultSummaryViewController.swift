@@ -36,6 +36,12 @@ class ResultSummaryViewController: UIViewController {
     @IBOutlet weak var stackTableView: UIStackView!
     
     
+    @IBOutlet weak var progressView: UIProgressView!
+    
+    @IBOutlet weak var heartImage: UIImageView!
+    
+    
+    @IBOutlet weak var heartImageConstraintX: NSLayoutConstraint!
     
     
     override func viewDidLoad() {
@@ -52,6 +58,10 @@ class ResultSummaryViewController: UIViewController {
         // Dispose of any resources that can be recreated.
     }
     
+    override func viewDidAppear(animated: Bool) {
+        
+    }
+    
 
     func setupView() {
         //button
@@ -60,6 +70,40 @@ class ResultSummaryViewController: UIViewController {
         
         //table separator
         self.addTableSeparator()
+        //to zero and wait animation
+        
+        //wait for animation
+        self.maxLabel.alpha = 0
+        self.minLabel.alpha = 0
+        self.averageLabel.alpha = 0
+        self.heartImage.setNeedsUpdateConstraints()
+        
+        //calculate percentage
+        let deviation = (Singleton.sharedInstance.BPMmax - Singleton.sharedInstance.BPMmin)
+        let delta = Singleton.sharedInstance.BPMAverage - Singleton.sharedInstance.BPMmin
+        var xOffset = Double(self.view.frame.width / 2) - 35 //if no data, image set to mid
+        if deviation > delta {
+            let percent = delta / deviation
+            let position = Double(self.view.frame.width - 230) * percent //offset = 80 + 80 + 70(text)
+            xOffset = 80.0 + 35.0 + position - 35
+        }
+        
+        UIView.animateWithDuration(0.5, delay: 0.3, options: UIViewAnimationOptions.CurveEaseIn, animations: { () -> Void in
+            
+            self.heartImageConstraintX.constant = CGFloat(xOffset)
+            self.heartImage.layoutIfNeeded()
+            
+            }) { (bool) -> Void in
+                UIView.animateWithDuration(0.3, delay: 0.0, options: UIViewAnimationOptions.CurveEaseIn, animations: { () -> Void in
+                    self.maxLabel.alpha = 1
+                    self.minLabel.alpha = 1
+                    self.averageLabel.alpha = 1
+                    }, completion: nil)
+        }
+        
+        //background circle
+        let circleBack = self.getCircleBackground(self.circleView.bounds, percent: 1, lineWidth: 5)
+        self.circleView.layer.insertSublayer(circleBack, atIndex: 0)
         
         //have data enough
         if let totalTruthRate = (Singleton.sharedInstance.totalTruthRate) {
@@ -71,7 +115,7 @@ class ResultSummaryViewController: UIViewController {
             
             //circle
             let circle = self.getCircleGradientLayer(self.circleView.bounds, percent: (1 - totalTruthRate), lineWidth: 5)
-            self.circleView.layer.insertSublayer(circle, atIndex: 0)
+            self.circleView.layer.insertSublayer(circle, atIndex: 1)
             
             
             
@@ -92,9 +136,9 @@ class ResultSummaryViewController: UIViewController {
             //no data
             self.truthLabel.text = "Not enough data"
             self.truthRateLabel.text = "0"
-            self.maxLabel.text = "--"
-            self.minLabel.text = "--"
-            self.averageLabel.text = "--"
+            self.maxLabel.text = "0"
+            self.minLabel.text = "0"
+            self.averageLabel.text = "0"
         }
         
         
@@ -126,39 +170,63 @@ class ResultSummaryViewController: UIViewController {
         return gradient
     }
     
+    func getCircleBackground(bound: CGRect, percent: Double, lineWidth: CGFloat) -> CALayer {
+        let angle = CGFloat(percent * 2 * M_PI - M_PI / 2)
+        let radius = (bound.width < bound.height) ? (bound.width / 2 - lineWidth):(bound.height / 2 - lineWidth)
+        let circle = UIBezierPath(arcCenter: CGPoint(x: bound.width / 2, y: bound.height / 2), radius: radius, startAngle: CGFloat(-M_PI / 2), endAngle: angle, clockwise: true)
+        
+        let arc = CAShapeLayer()
+        arc.path = circle.CGPath
+        arc.position = CGPoint(x: 0, y: 0)
+        arc.fillColor = UIColor.clearColor().CGColor
+        arc.strokeColor = UIColor.grayColor().CGColor
+        arc.lineWidth = lineWidth
+        arc.lineCap = kCALineCapRound ; //线条拐角
+        arc.lineJoin = kCALineJoinRound
+        arc.opacity = 0.4
+        
+        /*
+        let gradient: CAGradientLayer = CAGradientLayer()
+        gradient.frame = bound
+        gradient.colors = [UIColor(red: 179 / 255, green: 5 / 255, blue: 19 / 255, alpha: 1.0).CGColor, UIColor(red: 202 / 255, green: 24 / 255, blue: 38 / 255, alpha: 1.0).CGColor, UIColor(red: 204 / 255, green: 233 / 255 , blue: 0, alpha: 1.0).CGColor]
+        gradient.startPoint = CGPoint(x: 0, y: 0)
+        gradient.endPoint = CGPoint(x: 1, y: 0)
+        gradient.mask = arc
+        */
+        return arc
+        
+    }
 
     //table line
     func addTableSeparator() {
-        let bound = self.stackTableView.bounds
-        let width = self.view.frame.width - 80
+        let bounds = self.progressView.bounds
+        
         
         //set path
         let path = UIBezierPath()
-        path.moveToPoint(CGPoint(x: 0, y: 0))
-        path.addLineToPoint(CGPoint(x: width, y: 0))
-        path.moveToPoint(CGPoint(x: 0, y: bound.height))
-        path.addLineToPoint(CGPoint(x: width, y: bound.height - 1))
+        path.moveToPoint(CGPoint(x: 0, y: bounds.height))
+        path.addLineToPoint(CGPoint(x: bounds.width, y: bounds.height))
+        
         path.stroke()
         
         //change to CALayer
         let arc = CAShapeLayer()
         arc.path = path.CGPath
-        arc.lineWidth = 2
+        arc.lineWidth = 5
         arc.fillColor = UIColor.clearColor().CGColor
         arc.strokeColor = UIColor.purpleColor().CGColor
         arc.lineCap = kCALineCapRound ; //线条拐角
         arc.lineJoin = kCALineJoinRound
         
         let gradientLayer = CAGradientLayer()
-        gradientLayer.frame = bound
+        gradientLayer.frame = CGRect(x: 0, y: 0, width: self.view.frame.width - 80, height: bounds.height)
         gradientLayer.colors = [UIColor.redColor().CGColor, UIColor.yellowColor().CGColor]
         gradientLayer.startPoint = CGPoint(x: 0, y: 0)
         gradientLayer.endPoint = CGPoint(x: 1, y: 0)
         gradientLayer.mask = arc
-        gradientLayer.opacity = 0.8
         
         //add to view
-        self.stackTableView.layer.insertSublayer(gradientLayer, atIndex: 0)
+        self.progressView.layer.insertSublayer(gradientLayer, atIndex: 0)
     }
 
     

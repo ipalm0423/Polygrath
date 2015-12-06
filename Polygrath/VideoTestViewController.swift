@@ -131,6 +131,8 @@ class VideoTestViewController: UIViewController, AVCaptureVideoDataOutputSampleB
         //idle time disable
         UIApplication.sharedApplication().idleTimerDisabled = true
         
+        //truth label 
+        self.truthLabel.alpha = 0
         
     }
 
@@ -140,7 +142,7 @@ class VideoTestViewController: UIViewController, AVCaptureVideoDataOutputSampleB
     }
     
     override func viewDidDisappear(animated: Bool) {
-        self.stopRecordVideo()
+        self.stopRecordVideo(nil)
         self.closeCamera()
         Singleton.sharedInstance.stopPlayingEffect()
     }
@@ -164,7 +166,7 @@ class VideoTestViewController: UIViewController, AVCaptureVideoDataOutputSampleB
     @IBAction func recordButtonTouch(sender: AnyObject) {
         print("record button touch")
         if self.isRecord {
-            self.stopRecordVideo()
+            self.stopRecordVideo(nil)
             
             
         }else {
@@ -191,13 +193,25 @@ class VideoTestViewController: UIViewController, AVCaptureVideoDataOutputSampleB
     @IBAction func finishedButtonTouch(sender: AnyObject) {
         print("finished button touch")
         if self.questions.count == 0 {
-            //no ask
+            //no ask question
             self.navigationController?.popViewControllerAnimated(true)
             return
         }
-        self.performSegueWithIdentifier("ResultSegue", sender: self)
-        self.sendCMDStopWatch()
         
+        //have record
+        if self.isRecord {
+            //stop record the last video
+            self.stopRecordVideo({ () -> Void in
+                dispatch_async(dispatch_get_main_queue(), { () -> Void in
+                    self.performSegueWithIdentifier("ResultSegue", sender: self)
+                    self.sendCMDStopWatch()
+                })
+            })
+        }else {
+            //is not recording
+            self.performSegueWithIdentifier("ResultSegue", sender: self)
+            self.sendCMDStopWatch()
+        }
     }
     
     
@@ -250,7 +264,6 @@ class VideoTestViewController: UIViewController, AVCaptureVideoDataOutputSampleB
                     
                     
                     //calculation
-                    self.updateQuestionData(dic.0, value: dic.1)
                     if self.getTruthRate() < 0.5 {
                         self.isLying = true
                     }else {
@@ -270,7 +283,7 @@ class VideoTestViewController: UIViewController, AVCaptureVideoDataOutputSampleB
             if cmd == "stop" {
                 print("recieve cmd from watch: stop")
                 dispatch_async(dispatch_get_main_queue(), { () -> Void in
-                    self.stopRecordVideo()
+                    self.stopRecordVideo(nil)
                     //alert
                     self.alertStopMessage()
                     
@@ -306,22 +319,28 @@ class VideoTestViewController: UIViewController, AVCaptureVideoDataOutputSampleB
     
     
 //data analyse
-    func updateQuestionData(time: NSDate, value: Double) {
+    func updateQuestionData() {
         if self.questions.count > 0 {
-            for quest in self.questions {
-                
-                if time.timeIntervalSinceDate(quest.startTime) > 0 && quest.endTime.timeIntervalSinceDate(time) > 0 {
-                    //data is in previous time range
-                    quest.dataValues.append(value)
-                    quest.dataDates.append(time)
-                    print("add data to Q.\(quest.questIndex)")
-                    return
+            if self.dataValues.count > 0 {
+                for quest in self.questions {
+                    //input values by time
+                    var counts = self.dataValues.count
+                    var tempQuestData = [Double]()
+                    var tempQuestDate = [NSDate]()
+                    for var i = 0; i < counts; i++ {
+                        let time = self.dataDates[i]
+                        if time.timeIntervalSinceDate(quest.startTime) > 0 && quest.endTime.timeIntervalSinceDate(time) > 0 {
+                            //input data, date
+                            tempQuestData.append(self.dataValues[i])
+                            tempQuestDate.append(time)
+                        }
+                    }
+                    quest.dataValues = tempQuestData
+                    quest.dataDates = tempQuestDate
+                    
+                    print("quest: \(quest.questIndex) ,start from:\(quest.startTime), end: \(quest.endTime) has data: \(quest.dataValues),  date: \(quest.dataDates)")
                 }
             }
-            //data is in the last time range
-            self.questions[questions.count - 1].dataValues.append(value)
-            self.questions[questions.count - 1].dataDates.append(time)
-            print("add data to Q.\(self.questions.count)")
         }
     }
     
@@ -570,7 +589,7 @@ class VideoTestViewController: UIViewController, AVCaptureVideoDataOutputSampleB
             
             //animate heart Line
             dispatch_sync(dispatch_get_main_queue(), {
-                self.animateHeartLine()
+                //self.animateHeartLine()
             })
 //record video
             if self.isRecord {
@@ -719,7 +738,7 @@ class VideoTestViewController: UIViewController, AVCaptureVideoDataOutputSampleB
         }
     }
     
-    func stopRecordVideo() {
+    func stopRecordVideo(completion: (() -> Void)?) {
         if self.isRecord {
             self.isRecord = false
             self.avAssetWriter?.finishWritingWithCompletionHandler({ () -> Void in
@@ -731,6 +750,8 @@ class VideoTestViewController: UIViewController, AVCaptureVideoDataOutputSampleB
                 recordFile.URL = self.tempURL
                 lastQuest.file = recordFile
                 lastQuest.endTime = NSDate()
+                self.updateQuestionData()
+                completion?()
             })
         }
     }
@@ -746,6 +767,7 @@ class VideoTestViewController: UIViewController, AVCaptureVideoDataOutputSampleB
         if self.isRecord {
             let timeString = Singleton.sharedInstance.getTimeString(self.questions.last!.startTime, stopTime: NSDate())
             self.timeLabel.text = timeString
+            
         }
     }
     
@@ -841,13 +863,10 @@ class VideoTestViewController: UIViewController, AVCaptureVideoDataOutputSampleB
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
         if segue.identifier == "ResultSegue" {
             //save last video
-            if self.isRecord {
-                //stop record the last video
-                self.stopRecordVideo()
-                
-                
-            }
+            
             if let VC = segue.destinationViewController as? ResultPageViewController {
+                
+                print("prepare seque: \(self.questions.last)")
                 Singleton.sharedInstance.BPMAverage = self.average
                 Singleton.sharedInstance.BPMDeviation = self.deviation
                 Singleton.sharedInstance.BPMmax = self.bpmMax

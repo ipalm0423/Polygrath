@@ -119,7 +119,7 @@ class ResultContainerPageViewController: UIViewController, UIPageViewControllerD
                 
             case "ResultSummaryViewController" :
                 self.pageControl = 0
-                NSNotificationCenter.defaultCenter().postNotificationName("reportButtonTouch", object: self)
+                NSNotificationCenter.defaultCenter().postNotificationName("reportButtonTouch", object: nil)
                 print(".0")
                 
             case "RecordViewController" :

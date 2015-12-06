@@ -68,6 +68,8 @@ class Singleton: NSObject {
                 }
                 
             }
+            NSNotificationCenter.defaultCenter().postNotificationName("questionReload", object: nil)
+            
         }
     }
     
@@ -284,6 +286,41 @@ class Singleton: NSObject {
         }
         
     }
+//CALayer key frame animation func
+    func createCALayerStringAnimation(size: CGSize, font: UIFont,duration: NSTimeInterval, texts: [String], keyTimes: [NSNumber], repeatCount: Float , removeOnCompletion: Bool) -> CAKeyframeAnimation {
+        //bug fix
+        var imageArray = [CGImageRef]()
+        for text in texts {
+            imageArray.append(self.createCGImageText(text, font: font, size: size))
+        }
+        
+        let stringAnimation = CAKeyframeAnimation(keyPath: "contents") //"string" have bug, so use contents
+        stringAnimation.beginTime = AVCoreAnimationBeginTimeAtZero
+        stringAnimation.calculationMode = kCAAnimationDiscrete //kCAAnimationLinear
+        stringAnimation.duration = duration
+        stringAnimation.values = imageArray
+        stringAnimation.keyTimes = keyTimes
+        stringAnimation.repeatCount = repeatCount
+        stringAnimation.removedOnCompletion = removeOnCompletion
+        
+        print("text: \(texts), key time: \(keyTimes), duration: \(duration)")
+        
+        return stringAnimation
+    }
+    
+    func createCALayerScaleAnimation(period: NSTimeInterval, scales: [NSNumber], delay: CFTimeInterval, duration: NSTimeInterval, autoReverse: Bool, removeOnComplete: Bool) -> CAKeyframeAnimation {
+        let animation = CAKeyframeAnimation(keyPath: "transform.scale")
+        animation.duration = period
+        animation.values = scales //heart scale
+        animation.autoreverses = autoReverse
+        animation.repeatDuration = duration
+        animation.removedOnCompletion = removeOnComplete
+        animation.beginTime = AVCoreAnimationBeginTimeAtZero + delay
+        
+        return animation
+    }
+    
+    
     
     
 //CALayer func
@@ -337,30 +374,75 @@ class Singleton: NSObject {
         return overlayLayer
     }
     
-    
+    func getBPMLayerWithAnimation(questionNO: Int, parentViewSize: CGSize) -> CALayer {
+        
+        let quest = self.questions[questionNO]
+        let textColor = UIColor(red: 242 / 255, green: 242 / 255, blue: 242 / 255, alpha: 1.0)
+        let font = UIFont(name: "HelveticaNeue", size: 55)!
+        let BPMLayer = self.createTextCALayer("---", uiFont: font, color: textColor, x: 0, y: 0)
+        //set to parentview center (height bias +5)
+        BPMLayer.frame = CGRectMake((parentViewSize.width - BPMLayer.bounds.width) / 2, (parentViewSize.height - BPMLayer.bounds.height + 10) / 2, BPMLayer.bounds.width, BPMLayer.bounds.height)
+        
+        //if have data, create animation
+        if quest.dataValues.count > 0 {
+            var BPMstring = [String]()
+            //change data to string
+            for data in quest.dataValues {
+                BPMstring.append(Int(data).description)
+            }
+            //caculate time
+            let duration = quest.endTime.timeIntervalSinceDate(quest.startTime)
+            var keyTime = [NSNumber(double: 0.0)]
+            for date in quest.dataDates {
+                let interval = date.timeIntervalSinceDate(quest.startTime)
+                let space = interval / duration
+                print("start : \(quest.startTime), endtime: \(quest.endTime)")
+                print("\(date) has interval: \(interval)")
+                keyTime.append(space)
+            }
+            keyTime.append(NSNumber(double: 1.0))
+            
+            //setup animation
+            let stringAnimation = self.createCALayerStringAnimation(BPMLayer.bounds.size, font: font, duration: duration, texts: BPMstring, keyTimes: keyTime, repeatCount: 1, removeOnCompletion: false)
+            
+            //add animation to layer
+            BPMLayer.addAnimation(stringAnimation, forKey: "BPMstring")
+        }else {
+            //no data
+            BPMLayer.opacity = 0
+        }
+        
+        return BPMLayer
+        
+        
+    }
     
     
     func getHeartBeatLayerWithAnimation(questionNO: Int, parentViewSize: CGSize) -> CALayer {
     
         let heartLayer = self.createUIImageCALayer(UIImage(named: "heart")!, width: 140, height: 120, x: parentViewSize.width / 2 - 70, y: parentViewSize.height / 2 - 60)
         var heartAnimation = [CAKeyframeAnimation]()
+        let quest = self.questions[questionNO]
+        var truthRate: Double = 1
+        var halfPeriod: Double = 0
+        var heartScaleRatio:NSNumber = 0
         
-        //if have question
-        if self.questions.count > questionNO {
-            let quest = self.questions[questionNO]
+        //if have data, create animation
+        if quest.dataValues.count > 0 {
+            
             var i = 0
             
             var tempData = [Double]()
             for data in quest.dataValues {
-                let animation = CAKeyframeAnimation(keyPath: "transform.scale")
+                
                 var duration: CFTimeInterval!
-                var halfPeriod = 60 / data / 2
-                var heartScaleRatio = NSNumber(double: data / 60)
+                halfPeriod = 60 / data / 2
+                heartScaleRatio = NSNumber(double: data / 60)
                 var delay:CFTimeInterval = 0
                 tempData.append(data)
                 
                 //score calculate
-                var truthRate: Double = 1
+                
                 if i > 1 {
                     truthRate = self.getTruthRate(tempData, BPMAverage: self.BPMAverage, BPMDeviation: self.BPMDeviation)
                     //turth effect ratio
@@ -378,29 +460,25 @@ class Singleton: NSObject {
                     //first data
                     duration = quest.dataDates[i].timeIntervalSinceDate(quest.startTime)
                     delay = 0
-                }else if i == quest.dataValues.count - 1 {
-                    //last data
-                    duration = quest.endTime.timeIntervalSinceDate(quest.dataDates[i - 1])
-                    delay = quest.dataDates[i - 1].timeIntervalSinceDate(quest.startTime)
                 }else {
                     //have previous data
                     duration = quest.dataDates[i].timeIntervalSinceDate(quest.dataDates[i - 1])
                     delay = quest.dataDates[i - 1].timeIntervalSinceDate(quest.startTime)
                 }
                 
-                
-                animation.duration = halfPeriod
-                animation.values = [NSNumber(float: 1.0), NSNumber(double: data / 70)] //heart scale
-                animation.autoreverses = true
-                animation.repeatDuration = duration
-                animation.removedOnCompletion = false
-                animation.beginTime = AVCoreAnimationBeginTimeAtZero + delay
+                //create animation
+                let animation = self.createCALayerScaleAnimation(halfPeriod, scales: [NSNumber(double: 1.0), heartScaleRatio], delay: delay, duration: duration, autoReverse: true, removeOnComplete: false)
                 
                 heartAnimation.append(animation)
                 i++
             }
             
+            //add last time
+            let lastDuration = quest.endTime.timeIntervalSinceDate(quest.dataDates[i - 1])
+            let lastDelay = quest.dataDates[i - 1].timeIntervalSinceDate(quest.startTime)
+            let lastAnimation = self.createCALayerScaleAnimation(halfPeriod, scales: [NSNumber(double: 1.0), heartScaleRatio], delay: lastDelay, duration: lastDuration, autoReverse: true, removeOnComplete: false)
             
+            heartAnimation.append(lastAnimation)
             
         }
         print("heart animation:\(heartAnimation)")
@@ -584,6 +662,18 @@ class Singleton: NSObject {
         return NSMutableAttributedString(string: text, attributes: attr)
     }
     
+    func createCGImageText(text: String, font: UIFont, size: CGSize) -> CGImageRef {
+        let string = self.createTextString(text, font: font)
+        UIGraphicsBeginImageContextWithOptions(size, false, 0)
+        
+        
+        string.drawInRect(CGRect(x: 0, y: 0, width: size.width, height: size.height))
+        
+        let newImage = UIGraphicsGetImageFromCurrentImageContext();
+        UIGraphicsEndImageContext()
+        return newImage.CGImage!
+    }
+    
     func drawCIImageOnSource(sourceImage: CIImage, addCIImage: CIImage?, center: CGPoint, halfWidth: CGFloat, halfHeight: CGFloat, shrinkPortion: CGFloat, xbias: CGFloat, ybias: CGFloat) -> CIImage {
         
         //transffer
@@ -721,7 +811,7 @@ class Singleton: NSObject {
         print("heart layer back animation: \(heartBeatLayer.animationKeys())")
         
         //create bpm label
-        
+        let BPMLayer = self.getBPMLayerWithAnimation(questNO, parentViewSize: size)
         
         //create heart line
         
@@ -733,6 +823,8 @@ class Singleton: NSObject {
         parentLayer.addSublayer(videoLayer)
         parentLayer.addSublayer(watermarkLayer)
         parentLayer.addSublayer(heartBeatLayer)
+        parentLayer.addSublayer(BPMLayer)
+        
         //add to tools
         composition.animationTool = AVVideoCompositionCoreAnimationTool(postProcessingAsVideoLayer: videoLayer, inLayer: parentLayer)
         

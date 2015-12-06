@@ -36,8 +36,19 @@ class RecordViewController: UIViewController, UITableViewDelegate, UITableViewDa
     }
     
     
+    override func viewDidAppear(animated: Bool) {
+        print("record VC did appear")
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: Selector("tableReload:"), name: "questionReload", object: nil)
+    }
     
+    override func viewDidDisappear(animated: Bool) {
+        NSNotificationCenter.defaultCenter().removeObserver(self, name: "questionReload", object: nil)
+    }
     
+    func tableReload(notify: NSNotification) {
+        print("question reload, table reloaded")
+        self.tableView.reloadData()
+    }
     
     
 //table
@@ -52,7 +63,7 @@ class RecordViewController: UIViewController, UITableViewDelegate, UITableViewDa
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCellWithIdentifier("recordCell") as! RecordTableViewCell
         let question = Singleton.sharedInstance.questions[indexPath.row]
-        
+        print("build cell row: \(indexPath.row), question data: \(question.dataValues), question date: \(question.dataDates)")
         //view setting
         cell.playButton.setTitle("Question \(indexPath.row + 1)", forState: UIControlState.Normal)
         cell.playButton.tag = indexPath.row

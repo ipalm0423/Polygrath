@@ -53,6 +53,7 @@ class Step2InterfaceController: WKInterfaceController, WCSessionDelegate, HKWork
         print("will active: test VC")
     }
 
+    
     override func didDeactivate() {
         // This method is called when watch view controller is no longer visible
         
@@ -109,7 +110,7 @@ class Step2InterfaceController: WKInterfaceController, WCSessionDelegate, HKWork
     func checkWCConnectReachable() -> Bool {
         
         if let session = session where session.reachable {
-            self.setTitle("Connected")
+            self.setTitle("Cancel")
             
             return true
         }else {
