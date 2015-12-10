@@ -9,6 +9,8 @@
 import UIKit
 import AVKit
 import AVFoundation
+//import Charts
+
 
 class RecordViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
 
@@ -26,7 +28,7 @@ class RecordViewController: UIViewController, UITableViewDelegate, UITableViewDa
         // Do any additional setup after loading the view.
         self.tableView.delegate = self
         self.tableView.dataSource = self
-        
+        self.tableView.estimatedRowHeight = 250
         
     }
 
@@ -64,23 +66,30 @@ class RecordViewController: UIViewController, UITableViewDelegate, UITableViewDa
         let cell = tableView.dequeueReusableCellWithIdentifier("recordCell") as! RecordTableViewCell
         let question = Singleton.sharedInstance.questions[indexPath.row]
         print("build cell row: \(indexPath.row), question data: \(question.dataValues), question date: \(question.dataDates)")
-        //view setting
-        cell.playButton.setTitle("Question \(indexPath.row + 1)", forState: UIControlState.Normal)
+        
         cell.playButton.tag = indexPath.row
-        cell.playButton.layer.cornerRadius = cell.playButton.frame.height / 2
-        cell.playButton.clipsToBounds = true
+        
         cell.forwardButton.tag = indexPath.row
         
         //label setting
         cell.timeLabel.text = Singleton.sharedInstance.getTimeString(question.startTime, stopTime: question.endTime)
+        cell.questionNoLabel.text = "Question." + (question.questIndex + 1).description
+        
         if question.dataValues.count > 0 {
             //have data
             cell.truthLabel.text = Int(question.score * 100).description + "%"
-            cell.bpmLabel.text = String(format: "%.0f", question.max)
+            cell.maxLabel.text = String(format: "%.0f", question.max)
+            cell.avgLabel.text = String(format: "%.0f", question.average)
+            
+            //setup graph
+            cell.quest = question
+            cell.setupChartGraph()
+            
         }else {
             //no data
-            cell.truthLabel.text = "--"
-            cell.bpmLabel.text = "--"
+            cell.truthLabel.text = "0"
+            cell.maxLabel.text = "0"
+            cell.avgLabel.text = "0"
             
         }
         
@@ -93,7 +102,7 @@ class RecordViewController: UIViewController, UITableViewDelegate, UITableViewDa
     }
     
     func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
-        return 115
+        return 300
     }
 
     

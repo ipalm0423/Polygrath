@@ -422,7 +422,7 @@ class ResultViewController: UIViewController, UITableViewDelegate, UITableViewDa
     }
     
     func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
-        return 70
+        return UITableViewAutomaticDimension
     }
     
 //video play

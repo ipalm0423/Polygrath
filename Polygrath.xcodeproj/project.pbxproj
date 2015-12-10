@@ -42,6 +42,10 @@
 		ACBE705F1C14935400A15BF8 /* HealthKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = ACBE705E1C14935400A15BF8 /* HealthKit.framework */; };
 		ACC81A4E1BB4E973006377F6 /* ResultViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = ACC81A4D1BB4E973006377F6 /* ResultViewController.swift */; };
 		ACC81A501BB4FB25006377F6 /* questions.swift in Sources */ = {isa = PBXBuildFile; fileRef = ACC81A4F1BB4FB25006377F6 /* questions.swift */; };
+		ACD12B451C19283E008A4856 /* AllowHealthViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = ACD12B441C19283E008A4856 /* AllowHealthViewController.swift */; };
+		ACD12B471C197A9C008A4856 /* IntroPageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = ACD12B461C197A9C008A4856 /* IntroPageViewController.swift */; };
+		ACD12B491C19DA99008A4856 /* AllowCameraViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = ACD12B481C19DA99008A4856 /* AllowCameraViewController.swift */; };
+		ACD12B4B1C19E301008A4856 /* IntroViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = ACD12B4A1C19E301008A4856 /* IntroViewController.swift */; };
 		ACDE08571BA7A1BD00D3ECB7 /* FrontHeartViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = ACDE08561BA7A1BD00D3ECB7 /* FrontHeartViewController.swift */; };
 		ACFEC9991C017E5D00F99F77 /* RecordTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = ACFEC9981C017E5D00F99F77 /* RecordTableViewCell.swift */; };
 		ACFEC99B1C020FA600F99F77 /* RecordViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = ACFEC99A1C020FA600F99F77 /* RecordViewController.swift */; };
@@ -155,6 +159,10 @@
 		ACBE705E1C14935400A15BF8 /* HealthKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = HealthKit.framework; path = System/Library/Frameworks/HealthKit.framework; sourceTree = SDKROOT; };
 		ACC81A4D1BB4E973006377F6 /* ResultViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ResultViewController.swift; sourceTree = "<group>"; };
 		ACC81A4F1BB4FB25006377F6 /* questions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = questions.swift; sourceTree = "<group>"; };
+		ACD12B441C19283E008A4856 /* AllowHealthViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AllowHealthViewController.swift; sourceTree = "<group>"; };
+		ACD12B461C197A9C008A4856 /* IntroPageViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = IntroPageViewController.swift; sourceTree = "<group>"; };
+		ACD12B481C19DA99008A4856 /* AllowCameraViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AllowCameraViewController.swift; sourceTree = "<group>"; };
+		ACD12B4A1C19E301008A4856 /* IntroViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = IntroViewController.swift; sourceTree = "<group>"; };
 		ACDE08561BA7A1BD00D3ECB7 /* FrontHeartViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FrontHeartViewController.swift; sourceTree = "<group>"; };
 		ACDE3ADC1B9F378000917E97 /* Polygrath.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = Polygrath.entitlements; sourceTree = "<group>"; };
 		ACDE3ADF1B9F379100917E97 /* Polygrath-iWatch.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = "Polygrath-iWatch.entitlements"; sourceTree = "<group>"; };
@@ -235,6 +243,10 @@
 			children = (
 				ACBC3F6E1B9EC9D7007AC186 /* ViewController.swift */,
 				AC0323BC1C098CA2006B488C /* StatementViewController.swift */,
+				ACD12B441C19283E008A4856 /* AllowHealthViewController.swift */,
+				ACD12B4A1C19E301008A4856 /* IntroViewController.swift */,
+				ACD12B461C197A9C008A4856 /* IntroPageViewController.swift */,
+				ACD12B481C19DA99008A4856 /* AllowCameraViewController.swift */,
 				ACDE08561BA7A1BD00D3ECB7 /* FrontHeartViewController.swift */,
 			);
 			name = Front;
@@ -623,11 +635,14 @@
 				ACBC3F6F1B9EC9D7007AC186 /* ViewController.swift in Sources */,
 				ACDE08571BA7A1BD00D3ECB7 /* FrontHeartViewController.swift in Sources */,
 				ACBC3F6D1B9EC9D7007AC186 /* AppDelegate.swift in Sources */,
+				ACD12B471C197A9C008A4856 /* IntroPageViewController.swift in Sources */,
 				ACB4E08A1BAAB6B60044EB72 /* PolyTestViewController.swift in Sources */,
 				ACC81A501BB4FB25006377F6 /* questions.swift in Sources */,
 				AC06ECF41BB68BCC0087586E /* ResultQuestTableViewCell.swift in Sources */,
 				ACFEC9991C017E5D00F99F77 /* RecordTableViewCell.swift in Sources */,
 				AC2CA7631BF9FF4D00D199E4 /* ResultContainerPageViewController.swift in Sources */,
+				ACD12B4B1C19E301008A4856 /* IntroViewController.swift in Sources */,
+				ACD12B491C19DA99008A4856 /* AllowCameraViewController.swift in Sources */,
 				AC9105E91BCFA5A100817F40 /* VideoTestViewController.swift in Sources */,
 				ACFEC99B1C020FA600F99F77 /* RecordViewController.swift in Sources */,
 				ACBC3F751B9EC9D7007AC186 /* Polygrath.xcdatamodeld in Sources */,
@@ -636,6 +651,7 @@
 				AC648BCB1BDF1C6C0063CD1D /* SingletonM.swift in Sources */,
 				AC2CA7681BFA219F00D199E4 /* ResultSummaryViewController.swift in Sources */,
 				AC06ECF61BB692C90087586E /* TitleTableViewCell.swift in Sources */,
+				ACD12B451C19283E008A4856 /* AllowHealthViewController.swift in Sources */,
 				ACC81A4E1BB4E973006377F6 /* ResultViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

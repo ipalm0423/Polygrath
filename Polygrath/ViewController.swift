@@ -24,8 +24,12 @@ class ViewController: UIViewController {
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
         self.setupView()
-        self.alertHealthWarning()
         
+        if healthStore.authorizationStatusForType(HKObjectType.quantityTypeForIdentifier(HKQuantityTypeIdentifierHeartRate)!) != HKAuthorizationStatus.SharingAuthorized {
+            //not allow health store
+            self.alertHealthWarning()
+            
+        }
     }
 
     override func didReceiveMemoryWarning() {
@@ -52,40 +56,7 @@ class ViewController: UIViewController {
     }
     
     
-//health store
-    func setupHealthStore() -> Bool {
-        if HKHealthStore.isHealthDataAvailable() {
-            let heartRateType = HKSampleType.quantityTypeForIdentifier(HKQuantityTypeIdentifierHeartRate)!
-            let typetoShare = Set(arrayLiteral: heartRateType)
-            let typetoRead = Set(arrayLiteral: heartRateType)
-            let status = healthStore.authorizationStatusForType(HKObjectType.quantityTypeForIdentifier(HKQuantityTypeIdentifierHeartRate)!)
-            
-            if status == HKAuthorizationStatus.NotDetermined || status == HKAuthorizationStatus.SharingDenied {
-                print("HK not authorize", terminator: "")
-                self.healthStore.requestAuthorizationToShareTypes(typetoShare, readTypes: typetoRead, completion: { (bool, error) -> Void in
-                    if let ER = error {
-                        print(ER, terminator: "")
-                    }
-                    if bool {
-                        print("did feedback HK permission. but denied", terminator: "")
-                    }else {
-                        print("didn't reply HK authorization", terminator: "")
-                    }
-                })
-                print("health store is not authorize", terminator: "")
-                return false
-                
-            }else {
-                print("Authorize success", terminator: "")
-                return true
-            }
-            
-        }else {
-            print("health store is not available", terminator: "")
-            //self.frontLabel.setText("Your device is not support.")
-            return false
-        }
-    }
+
 
     
 //alert func
@@ -97,13 +68,16 @@ class ViewController: UIViewController {
     }
     
     func alertHealthWarning() {
-        let alert = UIAlertController(title: "Notice", message: "We need to access your health data for polygrath purpose", preferredStyle: UIAlertControllerStyle.Alert)
+        let alert = UIAlertController(title: "Notice", message: "We need to access your health data for polygraph purpose", preferredStyle: UIAlertControllerStyle.Alert)
         
         alert.addAction(UIAlertAction(title: "OK", style: .Default, handler: { action in
             switch action.style{
             case .Default:
                 print("alert for access health data", terminator: "")
-                self.setupHealthStore()
+                //not allow health store
+                if let allowView = self.storyboard?.instantiateViewControllerWithIdentifier("AllowHealth") as? AllowHealthViewController {
+                    self.navigationController?.pushViewController(allowView, animated: true)
+                }
                 
             case .Cancel:
                 print("cancel", terminator: "")
