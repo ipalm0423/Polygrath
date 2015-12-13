@@ -264,6 +264,14 @@
 			name = Result;
 			sourceTree = "<group>";
 		};
+		AC82C47A1C1D8FFA00C1E642 /* LaunchScreen */ = {
+			isa = PBXGroup;
+			children = (
+				ACBC3F781B9EC9D7007AC186 /* LaunchScreen.storyboard */,
+			);
+			name = LaunchScreen;
+			sourceTree = "<group>";
+		};
 		ACBC3F601B9EC9D7007AC186 = {
 			isa = PBXGroup;
 			children = (
@@ -307,7 +315,7 @@
 				ACC81A4D1BB4E973006377F6 /* ResultViewController.swift */,
 				ACC81A4F1BB4FB25006377F6 /* questions.swift */,
 				ACBC3F761B9EC9D7007AC186 /* Assets.xcassets */,
-				ACBC3F781B9EC9D7007AC186 /* LaunchScreen.storyboard */,
+				AC82C47A1C1D8FFA00C1E642 /* LaunchScreen */,
 				ACBC3F7B1B9EC9D7007AC186 /* Info.plist */,
 				ACBC3F731B9EC9D7007AC186 /* Polygrath.xcdatamodeld */,
 				AC8DEABD1BE9B27800E60B62 /* heartbeat.mp3 */,

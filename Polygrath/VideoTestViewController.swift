@@ -324,7 +324,7 @@ class VideoTestViewController: UIViewController, AVCaptureVideoDataOutputSampleB
             if self.dataValues.count > 0 {
                 for quest in self.questions {
                     //input values by time
-                    var counts = self.dataValues.count
+                    let counts = self.dataValues.count
                     var tempQuestData = [Double]()
                     var tempQuestDate = [NSDate]()
                     for var i = 0; i < counts; i++ {

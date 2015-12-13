@@ -42,25 +42,12 @@ class IntroPageViewController: UIViewController {
         self.setupView()
         
         
-        //button
-        if self.pageIndex == 2 {
-            //heart image
-            self.heartImage.alpha = 1
-            
-            //animation
-            self.startButton.alpha = 1.0
-            UIView.animateWithDuration(1, delay: 0.0, options: [UIViewAnimationOptions.CurveEaseIn], animations: { () -> Void in
-                
-                self.startButtonBottomConstraint.constant = 20
-                self.startButton.layoutIfNeeded()
-                }, completion: { (finished) -> Void in
-                    print("")
-            })
-        }
+        
         
         
     }
 
+    
     func setupView() {
         //image, title
         self.titleLabel.text = self.titleText
@@ -72,15 +59,17 @@ class IntroPageViewController: UIViewController {
         self.navigationController?.navigationBarHidden = true
         Singleton.sharedInstance.setupBackgroundGradientColor(self)
         
-        self.startButton.layer.cornerRadius = self.startButton.frame.height / 2
-        self.startButton.clipsToBounds = true
+        //self.startButton.layer.cornerRadius = self.startButton.frame.height / 2
+        //self.startButton.clipsToBounds = true
+        //button
+        if self.pageIndex != 2 {
+            //heart image
+            self.heartImage.alpha = 0
+            self.startButton.alpha = 0
+        }
         
-        self.startButton.alpha = 0
-        self.startButton.setNeedsUpdateConstraints()
-        self.startButtonBottomConstraint.constant = -60 //hide
-        
-        //heart
-        self.heartImage.alpha = 0
+        //self.startButton.setNeedsUpdateConstraints()
+        //self.startButtonBottomConstraint.constant = -60 //hide
         
     }
     
@@ -98,6 +87,15 @@ class IntroPageViewController: UIViewController {
                 //animation heart
                 self.animateHeart()
                 
+                /*
+                UIView.animateWithDuration(0.5, delay: 0.0, options: [UIViewAnimationOptions.CurveEaseIn], animations: { () -> Void in
+                    
+                    //self.startButtonBottomConstraint.constant = 20
+                    self.startButton.layoutIfNeeded()
+                    }, completion: { (finished) -> Void in
+                        print("")
+                })
+                */
             default:
                 print("error page")
             }
@@ -145,9 +143,7 @@ class IntroPageViewController: UIViewController {
         
         //authorize camera
         if AVCaptureDevice.authorizationStatusForMediaType(AVMediaTypeVideo) !=  AVAuthorizationStatus.Authorized || AVCaptureDevice.authorizationStatusForMediaType(AVMediaTypeAudio) != AVAuthorizationStatus.Authorized {
-            if let allowView = self.storyboard?.instantiateViewControllerWithIdentifier("AllowCamera") as? AllowCameraViewController {
-                self.navigationController?.pushViewController(allowView, animated: true)
-            }
+            self.alertCameraWarning()
         }else {
             //authorize success
             self.performSegueWithIdentifier("StartTestSegue", sender: self)
@@ -159,7 +155,28 @@ class IntroPageViewController: UIViewController {
     
     
     
-    
+//alert
+    func alertCameraWarning() {
+        let alert = UIAlertController(title: "Authorize", message: "Need to Access Camera for Polygraph Purpose", preferredStyle: UIAlertControllerStyle.Alert)
+        
+        alert.addAction(UIAlertAction(title: "OK", style: .Default, handler: { action in
+            switch action.style{
+            case .Default:
+                print("alert for access camera", terminator: "")
+                //not allow health store
+                if let allowView = self.storyboard?.instantiateViewControllerWithIdentifier("AllowCamera") as? AllowCameraViewController {
+                    self.navigationController?.pushViewController(allowView, animated: true)
+                }
+                
+            case .Cancel:
+                print("cancel", terminator: "")
+                
+            case .Destructive:
+                print("destructive", terminator: "")
+            }
+        }))
+        self.presentViewController(alert, animated: true, completion: nil)
+    }
     
     
     /*

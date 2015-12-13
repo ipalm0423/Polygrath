@@ -25,11 +25,7 @@ class ViewController: UIViewController {
         // Do any additional setup after loading the view, typically from a nib.
         self.setupView()
         
-        if healthStore.authorizationStatusForType(HKObjectType.quantityTypeForIdentifier(HKQuantityTypeIdentifierHeartRate)!) != HKAuthorizationStatus.SharingAuthorized {
-            //not allow health store
-            self.alertHealthWarning()
-            
-        }
+        
     }
 
     override func didReceiveMemoryWarning() {
@@ -51,8 +47,8 @@ class ViewController: UIViewController {
         self.navigationController?.navigationBarHidden = true
         Singleton.sharedInstance.setupBackgroundGradientColor(self)
         Singleton.sharedInstance.setupNaviBarColor(self)
-        self.startButton.layer.cornerRadius = self.startButton.frame.height / 2
-        self.startButton.clipsToBounds = true
+        //self.startButton.layer.cornerRadius = self.startButton.frame.height / 2
+        //self.startButton.clipsToBounds = true
     }
     
     
@@ -68,7 +64,7 @@ class ViewController: UIViewController {
     }
     
     func alertHealthWarning() {
-        let alert = UIAlertController(title: "Notice", message: "We need to access your health data for polygraph purpose", preferredStyle: UIAlertControllerStyle.Alert)
+        let alert = UIAlertController(title: "Authorize", message: "Need to Access Health Data for Polygraph Purpose", preferredStyle: UIAlertControllerStyle.Alert)
         
         alert.addAction(UIAlertAction(title: "OK", style: .Default, handler: { action in
             switch action.style{

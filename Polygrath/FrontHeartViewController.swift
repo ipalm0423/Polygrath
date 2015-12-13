@@ -53,8 +53,8 @@ class FrontHeartViewController: UIViewController,WCSessionDelegate {
     func setupView() {
         self.navigationController?.navigationBarHidden = false
         Singleton.sharedInstance.setupBackgroundGradientColor(self)
-        self.checkButton.layer.cornerRadius = self.checkButton.frame.height / 2
-        self.checkButton.clipsToBounds = true
+        //self.checkButton.layer.cornerRadius = self.checkButton.frame.height / 2
+        //self.checkButton.clipsToBounds = true
         self.tempStartButton.hidden = true
     }
     

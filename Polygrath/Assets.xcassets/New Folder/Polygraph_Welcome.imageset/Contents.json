@@ -2,17 +2,15 @@
   "images" : [
     {
       "idiom" : "universal",
-      "filename" : "Polygraph_Welcome-1.jpg",
+      "filename" : "Polygraph_Welcome.png",
       "scale" : "1x"
     },
     {
       "idiom" : "universal",
-      "filename" : "Polygraph_Welcome.jpg",
       "scale" : "2x"
     },
     {
       "idiom" : "universal",
-      "filename" : "Polygraph_Welcome-2.jpg",
       "scale" : "3x"
     }
   ],

@@ -36,8 +36,8 @@ class IntroViewController: UIViewController, UIPageViewControllerDelegate, UIPag
     
     
 //page view
-    var introText = ["Subject Should Wear the iWatch", "Keep Finger on Screen", "Ready?"]
-    var subText = ["Open the Polygraph App on iWatch and Follow the Instruction.", "Subject Should Keep Touching on iWatch Screen When Testing. \n" + "Avoid Screen Off to Get the Realtime Heart Rate.", "When You Are Ready \n" + "Press Start Button on Both Side"]
+    var introText = ["Wear Apple Watch on Subject", "Keep Finger on Watch", "Ready?"]
+    var subText = ["Open the Polygraph App on Watch and Follow the Instruction", "Keep Apple Watch Screen On by Touching it", "When You Are Ready \n" + "Press Start Button on Both Side"]
     var introImageName = ["iwatchIntro", "fingerprint", "heartLine"]
     var pageViewController: UIPageViewController!
     var pageControl = 0

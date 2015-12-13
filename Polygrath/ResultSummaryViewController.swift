@@ -65,8 +65,8 @@ class ResultSummaryViewController: UIViewController {
 
     func setupView() {
         //button
-        self.reStartButton.layer.cornerRadius = self.reStartButton.frame.height / 2
-        self.reStartButton.clipsToBounds = true
+        //self.reStartButton.layer.cornerRadius = self.reStartButton.frame.height / 2
+        //self.reStartButton.clipsToBounds = true
         
         //table separator
         self.addTableSeparator()

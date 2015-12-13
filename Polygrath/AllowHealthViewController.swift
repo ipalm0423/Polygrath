@@ -43,8 +43,8 @@ class AllowHealthViewController: UIViewController {
         Singleton.sharedInstance.setupBackgroundGradientColor(self)
         
         //button
-        self.allowButton.layer.cornerRadius = self.allowButton.frame.height / 2
-        self.allowButton.clipsToBounds = true
+        //self.allowButton.layer.cornerRadius = self.allowButton.frame.height / 2
+        //self.allowButton.clipsToBounds = true
     }
     
     //health store
@@ -65,7 +65,10 @@ class AllowHealthViewController: UIViewController {
                         print("did feedback HK permission.", terminator: "")
                         if self.healthStore.authorizationStatusForType(HKObjectType.quantityTypeForIdentifier(HKQuantityTypeIdentifierHeartRate)!) == HKAuthorizationStatus.SharingAuthorized {
                             print("allow check ok")
-                            self.navigationController?.popViewControllerAnimated(true)
+                            dispatch_async(dispatch_get_main_queue(), { () -> Void in
+                                self.navigationController?.popViewControllerAnimated(true)
+                            })
+                            
                             
                         }else {
                             //authorize denny

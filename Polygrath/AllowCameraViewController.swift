@@ -10,6 +10,7 @@ import UIKit
 import AVFoundation
 import Photos
 
+
 class AllowCameraViewController: UIViewController {
 
     
@@ -35,9 +36,82 @@ class AllowCameraViewController: UIViewController {
 
     @IBAction func allowButtonTouche(sender: AnyObject) {
         print("allow camera button touch")
+        var isPhotoSet = false
+        var isVideoSet = false
+        var isAudioSet = false
         
-        self.alertAuthorizeCamera()
         
+//authorize audio
+        
+        if AVCaptureDevice.authorizationStatusForMediaType(AVMediaTypeAudio) == AVAuthorizationStatus.Authorized {
+            print("user already authorize audio access")
+            isAudioSet = true
+        }else {
+            print("user haven't authorize audio access")
+            //request
+            AVCaptureDevice.requestAccessForMediaType(AVMediaTypeAudio, completionHandler: { (bool) -> Void in
+                
+                print("audioset: \(isAudioSet)")
+                if AVCaptureDevice.authorizationStatusForMediaType(AVMediaTypeAudio) == AVAuthorizationStatus.Authorized {
+                    isAudioSet = true
+                }else {
+                    isAudioSet = false
+                    print("user not allow audio authorize")
+                    self.alertAuthorizeFail("Microphone")
+                }
+                
+            })
+        }
+        
+//authorize video
+        if AVCaptureDevice.authorizationStatusForMediaType(AVMediaTypeVideo) ==  AVAuthorizationStatus.Authorized {
+            // Already Authorized
+            print("user already authorize camera access")
+            isVideoSet = true
+        }else {
+            print("user haven't authorize camera access")
+            //request
+            AVCaptureDevice.requestAccessForMediaType(AVMediaTypeVideo, completionHandler: { (bool) -> Void in
+                if AVCaptureDevice.authorizationStatusForMediaType(AVMediaTypeVideo) == AVAuthorizationStatus.Authorized {
+                    isVideoSet = true
+                }else {
+                    isVideoSet = false
+                    print("user not allow audio authorize")
+                    self.alertAuthorizeFail("Camera")
+                }
+
+            })
+        }
+    
+    
+
+        
+//authorize roll
+        /*
+        if PHPhotoLibrary.authorizationStatus() == PHAuthorizationStatus.Authorized {
+            print("user already authorize camera roll access")
+            isPhotoSet = true
+        }else {
+            print("user haven't authorize camera roll access")
+            PHPhotoLibrary.requestAuthorization({ (status) -> Void in
+                
+                if status == PHAuthorizationStatus.Authorized {
+                    print("user allow camera roll access")
+                    isPhotoSet = true
+                }else {
+                    print("user didn't allow camera roll access")
+                    self.alertAuthorizeFail("Photos")
+                    isPhotoSet = false
+                }
+            })
+        }
+        */
+//result check
+        self.allowButton.setTitle("Check", forState: UIControlState.Normal)
+        if isVideoSet && isAudioSet {
+            //authorize success
+            self.navigationController?.popViewControllerAnimated(true)
+        }
         
     }
     
@@ -48,8 +122,8 @@ class AllowCameraViewController: UIViewController {
         Singleton.sharedInstance.setupBackgroundGradientColor(self)
         
         //button
-        self.allowButton.layer.cornerRadius = self.allowButton.frame.height / 2
-        self.allowButton.clipsToBounds = true
+        //self.allowButton.layer.cornerRadius = self.allowButton.frame.height / 2
+        //self.allowButton.clipsToBounds = true
     }
     
     
@@ -80,15 +154,21 @@ class AllowCameraViewController: UIViewController {
             AVCaptureDevice.requestAccessForMediaType(AVMediaTypeVideo, completionHandler: { (bool) -> Void in
                 if bool {
                     print("user authorize camera access")
-                    return
+                    dispatch_async(dispatch_get_main_queue(), { () -> Void in
+                        
+                    })
+                    
                     
                 }else {
                     print("user not allow camera authorize")
-                    self.alertAuthorizeCameraFail()
-                    return
+                    
+                    
+                    
                     
                 }
+                
             })
+            
             return false
         }
     }
@@ -104,15 +184,16 @@ class AllowCameraViewController: UIViewController {
             AVCaptureDevice.requestAccessForMediaType(AVMediaTypeAudio, completionHandler: { (bool) -> Void in
                 if bool {
                     //authorized
-                    return
+                    
                     
                 }else {
                     //user rejected
                     print("user not allow audio authorize")
-                    self.alertAuthorizeCameraFail()
-                    return
+                    
+                    
                     
                 }
+                
             })
             return false
         }
@@ -128,12 +209,14 @@ class AllowCameraViewController: UIViewController {
                 
                 if status == PHAuthorizationStatus.Authorized {
                     print("user allow camera roll access")
-                    return
+                    
                 }else {
                     print("user didn't allow camera roll access")
-                    self.alertAuthorizeCameraFail()
-                    return
+                    
+                    
                 }
+                
+                
             })
         }
         return false
@@ -143,31 +226,14 @@ class AllowCameraViewController: UIViewController {
     
     
     //alert
-    func alertAuthorizeCamera() {
-        let alert = UIAlertController(title: "Authorize", message: "We need to access camera", preferredStyle: UIAlertControllerStyle.Alert)
-        alert.addAction(UIAlertAction(title: "OK", style: UIAlertActionStyle.Default, handler: { (act) -> Void in
-            switch act.style {
-            case .Default:
-                print("alert for access health data", terminator: "")
-                self.authorizeCamera()
-                self.authorizeAudio()
-                self.authorizeCameraRoll()
-                self.navigationController?.popViewControllerAnimated(true)
-                
-            case .Cancel:
-                print("cancel", terminator: "")
-                
-            case .Destructive:
-                print("destructive", terminator: "")
-            }
-        }))
-        self.presentViewController(alert, animated: true, completion: nil)
-    }
     
-    func alertAuthorizeCameraFail() {
-        let alert = UIAlertController(title: "Warning", message: "We need to access your camera and camera roll", preferredStyle: UIAlertControllerStyle.Alert)
-        alert.addAction(UIAlertAction(title: "OK", style: UIAlertActionStyle.Default, handler: nil))
-        self.presentViewController(alert, animated: true, completion: nil)
+    func alertAuthorizeFail(text: String) {
+        print("alert for authorize fail")
+        dispatch_async(dispatch_get_main_queue()) { () -> Void in
+            let alert = UIAlertController(title: "Fail", message: "Can't Access \(text). \n" + "Please Check 'Settings > Privacy > \(text)", preferredStyle: UIAlertControllerStyle.Alert)
+            alert.addAction(UIAlertAction(title: "OK", style: UIAlertActionStyle.Default, handler: nil))
+            self.presentViewController(alert, animated: true, completion: nil)
+        }
     }
     
     
