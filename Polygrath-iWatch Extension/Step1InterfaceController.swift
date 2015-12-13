@@ -51,7 +51,7 @@ class Step1InterfaceController: WKInterfaceController {
     var animationTimer: NSTimer?
     
     func doneButtonAnimate() {
-        self.animateWithDuration(1) { () -> Void in
+        self.animateWithDuration(0.5) { () -> Void in
             self.DoneButton.setHeight(30)
             self.DoneButton.setAlpha(1.0)
         }

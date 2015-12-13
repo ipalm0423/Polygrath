@@ -95,7 +95,7 @@ class ResultPageViewController: UIViewController {
         print("restart test")
         //back to restart, don't save anything
         let count = self.navigationController!.viewControllers.count
-        if let switchViewController = self.navigationController?.viewControllers[count - 3] as? FrontHeartViewController {
+        if let switchViewController = self.navigationController?.viewControllers[count - 3] as? IntroViewController {
             print("restart test: sucess")
             self.navigationController?.popToViewController(switchViewController, animated: true)
         }

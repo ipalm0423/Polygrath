@@ -145,6 +145,13 @@ class IntroPageViewController: UIViewController {
         if AVCaptureDevice.authorizationStatusForMediaType(AVMediaTypeVideo) !=  AVAuthorizationStatus.Authorized || AVCaptureDevice.authorizationStatusForMediaType(AVMediaTypeAudio) != AVAuthorizationStatus.Authorized {
             self.alertCameraWarning()
         }else {
+            //to zero
+            Singleton.sharedInstance.BPMAverage = 0
+            Singleton.sharedInstance.BPMDeviation = 0
+            Singleton.sharedInstance.BPMmax = 0
+            Singleton.sharedInstance.BPMmin = 0
+            Singleton.sharedInstance.questions = [question]()
+            Singleton.sharedInstance.totalTruthRate = nil
             //authorize success
             self.performSegueWithIdentifier("StartTestSegue", sender: self)
         }

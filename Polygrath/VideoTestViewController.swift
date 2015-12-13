@@ -40,10 +40,14 @@ class VideoTestViewController: UIViewController, AVCaptureVideoDataOutputSampleB
     var isLying = false {
         didSet{
             if self.isLying {
-                Singleton.sharedInstance.playHeartBeatEffect()
-                AudioServicesPlaySystemSound(kSystemSoundID_Vibrate)
-                print("user is lying, vibrate and play sound")
-                self.truthLabel.alpha = 1.0
+                if self.isCameraOn {
+                    Singleton.sharedInstance.playHeartBeatEffect()
+                    AudioServicesPlaySystemSound(kSystemSoundID_Vibrate)
+                    print("user is lying, vibrate and play sound")
+                    self.truthLabel.text = "Subject is Lying"
+                    self.truthLabel.alpha = 1.0
+                }
+                
             }else {
                 Singleton.sharedInstance.stopPlayingEffect()
                 self.truthLabel.alpha = 0
@@ -54,7 +58,7 @@ class VideoTestViewController: UIViewController, AVCaptureVideoDataOutputSampleB
     var dataValues = [Double]()
     var questions: [question] = []
     var bpmMax: Double = 0
-    var bpmMin: Double = 200
+    var bpmMin: Double = 0
     var average: Double = 0
     var deviation: Double = 0
     var truthRate = 0.0
@@ -132,7 +136,7 @@ class VideoTestViewController: UIViewController, AVCaptureVideoDataOutputSampleB
         UIApplication.sharedApplication().idleTimerDisabled = true
         
         //truth label 
-        self.truthLabel.alpha = 0
+        self.truthLabel.text = "Wait for Data"
         
     }
 
@@ -145,6 +149,9 @@ class VideoTestViewController: UIViewController, AVCaptureVideoDataOutputSampleB
         self.stopRecordVideo(nil)
         self.closeCamera()
         Singleton.sharedInstance.stopPlayingEffect()
+        self.snapHeart.layer.removeAllAnimations()
+        self.snapHeart.removeFromSuperview()
+        
     }
 
     override func viewWillAppear(animated: Bool) {
@@ -192,12 +199,8 @@ class VideoTestViewController: UIViewController, AVCaptureVideoDataOutputSampleB
     
     @IBAction func finishedButtonTouch(sender: AnyObject) {
         print("finished button touch")
-        if self.questions.count == 0 {
-            //no ask question
-            self.navigationController?.popViewControllerAnimated(true)
-            return
-        }
         
+        print("question count: \(self.questions.count)")
         //have record
         if self.isRecord {
             //stop record the last video
@@ -245,18 +248,16 @@ class VideoTestViewController: UIViewController, AVCaptureVideoDataOutputSampleB
             print("got new heart rate data: \(dicsSort)")
             //add to grath
             dispatch_sync(dispatch_get_main_queue()) { () -> Void in
+                
                 //save
                 for dic in dicsSort {
                     self.dataDates.append(dic.0)
                     self.dataValues.append(dic.1)
                 
                     //set bpm data
-                    if dic.1 > self.bpmMax {
-                        self.bpmMax = dic.1
-                    }
-                    if dic.1 < self.bpmMin {
-                        self.bpmMin = dic.1
-                    }
+                    self.bpmMax = Singleton.sharedInstance.getMax(self.dataValues)
+                    self.bpmMin = Singleton.sharedInstance.getMin(self.dataValues)
+                    
                     if dic.1 != self.bpm {
                         self.bpm = (dic.1)
                         self.animateHeartImage(self.bpm)
@@ -264,12 +265,17 @@ class VideoTestViewController: UIViewController, AVCaptureVideoDataOutputSampleB
                     
                     
                     //calculation
+                    self.truthLabel.alpha = 0
                     if self.getTruthRate() < 0.5 {
                         self.isLying = true
                     }else {
                         self.isLying = false
                     }
                     
+                }
+                //exit if test is over
+                if !self.isCameraOn {
+                    self.sendCMDStopWatch()
                 }
             }
         }
@@ -283,11 +289,25 @@ class VideoTestViewController: UIViewController, AVCaptureVideoDataOutputSampleB
             if cmd == "stop" {
                 print("recieve cmd from watch: stop")
                 dispatch_async(dispatch_get_main_queue(), { () -> Void in
-                    self.stopRecordVideo(nil)
-                    //alert
-                    self.alertStopMessage()
-                    
+                    if self.isRecord {
+                        
+                        self.stopRecordVideo({ () -> Void in
+                            dispatch_async(dispatch_get_main_queue(), { () -> Void in
+                                //alert
+                                self.alertStopMessage()
+                                
+                            })
+                        })
+                        
+                        
+                    }else {
+                        if self.isCameraOn {
+                            self.performSegueWithIdentifier("ResultSegue", sender: self)
+                        }
+                    }
                 })
+                
+                
             }
         }
     }
@@ -804,6 +824,7 @@ class VideoTestViewController: UIViewController, AVCaptureVideoDataOutputSampleB
         UIView.animateWithDuration(period, delay: 0, options: [UIViewAnimationOptions.CurveEaseIn, UIViewAnimationOptions.Autoreverse, UIViewAnimationOptions.Repeat], animations: { () -> Void in
             
             self.snapHeart.transform = CGAffineTransformMakeScale(scale, scale)
+            self.snapHeart.layoutIfNeeded()
             }) { (Bool) -> Void in
                 
         }
@@ -829,9 +850,7 @@ class VideoTestViewController: UIViewController, AVCaptureVideoDataOutputSampleB
             switch action.style{
             case .Default:
                 print("test is stop by watch, jump to result", terminator: "")
-                //segue
                 self.performSegueWithIdentifier("ResultSegue", sender: self)
-                
             case .Cancel:
                 print("cancel", terminator: "")
                 

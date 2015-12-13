@@ -23,8 +23,6 @@ class Step2InterfaceController: WKInterfaceController, WCSessionDelegate, HKWork
         self.setupHeartRateQuery()
         self.checkWCConnectReachable()
         
-        
-        
     }
 
     override func willActivate() {
@@ -59,18 +57,20 @@ class Step2InterfaceController: WKInterfaceController, WCSessionDelegate, HKWork
         
         
         print("did deactive: test VC")
-        self.stopAnimateScan()
         super.didDeactivate()
     }
     
     override func didAppear() {
         print("did appear: test VC")
+        
         //animation
         if testIsStart {
             
+            
         }else {
-            //start test
-            self.stopAnimateScan()
+            //start a new test
+            self.stopScanAnimate()
+            self.stopPressAnimation()
             self.group2.setAlpha(0)
             self.firstAnimationTimer = NSTimer.scheduledTimerWithTimeInterval(2, target: self, selector: Selector("animatePress"), userInfo: nil, repeats: false)
             self.testIsStart = true
@@ -129,6 +129,14 @@ class Step2InterfaceController: WKInterfaceController, WCSessionDelegate, HKWork
                 print("cmd from iphone: stop")
                 replyHandler(["cmdResponse" : true])
                 self.testIsStart = false
+                //stop testing
+                let file = session.outstandingUserInfoTransfers.count
+                print("file is wait transfer: \(file)")
+                //segue with data
+                dispatch_async(dispatch_get_main_queue(), { () -> Void in
+                    self.presentControllerWithName("ResultVC", context: self.dataValue)
+                })
+                
                 
             case "start" :
                 print("cmd from iphone: start")
@@ -194,7 +202,7 @@ class Step2InterfaceController: WKInterfaceController, WCSessionDelegate, HKWork
                 self.workOutSession = HKWorkoutSession(activityType: HKWorkoutActivityType.CrossTraining, locationType: HKWorkoutSessionLocationType.Indoor)
                 self.workOutSession.delegate = self
                 self.healthStore.startWorkoutSession(self.workOutSession)
-                self.sendCMDStartPhone()
+                
             }else {
                 //test is stop
                 print("test is pause")
@@ -316,13 +324,17 @@ class Step2InterfaceController: WKInterfaceController, WCSessionDelegate, HKWork
         self.animationTimer = NSTimer.scheduledTimerWithTimeInterval(1, target: self, selector: Selector("animateScan"), userInfo: nil, repeats: true)
     }
     
-    func stopAnimateScan() {
+    func stopScanAnimate() {
         print("stop animation")
         self.animationTimer?.invalidate()
         self.animationTimer = nil
+        
+        
+    }
+    
+    func stopPressAnimation() {
         self.firstAnimationTimer?.invalidate()
         self.firstAnimationTimer = nil
-        
     }
     
     
@@ -343,7 +355,7 @@ class Step2InterfaceController: WKInterfaceController, WCSessionDelegate, HKWork
 
 //finger print animation
     func animateFingerPrint() {
-        self.stopAnimateScan()
+        
         //animate button
         self.animateWithDuration(0.3) { () -> Void in
             self.textLabel.sizeToFitHeight()
@@ -364,10 +376,7 @@ class Step2InterfaceController: WKInterfaceController, WCSessionDelegate, HKWork
             
         }
         
-        let dispatchTime2 = dispatch_time(DISPATCH_TIME_NOW, Int64(4500 * NSEC_PER_MSEC))
-        dispatch_after(dispatchTime2, dispatch_get_main_queue()) { () -> Void in
-            self.startAnimateScan()
-        }
+        
     }
     
     
@@ -389,20 +398,12 @@ class Step2InterfaceController: WKInterfaceController, WCSessionDelegate, HKWork
         self.testIsStart = false
         //stop testing
         let file = session?.outstandingUserInfoTransfers.count
-        print(file)
-        if file > 0 {
-            //wait transfer
-            print("file is wait transfer: \(file)")
-            
-            return
-            
-        }else {
-            self.sendCMDStopPhone()
-            
-            //segue with data
-            self.presentControllerWithName("ResultVC", context: self.dataValue)
-            
-        }
+        print("file is wait transfer: \(file)")
+        //finished
+        self.sendCMDStopPhone()
+        //segue with data
+        self.presentControllerWithName("ResultVC", context: self.dataValue)
+        
     }
     
     

@@ -21,10 +21,15 @@ class RecordViewController: UIViewController, UITableViewDelegate, UITableViewDa
     
     @IBOutlet weak var tableView: UITableView!
     
+    @IBOutlet weak var emptyLabel: UILabel!
     
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        
+        if Singleton.sharedInstance.questions.count == 0 {
+            self.emptyLabel.alpha = 1
+        }
+        
         // Do any additional setup after loading the view.
         self.tableView.delegate = self
         self.tableView.dataSource = self

@@ -84,8 +84,13 @@ class ResultSummaryViewController: UIViewController {
         var xOffset = Double(self.view.frame.width / 2) - 35 //if no data, image set to mid
         if deviation > delta {
             let percent = delta / deviation
-            let position = Double(self.view.frame.width - 230) * percent //offset = 80 + 80 + 70(text)
-            xOffset = 80.0 + 35.0 + position - 35
+            let position = Double(self.view.frame.width - 80) * percent //offset = 70 + 70 + 70(heart image)
+            xOffset = 40.0 + position - 35
+            if xOffset < 70 {
+                xOffset = 70
+            }else if xOffset > Double(self.view.frame.width) - 70 - 70 {
+                xOffset = Double(self.view.frame.width) - 70 - 70
+            }
         }
         
         UIView.animateWithDuration(0.5, delay: 0.3, options: UIViewAnimationOptions.CurveEaseIn, animations: { () -> Void in
@@ -105,16 +110,18 @@ class ResultSummaryViewController: UIViewController {
         let circleBack = self.getCircleBackground(self.circleView.bounds, percent: 1, lineWidth: 5)
         self.circleView.layer.insertSublayer(circleBack, atIndex: 0)
         
-        //have data enough
+        //label
+        self.maxLabel.text = String(format: "%.0f", Singleton.sharedInstance.BPMmax)
+        self.minLabel.text = String(format: "%.0f", Singleton.sharedInstance.BPMmin)
+        self.averageLabel.text = String(format: "%.0f", Singleton.sharedInstance.BPMAverage)
+        
+        //have record
         if let totalTruthRate = (Singleton.sharedInstance.totalTruthRate) {
             print("total truth rate: \(totalTruthRate)")
-            //label
-            self.maxLabel.text = String(format: "%.0f", Singleton.sharedInstance.BPMmax)
-            self.minLabel.text = String(format: "%.0f", Singleton.sharedInstance.BPMmin)
-            self.averageLabel.text = String(format: "%.0f", Singleton.sharedInstance.BPMAverage)
+            
             
             //circle
-            let circle = self.getCircleGradientLayer(self.circleView.bounds, percent: (1 - totalTruthRate), lineWidth: 5)
+            let circle = self.getCircleGradientLayer(self.circleView.bounds, percent: (totalTruthRate), lineWidth: 5)
             self.circleView.layer.insertSublayer(circle, atIndex: 1)
             
             
@@ -134,11 +141,9 @@ class ResultSummaryViewController: UIViewController {
             }
         }else {
             //no data
-            self.truthLabel.text = "Not enough data"
+            self.truthLabel.text = "Have No Record"
             self.truthRateLabel.text = "0"
-            self.maxLabel.text = "0"
-            self.minLabel.text = "0"
-            self.averageLabel.text = "0"
+            
         }
         
         
@@ -234,6 +239,7 @@ class ResultSummaryViewController: UIViewController {
     
     @IBAction func reStartButtonTouch(sender: AnyObject) {
         print("re-start button touch")
+        
         NSNotificationCenter.defaultCenter().postNotificationName("restartButtonTouch", object: nil)
         
     }

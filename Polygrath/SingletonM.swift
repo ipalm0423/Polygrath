@@ -34,6 +34,7 @@ class Singleton: NSObject {
     var questions = [question]() {
         didSet{
             //progress data
+            self.totalTruthRate = nil
             var truthScores = [Double]()
             for quest in self.questions {
                 var i = 0
@@ -58,15 +59,13 @@ class Singleton: NSObject {
                     
 
                 }
+            }
+            //calculate total truth rate
+            if truthScores.count > 0 {
+                self.totalTruthRate = self.getAverage(truthScores)
                 
-                //calculate total truth rate
-                if truthScores.count > 0 {
-                    self.totalTruthRate = self.getAverage(truthScores)
-                    
-                }else {
-                    self.totalTruthRate = nil
-                }
-                
+            }else {
+                self.totalTruthRate = nil
             }
             NSNotificationCenter.defaultCenter().postNotificationName("questionReload", object: nil)
             
@@ -910,6 +909,9 @@ class Singleton: NSObject {
     }
     
     func getMin(values: [Double]) -> Double {
+        if values.count == 0 {
+            return 0
+        }
         var min:Double = 200
         for value in values {
             if value < min && value != 0 {
@@ -920,6 +922,7 @@ class Singleton: NSObject {
     }
     
     func getMax(values: [Double]) -> Double {
+        
         var max:Double = 0
         for value in values {
             if value > max {
@@ -943,6 +946,9 @@ class Singleton: NSObject {
     }
     
     func getStandardDeviation(arr : [Double]) -> Double {
+        if arr.count == 0 {
+            return 0
+        }
         let length = Double(arr.count)
         let avg = arr.reduce(0, combine: {$0 + $1}) / length
         let sumOfSquaredAvgDiff = arr.map { pow($0 - avg, 2.0)}.reduce(0, combine: {$0 + $1})
