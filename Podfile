@@ -3,6 +3,7 @@
 use_frameworks!
 target 'Polygrath' do
 pod 'Charts', :git => 'https://github.com/danielgindi/ios-charts.git' , :branch => 'swift-2.0'
+pod 'CorePlot'
 end
 
 target 'PolygrathTests' do

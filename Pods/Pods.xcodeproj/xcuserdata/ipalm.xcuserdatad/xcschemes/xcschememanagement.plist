@@ -4,7 +4,12 @@
 <dict>
 	<key>SchemeUserState</key>
 	<dict>
-		<key>Pods-Polygrath-Charts.xcscheme</key>
+		<key>Charts.xcscheme</key>
+		<dict>
+			<key>isShown</key>
+			<false/>
+		</dict>
+		<key>CorePlot.xcscheme</key>
 		<dict>
 			<key>isShown</key>
 			<false/>
@@ -17,12 +22,17 @@
 	</dict>
 	<key>SuppressBuildableAutocreation</key>
 	<dict>
-		<key>76C1A786A3DCFEFE3C001DCD</key>
+		<key>07961197242AAF09AA3C5D776F604DA0</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>C09F5025D2835C06CF95BC5C</key>
+		<key>5B1CC99A91F657BB238720C4CB98DDC4</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>B68640687A79759BEA08A3B327CFD816</key>
 		<dict>
 			<key>primary</key>
 			<true/>

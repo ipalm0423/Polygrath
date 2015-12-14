@@ -84,7 +84,10 @@ class AllowHealthViewController: UIViewController {
                 
             }else {
                 print("Authorize success", terminator: "")
-                self.navigationController?.popViewControllerAnimated(true)
+                dispatch_async(dispatch_get_main_queue(), { () -> Void in
+                    self.navigationController?.popViewControllerAnimated(true)
+                })
+                
                 
                 return true
             }

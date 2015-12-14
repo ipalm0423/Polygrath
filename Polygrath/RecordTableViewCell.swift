@@ -7,9 +7,10 @@
 //
 
 import UIKit
-import Charts
+//import Charts
+import CorePlot
 
-class RecordTableViewCell: UITableViewCell, ChartViewDelegate {
+class RecordTableViewCell: UITableViewCell, CPTBarPlotDataSource, CPTBarPlotDelegate, CPTPlotSpaceDelegate {
 
     
     @IBOutlet weak var playButton: UIButton!
@@ -31,8 +32,9 @@ class RecordTableViewCell: UITableViewCell, ChartViewDelegate {
     
     @IBOutlet weak var progressLabel: UILabel!
     
+    @IBOutlet weak var chartView: UIView!
     
-    @IBOutlet weak var chartView: BarChartView!
+    
     
     
     
@@ -49,10 +51,190 @@ class RecordTableViewCell: UITableViewCell, ChartViewDelegate {
     }
 
 //Chart setup
-    var quest: question!
+    var quest: question! 
     
-    var grathData = BarChartData()
+    var modifyData = [Double]()
     
+    //var grathData = BarChartData()
+    
+    func setupPlotGraph(size: CGSize) {
+        let hostView = CPTGraphHostingView(frame: CGRect(x: 0, y: 0, width: size.width, height: size.height))
+        let graph = CPTXYGraph(frame: hostView.frame)
+        hostView.hostedGraph = graph
+        self.chartView.addSubview(hostView)
+        
+        //graph.title = "test"
+        graph.backgroundColor = nil
+        graph.plotAreaFrame?.masksToBorder = false
+        graph.masksToBorder = false
+        graph.paddingBottom = 0
+        graph.paddingLeft  = 0.0
+        graph.paddingTop    = 0
+        graph.paddingRight  = 0.0
+        
+        //axis
+        let axisSet = graph.axisSet as! CPTXYAxisSet
+        
+        //line style
+        let xLineStyle = CPTMutableLineStyle()
+        xLineStyle.dashPattern = [NSNumber(double: 2), NSNumber(double: 2)]
+        xLineStyle.lineColor = CPTColor(componentRed: 219 / 255, green: 13 / 255, blue: 130 / 255, alpha: 0.8)
+        xLineStyle.lineWidth = 2
+        let textStyle = CPTMutableTextStyle()
+        textStyle.fontName = "HelveticaNeue-Light"
+        textStyle.fontSize = 10
+        textStyle.color = CPTColor.grayColor()
+        
+        //x
+        let xAxis = axisSet.xAxis!
+        xAxis.majorIntervalLength = NSNumber(double: 1)
+        xAxis.axisLineStyle         = xLineStyle
+        xAxis.majorTickLineStyle    = nil;
+        xAxis.minorTickLineStyle    = nil;
+        xAxis.labelAlignment = CPTAlignment.Center
+        xAxis.labelingPolicy = .None
+        xAxis.labelTextStyle = textStyle
+        xAxis.labelOffset = 2
+        xAxis.orthogonalPosition = 0
+        //xAxis.labelFormatter = nil
+        
+        //y
+        let yAxis = axisSet.yAxis!
+        yAxis.majorIntervalLength = NSNumber(double: 20)
+        yAxis.axisLineStyle         = nil;
+        yAxis.majorTickLineStyle    = nil;
+        yAxis.minorTickLineStyle    = nil;
+        yAxis.labelFormatter        = nil;
+        yAxis.orthogonalPosition = 0
+        
+        //x label
+        let count = self.quest.dataDates.count
+        let midTime = self.quest.dataDates[count / 2]
+        let customTickLocations = [(count / 2), count]
+        let xAxisLabels = [Singleton.sharedInstance.getTimeString(quest.startTime, stopTime: midTime) ,Singleton.sharedInstance.getTimeString(quest.startTime, stopTime: quest.dataDates.last!)]
+        
+        
+        var labelLocation = 0
+        var customLabels = Set<CPTAxisLabel>()
+        for tickLocation in customTickLocations {
+            let newLabel = CPTAxisLabel(text:xAxisLabels[labelLocation++], textStyle:xAxis.labelTextStyle)
+            newLabel.tickLocation = tickLocation
+            newLabel.offset       = xAxis.labelOffset //+ xAxis.majorTickLength
+            //newLabel.rotation     = CGFloat(M_PI_4)
+            customLabels.insert(newLabel)
+        }
+        xAxis.axisLabels = customLabels
+        
+        
+        
+        
+        //bar line
+        let barLineStyle = CPTMutableLineStyle()
+        barLineStyle.lineWidth = 0
+        barLineStyle.lineColor = CPTColor.clearColor()
+        
+        
+        //bar plot
+        let barPlot = CPTBarPlot()
+        barPlot.barWidth = 0.8
+        barPlot.barsAreHorizontal = false
+        //barPlot.barBaseCornerRadius = 30
+        barPlot.barCornerRadius = 30
+        barPlot.dataSource = self
+        barPlot.delegate = self
+        barPlot.identifier = "BPM"
+        barPlot.barOffset = 0
+        barPlot.lineStyle = barLineStyle
+        
+        //bar plot
+        let mirrorBarPlot = CPTBarPlot()
+        mirrorBarPlot.barWidth = 0.8
+        mirrorBarPlot.barsAreHorizontal = false
+        //barPlot.barBaseCornerRadius = 30
+        mirrorBarPlot.barCornerRadius = 30
+        mirrorBarPlot.dataSource = self
+        mirrorBarPlot.delegate = self
+        mirrorBarPlot.identifier = "BPMmirror"
+        mirrorBarPlot.barOffset = 0
+        mirrorBarPlot.lineStyle = barLineStyle
+        
+        //plot space
+        let plotSpace = graph.defaultPlotSpace as! CPTXYPlotSpace
+        plotSpace.allowsUserInteraction = true
+        plotSpace.allowsMomentumX = true
+        let maxXLength = self.quest.dataValues.count > 20 ? self.quest.dataValues.count:20
+        let xRange = CPTPlotRange(location: -0.5, length: maxXLength) //label bias -0.5 fix bar hide in idx = 0
+        let BPMModify = Singleton.sharedInstance.BPMmax - (Singleton.sharedInstance.BPMmin - 10)  //bias 10
+        let fullYRange = BPMModify * 2 + 20 //mirror and bias 20
+        let yRange = CPTPlotRange(location: -(BPMModify + 10), length: fullYRange)
+    
+        plotSpace.xRange = xRange
+        plotSpace.yRange = yRange
+        let maxRange = self.quest.dataValues.count > 30 ? self.quest.dataValues.count:30
+        plotSpace.globalXRange = xRange
+        plotSpace.globalYRange = yRange
+        plotSpace.delegate = self
+        
+        
+        graph.addPlot(barPlot, toPlotSpace: plotSpace)
+        graph.addPlot(mirrorBarPlot, toPlotSpace: plotSpace)
+    }
+    
+    func numberOfRecordsForPlot(plot: CPTPlot) -> UInt {
+        return UInt(self.quest.dataValues.count)
+    }
+    
+    
+    
+    
+    func numberForPlot(plot: CPTPlot, field fieldEnum: UInt, recordIndex idx: UInt) -> AnyObject? {
+        var num: [AnyObject]?
+        
+        switch (Int(fieldEnum)) {
+        case CPTBarPlotField.BarTip.rawValue:
+            let modify = self.quest.dataValues[Int(idx)] - (Singleton.sharedInstance.BPMmin - 10)
+            if plot.identifier!.isEqual("BPM") {
+                return NSNumber(double: modify)
+            }else {
+                //mirror
+                return NSNumber(double: -(modify))
+            }
+            
+        case CPTBarPlotField.BarLocation.rawValue:
+            return NSNumber(unsignedInteger: idx)
+            
+        default:
+            print("error number")
+            return nil
+        }
+        
+        
+        
+        
+    }
+    
+    func barFillForBarPlot(barPlot: CPTBarPlot, recordIndex idx: UInt) -> CPTFill? {
+        
+        let topcolor = CPTColor(componentRed: 218 / 255, green: 24 / 255, blue: 41 / 255, alpha: 0.8)
+        let bottomColor = CPTColor(componentRed: 219 / 255, green: 13 / 255, blue: 130 / 255, alpha: 0.8)
+        let fillGradient = CPTGradient(beginningColor: topcolor, endingColor: bottomColor, beginningPosition: 0, endingPosition: 1)
+        if barPlot.identifier!.isEqual("BPM") {
+            fillGradient.angle = -90
+        }else {
+            fillGradient.angle = 90
+        }
+        
+        
+        return CPTFill(gradient: fillGradient)
+    }
+    
+    func plotSpace(space: CPTPlotSpace, willDisplaceBy proposedDisplacementVector: CGPoint) -> CGPoint {
+        
+        
+        return CGPointMake(proposedDisplacementVector.x, 0)
+    }
+    
+    /* iOS CHARTS
     func setupChartGraph() {
         self.chartView.delegate = self
         self.chartView.noDataText = "No Data"
@@ -114,7 +296,7 @@ class RecordTableViewCell: UITableViewCell, ChartViewDelegate {
         
         //animate
         self.chartView.animate(yAxisDuration: 1.0, easingOption: ChartEasingOption.EaseInBounce)
-    }
+    }*/
     
     
 }

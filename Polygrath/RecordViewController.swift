@@ -88,7 +88,7 @@ class RecordViewController: UIViewController, UITableViewDelegate, UITableViewDa
             
             //setup graph
             cell.quest = question
-            cell.setupChartGraph()
+            cell.setupPlotGraph(CGSize(width: self.view.bounds.width - 60, height: cell.chartView.frame.height))
             
         }else {
             //no data
