@@ -74,11 +74,12 @@ class RecordViewController: UIViewController, UITableViewDelegate, UITableViewDa
         
         cell.playButton.tag = indexPath.row
         
-        cell.forwardButton.tag = indexPath.row
+        //cell.forwardButton.tag = indexPath.row
         
         //label setting
-        cell.timeLabel.text = Singleton.sharedInstance.getTimeString(question.startTime, stopTime: question.endTime)
-        cell.questionNoLabel.text = "Question." + (question.questIndex + 1).description
+        //cell.timeLabel.text = Singleton.sharedInstance.getTimeString(question.startTime, stopTime: question.endTime)
+        cell.questionNoLabel.text = "Question." + (indexPath.row + 1).description
+        cell.processView.alpha = 0.0 //wait for process
         
         if question.dataValues.count > 0 {
             //have data
@@ -107,7 +108,7 @@ class RecordViewController: UIViewController, UITableViewDelegate, UITableViewDa
     }
     
     func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
-        return 300
+        return 230
     }
 
     

@@ -66,7 +66,12 @@ class IntroPageViewController: UIViewController {
             //heart image
             self.heartImage.alpha = 0
             self.startButton.alpha = 0
+        }else {
+            //ready View setup
+            self.titleLabel.font = UIFont(name: "HelveticaNeue", size: 60)
+            
         }
+        
         
         //self.startButton.setNeedsUpdateConstraints()
         //self.startButtonBottomConstraint.constant = -60 //hide

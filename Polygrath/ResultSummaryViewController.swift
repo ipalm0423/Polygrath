@@ -107,7 +107,7 @@ class ResultSummaryViewController: UIViewController {
         }
         
         //background circle
-        let circleBack = self.getCircleBackground(self.circleView.bounds, percent: 1, lineWidth: 5)
+        let circleBack = self.getCircleBackground(self.circleView.bounds, percent: 1, lineWidth: 7)
         self.circleView.layer.insertSublayer(circleBack, atIndex: 0)
         
         //label
@@ -121,7 +121,7 @@ class ResultSummaryViewController: UIViewController {
             
             
             //circle
-            let circle = self.getCircleGradientLayer(self.circleView.bounds, percent: (totalTruthRate), lineWidth: 5)
+            let circle = self.getCircleGradientLayer(self.circleView.bounds, percent: (totalTruthRate), lineWidth: 7)
             self.circleView.layer.insertSublayer(circle, atIndex: 1)
             
             

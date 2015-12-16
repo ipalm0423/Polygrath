@@ -35,12 +35,15 @@ class RecordTableViewCell: UITableViewCell, CPTBarPlotDataSource, CPTBarPlotDele
     @IBOutlet weak var chartView: UIView!
     
     
+    @IBOutlet var processView: UIStackView!
     
+    @IBOutlet var processIndicator: UIActivityIndicatorView!
     
     
     override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code
+        
         
     }
 
@@ -49,20 +52,24 @@ class RecordTableViewCell: UITableViewCell, CPTBarPlotDataSource, CPTBarPlotDele
 
         // Configure the view for the selected state
     }
+    
+    
+    
 
 //Chart setup
     var quest: question! 
-    
+    var hostView = CPTGraphHostingView()
     var modifyData = [Double]()
     
     //var grathData = BarChartData()
     
     func setupPlotGraph(size: CGSize) {
-        let hostView = CPTGraphHostingView(frame: CGRect(x: 0, y: 0, width: size.width, height: size.height))
+        self.hostView.removeFromSuperview()
+        self.hostView = CPTGraphHostingView(frame: CGRect(x: 0, y: 0, width: size.width, height: size.height))
         let graph = CPTXYGraph(frame: hostView.frame)
-        hostView.hostedGraph = graph
-        self.chartView.addSubview(hostView)
-        
+        self.hostView.hostedGraph = graph
+        self.chartView.addSubview(self.hostView)
+        print("chart view frame: \(self.chartView.frame)")
         //graph.title = "test"
         graph.backgroundColor = nil
         graph.plotAreaFrame?.masksToBorder = false
@@ -82,8 +89,8 @@ class RecordTableViewCell: UITableViewCell, CPTBarPlotDataSource, CPTBarPlotDele
         xLineStyle.lineWidth = 2
         let textStyle = CPTMutableTextStyle()
         textStyle.fontName = "HelveticaNeue-Light"
-        textStyle.fontSize = 10
-        textStyle.color = CPTColor.grayColor()
+        textStyle.fontSize = 12
+        textStyle.color = CPTColor(componentRed: 242 / 255, green: 242 / 255, blue: 242 / 255, alpha: 0.8)
         
         //x
         let xAxis = axisSet.xAxis!
@@ -91,7 +98,7 @@ class RecordTableViewCell: UITableViewCell, CPTBarPlotDataSource, CPTBarPlotDele
         xAxis.axisLineStyle         = xLineStyle
         xAxis.majorTickLineStyle    = nil;
         xAxis.minorTickLineStyle    = nil;
-        xAxis.labelAlignment = CPTAlignment.Center
+        xAxis.labelAlignment = CPTAlignment.Right
         xAxis.labelingPolicy = .None
         xAxis.labelTextStyle = textStyle
         xAxis.labelOffset = 2
@@ -109,19 +116,20 @@ class RecordTableViewCell: UITableViewCell, CPTBarPlotDataSource, CPTBarPlotDele
         
         //x label
         let count = self.quest.dataDates.count
-        let midTime = self.quest.dataDates[count / 2]
-        let customTickLocations = [(count / 2), count]
-        let xAxisLabels = [Singleton.sharedInstance.getTimeString(quest.startTime, stopTime: midTime) ,Singleton.sharedInstance.getTimeString(quest.startTime, stopTime: quest.dataDates.last!)]
+        //let midTime = self.quest.dataDates[count / 2]
+        let customTickLocations = [count + 1] //bias 1 bar width
+        let xAxisLabels = [Singleton.sharedInstance.getTimeString(quest.startTime, stopTime: quest.dataDates.last!)]
         
         
         var labelLocation = 0
         var customLabels = Set<CPTAxisLabel>()
         for tickLocation in customTickLocations {
-            let newLabel = CPTAxisLabel(text:xAxisLabels[labelLocation++], textStyle:xAxis.labelTextStyle)
+            let newLabel = CPTAxisLabel(text:xAxisLabels[labelLocation], textStyle:xAxis.labelTextStyle)
             newLabel.tickLocation = tickLocation
-            newLabel.offset       = xAxis.labelOffset //+ xAxis.majorTickLength
+            newLabel.offset       = xAxis.labelOffset //+ xAxis.majorTickLength  (y direction offset)
             //newLabel.rotation     = CGFloat(M_PI_4)
             customLabels.insert(newLabel)
+            labelLocation++
         }
         xAxis.axisLabels = customLabels
         
@@ -162,7 +170,10 @@ class RecordTableViewCell: UITableViewCell, CPTBarPlotDataSource, CPTBarPlotDele
         let plotSpace = graph.defaultPlotSpace as! CPTXYPlotSpace
         plotSpace.allowsUserInteraction = true
         plotSpace.allowsMomentumX = true
-        let maxXLength = self.quest.dataValues.count > 20 ? self.quest.dataValues.count:20
+        var maxXLength = 30
+        while maxXLength < self.quest.dataDates.count + 10 {
+            maxXLength += 30
+        }
         let xRange = CPTPlotRange(location: -0.5, length: maxXLength) //label bias -0.5 fix bar hide in idx = 0
         let BPMModify = Singleton.sharedInstance.BPMmax - (Singleton.sharedInstance.BPMmin - 10)  //bias 10
         let fullYRange = BPMModify * 2 + 20 //mirror and bias 20
@@ -170,7 +181,6 @@ class RecordTableViewCell: UITableViewCell, CPTBarPlotDataSource, CPTBarPlotDele
     
         plotSpace.xRange = xRange
         plotSpace.yRange = yRange
-        let maxRange = self.quest.dataValues.count > 30 ? self.quest.dataValues.count:30
         plotSpace.globalXRange = xRange
         plotSpace.globalYRange = yRange
         plotSpace.delegate = self
