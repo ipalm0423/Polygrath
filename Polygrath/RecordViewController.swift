@@ -10,7 +10,7 @@ import UIKit
 import AVKit
 import AVFoundation
 //import Charts
-
+import CorePlot
 
 class RecordViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
 
@@ -35,6 +35,7 @@ class RecordViewController: UIViewController, UITableViewDelegate, UITableViewDa
         self.tableView.dataSource = self
         self.tableView.estimatedRowHeight = 250
         
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: Selector("videoComposeFinished:"), name: "videoCompose", object: nil)
     }
 
     override func didReceiveMemoryWarning() {
@@ -45,18 +46,26 @@ class RecordViewController: UIViewController, UITableViewDelegate, UITableViewDa
     
     override func viewDidAppear(animated: Bool) {
         print("record VC did appear")
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: Selector("tableReload:"), name: "questionReload", object: nil)
-    }
-    
-    override func viewDidDisappear(animated: Bool) {
-        NSNotificationCenter.defaultCenter().removeObserver(self, name: "questionReload", object: nil)
-    }
-    
-    func tableReload(notify: NSNotification) {
-        print("question reload, table reloaded")
         self.tableView.reloadData()
     }
     
+    
+    
+    override func viewDidDisappear(animated: Bool) {
+        
+    }
+    
+    
+//notifycation
+    func videoComposeFinished(notify: NSNotification) {
+        if let userinfo = notify.userInfo as? Dictionary<String,AnyObject> {
+            //check roomid
+            if let row = userinfo["index"] as? Int {
+                self.stopAnimateBarPlot(NSIndexPath(forRow: row, inSection: 0))
+                
+            }
+        }
+    }
     
 //table
     func numberOfSectionsInTableView(tableView: UITableView) -> Int {
@@ -68,7 +77,7 @@ class RecordViewController: UIViewController, UITableViewDelegate, UITableViewDa
     }
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCellWithIdentifier("recordCell") as! RecordTableViewCell
+        let cell = self.tableView.dequeueReusableCellWithIdentifier("recordCell") as! RecordTableViewCell
         let question = Singleton.sharedInstance.questions[indexPath.row]
         print("build cell row: \(indexPath.row), question data: \(question.dataValues), question date: \(question.dataDates)")
         
@@ -78,8 +87,9 @@ class RecordViewController: UIViewController, UITableViewDelegate, UITableViewDa
         
         //label setting
         //cell.timeLabel.text = Singleton.sharedInstance.getTimeString(question.startTime, stopTime: question.endTime)
-        cell.questionNoLabel.text = "Question." + (indexPath.row + 1).description
-        cell.processView.alpha = 0.0 //wait for process
+        cell.questionNoLabel.text = "Record " + (indexPath.row + 1).description
+        cell.processIndicator.alpha = 0.0 //wait for process
+        cell.processLabel.alpha = 0 //wait for process
         
         if question.dataValues.count > 0 {
             //have data
@@ -96,6 +106,7 @@ class RecordViewController: UIViewController, UITableViewDelegate, UITableViewDa
             cell.truthLabel.text = "0"
             cell.maxLabel.text = "0"
             cell.avgLabel.text = "0"
+            cell.processLabel.text = "No Data"
             
         }
         
@@ -111,6 +122,12 @@ class RecordViewController: UIViewController, UITableViewDelegate, UITableViewDa
         return 230
     }
 
+    func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+        let row = indexPath.row
+        print("row is select: \(row) in section: \(indexPath.section)")
+        print(indexPath)
+        
+    }
     
     
     
@@ -144,8 +161,21 @@ class RecordViewController: UIViewController, UITableViewDelegate, UITableViewDa
     
     
     @IBAction func playButtonTouch(sender: AnyObject) {
-        if let tag = sender.tag {
-           self.playBackVideo(Singleton.sharedInstance.questions[tag].file.URL)
+        if let row = sender.tag {
+            
+            
+            //process video
+            if Singleton.sharedInstance.questions[row].file.isProcess {
+                //aready process before
+                if let url = Singleton.sharedInstance.questions[row].file.assetURL {
+                    self.playBackVideo(url)
+                }
+            }else {
+                //animate
+                self.startAnimateBarPlot(NSIndexPath(forRow: row, inSection: 0))
+                //start to process
+                Singleton.sharedInstance.videoComposeWithQuestion(row)
+            }
         }
     }
     
@@ -230,6 +260,80 @@ class RecordViewController: UIViewController, UITableViewDelegate, UITableViewDa
         }
     }
     
+    
+    
+//animation
+    func startAnimateBarPlot(indexPath: NSIndexPath) {
+        if let cell = self.tableView.cellForRowAtIndexPath(indexPath) as? RecordTableViewCell {
+            print("start animation")
+            //label
+            UIView.animateWithDuration(1, delay: 0, options: UIViewAnimationOptions.CurveEaseIn, animations: { () -> Void in
+                cell.processLabel.alpha = 1
+                cell.processIndicator.alpha = 1
+                cell.processIndicator.startAnimating()
+                cell.playButton.alpha = 0
+                self.tableView.layoutIfNeeded()
+                
+                }, completion: nil)
+            
+            
+            
+            //opacity animation
+            let animation = CABasicAnimation(keyPath: "opacity")
+            animation.fromValue = 0
+            animation.toValue = 1
+            animation.autoreverses = true
+            animation.duration = 0.8
+            animation.timingFunction = CAMediaTimingFunction(name: kCAMediaTimingFunctionEaseIn)
+            animation.repeatCount = Float.infinity
+            animation.removedOnCompletion = false
+            //animation.fillMode = kCAFillModeForwards
+            
+            
+            if let plot = cell.hostView.hostedGraph!.plotAtIndex(0) as? CPTBarPlot {
+                //add animation
+                print("animation plot")
+                plot.addAnimation(animation, forKey: "processAnimation")
+            }
+            if let plot2 = cell.hostView.hostedGraph!.plotAtIndex(1) as? CPTBarPlot {
+                //add animation
+                print("animation plot")
+                plot2.addAnimation(animation, forKey: "processAnimation")
+            }
+        }
+    }
+    
+    func stopAnimateBarPlot(indexPath: NSIndexPath) {
+        dispatch_async(dispatch_get_main_queue()) { () -> Void in
+            if let cell = self.tableView.cellForRowAtIndexPath(indexPath) as? RecordTableViewCell {
+                print("stop animation")
+                //label
+                UIView.animateWithDuration(1.0, delay: 0, options: UIViewAnimationOptions.CurveEaseIn, animations: { () -> Void in
+                    cell.processLabel.alpha = 0
+                    cell.processIndicator.alpha = 0
+                    cell.processIndicator.stopAnimating()
+                    cell.playButton.alpha = 1
+                    
+                    self.tableView.layoutIfNeeded()
+                    }, completion: { (bool) -> Void in
+                        self.tableView.reloadData()
+                })
+                
+                if let plot = cell.hostView.hostedGraph!.plotAtIndex(0) as? CPTBarPlot {
+                //add animation
+                print("stop animation plot")
+                plot.removeAnimationForKey("processAnimation")
+                }
+                if let plot2 = cell.hostView.hostedGraph!.plotAtIndex(1) as? CPTBarPlot {
+                    //add animation
+                    print("stop animation plot")
+                    plot2.removeAnimationForKey("processAnimation")
+                }
+                
+            }
+        }
+        
+    }
     
     /*
     // MARK: - Navigation

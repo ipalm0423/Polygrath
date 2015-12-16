@@ -28,16 +28,20 @@ class RecordTableViewCell: UITableViewCell, CPTBarPlotDataSource, CPTBarPlotDele
     
     @IBOutlet weak var heartImageView: UIImageView!
     
-    @IBOutlet weak var forwardButton: UIButton!
     
-    @IBOutlet weak var progressLabel: UILabel!
+    
+    
     
     @IBOutlet weak var chartView: UIView!
     
     
-    @IBOutlet var processView: UIStackView!
+    
     
     @IBOutlet var processIndicator: UIActivityIndicatorView!
+    
+    
+    @IBOutlet var processLabel: UILabel!
+    
     
     
     override func awakeFromNib() {
@@ -85,7 +89,7 @@ class RecordTableViewCell: UITableViewCell, CPTBarPlotDataSource, CPTBarPlotDele
         //line style
         let xLineStyle = CPTMutableLineStyle()
         xLineStyle.dashPattern = [NSNumber(double: 2), NSNumber(double: 2)]
-        xLineStyle.lineColor = CPTColor(componentRed: 219 / 255, green: 13 / 255, blue: 130 / 255, alpha: 0.8)
+        xLineStyle.lineColor = CPTColor(componentRed: 242 / 255, green: 242 / 255, blue: 242 / 255, alpha: 0.5)
         xLineStyle.lineWidth = 2
         let textStyle = CPTMutableTextStyle()
         textStyle.fontName = "HelveticaNeue-Light"
@@ -226,7 +230,7 @@ class RecordTableViewCell: UITableViewCell, CPTBarPlotDataSource, CPTBarPlotDele
     func barFillForBarPlot(barPlot: CPTBarPlot, recordIndex idx: UInt) -> CPTFill? {
         
         let topcolor = CPTColor(componentRed: 218 / 255, green: 24 / 255, blue: 41 / 255, alpha: 0.8)
-        let bottomColor = CPTColor(componentRed: 219 / 255, green: 13 / 255, blue: 130 / 255, alpha: 0.8)
+        let bottomColor = CPTColor(componentRed: 204 / 255, green: 233 / 255, blue: 0 / 255, alpha: 0.8)
         let fillGradient = CPTGradient(beginningColor: topcolor, endingColor: bottomColor, beginningPosition: 0, endingPosition: 1)
         if barPlot.identifier!.isEqual("BPM") {
             fillGradient.angle = -90

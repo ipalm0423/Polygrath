@@ -141,7 +141,7 @@ class ResultSummaryViewController: UIViewController {
             }
         }else {
             //no data
-            self.truthLabel.text = "Have No Record"
+            self.truthLabel.text = "No Record"
             self.truthRateLabel.text = "0"
             
         }

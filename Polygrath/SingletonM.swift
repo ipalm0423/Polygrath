@@ -829,10 +829,10 @@ class Singleton: NSObject {
         
     }
     
-    func exportAndSaveComposistion(composition: AVMutableComposition, mixVideoComposistion: AVMutableVideoComposition) {
-        let newURL = self.getNewFileURL()
+    func exportAndSaveComposistion(composition: AVMutableComposition, mixVideoComposistion: AVMutableVideoComposition, completion: ((newURL: NSURL) -> Void)?) {
+        var newURL = self.getNewFileURL()
         if let exporter = AVAssetExportSession(asset: composition, presetName: AVAssetExportPresetHighestQuality) {
-            print("create new composition success: \(newURL)")
+            print("create new composition video: \(newURL)")
             exporter.outputURL = newURL
             exporter.outputFileType = AVFileTypeQuickTimeMovie
             exporter.shouldOptimizeForNetworkUse = true
@@ -840,19 +840,13 @@ class Singleton: NSObject {
             exporter.videoComposition = mixVideoComposistion
             
             exporter.exportAsynchronouslyWithCompletionHandler({ () -> Void in
-                //save to album
-                self.saveVideoToCameraRoll(newURL, completion: { (identifier, newUrl) -> Void in
-                    print("save video to camera roll success: \(newUrl)")
-                    //alert for done
-                    dispatch_async(dispatch_get_main_queue(), { () -> Void in
-                        //alert.....
-                        
-                    })
-                })
+                print("export video success")
+                completion?(newURL: newURL)
             })
         }
     }
     
+    //main func
     func videoComposeWithQuestion(questionNO: Int) {
         print("start to compose video...")
         
@@ -895,8 +889,16 @@ class Singleton: NSObject {
             //add animation CALayer
             self.mixCompositionWithAnimationLayer(videoComposition, size: videoRotateSize, questNO: questionNO)
             
-            
-            self.exportAndSaveComposistion(sourceComposition, mixVideoComposistion: videoComposition)
+            self.exportAndSaveComposistion(sourceComposition, mixVideoComposistion: videoComposition, completion: { (newURL) -> Void in
+                print("SAVE compose to question. \(questionNO), and post a notify")
+                //save to singleton
+                let file = self.questions[questionNO].file
+                file.isProcess = true
+                file.assetURL = newURL
+                //notify
+                
+                NSNotificationCenter.defaultCenter().postNotificationName("videoCompose", object: nil, userInfo: ["index" : questionNO, "newURL": newURL])
+            })
         }
     }
     
