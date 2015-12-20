@@ -11,6 +11,7 @@
 		AC0323BD1C098CA2006B488C /* StatementViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = AC0323BC1C098CA2006B488C /* StatementViewController.swift */; };
 		AC06ECF41BB68BCC0087586E /* ResultQuestTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = AC06ECF31BB68BCC0087586E /* ResultQuestTableViewCell.swift */; };
 		AC06ECF61BB692C90087586E /* TitleTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = AC06ECF51BB692C90087586E /* TitleTableViewCell.swift */; };
+		AC1C44D81C233C75007EB3C3 /* PlaybackViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = AC1C44D71C233C75007EB3C3 /* PlaybackViewController.swift */; };
 		AC2CA7611BF9FE4700D199E4 /* ResultPageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = AC2CA7601BF9FE4700D199E4 /* ResultPageViewController.swift */; };
 		AC2CA7631BF9FF4D00D199E4 /* ResultContainerPageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = AC2CA7621BF9FF4D00D199E4 /* ResultContainerPageViewController.swift */; };
 		AC2CA7681BFA219F00D199E4 /* ResultSummaryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = AC2CA7671BFA219F00D199E4 /* ResultSummaryViewController.swift */; };
@@ -119,6 +120,7 @@
 		AC0323BC1C098CA2006B488C /* StatementViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StatementViewController.swift; sourceTree = "<group>"; };
 		AC06ECF31BB68BCC0087586E /* ResultQuestTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ResultQuestTableViewCell.swift; sourceTree = "<group>"; };
 		AC06ECF51BB692C90087586E /* TitleTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TitleTableViewCell.swift; sourceTree = "<group>"; };
+		AC1C44D71C233C75007EB3C3 /* PlaybackViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PlaybackViewController.swift; sourceTree = "<group>"; };
 		AC2CA7601BF9FE4700D199E4 /* ResultPageViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ResultPageViewController.swift; sourceTree = "<group>"; };
 		AC2CA7621BF9FF4D00D199E4 /* ResultContainerPageViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ResultContainerPageViewController.swift; sourceTree = "<group>"; };
 		AC2CA7671BFA219F00D199E4 /* ResultSummaryViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ResultSummaryViewController.swift; sourceTree = "<group>"; };
@@ -256,6 +258,7 @@
 			isa = PBXGroup;
 			children = (
 				AC2CA7621BF9FF4D00D199E4 /* ResultContainerPageViewController.swift */,
+				AC1C44D71C233C75007EB3C3 /* PlaybackViewController.swift */,
 				AC2CA7671BFA219F00D199E4 /* ResultSummaryViewController.swift */,
 				ACFEC99A1C020FA600F99F77 /* RecordViewController.swift */,
 				ACFEC9981C017E5D00F99F77 /* RecordTableViewCell.swift */,
@@ -643,6 +646,7 @@
 				ACBC3F6F1B9EC9D7007AC186 /* ViewController.swift in Sources */,
 				ACDE08571BA7A1BD00D3ECB7 /* FrontHeartViewController.swift in Sources */,
 				ACBC3F6D1B9EC9D7007AC186 /* AppDelegate.swift in Sources */,
+				AC1C44D81C233C75007EB3C3 /* PlaybackViewController.swift in Sources */,
 				ACD12B471C197A9C008A4856 /* IntroPageViewController.swift in Sources */,
 				ACB4E08A1BAAB6B60044EB72 /* PolyTestViewController.swift in Sources */,
 				ACC81A501BB4FB25006377F6 /* questions.swift in Sources */,

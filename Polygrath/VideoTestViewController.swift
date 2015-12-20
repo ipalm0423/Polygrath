@@ -64,11 +64,48 @@ class VideoTestViewController: UIViewController, AVCaptureVideoDataOutputSampleB
     var truthRate = 0.0
 
     
-    
+
 //time
     var timeLabelTimer: NSTimer?
     @IBOutlet weak var timeLabel: UILabel!
     
+    
+//introduction
+    @IBOutlet var introBPMLabel: UILabel!
+    
+    @IBOutlet var introFinishedLabel: UILabel!
+    
+    @IBOutlet var introRecordLabel: UILabel!
+    
+    @IBOutlet var introBPM2Label: UILabel!
+    
+    var isGetBPM = false {
+        didSet {
+            if self.isRecord {
+                UIView.animateWithDuration(1, animations: { () -> Void in
+                    self.introBPMLabel.alpha = 1
+                    self.introRecordLabel.alpha = 1
+                    self.introRecordLabel.text = "Press When Subject Have Answered"
+                    self.introBPM2Label.alpha = 1
+                    self.introFinishedLabel.alpha = 1
+                    
+                    self.view.layoutIfNeeded()
+                    }) { (bool) -> Void in
+                        
+                }
+            }else {
+                UIView.animateWithDuration(1, animations: { () -> Void in
+                    self.introBPMLabel.alpha = 1
+                    self.introRecordLabel.alpha = 1
+                    self.introBPM2Label.alpha = 1
+                    self.view.layoutIfNeeded()
+                    
+                    }) { (bool) -> Void in
+                        
+                }
+            }
+        }
+    }
     
 //camera
     
@@ -136,7 +173,7 @@ class VideoTestViewController: UIViewController, AVCaptureVideoDataOutputSampleB
         UIApplication.sharedApplication().idleTimerDisabled = true
         
         //truth label 
-        self.truthLabel.text = "Wait for Data"
+        self.truthLabel.text = "Wait for Watch"
         
     }
 
@@ -171,6 +208,32 @@ class VideoTestViewController: UIViewController, AVCaptureVideoDataOutputSampleB
     @IBOutlet weak var recordButton: UIButton!
     
     @IBAction func recordButtonTouch(sender: AnyObject) {
+        //introduction off
+        if self.introRecordLabel.alpha == 1 {
+            if self.isRecord {
+                UIView.animateWithDuration(1.0, animations: { () -> Void in
+                    self.introBPMLabel.alpha = 0
+                    self.introFinishedLabel.alpha = 0
+                    self.introRecordLabel.alpha = 0
+                    self.introBPM2Label.alpha = 0
+                    self.view.layoutIfNeeded()
+                    }) { (bool) -> Void in
+                        
+                }
+            }else {
+                UIView.animateWithDuration(1.0, animations: { () -> Void in
+                    self.introBPMLabel.alpha = 0
+                    self.introFinishedLabel.alpha = 1
+                    self.introRecordLabel.text = "Press When Subject Have Answered"
+                    self.introBPM2Label.alpha = 0
+                    self.view.layoutIfNeeded()
+                    }) { (bool) -> Void in
+                        
+                }
+            }
+            
+        }
+        
         print("record button touch")
         if self.isRecord {
             self.stopRecordVideo(nil)
@@ -248,6 +311,9 @@ class VideoTestViewController: UIViewController, AVCaptureVideoDataOutputSampleB
             print("got new heart rate data: \(dicsSort)")
             //add to grath
             dispatch_sync(dispatch_get_main_queue()) { () -> Void in
+                if self.isGetBPM == false {
+                    self.isGetBPM = true
+                }
                 
                 //save
                 for dic in dicsSort {
@@ -509,6 +575,10 @@ class VideoTestViewController: UIViewController, AVCaptureVideoDataOutputSampleB
             self.view.bringSubviewToFront(self.truthLabel)
             self.view.bringSubviewToFront(self.heartImage)
             self.view.bringSubviewToFront(self.bpmLabel)
+            self.view.bringSubviewToFront(self.introRecordLabel)
+            self.view.bringSubviewToFront(self.introBPMLabel)
+            self.view.bringSubviewToFront(self.introFinishedLabel)
+            self.view.bringSubviewToFront(self.introBPM2Label)
             self.captureSession.startRunning()
             
         }catch {

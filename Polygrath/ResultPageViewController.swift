@@ -19,7 +19,7 @@ class ResultPageViewController: UIViewController {
         super.viewDidLoad()
 
         // Do any additional setup after loading the view.
-        self.navigationController?.navigationBarHidden = false
+        
         Singleton.sharedInstance.setupBackgroundGradientColor(self)
         
         
@@ -34,7 +34,7 @@ class ResultPageViewController: UIViewController {
     
     override func viewDidAppear(animated: Bool) {
         self.setupNotify()
-        
+        self.navigationController?.navigationBarHidden = true
     }
     
     override func viewDidDisappear(animated: Bool) {

@@ -91,6 +91,7 @@ class RecordViewController: UIViewController, UITableViewDelegate, UITableViewDa
         cell.processIndicator.alpha = 0.0 //wait for process
         cell.processLabel.alpha = 0 //wait for process
         
+        
         if question.dataValues.count > 0 {
             //have data
             cell.truthLabel.text = Int(question.score * 100).description + "%"
@@ -107,7 +108,7 @@ class RecordViewController: UIViewController, UITableViewDelegate, UITableViewDa
             cell.maxLabel.text = "0"
             cell.avgLabel.text = "0"
             cell.processLabel.text = "No Data"
-            
+            cell.processLabel.alpha = 0.6
         }
         
         
@@ -134,26 +135,27 @@ class RecordViewController: UIViewController, UITableViewDelegate, UITableViewDa
     
     
 //video
-    func playBackVideo(url: NSURL) {
+    func playBackVideo(url: NSURL, questionIndex: Int) {
         
-        let player = AVPlayer(URL: url)
-        let playerViewController = AVPlayerViewController()
-        playerViewController.player = player
-        /*
-        self.presentViewController(playerViewController, animated: true) {
-        playerViewController.player!.play()
-        }*/
-        if let navi = self.navigationController {
-            navi.pushViewController(playerViewController, animated: true)
+        
+        
+        if let VC = self.storyboard?.instantiateViewControllerWithIdentifier("PlaybackView") as? PlaybackViewController {
+            VC.url = url
+            VC.questionIndex = questionIndex
+            if let navi = self.navigationController {
+                navi.pushViewController(VC, animated: true)
+            }
         }
+        
+        
     }
     
     
 //button
     
     @IBAction func playButtonTouchDown(sender: AnyObject) {
-        print("play button touch \(sender.tag)")
-        
+        print("play button touch down: \(sender.tag)")
+        let row = sender.tag
         
         
     }
@@ -162,13 +164,15 @@ class RecordViewController: UIViewController, UITableViewDelegate, UITableViewDa
     
     @IBAction func playButtonTouch(sender: AnyObject) {
         if let row = sender.tag {
+            print("play button touch down")
+            
             
             
             //process video
             if Singleton.sharedInstance.questions[row].file.isProcess {
                 //aready process before
                 if let url = Singleton.sharedInstance.questions[row].file.assetURL {
-                    self.playBackVideo(url)
+                    self.playBackVideo(url, questionIndex: row)
                 }
             }else {
                 //animate
@@ -176,6 +180,11 @@ class RecordViewController: UIViewController, UITableViewDelegate, UITableViewDa
                 //start to process
                 Singleton.sharedInstance.videoComposeWithQuestion(row)
             }
+            
+            
+            
+            
+            
         }
     }
     
@@ -264,43 +273,41 @@ class RecordViewController: UIViewController, UITableViewDelegate, UITableViewDa
     
 //animation
     func startAnimateBarPlot(indexPath: NSIndexPath) {
-        if let cell = self.tableView.cellForRowAtIndexPath(indexPath) as? RecordTableViewCell {
-            print("start animation")
-            //label
-            UIView.animateWithDuration(1, delay: 0, options: UIViewAnimationOptions.CurveEaseIn, animations: { () -> Void in
-                cell.processLabel.alpha = 1
-                cell.processIndicator.alpha = 1
-                cell.processIndicator.startAnimating()
-                cell.playButton.alpha = 0
-                self.tableView.layoutIfNeeded()
+        dispatch_async(dispatch_get_main_queue()) { () -> Void in
+            if let cell = self.tableView.cellForRowAtIndexPath(indexPath) as? RecordTableViewCell {
+                print("start animation")
+                //label
                 
-                }, completion: nil)
-            
-            
-            
-            //opacity animation
-            let animation = CABasicAnimation(keyPath: "opacity")
-            animation.fromValue = 0
-            animation.toValue = 1
-            animation.autoreverses = true
-            animation.duration = 0.8
-            animation.timingFunction = CAMediaTimingFunction(name: kCAMediaTimingFunctionEaseIn)
-            animation.repeatCount = Float.infinity
-            animation.removedOnCompletion = false
-            //animation.fillMode = kCAFillModeForwards
-            
-            
-            if let plot = cell.hostView.hostedGraph!.plotAtIndex(0) as? CPTBarPlot {
-                //add animation
-                print("animation plot")
-                plot.addAnimation(animation, forKey: "processAnimation")
-            }
-            if let plot2 = cell.hostView.hostedGraph!.plotAtIndex(1) as? CPTBarPlot {
-                //add animation
-                print("animation plot")
-                plot2.addAnimation(animation, forKey: "processAnimation")
+                cell.playButton.enabled = false
+                UIView.animateWithDuration(0.8, delay: 0, options: UIViewAnimationOptions.CurveLinear, animations: { () -> Void in
+                    cell.processLabel.alpha = 1
+                    
+                    }, completion: { (bool) -> Void in
+                        
+                })
+                
+                //opacity animation
+                let animation = CABasicAnimation(keyPath: "opacity")
+                animation.fromValue = 0
+                animation.toValue = 0.5
+                animation.autoreverses = true
+                animation.beginTime = 0.8
+                animation.duration = 0.8
+                animation.timingFunction = CAMediaTimingFunction(name: kCAMediaTimingFunctionEaseIn)
+                animation.repeatCount = Float.infinity
+                animation.removedOnCompletion = false
+                //animation.fillMode = kCAFillModeForwards
+                
+                if let graph = cell.hostView.hostedGraph {
+                    print("animation plot")
+                    let plot = graph.plotAtIndex(0) as! CPTBarPlot
+                    let plot2 = graph.plotAtIndex(1) as! CPTBarPlot
+                    plot.addAnimation(animation, forKey: "processAnimation")
+                    plot2.addAnimation(animation, forKey: "processAnimation")
+                }
             }
         }
+        
     }
     
     func stopAnimateBarPlot(indexPath: NSIndexPath) {
@@ -308,27 +315,22 @@ class RecordViewController: UIViewController, UITableViewDelegate, UITableViewDa
             if let cell = self.tableView.cellForRowAtIndexPath(indexPath) as? RecordTableViewCell {
                 print("stop animation")
                 //label
-                UIView.animateWithDuration(1.0, delay: 0, options: UIViewAnimationOptions.CurveEaseIn, animations: { () -> Void in
+                UIView.animateWithDuration(0.8, delay: 0, options: [UIViewAnimationOptions.CurveEaseIn], animations: { () -> Void in
                     cell.processLabel.alpha = 0
-                    cell.processIndicator.alpha = 0
-                    cell.processIndicator.stopAnimating()
-                    cell.playButton.alpha = 1
-                    
-                    self.tableView.layoutIfNeeded()
                     }, completion: { (bool) -> Void in
-                        self.tableView.reloadData()
+                        
                 })
                 
-                if let plot = cell.hostView.hostedGraph!.plotAtIndex(0) as? CPTBarPlot {
-                //add animation
-                print("stop animation plot")
-                plot.removeAnimationForKey("processAnimation")
-                }
-                if let plot2 = cell.hostView.hostedGraph!.plotAtIndex(1) as? CPTBarPlot {
-                    //add animation
-                    print("stop animation plot")
+                if let graph = cell.hostView.hostedGraph {
+                    print("animation plot")
+                    let plot = graph.plotAtIndex(0) as! CPTBarPlot
+                    let plot2 = graph.plotAtIndex(1) as! CPTBarPlot
+                    plot.removeAnimationForKey("processAnimation")
                     plot2.removeAnimationForKey("processAnimation")
                 }
+                cell.playButton.enabled = true
+                self.tableView.reloadData()
+                
                 
             }
         }
@@ -344,5 +346,8 @@ class RecordViewController: UIViewController, UITableViewDelegate, UITableViewDa
         // Pass the selected object to the new view controller.
     }
     */
+    
+    
+    
 
 }

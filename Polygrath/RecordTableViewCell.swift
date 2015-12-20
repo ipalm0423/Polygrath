@@ -42,7 +42,7 @@ class RecordTableViewCell: UITableViewCell, CPTBarPlotDataSource, CPTBarPlotDele
     
     @IBOutlet var processLabel: UILabel!
     
-    
+    var processImage = UIImageView(image: UIImage(named: "process"))
     
     override func awakeFromNib() {
         super.awakeFromNib()
