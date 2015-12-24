@@ -597,35 +597,35 @@
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="00:00" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="oxS-rS-KW5">
-                                <rect key="frame" x="544" y="10" width="46" height="22"/>
+                                <rect key="frame" x="544" y="10" width="45.5" height="21.5"/>
                                 <animations/>
                                 <fontDescription key="fontDescription" name="HelveticaNeue-Bold" family="Helvetica Neue" pointSize="18"/>
                                 <color key="textColor" red="0.90196079019999997" green="0.90196079019999997" blue="0.90196079019999997" alpha="1" colorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="untruth" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="4OL-kc-ojG">
-                                <rect key="frame" x="272" y="338" width="58" height="21"/>
+                                <rect key="frame" x="271" y="338" width="57.5" height="21"/>
                                 <animations/>
                                 <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="18"/>
                                 <color key="textColor" red="0.90196079019999997" green="0.90196079019999997" blue="0.90196079019999997" alpha="1" colorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" alpha="0.0" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Subject's BPM" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="awy-KM-Y9B">
-                                <rect key="frame" x="240" y="147" width="121" height="21"/>
+                                <rect key="frame" x="240" y="147" width="120.5" height="21"/>
                                 <animations/>
                                 <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="18"/>
                                 <color key="textColor" red="0.94901960780000005" green="0.94901960780000005" blue="0.94901960780000005" alpha="1" colorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" alpha="0.0" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Press When All Finished" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="mzc-gn-SWO">
-                                <rect key="frame" x="288" y="504" width="145" height="17"/>
+                                <rect key="frame" x="287" y="504" width="144.5" height="17"/>
                                 <animations/>
                                 <fontDescription key="fontDescription" name="HelveticaNeue-Light" family="Helvetica Neue" pointSize="14"/>
                                 <color key="textColor" red="0.94901960780000005" green="0.94901960780000005" blue="0.94901960780000005" alpha="1" colorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" alpha="0.0" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="zvr-mm-RHy">
-                                <rect key="frame" x="152" y="382" width="175" height="34"/>
+                                <rect key="frame" x="152" y="382" width="175" height="33.5"/>
                                 <animations/>
                                 <string key="text">Press When Asking Question
 (Start from Easy One)</string>
@@ -633,15 +633,15 @@
                                 <color key="textColor" red="0.94901960780000005" green="0.94901960780000005" blue="0.94901960780000005" alpha="1" colorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <label opaque="NO" userInteractionEnabled="NO" alpha="0.0" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Normally around 60 to 100" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="hhA-1J-xCZ">
-                                <rect key="frame" x="218" y="168" width="166" height="17"/>
+                            <label opaque="NO" userInteractionEnabled="NO" alpha="0.0" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Normally around 60 to 100" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="hhA-1J-xCZ">
+                                <rect key="frame" x="218" y="168" width="166.5" height="16.5"/>
                                 <animations/>
                                 <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="14"/>
                                 <color key="textColor" red="0.94901960780000005" green="0.94901960780000005" blue="0.94901960780000005" alpha="1" colorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="I5K-pv-Rl9">
-                                <rect key="frame" x="0.0" y="321" width="600" height="215"/>
+                                <rect key="frame" x="0.0" y="160.5" width="600" height="215"/>
                                 <animations/>
                             </view>
                         </subviews>
@@ -653,6 +653,7 @@
                             <constraint firstItem="Eia-G7-nO3" firstAttribute="top" secondItem="I5K-pv-Rl9" secondAttribute="bottom" id="2lC-W1-VlA"/>
                             <constraint firstItem="1ic-Lh-fju" firstAttribute="centerY" secondItem="Ok9-FT-77G" secondAttribute="centerY" id="459-PI-yN4"/>
                             <constraint firstItem="B9f-pe-WDc" firstAttribute="centerY" secondItem="NfC-fF-U3p" secondAttribute="centerY" id="4qT-b8-uIp"/>
+                            <constraint firstItem="I5K-pv-Rl9" firstAttribute="centerY" secondItem="1ic-Lh-fju" secondAttribute="centerY" id="5y5-AO-YyI"/>
                             <constraint firstItem="NfC-fF-U3p" firstAttribute="top" secondItem="zvr-mm-RHy" secondAttribute="bottom" constant="5" id="EU6-mF-mzF"/>
                             <constraint firstItem="Eia-G7-nO3" firstAttribute="top" secondItem="NfC-fF-U3p" secondAttribute="bottom" constant="20" id="EXw-HD-RLu"/>
                             <constraint firstItem="1ic-Lh-fju" firstAttribute="centerX" secondItem="Ok9-FT-77G" secondAttribute="centerX" id="EZG-hO-CP1"/>
@@ -675,6 +676,11 @@
                             <constraint firstItem="B9f-pe-WDc" firstAttribute="centerX" secondItem="Ok9-FT-77G" secondAttribute="centerX" constant="60" id="xdy-Tq-TTX"/>
                             <constraint firstItem="4OL-kc-ojG" firstAttribute="top" secondItem="1ic-Lh-fju" secondAttribute="bottom" constant="10" id="xgn-Wa-uhR"/>
                         </constraints>
+                        <variation key="default">
+                            <mask key="constraints">
+                                <exclude reference="2lC-W1-VlA"/>
+                            </mask>
+                        </variation>
                     </view>
                     <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" translucent="NO" prompted="NO"/>
                     <connections>
@@ -1579,7 +1585,7 @@
                                                 <rect key="frame" x="0.0" y="28" width="600" height="70"/>
                                                 <autoresizingMask key="autoresizingMask"/>
                                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="0ka-jt-y2O" id="wdq-iy-5aI">
-                                                    <rect key="frame" x="0.0" y="0.0" width="600" height="70"/>
+                                                    <rect key="frame" x="0.0" y="0.0" width="600" height="69.5"/>
                                                     <autoresizingMask key="autoresizingMask"/>
                                                     <subviews>
                                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Heart Rate" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="XJ4-3S-Qv6">
@@ -1654,7 +1660,7 @@
                                                 <rect key="frame" x="0.0" y="98" width="600" height="70"/>
                                                 <autoresizingMask key="autoresizingMask"/>
                                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="2o0-CH-PlV" id="TxO-0s-y5o">
-                                                    <rect key="frame" x="0.0" y="0.0" width="600" height="70"/>
+                                                    <rect key="frame" x="0.0" y="0.0" width="600" height="69.5"/>
                                                     <autoresizingMask key="autoresizingMask"/>
                                                     <subviews>
                                                         <progressView opaque="NO" alpha="0.69999999999999996" contentMode="scaleToFill" verticalHuggingPriority="750" misplaced="YES" progress="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="UZq-FB-GT1">
@@ -1987,7 +1993,7 @@ After all, the result of polygrph can only be a refenece. So have fun! Don't be 
         <image name="dot-30-vec" width="30" height="30"/>
         <image name="finish" width="71" height="71"/>
         <image name="healthStore" width="70" height="70"/>
-        <image name="heart" width="150" height="129"/>
+        <image name="heart" width="146" height="127"/>
         <image name="heart-1" width="150" height="129"/>
         <image name="heart-80-vec" width="80" height="80"/>
         <image name="heartLine" width="375" height="116"/>
@@ -1996,10 +2002,10 @@ After all, the result of polygrph can only be a refenece. So have fun! Don't be 
         <image name="percentage-30-vec" width="30" height="30"/>
         <image name="play" width="49" height="49"/>
         <image name="play-30-vec" width="30" height="30"/>
-        <image name="record-unpress" width="22" height="16"/>
+        <image name="record-unpress" width="21" height="14"/>
         <image name="recordIntro" width="100" height="163"/>
         <image name="recording" width="95" height="95"/>
-        <image name="report-press" width="22" height="18"/>
+        <image name="report-press" width="20" height="16"/>
         <image name="warning-30-vec" width="30" height="30"/>
     </resources>
     <inferredMetricsTieBreakers>

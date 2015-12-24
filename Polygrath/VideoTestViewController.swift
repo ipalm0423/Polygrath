@@ -35,6 +35,7 @@ class VideoTestViewController: UIViewController, AVCaptureVideoDataOutputSampleB
     var bpm: Double = 0 {
         didSet{
             self.bpmLabel.text = Int(self.bpm).description
+            self.animateHeartLine(self.bpm)
         }
     }
     var isLying = false {
@@ -61,7 +62,11 @@ class VideoTestViewController: UIViewController, AVCaptureVideoDataOutputSampleB
     var bpmMin: Double = 0
     var average: Double = 0
     var deviation: Double = 0
-    var truthRate = 0.0
+    var truthRate = 0.0 {
+        didSet{
+            self.animateLieLine(self.bpm, truthRate: CGFloat(self.truthRate))
+        }
+    }
 
     
 
@@ -175,6 +180,10 @@ class VideoTestViewController: UIViewController, AVCaptureVideoDataOutputSampleB
         //truth label 
         self.truthLabel.text = "Wait for Watch"
         
+        //heart line
+        self.setupHeartLineLayer()
+        self.animateLieLine(100, truthRate: 0.2)
+    
     }
 
     override func didReceiveMemoryWarning() {
@@ -869,13 +878,7 @@ class VideoTestViewController: UIViewController, AVCaptureVideoDataOutputSampleB
     }
     
 
-//heart line
-    func animateHeartLine() {
-        self.frameCount++
-        self.heartLineLayer.removeFromSuperlayer()
-        self.heartLineLayer = Singleton.sharedInstance.createHeartLineLayer(self.bpm, frameCount: self.frameCount, width: self.heartLineView.frame.width, height: self.heartLineView.frame.height)
-        self.heartLineView.layer.addSublayer(self.heartLineLayer)
-    }
+
    
 //heart image
     var snapHeart = UIView()
@@ -899,6 +902,105 @@ class VideoTestViewController: UIViewController, AVCaptureVideoDataOutputSampleB
                 
         }
     }
+    
+//heart Line
+    var heartARCLine = CALayer()
+    var heartGradient = CAGradientLayer()
+    var lieARCLine = CALayer()
+    var lieGradient = CAGradientLayer()
+    
+    func setupHeartLineLayer() {
+        self.heartLineView.frame = CGRect(x: 0, y: self.heartLineView.frame.origin.y, width: self.view.frame.width, height: self.heartLineView.frame.height)
+        self.heartLineView.layer.anchorPoint = CGPoint(x: 0.5, y: 0.5)
+        let size = self.heartLineView.bounds.size
+        let bound = self.heartLineView.bounds
+        self.heartARCLine = Singleton.sharedInstance.getHeartLineARCLayer(size, ripple: 2, heightRatio: 1, lineWidth: 4)
+        self.lieARCLine = Singleton.sharedInstance.getHeartLineARCLayer(size, ripple: 5, heightRatio: 1, lineWidth: 1)
+        let redColor = UIColor(red: 202 / 255, green: 24 / 255, blue: 38 / 255, alpha: 1.0).CGColor
+        let yellowColor = UIColor(red: 204 / 255, green: 233 / 255 , blue: 0, alpha: 1.0).CGColor
+        self.heartGradient = Singleton.sharedInstance.getGradientLayer(bound, colors: [redColor, redColor, yellowColor, redColor, redColor], opacity: 0.9, isVertical: true)
+        self.lieGradient = Singleton.sharedInstance.getGradientLayer(bound, colors: [UIColor.redColor().CGColor, redColor, UIColor.blackColor().CGColor, redColor, UIColor.redColor().CGColor], opacity: 0.9, isVertical: true)
+        
+        self.heartGradient.mask = self.heartARCLine
+        self.lieGradient.mask = self.lieARCLine
+        
+        //input
+        //self.heartLineView.layer.anchorPoint = CGPoint(x: 0.0, y: 0.0)
+        self.heartLineView.layer.addSublayer(self.heartGradient)
+        self.heartLineView.layer.addSublayer(self.lieGradient)
+        self.heartLineView.alpha = 0
+        print("heart line frame: \(self.heartLineView.frame)")
+        print("view: frame: \(self.view.frame)")
+    }
+    
+    func animateHeartLine(BPM: Double) {
+        if self.heartLineView.alpha == 0 {
+            self.heartLineView.alpha = 1
+        }
+        
+        print("animate heart line")
+
+        let duration = BPM / 60
+        let ripple: CGFloat = 2
+        let heightratio = CGFloat(BPM / 100.0)
+        let lineWidth = BPM / 100 * 5
+        
+        //change height
+        let transfer = CATransform3DMakeScale(1, 1, 1)
+        //change layer
+        self.heartARCLine.removeAllAnimations()
+        self.heartARCLine = Singleton.sharedInstance.getHeartLineARCLayer(self.heartLineView.bounds.size, ripple: Int(2), heightRatio: heightratio, lineWidth: lineWidth)
+        self.heartGradient.mask = self.heartARCLine
+        
+        let heartAnimation = Singleton.sharedInstance.createPositionAnimation(duration, startPoint: CGPoint(x: 0, y: -0), EndPoint: CGPoint(x: -(self.heartLineView.frame.width), y: -0), offset: 0)
+        
+        self.heartARCLine.addAnimation(heartAnimation, forKey: "heartLine")
+        
+        
+    }
+    
+    func animateLieLine(BPM: Double, truthRate: CGFloat) {
+        
+        let duration = BPM / 60
+        var ripple: CGFloat = 2.0
+        var heightratio: CGFloat = 0.05
+        var lineWidth = 1.0
+        
+        if truthRate > 0.5 {
+            heightratio = (1 - truthRate) * 0.4
+            ripple = 3
+            lineWidth  = 1
+        }else if truthRate > 0.3 {
+            heightratio = (1 - truthRate) * 0.6
+            ripple = 4
+            lineWidth = 2
+        }else if truthRate > 0.2 {
+            heightratio = (1 - truthRate) * 0.8
+            ripple = 5
+            lineWidth = 3
+        }else if truthRate > 0.1 {
+            heightratio = (1 - truthRate)
+            ripple = 6
+            lineWidth = 4
+        }else {
+            heightratio = (1 - truthRate) * 1.2
+            ripple = 7
+            lineWidth = 5
+        }
+        print("riple: \(ripple), height ratio: \(heightratio)")
+        
+        //change layer
+        self.lieARCLine.removeAllAnimations()
+        self.lieARCLine = Singleton.sharedInstance.getHeartLineARCLayer(self.heartLineView.bounds.size, ripple: Int(ripple), heightRatio: heightratio, lineWidth: lineWidth)
+        self.lieGradient.mask = self.lieARCLine
+        
+        
+        //make animation
+        let lieAnimation = Singleton.sharedInstance.createPositionAnimation(duration, startPoint: CGPoint(x: 0, y: -0), EndPoint: CGPoint(x: -(self.heartLineView.frame.width * 2 / ripple), y: -0), offset: 0.0)
+        self.lieARCLine.addAnimation(lieAnimation, forKey: "lieLine")
+    }
+    
+    
     
 //alert
     func alertError(error: String) {

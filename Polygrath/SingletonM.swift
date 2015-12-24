@@ -320,6 +320,37 @@ class Singleton: NSObject {
     }
     
     
+    func create3DTransferAnimation(BPM: Double, offset: Double) -> CAKeyframeAnimation {
+        //bpm
+        let period = BPM / 60
+        let ratio = CGFloat(BPM / 110)
+        
+        //animation
+        let animation = CAKeyframeAnimation(keyPath: "transform")
+        animation.values = [NSValue(CATransform3D:CATransform3DMakeScale(1, 0.05, 1)), NSValue(CATransform3D:CATransform3DMakeScale(1, ratio, 1)), NSValue(CATransform3D:CATransform3DMakeScale(1, ratio * 0.8, 1))]
+        animation.duration = period
+        animation.beginTime = AVCoreAnimationBeginTimeAtZero
+        animation.autoreverses = true
+        animation.repeatCount = Float.infinity
+        animation.timingFunction = CAMediaTimingFunction(name: kCAMediaTimingFunctionEaseIn)
+        animation.timeOffset = offset
+        
+        return animation
+        
+    }
+    
+    func createPositionAnimation(duration: Double, startPoint: CGPoint, EndPoint: CGPoint, offset: Double) -> CAKeyframeAnimation {
+        let positionAnimation = CAKeyframeAnimation(keyPath: "position.x")
+        
+        positionAnimation.duration = duration
+        positionAnimation.autoreverses = false
+        positionAnimation.values = [NSValue(CGPoint: startPoint), NSValue(CGPoint: EndPoint)]
+        positionAnimation.repeatCount = Float.infinity
+        positionAnimation.timingFunction = CAMediaTimingFunction(name: kCAMediaTimingFunctionLinear)
+        positionAnimation.timeOffset = offset
+        
+        return positionAnimation
+    }
     
     
 //CALayer func
@@ -493,6 +524,56 @@ class Singleton: NSObject {
         return heartLayer
     }
     
+    func getHeartLineARCLayer(parentViewSize: CGSize, ripple: Int, heightRatio: CGFloat, lineWidth: Double) -> CALayer {
+        
+        //path
+        let heartLinePath = UIBezierPath()
+        let width = parentViewSize.width * 2
+        let height = parentViewSize.height
+        let topModifyHeight = parentViewSize.height * (1 + heightRatio) / 2
+        let btmModifyHeight = parentViewSize.height * (1 - heightRatio) / 2
+        let halfPeriod = width / CGFloat(ripple * 2)
+        heartLinePath.moveToPoint(CGPoint(x: 0, y: height / 2))
+        for var i = 1; i <= ripple; i++ {
+            let halfPoint = halfPeriod * CGFloat((i * 2) - 1)
+            heartLinePath.addCurveToPoint(CGPoint(x: width / CGFloat(ripple) * CGFloat(i), y: height / 2), controlPoint1: CGPoint(x: halfPoint, y: topModifyHeight), controlPoint2: CGPoint(x: halfPoint, y: btmModifyHeight))
+        }
+        
+        
+        heartLinePath.stroke()
+        
+        
+        //make arc
+        let arc = CAShapeLayer()
+        //arc.frame = CGRect(x: 0, y: 0, width: parentViewSize.width, height: parentViewSize.height)
+        arc.path = heartLinePath.CGPath
+        //arc.position = CGPoint(x: 0, y: 0)
+        arc.fillColor = UIColor.clearColor().CGColor
+        arc.strokeColor = UIColor.purpleColor().CGColor
+        arc.lineWidth = CGFloat(lineWidth)
+        arc.lineCap = kCALineCapRound ; //线条拐角
+        arc.lineJoin = kCALineJoinRound
+        arc.anchorPoint = CGPoint(x: 0.0, y: 0.5)
+        
+        return arc
+        
+    }
+    
+    func getGradientLayer(frame: CGRect, colors: [CGColor], opacity: Float, isVertical: Bool) -> CAGradientLayer {
+        let gradient = CAGradientLayer()
+        gradient.frame = frame
+        gradient.opacity = opacity
+        gradient.colors = colors
+        gradient.startPoint = CGPoint(x: 0, y: 0)
+        if isVertical {
+            gradient.endPoint = CGPoint(x: 0, y: 1)
+        }else {
+            gradient.endPoint = CGPoint(x: 1, y: 0)
+        }
+        
+        
+        return gradient
+    }
     
     
 //CIImage func
