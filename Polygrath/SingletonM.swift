@@ -320,36 +320,49 @@ class Singleton: NSObject {
     }
     
     
-    func create3DTransferAnimation(BPM: Double, offset: Double) -> CAKeyframeAnimation {
+    func create3DTransferScaleAnimation(scale: CGFloat, offset: Double, repeatCount: Float) -> CAKeyframeAnimation {
         //bpm
-        let period = BPM / 60
-        let ratio = CGFloat(BPM / 110)
         
         //animation
         let animation = CAKeyframeAnimation(keyPath: "transform")
-        animation.values = [NSValue(CATransform3D:CATransform3DMakeScale(1, 0.05, 1)), NSValue(CATransform3D:CATransform3DMakeScale(1, ratio, 1)), NSValue(CATransform3D:CATransform3DMakeScale(1, ratio * 0.8, 1))]
-        animation.duration = period
-        animation.beginTime = AVCoreAnimationBeginTimeAtZero
+        animation.values = [NSValue(CATransform3D:CATransform3DMakeScale(1, scale, 1))]
+        animation.duration = 1
+        //animation.beginTime = AVCoreAnimationBeginTimeAtZero
         animation.autoreverses = true
-        animation.repeatCount = Float.infinity
+        animation.repeatCount = repeatCount
         animation.timingFunction = CAMediaTimingFunction(name: kCAMediaTimingFunctionEaseIn)
+        animation.removedOnCompletion = false
         animation.timeOffset = offset
         
         return animation
         
     }
     
-    func createPositionAnimation(duration: Double, startPoint: CGPoint, EndPoint: CGPoint, offset: Double) -> CAKeyframeAnimation {
+    func createPositionAnimation(duration: Double, startPoint: CGPoint, EndPoint: CGPoint, offset: Double, repeatCount: Float) -> CAKeyframeAnimation {
         let positionAnimation = CAKeyframeAnimation(keyPath: "position.x")
         
         positionAnimation.duration = duration
         positionAnimation.autoreverses = false
         positionAnimation.values = [NSValue(CGPoint: startPoint), NSValue(CGPoint: EndPoint)]
-        positionAnimation.repeatCount = Float.infinity
+        //positionAnimation.repeatCount = repeatCount
         positionAnimation.timingFunction = CAMediaTimingFunction(name: kCAMediaTimingFunctionLinear)
         positionAnimation.timeOffset = offset
+        positionAnimation.removedOnCompletion = false
         
         return positionAnimation
+    }
+    
+    func createOpacityAnimation(values: [NSNumber], keyTime: [NSNumber], duration: CFTimeInterval) -> CAKeyframeAnimation {
+        let opacityAnimation = CAKeyframeAnimation(keyPath: "opacity")
+        opacityAnimation.autoreverses = false
+        opacityAnimation.keyTimes = keyTime
+        opacityAnimation.values = values
+        opacityAnimation.duration = duration
+        //opacityAnimation.repeatCount = 1
+        opacityAnimation.timingFunction = CAMediaTimingFunction(name: kCAMediaTimingFunctionLinear)
+        opacityAnimation.removedOnCompletion = false
+        
+        return opacityAnimation
     }
     
     
@@ -545,7 +558,7 @@ class Singleton: NSObject {
         
         //make arc
         let arc = CAShapeLayer()
-        //arc.frame = CGRect(x: 0, y: 0, width: parentViewSize.width, height: parentViewSize.height)
+        arc.frame = CGRect(x: 0, y: 0, width: parentViewSize.width, height: parentViewSize.height)
         arc.path = heartLinePath.CGPath
         //arc.position = CGPoint(x: 0, y: 0)
         arc.fillColor = UIColor.clearColor().CGColor

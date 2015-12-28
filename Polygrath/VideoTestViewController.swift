@@ -35,7 +35,12 @@ class VideoTestViewController: UIViewController, AVCaptureVideoDataOutputSampleB
     var bpm: Double = 0 {
         didSet{
             self.bpmLabel.text = Int(self.bpm).description
-            self.animateHeartLine(self.bpm)
+            if let keys = self.heartARCLine.animationKeys() {
+                //animation is started
+            }else {
+                //animation is stop, restart
+                self.animateHeartLine(50)
+            }
         }
     }
     var isLying = false {
@@ -62,11 +67,7 @@ class VideoTestViewController: UIViewController, AVCaptureVideoDataOutputSampleB
     var bpmMin: Double = 0
     var average: Double = 0
     var deviation: Double = 0
-    var truthRate = 0.0 {
-        didSet{
-            self.animateLieLine(self.bpm, truthRate: CGFloat(self.truthRate))
-        }
-    }
+    var truthRate = 1.0
 
     
 
@@ -182,7 +183,7 @@ class VideoTestViewController: UIViewController, AVCaptureVideoDataOutputSampleB
         
         //heart line
         self.setupHeartLineLayer()
-        self.animateLieLine(100, truthRate: 0.2)
+        
     
     }
 
@@ -197,6 +198,9 @@ class VideoTestViewController: UIViewController, AVCaptureVideoDataOutputSampleB
         Singleton.sharedInstance.stopPlayingEffect()
         self.snapHeart.layer.removeAllAnimations()
         self.snapHeart.removeFromSuperview()
+        self.heartARCLine.removeAllAnimations()
+        self.heartLineView.alpha = 0
+        
         
     }
 
@@ -906,30 +910,39 @@ class VideoTestViewController: UIViewController, AVCaptureVideoDataOutputSampleB
 //heart Line
     var heartARCLine = CALayer()
     var heartGradient = CAGradientLayer()
-    var lieARCLine = CALayer()
-    var lieGradient = CAGradientLayer()
+    //var lieARCLine = CALayer()
+    //var lieGradient = CAGradientLayer()
     
     func setupHeartLineLayer() {
         self.heartLineView.frame = CGRect(x: 0, y: self.heartLineView.frame.origin.y, width: self.view.frame.width, height: self.heartLineView.frame.height)
         self.heartLineView.layer.anchorPoint = CGPoint(x: 0.5, y: 0.5)
         let size = self.heartLineView.bounds.size
         let bound = self.heartLineView.bounds
-        self.heartARCLine = Singleton.sharedInstance.getHeartLineARCLayer(size, ripple: 2, heightRatio: 1, lineWidth: 4)
-        self.lieARCLine = Singleton.sharedInstance.getHeartLineARCLayer(size, ripple: 5, heightRatio: 1, lineWidth: 1)
+        self.heartARCLine = Singleton.sharedInstance.getHeartLineARCLayer(size, ripple: 2, heightRatio: 0.1, lineWidth: 4)
+        
         let redColor = UIColor(red: 202 / 255, green: 24 / 255, blue: 38 / 255, alpha: 1.0).CGColor
         let yellowColor = UIColor(red: 204 / 255, green: 233 / 255 , blue: 0, alpha: 1.0).CGColor
-        self.heartGradient = Singleton.sharedInstance.getGradientLayer(bound, colors: [redColor, redColor, yellowColor, redColor, redColor], opacity: 0.9, isVertical: true)
-        self.lieGradient = Singleton.sharedInstance.getGradientLayer(bound, colors: [UIColor.redColor().CGColor, redColor, UIColor.blackColor().CGColor, redColor, UIColor.redColor().CGColor], opacity: 0.9, isVertical: true)
-        
+        self.heartGradient = Singleton.sharedInstance.getGradientLayer(bound, colors: [redColor, yellowColor, redColor], opacity: 0.9, isVertical: true)
         self.heartGradient.mask = self.heartARCLine
-        self.lieGradient.mask = self.lieARCLine
+        
+        //animation x position
+        let heartAnimation = Singleton.sharedInstance.createPositionAnimation(2, startPoint: CGPoint(x: 0, y: -0), EndPoint: CGPoint(x: -(self.heartLineView.frame.width), y: -0), offset: 0, repeatCount: 2)
+        let opacityAnimate = Singleton.sharedInstance.createOpacityAnimation([0, 1, 0], keyTime: [0, 0.2, 0.8, 1], duration: 2)
+        let group = CAAnimationGroup()
+        group.repeatCount = 1
+        group.duration = 2
+        group.animations = [heartAnimation, opacityAnimate]
+        group.removedOnCompletion = false
+        group.delegate = self
+        self.heartARCLine.addAnimation(group, forKey: "heartLine")
         
         //input
         //self.heartLineView.layer.anchorPoint = CGPoint(x: 0.0, y: 0.0)
         self.heartLineView.layer.addSublayer(self.heartGradient)
-        self.heartLineView.layer.addSublayer(self.lieGradient)
+        
         self.heartLineView.alpha = 0
-        print("heart line frame: \(self.heartLineView.frame)")
+        print("heart view frame: \(self.heartLineView.frame)")
+        print("heart ARCline frame: \(self.heartARCLine.frame)")
         print("view: frame: \(self.view.frame)")
     }
     
@@ -939,66 +952,129 @@ class VideoTestViewController: UIViewController, AVCaptureVideoDataOutputSampleB
         }
         
         print("animate heart line")
-
-        let duration = BPM / 60
-        let ripple: CGFloat = 2
-        let heightratio = CGFloat(BPM / 100.0)
-        let lineWidth = BPM / 100 * 5
+        //constant
+        var duration = 0.0
+        var heightratio = 0.0
+        if BPM == 0 {
+            //not ready data
+            duration = 2
+            heightratio = 0.1
+        }else {
+            duration = 50 / BPM * 2
+            heightratio = (BPM / 100.0)
+        }
         
-        //change height
-        let transfer = CATransform3DMakeScale(1, 1, 1)
+        var lineWidth = 1.0
+        var gradientColor = [CGColorRef]()
+        let size = self.heartLineView.bounds.size
+        //color
+        let redColor = UIColor(red: 202 / 255, green: 24 / 255, blue: 38 / 255, alpha: 1.0).CGColor
+        let yellowColor = UIColor(red: 204 / 255, green: 233 / 255 , blue: 0, alpha: 1.0).CGColor
+        let blackColor = UIColor(red: 0.1, green: 0.1, blue: 0.1, alpha: 1.0).CGColor
+        let grayColor = UIColor.grayColor().CGColor
+        
+//calculate
+        if truthRate > 0.7 {
+            heightratio = (1 - truthRate) * 0.5
+            lineWidth  = 1
+            gradientColor = [redColor, yellowColor, redColor]
+            
+        }else if truthRate > 0.5 {
+            heightratio = (1 - truthRate) * 0.6
+            lineWidth  = 2
+            gradientColor = [redColor, redColor, yellowColor, redColor, redColor]
+            
+        }else if truthRate > 0.4 {
+            heightratio = (1 - truthRate) * 0.7
+            lineWidth = 3
+            gradientColor = [blackColor, redColor, yellowColor, redColor, blackColor]
+        }else if truthRate > 0.3 {
+            heightratio = (1 - truthRate) * 0.8
+            lineWidth = 3
+            gradientColor = [blackColor, redColor, redColor, yellowColor, redColor, redColor, blackColor]
+        }else if truthRate > 0.2 {
+            heightratio = (1 - truthRate) * 1
+            lineWidth = 4
+            gradientColor = [blackColor, blackColor, redColor, yellowColor, redColor, blackColor, blackColor]
+        }else if truthRate > 0.1 {
+            heightratio = (1 - truthRate) * 1.2
+            lineWidth = 4
+            gradientColor = [blackColor, blackColor, redColor, redColor, blackColor, blackColor]
+        }else {
+            heightratio = (1 - truthRate) * 1.4
+            lineWidth = 5
+            gradientColor = [blackColor, blackColor, redColor, blackColor, blackColor]
+        }
+        if heightratio <= 0 {
+            heightratio = 0.1
+        }
+        print("height ratio : \(heightratio)")
+        
+        //change
+        dispatch_async(dispatch_get_main_queue()) { () -> Void in
+            self.heartGradient.colors = gradientColor
+            self.heartARCLine = Singleton.sharedInstance.getHeartLineARCLayer(size, ripple: 2, heightRatio: CGFloat(heightratio), lineWidth: lineWidth)
+            self.heartARCLine.opacity = 0
+            self.heartGradient.mask = self.heartARCLine
+            
+            //animation x position
+            let heartAnimation = Singleton.sharedInstance.createPositionAnimation(duration, startPoint: CGPoint(x: 0, y: -0), EndPoint: CGPoint(x: -(self.heartLineView.frame.width), y: -0), offset: 0, repeatCount: 1)
+            let opacityAnimate = Singleton.sharedInstance.createOpacityAnimation([0, 1, 0], keyTime: [0, 0.2, 0.8, 1], duration: duration)
+            let group = CAAnimationGroup()
+            group.repeatCount = 1
+            group.duration = duration
+            group.animations = [heartAnimation, opacityAnimate]
+            group.removedOnCompletion = false
+            group.delegate = self
+            self.heartARCLine.addAnimation(group, forKey: "heartLine")
+            
+        }
+        
+        
+        
+        
+        
+        /*
         //change layer
-        self.heartARCLine.removeAllAnimations()
-        self.heartARCLine = Singleton.sharedInstance.getHeartLineARCLayer(self.heartLineView.bounds.size, ripple: Int(2), heightRatio: heightratio, lineWidth: lineWidth)
-        self.heartGradient.mask = self.heartARCLine
+        dispatch_async(dispatch_get_main_queue()) { () -> Void in
         
-        let heartAnimation = Singleton.sharedInstance.createPositionAnimation(duration, startPoint: CGPoint(x: 0, y: -0), EndPoint: CGPoint(x: -(self.heartLineView.frame.width), y: -0), offset: 0)
-        
-        self.heartARCLine.addAnimation(heartAnimation, forKey: "heartLine")
-        
+            
+            //transfer
+            let transfer = CATransform3DMakeScale(1, CGFloat(heightratio), 1)
+            //self.heartARCLine.transform = transfer
+            print("line frame: \(self.heartARCLine.frame), bounds: \(self.heartARCLine.bounds)")
+            self.heartARCLine.frame = CGRect(x: self.heartARCLine.frame.origin.x, y: self.heartGradient.frame.height / 2 - self.heartARCLine.frame.height / 2, width: self.heartARCLine.frame.width, height: self.heartARCLine.frame.height)
+            print("line frame: \(self.heartARCLine.frame), bounds: \(self.heartARCLine.bounds)")
+        }
+        */
         
     }
     
-    func animateLieLine(BPM: Double, truthRate: CGFloat) {
-        
-        let duration = BPM / 60
-        var ripple: CGFloat = 2.0
-        var heightratio: CGFloat = 0.05
-        var lineWidth = 1.0
-        
-        if truthRate > 0.5 {
-            heightratio = (1 - truthRate) * 0.4
-            ripple = 3
-            lineWidth  = 1
-        }else if truthRate > 0.3 {
-            heightratio = (1 - truthRate) * 0.6
-            ripple = 4
-            lineWidth = 2
-        }else if truthRate > 0.2 {
-            heightratio = (1 - truthRate) * 0.8
-            ripple = 5
-            lineWidth = 3
-        }else if truthRate > 0.1 {
-            heightratio = (1 - truthRate)
-            ripple = 6
-            lineWidth = 4
-        }else {
-            heightratio = (1 - truthRate) * 1.2
-            ripple = 7
-            lineWidth = 5
+    override func animationDidStart(anim: CAAnimation) {
+        if anim == self.heartARCLine.animationForKey("heartLine") {
+            print("postition did start")
+        }else if anim == self.heartARCLine.animationForKey("scale") {
+            print("scale did start")
         }
-        print("riple: \(ripple), height ratio: \(heightratio)")
-        
-        //change layer
-        self.lieARCLine.removeAllAnimations()
-        self.lieARCLine = Singleton.sharedInstance.getHeartLineARCLayer(self.heartLineView.bounds.size, ripple: Int(ripple), heightRatio: heightratio, lineWidth: lineWidth)
-        self.lieGradient.mask = self.lieARCLine
-        
-        
-        //make animation
-        let lieAnimation = Singleton.sharedInstance.createPositionAnimation(duration, startPoint: CGPoint(x: 0, y: -0), EndPoint: CGPoint(x: -(self.heartLineView.frame.width * 2 / ripple), y: -0), offset: 0.0)
-        self.lieARCLine.addAnimation(lieAnimation, forKey: "lieLine")
     }
+    
+    override func animationDidStop(anim: CAAnimation, finished flag: Bool) {
+        
+        if anim == self.heartARCLine.animationForKey("heartLine") {
+            print("postition did stop")
+            //start new one
+            if self.navigationController?.visibleViewController?.restorationIdentifier == "VideoView" {
+                self.animateHeartLine(self.bpm)
+            }else {
+                self.heartARCLine.removeAllAnimations()
+            }
+            
+            
+        }else if anim == self.heartARCLine.animationForKey("scale") {
+            print("scale did stop")
+        }
+    }
+    
     
     
     
@@ -1054,7 +1130,6 @@ class VideoTestViewController: UIViewController, AVCaptureVideoDataOutputSampleB
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
         if segue.identifier == "ResultSegue" {
             //save last video
-            
             if let VC = segue.destinationViewController as? ResultPageViewController {
                 
                 print("prepare seque: \(self.questions.last)")

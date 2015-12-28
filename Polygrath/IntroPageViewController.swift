@@ -35,6 +35,13 @@ class IntroPageViewController: UIViewController {
     
     @IBOutlet weak var heartImage: UIImageView!
 
+    
+    @IBOutlet var fingerPrintImageView: UIImageView!
+    
+    @IBOutlet var fingerPrintBTMConst: NSLayoutConstraint!
+    
+    
+    
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -72,6 +79,13 @@ class IntroPageViewController: UIViewController {
             
         }
         
+        //finger print
+        if self.pageIndex == 1 {
+            self.fingerPrintImageView.alpha = 1
+            self.fingerPrintImageView.updateConstraintsIfNeeded()
+            self.fingerPrintBTMConst.constant = self.fingerPrintImageView.frame.height / 2
+        }
+        
         
         //self.startButton.setNeedsUpdateConstraints()
         //self.startButtonBottomConstraint.constant = -60 //hide
@@ -83,9 +97,12 @@ class IntroPageViewController: UIViewController {
             switch index {
             case 0:
                 print("page. 0: open watch app")
+                //animate iWatch
+                self.iWatchTimer = NSTimer.scheduledTimerWithTimeInterval(0.4, target: self, selector: Selector("animateiWatch"), userInfo: nil, repeats: true)
                 
             case 1:
                 print("page. 1: keep finger touch")
+                self.animateFinger()
                 
             case 2:
                 print("page. 2: Ready page, camera authorize")
@@ -142,6 +159,49 @@ class IntroPageViewController: UIViewController {
         }
     }
     
+    var iWatchTimer = NSTimer()
+    var i = 0
+    func animateiWatch() {
+        
+        self.i++
+        if i % 3 == 1 {
+            self.imageView.image = UIImage(named: "iwatchIntro1")
+        }else if i % 3 == 2 {
+            self.imageView.image = UIImage(named: "iwatchIntro2")
+        }else {
+            self.imageView.image = UIImage(named: "iwatchIntro3")
+        }
+    }
+    
+    
+    var snapFinger = UIView()
+    func animateFinger() {
+        
+        self.imageView.alpha = 1
+        self.snapFinger = self.imageView.snapshotViewAfterScreenUpdates(false)
+        let oldFrame = self.imageView.frame
+        self.snapFinger.frame = oldFrame
+        self.view.addSubview(self.snapFinger)
+        self.view.bringSubviewToFront(self.snapFinger)
+        self.imageView.alpha = 0 //hide original
+        self.snapFinger.alpha = 1
+        
+        UIView.animateWithDuration(0.7, delay: 0, options: [UIViewAnimationOptions.CurveEaseIn, UIViewAnimationOptions.Autoreverse, UIViewAnimationOptions.Repeat], animations: { () -> Void in
+            
+            self.snapFinger.frame = CGRect(x: oldFrame.origin.x, y: oldFrame.origin.y - 50, width: oldFrame.width, height: oldFrame.height)
+            }) { (Bool) -> Void in
+                print("remove snap finger from view")
+                self.snapFinger.removeFromSuperview()
+        }
+        
+    }
+    
+    
+    
+    
+    
+    
+//button
     
     @IBAction func startButtonTouch(sender: AnyObject) {
         print("segue to video test")

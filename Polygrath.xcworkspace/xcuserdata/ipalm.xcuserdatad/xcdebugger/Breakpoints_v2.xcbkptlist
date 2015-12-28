@@ -126,7 +126,7 @@
                   moduleName = "Polygrath"
                   usesParentBreakpointCondition = "Yes"
                   urlString = "file:///Users/ipalm/Documents/iWatch/Polygrath/Polygrath/AllowCameraViewController.swift"
-                  timestampString = "472670549.3979"
+                  timestampString = "473017111.361133"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
                   startingLineNumber = "220"
@@ -141,12 +141,60 @@
                   moduleName = "Polygrath"
                   usesParentBreakpointCondition = "Yes"
                   urlString = "file:///Users/ipalm/Documents/iWatch/Polygrath/Polygrath/AllowCameraViewController.swift"
-                  timestampString = "472670549.39823"
+                  timestampString = "473017111.361482"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
                   startingLineNumber = "220"
                   endingLineNumber = "220"
                   offsetFromSymbolStart = "452">
+               </Location>
+            </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Polygrath/FrontHeartViewController.swift"
+            timestampString = "472969028.244956"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "69"
+            endingLineNumber = "69"
+            landmarkName = "animateHeart()"
+            landmarkType = "5">
+            <Locations>
+               <Location
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "Polygrath.FrontHeartViewController.animateHeart (Polygrath.FrontHeartViewController)() -&gt; ()"
+                  moduleName = "Polygrath"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/ipalm/Documents/iWatch/Polygrath/Polygrath/FrontHeartViewController.swift"
+                  timestampString = "473017111.363057"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "69"
+                  endingLineNumber = "69"
+                  offsetFromSymbolStart = "940">
+               </Location>
+               <Location
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "Polygrath.FrontHeartViewController.(animateHeart (Polygrath.FrontHeartViewController) -&gt; () -&gt; ()).(closure #1)"
+                  moduleName = "Polygrath"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/ipalm/Documents/iWatch/Polygrath/Polygrath/FrontHeartViewController.swift"
+                  timestampString = "473017111.363255"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "71"
+                  endingLineNumber = "71"
+                  offsetFromSymbolStart = "24">
                </Location>
             </Locations>
          </BreakpointContent>

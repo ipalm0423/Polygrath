@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="9060" systemVersion="15B42" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" launchScreen="YES" useTraitCollections="YES" initialViewController="01J-lp-oVM">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="9060" systemVersion="15C50" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" launchScreen="YES" useTraitCollections="YES" initialViewController="01J-lp-oVM">
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="9051"/>
     </dependencies>
@@ -17,28 +17,44 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Welcome" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="rcc-jv-UMe">
-                                <rect key="frame" x="223" y="219" width="153.5" height="42"/>
+                                <rect key="frame" x="223" y="75.5" width="153.5" height="42"/>
                                 <animations/>
                                 <fontDescription key="fontDescription" name="HelveticaNeue-Bold" family="Helvetica Neue" pointSize="35"/>
                                 <color key="textColor" red="0.85490196080000003" green="0.1019607843" blue="0.16078431369999999" alpha="1" colorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Polygraph" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="3w1-Nd-8eT">
-                                <rect key="frame" x="184" y="271" width="232.5" height="57.5"/>
+                                <rect key="frame" x="184" y="127.5" width="232.5" height="57.5"/>
                                 <animations/>
                                 <fontDescription key="fontDescription" name="HelveticaNeue-BoldItalic" family="Helvetica Neue" pointSize="48"/>
                                 <color key="textColor" red="0.94901960780000005" green="0.94901960780000005" blue="0.94901960780000005" alpha="1" colorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="launchHeart" translatesAutoresizingMaskIntoConstraints="NO" id="Y6g-9d-mcE">
+                                <rect key="frame" x="225" y="235" width="150" height="130"/>
+                                <animations/>
+                            </imageView>
                         </subviews>
                         <animations/>
                         <color key="backgroundColor" red="0.0" green="0.1198503236" blue="0.23984749329999999" alpha="1" colorSpace="calibratedRGB"/>
                         <constraints>
                             <constraint firstItem="3w1-Nd-8eT" firstAttribute="centerX" secondItem="Ze5-6b-2t3" secondAttribute="centerX" id="3jT-yL-Yhn"/>
+                            <constraint firstItem="rcc-jv-UMe" firstAttribute="top" secondItem="Llm-lL-Icb" secondAttribute="bottom" constant="60" id="Bcn-ge-xwz"/>
+                            <constraint firstItem="Y6g-9d-mcE" firstAttribute="centerX" secondItem="Ze5-6b-2t3" secondAttribute="centerX" id="Ff0-BM-z7s"/>
+                            <constraint firstItem="Y6g-9d-mcE" firstAttribute="top" secondItem="3w1-Nd-8eT" secondAttribute="bottom" constant="60" id="LRT-6h-D7v"/>
                             <constraint firstItem="rcc-jv-UMe" firstAttribute="centerX" secondItem="Ze5-6b-2t3" secondAttribute="centerX" id="YyV-V3-Ktw"/>
-                            <constraint firstItem="rcc-jv-UMe" firstAttribute="centerY" secondItem="Ze5-6b-2t3" secondAttribute="centerY" constant="-60" id="bjI-Nc-f3c"/>
+                            <constraint firstItem="rcc-jv-UMe" firstAttribute="centerY" secondItem="Ze5-6b-2t3" secondAttribute="centerY" constant="-100" id="bjI-Nc-f3c"/>
+                            <constraint firstItem="Y6g-9d-mcE" firstAttribute="centerY" secondItem="Ze5-6b-2t3" secondAttribute="centerY" id="eTe-hC-eNJ"/>
                             <constraint firstItem="3w1-Nd-8eT" firstAttribute="top" secondItem="rcc-jv-UMe" secondAttribute="bottom" constant="10" id="gIh-NL-o3S"/>
+                            <constraint firstItem="Y6g-9d-mcE" firstAttribute="top" secondItem="3w1-Nd-8eT" secondAttribute="bottom" constant="50" id="rNt-pD-Cqa"/>
                         </constraints>
+                        <variation key="default">
+                            <mask key="constraints">
+                                <exclude reference="Bcn-ge-xwz"/>
+                                <exclude reference="bjI-Nc-f3c"/>
+                                <exclude reference="LRT-6h-D7v"/>
+                            </mask>
+                        </variation>
                     </view>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="iYj-Kq-Ea1" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -46,4 +62,7 @@
             <point key="canvasLocation" x="53" y="375"/>
         </scene>
     </scenes>
+    <resources>
+        <image name="launchHeart" width="150" height="130"/>
+    </resources>
 </document>

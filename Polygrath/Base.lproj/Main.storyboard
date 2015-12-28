@@ -19,27 +19,49 @@
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
+                            <stackView opaque="NO" contentMode="scaleAspectFit" spacing="-2" translatesAutoresizingMaskIntoConstraints="NO" id="cDZ-dl-CLI">
+                                <rect key="frame" x="0.0" y="254" width="1754" height="153"/>
+                                <subviews>
+                                    <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="welcomeLine" translatesAutoresizingMaskIntoConstraints="NO" id="ue0-AU-noU">
+                                        <rect key="frame" x="0.0" y="0.0" width="586" height="153"/>
+                                        <animations/>
+                                    </imageView>
+                                    <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="welcomeLine" translatesAutoresizingMaskIntoConstraints="NO" id="Uoh-sU-VwB" userLabel="welcomeLineR">
+                                        <rect key="frame" x="584" y="0.0" width="586" height="153"/>
+                                        <animations/>
+                                    </imageView>
+                                    <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="welcomeLine" translatesAutoresizingMaskIntoConstraints="NO" id="9iv-SH-mgl">
+                                        <rect key="frame" x="1168" y="0.0" width="586" height="153"/>
+                                        <animations/>
+                                    </imageView>
+                                </subviews>
+                                <animations/>
+                            </stackView>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Polygrath" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="NL3-E8-xua">
-                                <rect key="frame" x="0.0" y="114" width="600" height="60"/>
+                                <rect key="frame" x="0.0" y="124" width="600" height="60"/>
                                 <animations/>
                                 <fontDescription key="fontDescription" name="HelveticaNeue-BoldItalic" family="Helvetica Neue" pointSize="50"/>
                                 <color key="textColor" red="0.94901960780000005" green="0.94901960780000005" blue="0.94901960780000005" alpha="1" colorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Find the truth by your iWatch" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="eoj-PA-1wN">
-                                <rect key="frame" x="20" y="194" width="560" height="21"/>
+                                <rect key="frame" x="20" y="204" width="560" height="21"/>
                                 <animations/>
                                 <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="18"/>
                                 <color key="textColor" red="0.94901960780000005" green="0.94901960780000005" blue="0.94901960780000005" alpha="1" colorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="nru-0U-MGe">
-                                <rect key="frame" x="236" y="283" width="126" height="33"/>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="nru-0U-MGe">
+                                <rect key="frame" x="260" y="496" width="80" height="24"/>
                                 <animations/>
-                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
-                                <fontDescription key="fontDescription" name="HelveticaNeue-LightItalic" family="Helvetica Neue" pointSize="18"/>
-                                <state key="normal" title="Read Statement">
-                                    <color key="titleColor" red="0.85490196080000003" green="0.1019607843" blue="0.16078431369999999" alpha="1" colorSpace="calibratedRGB"/>
+                                <color key="backgroundColor" red="0.85490196080000003" green="0.1019607843" blue="0.16078431369999999" alpha="1" colorSpace="calibratedRGB"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="24" id="J6P-ck-iHW"/>
+                                    <constraint firstAttribute="width" constant="80" id="ONQ-Ih-LqF"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" name="HelveticaNeue-LightItalic" family="Helvetica Neue" pointSize="14"/>
+                                <state key="normal" title="Statement">
+                                    <color key="titleColor" red="0.94901960780000005" green="0.94901960780000005" blue="0.94901960780000005" alpha="1" colorSpace="calibratedRGB"/>
                                 </state>
                                 <connections>
                                     <segue destination="QZC-y8-dEo" kind="show" id="hmo-W2-iDJ"/>
@@ -72,16 +94,19 @@
                             <constraint firstItem="wfy-db-euE" firstAttribute="top" secondItem="Nm4-Ca-daW" secondAttribute="bottom" id="1wv-pD-hcK"/>
                             <constraint firstItem="NL3-E8-xua" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="CFy-EY-BY1"/>
                             <constraint firstItem="eoj-PA-1wN" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="KrW-4G-CCc"/>
+                            <constraint firstItem="cDZ-dl-CLI" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leading" id="L53-Bm-xhg"/>
                             <constraint firstAttribute="trailingMargin" secondItem="eoj-PA-1wN" secondAttribute="trailing" id="LXW-Gy-MsF"/>
                             <constraint firstItem="eoj-PA-1wN" firstAttribute="top" secondItem="NL3-E8-xua" secondAttribute="bottom" constant="20" id="Ogd-Bc-otR"/>
                             <constraint firstItem="Nm4-Ca-daW" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leading" id="Qgc-WT-Q8k"/>
                             <constraint firstItem="nru-0U-MGe" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="RFB-Rm-FIw"/>
+                            <constraint firstItem="cDZ-dl-CLI" firstAttribute="centerY" secondItem="8bC-Xf-vdC" secondAttribute="centerY" constant="30" id="SrG-Ga-eih"/>
                             <constraint firstAttribute="trailing" secondItem="Nm4-Ca-daW" secondAttribute="trailing" id="Y3I-5L-dr8"/>
                             <constraint firstItem="eoj-PA-1wN" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leadingMargin" id="bG5-T1-keS"/>
                             <constraint firstItem="NL3-E8-xua" firstAttribute="centerY" secondItem="8bC-Xf-vdC" secondAttribute="centerY" id="jWf-HS-NXn"/>
                             <constraint firstAttribute="trailing" secondItem="NL3-E8-xua" secondAttribute="trailing" id="mec-Cn-u2J"/>
-                            <constraint firstItem="NL3-E8-xua" firstAttribute="top" secondItem="y3c-jy-aDJ" secondAttribute="bottom" constant="50" id="om0-zf-5kz"/>
+                            <constraint firstItem="NL3-E8-xua" firstAttribute="top" secondItem="y3c-jy-aDJ" secondAttribute="bottom" constant="60" id="om0-zf-5kz"/>
                             <constraint firstItem="nru-0U-MGe" firstAttribute="centerY" secondItem="8bC-Xf-vdC" secondAttribute="centerY" id="qyF-lY-Owl"/>
+                            <constraint firstItem="Nm4-Ca-daW" firstAttribute="top" secondItem="nru-0U-MGe" secondAttribute="bottom" constant="20" id="rPw-rW-vvV"/>
                             <constraint firstItem="Nm4-Ca-daW" firstAttribute="height" secondItem="8bC-Xf-vdC" secondAttribute="height" multiplier="1:10" id="vbA-RC-MKn"/>
                             <constraint firstItem="NL3-E8-xua" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leading" id="z8c-Lo-ddb"/>
                         </constraints>
@@ -90,12 +115,17 @@
                                 <exclude reference="CFy-EY-BY1"/>
                                 <exclude reference="jWf-HS-NXn"/>
                                 <exclude reference="KrW-4G-CCc"/>
+                                <exclude reference="qyF-lY-Owl"/>
                             </mask>
                         </variation>
                     </view>
                     <navigationItem key="navigationItem" id="Ogh-gO-gLw"/>
                     <connections>
+                        <outlet property="lineStackView" destination="cDZ-dl-CLI" id="yQ9-3X-PvQ"/>
+                        <outlet property="reflectionImageView" destination="Uoh-sU-VwB" id="Dx3-1d-M46"/>
                         <outlet property="startButton" destination="Nm4-Ca-daW" id="4GS-Wk-LoV"/>
+                        <outlet property="statementButton" destination="nru-0U-MGe" id="UGr-dd-7Xg"/>
+                        <outlet property="welcomeLineImage" destination="ue0-AU-noU" id="OYi-6d-Lga"/>
                         <segue destination="jms-gb-bQb" kind="show" identifier="StartSegue" id="Z6b-8W-Mgn"/>
                     </connections>
                 </viewController>
@@ -201,14 +231,14 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Open Polygraph on your iWatch" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="AZU-Jo-APg">
-                                <rect key="frame" x="20" y="70" width="560" height="38"/>
+                                <rect key="frame" x="20" y="70" width="560" height="37.5"/>
                                 <animations/>
                                 <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="32"/>
                                 <color key="textColor" red="0.94901960780000005" green="0.94901960780000005" blue="0.94901960780000005" alpha="1" colorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Open Polygraph on your iWatch" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="efj-Jb-2GT">
-                                <rect key="frame" x="20" y="479" width="560" height="21"/>
+                                <rect key="frame" x="20" y="478" width="560" height="21.5"/>
                                 <animations/>
                                 <fontDescription key="fontDescription" name="HelveticaNeue-Light" family="Helvetica Neue" pointSize="18"/>
                                 <color key="textColor" red="0.94901960780000005" green="0.94901960780000005" blue="0.94901960780000005" alpha="1" colorSpace="calibratedRGB"/>
@@ -240,7 +270,7 @@
                                     <action selector="startButtonTouch:" destination="bYr-00-xy8" eventType="touchUpInside" id="my8-Tb-WRT"/>
                                 </connections>
                             </button>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="heartLine" translatesAutoresizingMaskIntoConstraints="NO" id="UNp-XF-nIF">
+                            <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="finger" translatesAutoresizingMaskIntoConstraints="NO" id="UNp-XF-nIF">
                                 <rect key="frame" x="0.0" y="180" width="600" height="200"/>
                                 <animations/>
                             </imageView>
@@ -252,6 +282,10 @@
                                     <constraint firstAttribute="height" constant="120" id="dgg-Kk-i0t"/>
                                 </constraints>
                             </imageView>
+                            <imageView userInteractionEnabled="NO" alpha="0.0" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="fingerprint" translatesAutoresizingMaskIntoConstraints="NO" id="EPr-sS-btn">
+                                <rect key="frame" x="150" y="330" width="300" height="98"/>
+                                <animations/>
+                            </imageView>
                         </subviews>
                         <animations/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -262,22 +296,27 @@
                             <constraint firstAttribute="trailing" secondItem="efj-Jb-2GT" secondAttribute="trailing" constant="20" id="5wP-Ag-UVm"/>
                             <constraint firstItem="VKH-AO-uhy" firstAttribute="top" secondItem="iJz-iY-pKm" secondAttribute="bottom" constant="100" id="6OI-fr-ViH"/>
                             <constraint firstItem="UNp-XF-nIF" firstAttribute="centerY" secondItem="fwq-Wq-W5B" secondAttribute="centerY" id="6yP-k4-NZa"/>
+                            <constraint firstItem="EPr-sS-btn" firstAttribute="centerX" secondItem="fwq-Wq-W5B" secondAttribute="centerX" id="8QB-fJ-Vkj"/>
                             <constraint firstItem="UNp-XF-nIF" firstAttribute="top" secondItem="AZU-Jo-APg" secondAttribute="bottom" constant="40" id="8oR-dO-Wco"/>
                             <constraint firstAttribute="trailing" secondItem="UNp-XF-nIF" secondAttribute="trailing" id="CIU-6R-7eJ"/>
+                            <constraint firstAttribute="trailing" secondItem="EPr-sS-btn" secondAttribute="trailing" id="Gcw-Rh-hcE"/>
                             <constraint firstItem="VKH-AO-uhy" firstAttribute="top" secondItem="iJz-iY-pKm" secondAttribute="bottom" constant="20" id="JBW-5B-Ikf"/>
                             <constraint firstItem="qN1-P1-Obu" firstAttribute="height" secondItem="fwq-Wq-W5B" secondAttribute="height" multiplier="1:10" id="L0L-JG-ith"/>
                             <constraint firstItem="AZU-Jo-APg" firstAttribute="top" secondItem="SfV-aH-kwx" secondAttribute="bottom" constant="50" id="LqF-br-d3C"/>
                             <constraint firstItem="KkN-dj-af8" firstAttribute="centerY" secondItem="UNp-XF-nIF" secondAttribute="centerY" constant="-5" id="MPz-qH-S63"/>
                             <constraint firstAttribute="trailingMargin" secondItem="UNp-XF-nIF" secondAttribute="trailing" constant="20" id="Mq3-QK-j3L"/>
+                            <constraint firstItem="EPr-sS-btn" firstAttribute="leading" secondItem="fwq-Wq-W5B" secondAttribute="leading" id="O9S-6Y-GLv"/>
                             <constraint firstItem="KkN-dj-af8" firstAttribute="centerX" secondItem="UNp-XF-nIF" secondAttribute="centerX" id="Snd-8G-RzD"/>
                             <constraint firstItem="iJz-iY-pKm" firstAttribute="centerX" secondItem="fwq-Wq-W5B" secondAttribute="centerX" id="VaN-IB-fu0"/>
                             <constraint firstItem="qN1-P1-Obu" firstAttribute="leading" secondItem="fwq-Wq-W5B" secondAttribute="leading" id="VpN-5U-5RO"/>
+                            <constraint firstItem="EPr-sS-btn" firstAttribute="width" secondItem="fwq-Wq-W5B" secondAttribute="width" multiplier="1:2" id="WaK-jx-nZP"/>
                             <constraint firstItem="UNp-XF-nIF" firstAttribute="centerY" secondItem="fwq-Wq-W5B" secondAttribute="centerY" constant="-20" id="cB7-Eh-Y0E"/>
                             <constraint firstItem="VKH-AO-uhy" firstAttribute="top" secondItem="qN1-P1-Obu" secondAttribute="bottom" id="fyD-8b-043"/>
                             <constraint firstAttribute="trailing" secondItem="AZU-Jo-APg" secondAttribute="trailing" constant="20" id="g64-OW-A3S"/>
                             <constraint firstItem="UNp-XF-nIF" firstAttribute="leading" secondItem="fwq-Wq-W5B" secondAttribute="leading" id="h6B-OO-b8f"/>
                             <constraint firstItem="AZU-Jo-APg" firstAttribute="leading" secondItem="fwq-Wq-W5B" secondAttribute="leading" constant="20" id="hPC-jb-9Hl"/>
                             <constraint firstAttribute="trailing" secondItem="qN1-P1-Obu" secondAttribute="trailing" id="j3m-5p-CAH"/>
+                            <constraint firstItem="UNp-XF-nIF" firstAttribute="bottom" secondItem="EPr-sS-btn" secondAttribute="top" constant="50" id="kGM-hV-Pbz"/>
                             <constraint firstItem="UNp-XF-nIF" firstAttribute="leading" secondItem="fwq-Wq-W5B" secondAttribute="leadingMargin" constant="20" id="lMN-Ll-5ZH"/>
                             <constraint firstItem="qN1-P1-Obu" firstAttribute="top" secondItem="efj-Jb-2GT" secondAttribute="bottom" constant="40" id="qKn-54-NIq"/>
                             <constraint firstItem="UNp-XF-nIF" firstAttribute="height" secondItem="fwq-Wq-W5B" secondAttribute="height" multiplier="1:3" id="rQx-2I-bX5"/>
@@ -291,6 +330,8 @@
                                 <exclude reference="8oR-dO-Wco"/>
                                 <exclude reference="Mq3-QK-j3L"/>
                                 <exclude reference="lMN-Ll-5ZH"/>
+                                <exclude reference="Gcw-Rh-hcE"/>
+                                <exclude reference="O9S-6Y-GLv"/>
                                 <exclude reference="zTc-T4-H9a"/>
                                 <exclude reference="vIO-Vu-nDg"/>
                                 <exclude reference="6OI-fr-ViH"/>
@@ -298,6 +339,8 @@
                         </variation>
                     </view>
                     <connections>
+                        <outlet property="fingerPrintBTMConst" destination="kGM-hV-Pbz" id="vlX-E3-xLc"/>
+                        <outlet property="fingerPrintImageView" destination="EPr-sS-btn" id="QUi-Cc-rQh"/>
                         <outlet property="heartImage" destination="KkN-dj-af8" id="6pA-JT-jd6"/>
                         <outlet property="imageView" destination="UNp-XF-nIF" id="Um4-xn-VBs"/>
                         <outlet property="pageControl" destination="iJz-iY-pKm" id="aXx-2g-TQB"/>
@@ -530,7 +573,7 @@
         <!--Video Test View Controller-->
         <scene sceneID="X9Y-ji-1yz">
             <objects>
-                <viewController id="vg2-cG-mDi" customClass="VideoTestViewController" customModule="Polygrath" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="VideoView" useStoryboardIdentifierAsRestorationIdentifier="YES" id="vg2-cG-mDi" customClass="VideoTestViewController" customModule="Polygrath" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="BBY-Uy-Eiu"/>
                         <viewControllerLayoutGuide type="bottom" id="Eia-G7-nO3"/>
@@ -553,12 +596,14 @@
                                     <action selector="recordButtonTouch:" destination="vg2-cG-mDi" eventType="touchUpInside" id="ldd-O7-Iol"/>
                                 </connections>
                             </button>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="egV-5L-V3R">
-                                <rect key="frame" x="551" y="40" width="39" height="27"/>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="egV-5L-V3R">
+                                <rect key="frame" x="10" y="10" width="25" height="25"/>
                                 <animations/>
-                                <color key="backgroundColor" red="0.40000000600000002" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="12"/>
-                                <state key="normal" title="Switch"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="25" id="80h-ag-sKd"/>
+                                    <constraint firstAttribute="width" constant="25" id="EIt-cF-GWo"/>
+                                </constraints>
+                                <state key="normal" image="switch"/>
                                 <connections>
                                     <action selector="switchButtonTouch:" destination="vg2-cG-mDi" eventType="touchUpInside" id="zQe-kk-dli"/>
                                 </connections>
@@ -575,7 +620,7 @@
                                     <action selector="finishedButtonTouch:" destination="vg2-cG-mDi" eventType="touchUpInside" id="1bk-Es-Eoh"/>
                                 </connections>
                             </button>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="heart-1" translatesAutoresizingMaskIntoConstraints="NO" id="1ic-Lh-fju">
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="heart" translatesAutoresizingMaskIntoConstraints="NO" id="1ic-Lh-fju">
                                 <rect key="frame" x="230" y="208" width="140" height="120"/>
                                 <animations/>
                                 <constraints>
@@ -641,7 +686,7 @@
                                 <nil key="highlightedColor"/>
                             </label>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="I5K-pv-Rl9">
-                                <rect key="frame" x="0.0" y="160.5" width="600" height="215"/>
+                                <rect key="frame" x="0.0" y="160" width="600" height="215"/>
                                 <animations/>
                             </view>
                         </subviews>
@@ -663,7 +708,8 @@
                             <constraint firstItem="zvr-mm-RHy" firstAttribute="centerX" secondItem="NfC-fF-U3p" secondAttribute="centerX" id="MT3-cr-IW0"/>
                             <constraint firstItem="hhA-1J-xCZ" firstAttribute="centerX" secondItem="awy-KM-Y9B" secondAttribute="centerX" id="Mtv-nY-cxx"/>
                             <constraint firstAttribute="trailing" secondItem="egV-5L-V3R" secondAttribute="trailing" constant="10" id="Ojw-JP-F4Q"/>
-                            <constraint firstItem="egV-5L-V3R" firstAttribute="top" secondItem="BBY-Uy-Eiu" secondAttribute="bottom" constant="40" id="Xae-cS-II5"/>
+                            <constraint firstItem="egV-5L-V3R" firstAttribute="top" secondItem="BBY-Uy-Eiu" secondAttribute="bottom" constant="10" id="Xae-cS-II5"/>
+                            <constraint firstItem="egV-5L-V3R" firstAttribute="leading" secondItem="Ok9-FT-77G" secondAttribute="leading" constant="10" id="ZpH-aY-zR6"/>
                             <constraint firstItem="awy-KM-Y9B" firstAttribute="bottom" secondItem="1ic-Lh-fju" secondAttribute="top" constant="-40" id="aS2-jQ-gwj"/>
                             <constraint firstItem="NfC-fF-U3p" firstAttribute="centerX" secondItem="Ok9-FT-77G" secondAttribute="centerX" constant="-60" id="ae4-Cs-tEC"/>
                             <constraint firstItem="oxS-rS-KW5" firstAttribute="top" secondItem="BBY-Uy-Eiu" secondAttribute="bottom" constant="10" id="dQQ-ox-jFn"/>
@@ -679,6 +725,7 @@
                         <variation key="default">
                             <mask key="constraints">
                                 <exclude reference="2lC-W1-VlA"/>
+                                <exclude reference="Ojw-JP-F4Q"/>
                             </mask>
                         </variation>
                     </view>
@@ -1991,12 +2038,12 @@ After all, the result of polygrph can only be a refenece. So have fun! Don't be 
     <resources>
         <image name="allow" width="252" height="161"/>
         <image name="dot-30-vec" width="30" height="30"/>
+        <image name="finger" width="124" height="174"/>
+        <image name="fingerprint" width="167" height="98"/>
         <image name="finish" width="71" height="71"/>
         <image name="healthStore" width="70" height="70"/>
         <image name="heart" width="146" height="127"/>
-        <image name="heart-1" width="150" height="129"/>
         <image name="heart-80-vec" width="80" height="80"/>
-        <image name="heartLine" width="375" height="116"/>
         <image name="mic-30-vec" width="30" height="30"/>
         <image name="mic-60-vec" width="60" height="60"/>
         <image name="percentage-30-vec" width="30" height="30"/>
@@ -2006,7 +2053,9 @@ After all, the result of polygrph can only be a refenece. So have fun! Don't be 
         <image name="recordIntro" width="100" height="163"/>
         <image name="recording" width="95" height="95"/>
         <image name="report-press" width="20" height="16"/>
+        <image name="switch" width="29" height="29"/>
         <image name="warning-30-vec" width="30" height="30"/>
+        <image name="welcomeLine" width="586" height="153"/>
     </resources>
     <inferredMetricsTieBreakers>
         <segue reference="X1U-ZK-9P1"/>
