@@ -15,18 +15,18 @@
     },
     {
       "idiom" : "watch",
-      "filename" : "heart-2.png",
+      "filename" : "heart@2x.png",
       "scale" : "2x"
     },
     {
       "idiom" : "watch",
-      "filename" : "heart.png",
+      "filename" : "heart@2x-1.png",
       "screen-width" : "<=145",
       "scale" : "2x"
     },
     {
       "idiom" : "watch",
-      "filename" : "heart-1.png",
+      "filename" : "heart@2x-2.png",
       "screen-width" : ">145",
       "scale" : "2x"
     }

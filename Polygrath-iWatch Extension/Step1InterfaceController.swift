@@ -22,14 +22,13 @@ class Step1InterfaceController: WKInterfaceController {
     override func willActivate() {
         // This method is called when watch view controller is about to be visible to user
         super.willActivate()
-        self.animatePulse()
-        self.startAnimate()
+        
     }
 
     override func didDeactivate() {
         // This method is called when watch view controller is no longer visible
         super.didDeactivate()
-        self.stopAnimate()
+        
     }
 
     
@@ -41,7 +40,7 @@ class Step1InterfaceController: WKInterfaceController {
         
     }
     
-    @IBOutlet var image1: WKInterfaceImage!
+    
     
     @IBOutlet var DoneButton: WKInterfaceButton!
     
@@ -58,24 +57,7 @@ class Step1InterfaceController: WKInterfaceController {
         
     }
     
-    func startAnimate() {
-        
-        self.animationTimer = NSTimer.scheduledTimerWithTimeInterval(2, target: self, selector: Selector("animatePulse"), userInfo: nil, repeats: true)
-    }
     
-    func stopAnimate() {
-        self.animationTimer?.invalidate()
-        self.animationTimer = nil
-    }
-    
-    func animatePulse() {
-        self.image1.setRelativeWidth(1.0, withAdjustment: 0.0)
-        self.animateWithDuration(2) { () -> Void in
-            self.image1.setRelativeWidth(0.0, withAdjustment: 0)
-        }
-        
-        
-    }
     
     
     var healthStore = HKHealthStore()
@@ -94,17 +76,17 @@ class Step1InterfaceController: WKInterfaceController {
                         print(ER)
                     }
                     if bool {
-                        print("agree HK")
+                        print("reply HK")
                         
                     }else {
-                        print("didn't agree HK")
-                        
+                        print("didn't reply HK")
+                        self.showAlert("Can't Access Health Data", message: "Adjust setting in 'Health' app on your iPhone", completion: { () -> Void in
+                            
+                            
+                        })
                     }
                 })
-                self.showAlert("Can't Access Health Data", message: "Adjust setting in 'Health' app on your iPhone", completion: { () -> Void in
-                    print("seage to checkVC")
-                    self.presentControllerWithName("checkVC", context: nil)
-                })
+                
                 return false
                 
             }else {

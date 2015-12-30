@@ -43,7 +43,7 @@ class FrontInterfaceController: WKInterfaceController {
     @IBOutlet var image1: WKInterfaceImage!
     
     func startAnimate() {
-        self.animationTimer = NSTimer.scheduledTimerWithTimeInterval(2, target: self, selector: Selector("animatePulse"), userInfo: nil, repeats: true)
+        self.animationTimer = NSTimer.scheduledTimerWithTimeInterval(1, target: self, selector: Selector("animatePulse"), userInfo: nil, repeats: false)
     }
     
     func stopAnimate() {

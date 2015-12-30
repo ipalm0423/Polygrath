@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder.WatchKit.Storyboard" version="3.0" toolsVersion="9060" systemVersion="15B42" targetRuntime="watchKit" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="ePc-Vh-fql">
+<document type="com.apple.InterfaceBuilder.WatchKit.Storyboard" version="3.0" toolsVersion="9060" systemVersion="15C50" targetRuntime="watchKit" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="ePc-Vh-fql">
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="9051"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBWatchKitPlugin" version="9019"/>
@@ -36,17 +36,24 @@
                     <items>
                         <group width="1" height="1" alignment="center" verticalAlignment="center" layout="vertical" spacing="0.0" id="8f3-MV-BR7">
                             <items>
-                                <label width="1" alignment="center" text="Welcome" textAlignment="center" id="AN6-4A-tFR">
-                                    <color key="textColor" red="0.85490196078431369" green="0.10196078431372549" blue="0.16078431372549018" alpha="1" colorSpace="calibratedRGB"/>
-                                    <fontDescription key="font" type="system" weight="medium" pointSize="19"/>
-                                </label>
-                                <label width="1" alignment="center" text="Polygraph" textAlignment="center" id="Vzb-OW-XGr">
-                                    <fontDescription key="font" type="italicSystem" weight="medium" pointSize="23"/>
-                                </label>
-                                <group width="1" alignment="center" verticalAlignment="bottom" spacing="0.0" id="PFT-9g-hjm">
+                                <group width="1" height="0.5" alignment="center" layout="vertical" id="bfu-Ny-vtf">
                                     <items>
-                                        <imageView width="1" alignment="left" verticalAlignment="center" image="cardiogram" contentMode="right" id="GMj-d2-Ok7"/>
-                                        <imageView width="1" alignment="left" verticalAlignment="center" image="cardiogram" contentMode="right" id="0xb-SD-naq"/>
+                                        <label width="1" alignment="center" text="Welcome" textAlignment="center" id="AN6-4A-tFR">
+                                            <color key="textColor" red="0.85490196078431369" green="0.10196078431372549" blue="0.16078431372549018" alpha="1" colorSpace="calibratedRGB"/>
+                                            <fontDescription key="font" type="system" weight="medium" pointSize="19"/>
+                                        </label>
+                                        <label width="1" alignment="center" text="Polygraph" textAlignment="center" id="Vzb-OW-XGr">
+                                            <fontDescription key="font" type="italicSystem" weight="medium" pointSize="23"/>
+                                        </label>
+                                    </items>
+                                </group>
+                                <group width="1" height="0.5" alignment="center" verticalAlignment="bottom" backgroundImage="cardiogram" contentMode="right" spacing="0.0" id="PFT-9g-hjm">
+                                    <items>
+                                        <imageView width="1" alignment="left" verticalAlignment="center" contentMode="redraw" id="GMj-d2-Ok7"/>
+                                        <label width="1" alignment="center" verticalAlignment="center" text="Slide to Open" textAlignment="center" id="NZa-Ea-qtI">
+                                            <color key="textColor" red="0.94901960780000005" green="0.94901960780000005" blue="0.94901960780000005" alpha="1" colorSpace="calibratedRGB"/>
+                                            <fontDescription key="font" type="italicSystem" weight="medium" pointSize="16"/>
+                                        </label>
                                     </items>
                                     <edgeInsets key="margins" left="0.0" right="0.0" top="0.0" bottom="0.0"/>
                                 </group>
@@ -64,29 +71,6 @@
             </objects>
             <point key="canvasLocation" x="257" y="581"/>
         </scene>
-        <!--Back-->
-        <scene sceneID="iPi-1G-e1F">
-            <objects>
-                <controller identifier="checkVC" title="Back" id="alZ-ph-hkp">
-                    <items>
-                        <group width="1" height="1" alignment="left" layout="vertical" id="4Nz-er-7rr">
-                            <items>
-                                <label alignment="center" text="Please check the 'Health' app in your iPhone" textAlignment="center" numberOfLines="3" id="Yyu-5N-WSf">
-                                    <fontDescription key="font" type="system" weight="medium" pointSize="16"/>
-                                </label>
-                                <group width="1" height="0.5" alignment="center" id="YiZ-Qg-qM1">
-                                    <items>
-                                        <imageView width="1" alignment="center" verticalAlignment="center" image="Health_icon" contentMode="scaleAspectFit" id="0Xi-DW-QYC"/>
-                                    </items>
-                                </group>
-                            </items>
-                        </group>
-                    </items>
-                    <color key="backgroundColor" red="0.0" green="0.1198503236" blue="0.23984749329999999" alpha="1" colorSpace="calibratedRGB"/>
-                </controller>
-            </objects>
-            <point key="canvasLocation" x="257" y="804"/>
-        </scene>
         <!--Step1 Interface Controller-->
         <scene sceneID="cyg-Jh-jez">
             <objects>
@@ -94,24 +78,22 @@
                     <items>
                         <group width="1" height="1" alignment="center" verticalAlignment="center" layout="vertical" spacing="0.0" id="Mlf-gL-HRu">
                             <items>
-                                <label width="1" alignment="center" text="Wear Apple Watch and Press Start" textAlignment="center" baselineAdjustment="alignCenters" numberOfLines="0" id="IN5-aA-aHK">
+                                <label width="1" height="0.5" alignment="center" text="Wear Apple Watch and Press Start" textAlignment="center" baselineAdjustment="alignCenters" numberOfLines="0" id="IN5-aA-aHK">
                                     <fontDescription key="font" type="system" weight="medium" pointSize="16"/>
                                 </label>
-                                <group width="1" alignment="center" verticalAlignment="bottom" spacing="0.0" id="ToU-8L-jsN">
+                                <group width="1" height="0.5" alignment="center" verticalAlignment="bottom" backgroundImage="cardiogram" contentMode="right" spacing="0.0" id="ToU-8L-jsN">
                                     <items>
-                                        <imageView width="1" alignment="left" verticalAlignment="center" image="cardiogram" contentMode="right" id="lEl-U6-rBf"/>
-                                        <imageView width="1" alignment="left" verticalAlignment="center" image="cardiogram" contentMode="right" id="Jdf-Cu-uQ9"/>
+                                        <button width="0.90000000000000002" height="30" alignment="center" verticalAlignment="bottom" title="Start" id="VLT-nk-VXa">
+                                            <color key="titleColor" red="0.94901960780000005" green="0.94901960780000005" blue="0.94901960780000005" alpha="1" colorSpace="calibratedRGB"/>
+                                            <color key="backgroundColor" red="0.85490196080000003" green="0.1019607843" blue="0.16078431369999999" alpha="1" colorSpace="calibratedRGB"/>
+                                            <fontDescription key="font" type="system" weight="medium" pointSize="18"/>
+                                            <connections>
+                                                <segue destination="2i9-1z-G0i" kind="modal" id="39O-FL-1va"/>
+                                            </connections>
+                                        </button>
                                     </items>
                                     <edgeInsets key="margins" left="0.0" right="0.0" top="0.0" bottom="5"/>
                                 </group>
-                                <button width="0.90000000000000002" height="30" alignment="center" verticalAlignment="bottom" title="Start" id="VLT-nk-VXa">
-                                    <color key="titleColor" red="0.94901960780000005" green="0.94901960780000005" blue="0.94901960780000005" alpha="1" colorSpace="calibratedRGB"/>
-                                    <color key="backgroundColor" red="0.85490196080000003" green="0.1019607843" blue="0.16078431369999999" alpha="1" colorSpace="calibratedRGB"/>
-                                    <fontDescription key="font" type="system" weight="medium" pointSize="18"/>
-                                    <connections>
-                                        <segue destination="2i9-1z-G0i" kind="modal" id="39O-FL-1va"/>
-                                    </connections>
-                                </button>
                             </items>
                             <edgeInsets key="margins" left="0.0" right="0.0" top="15" bottom="6"/>
                         </group>
@@ -119,7 +101,6 @@
                     <color key="backgroundColor" red="0.0" green="0.12819038476603184" blue="0.25653783420202014" alpha="1" colorSpace="calibratedRGB"/>
                     <connections>
                         <outlet property="DoneButton" destination="VLT-nk-VXa" id="VqD-cb-A9u"/>
-                        <outlet property="image1" destination="lEl-U6-rBf" id="dw6-Kt-v7I"/>
                     </connections>
                 </controller>
             </objects>
@@ -269,6 +250,6 @@
         </scene>
     </scenes>
     <inferredMetricsTieBreakers>
-        <segue reference="He1-Yo-2Wh"/>
+        <segue reference="byT-ZC-oD7"/>
     </inferredMetricsTieBreakers>
 </document>

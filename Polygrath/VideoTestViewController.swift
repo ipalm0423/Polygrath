@@ -183,7 +183,7 @@ class VideoTestViewController: UIViewController, AVCaptureVideoDataOutputSampleB
         
         //heart line
         self.setupHeartLineLayer()
-        
+        //self.testHeart()
     
     }
 
@@ -345,7 +345,10 @@ class VideoTestViewController: UIViewController, AVCaptureVideoDataOutputSampleB
                     
                     //calculation
                     self.truthLabel.alpha = 0
-                    if self.getTruthRate() < 0.5 {
+                    let avg = Singleton.sharedInstance.getAverage(self.dataValues)
+                    let dev = Singleton.sharedInstance.getStandardDeviation(self.dataValues)
+                    self.truthRate = Singleton.sharedInstance.getTruthRate(self.dataValues, BPMAverage: avg, BPMDeviation: dev)
+                    if self.truthRate < 0.5 {
                         self.isLying = true
                     }else {
                         self.isLying = false
@@ -450,7 +453,7 @@ class VideoTestViewController: UIViewController, AVCaptureVideoDataOutputSampleB
         self.truthRate = 1.0
         let count = self.dataValues.count
         
-        if count > 2 {
+        if count > 5 {
             let delta = self.dataValues.last! - self.dataValues[count - 2]
             if delta > 4 {
                 self.truthRate = self.truthRate - 0.2 * (delta - 4)
@@ -894,9 +897,25 @@ class VideoTestViewController: UIViewController, AVCaptureVideoDataOutputSampleB
         self.view.addSubview(self.snapHeart)
         self.view.bringSubviewToFront(self.bpmLabel)
         //constant
-        let scale = CGFloat(1 + 0.6 * bpm / 100)
-        var period = self.isLying ? 30 / bpm * 0.6 : 30 / bpm * 0.9 // enhance ratio = 0.9 or 0.6
-        
+        let scale = CGFloat(0.6 + bpm / 120)
+        var period = 30 / bpm
+        if self.truthRate > 0.9 {
+            period = 30 / bpm * 1
+        }else if self.truthRate > 0.7 {
+            period = 30 / bpm * 0.95
+        }else if self.truthRate > 0.5 {
+            period = 30 / bpm * 0.9
+        }else if self.truthRate > 0.4 {
+            period = 30 / bpm * 0.8
+        }else if self.truthRate > 0.3 {
+            period = 30 / bpm * 0.75
+        }else if self.truthRate > 0.2 {
+            period = 30 / bpm * 0.7
+        }else if self.truthRate > 0.1 {
+            period = 30 / bpm * 0.6
+        }else if self.truthRate > 0 {
+            period = 30 / bpm * 0.5
+        }
         
         UIView.animateWithDuration(period, delay: 0, options: [UIViewAnimationOptions.CurveEaseIn, UIViewAnimationOptions.Autoreverse, UIViewAnimationOptions.Repeat], animations: { () -> Void in
             
@@ -958,10 +977,8 @@ class VideoTestViewController: UIViewController, AVCaptureVideoDataOutputSampleB
         if BPM == 0 {
             //not ready data
             duration = 2
-            heightratio = 0.1
         }else {
             duration = 50 / BPM * 2
-            heightratio = (BPM / 100.0)
         }
         
         var lineWidth = 1.0
@@ -1005,7 +1022,7 @@ class VideoTestViewController: UIViewController, AVCaptureVideoDataOutputSampleB
             lineWidth = 5
             gradientColor = [blackColor, blackColor, redColor, blackColor, blackColor]
         }
-        if heightratio <= 0 {
+        if heightratio <= 0.1 {
             heightratio = 0.1
         }
         print("height ratio : \(heightratio)")
@@ -1075,6 +1092,16 @@ class VideoTestViewController: UIViewController, AVCaptureVideoDataOutputSampleB
         }
     }
     
+    func testHeart() {
+        let timer = NSTimer.scheduledTimerWithTimeInterval(4, target: self, selector: Selector("bpmTEST"), userInfo: nil, repeats: true)
+        
+    }
+    
+    func bpmTEST() {
+        self.bpm = Double(arc4random_uniform(60) + 50)
+        self.truthRate = (Double(arc4random_uniform(100)) / 100.0)
+        
+    }
     
     
     

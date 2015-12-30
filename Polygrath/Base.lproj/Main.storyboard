@@ -724,8 +724,8 @@
                         </constraints>
                         <variation key="default">
                             <mask key="constraints">
-                                <exclude reference="2lC-W1-VlA"/>
                                 <exclude reference="Ojw-JP-F4Q"/>
+                                <exclude reference="2lC-W1-VlA"/>
                             </mask>
                         </variation>
                     </view>
