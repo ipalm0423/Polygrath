@@ -88,10 +88,13 @@ class RecordViewController: UIViewController, UITableViewDelegate, UITableViewDa
         //label setting
         //cell.timeLabel.text = Singleton.sharedInstance.getTimeString(question.startTime, stopTime: question.endTime)
         cell.questionNoLabel.text = "Record " + (indexPath.row + 1).description
+        cell.questionNoLabel.layer.cornerRadius = cell.questionNoLabel.frame.height / 2
+        cell.questionNoLabel.clipsToBounds = true
         cell.processIndicator.alpha = 0.0 //wait for process
         cell.processLabel.alpha = 0 //wait for process
-        
-        
+        cell.chartView.backgroundColor = UIColor(red: 16 / 255, green: 16 / 255, blue: 16 / 255, alpha: 0.3)
+        cell.chartView.layer.cornerRadius = 15
+        cell.chartView.clipsToBounds = true
         if question.dataValues.count > 0 {
             //have data
             cell.truthLabel.text = Int(question.score * 100).description + "%"
@@ -120,7 +123,7 @@ class RecordViewController: UIViewController, UITableViewDelegate, UITableViewDa
     }
     
     func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
-        return 230
+        return 250
     }
 
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {

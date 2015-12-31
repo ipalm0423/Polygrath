@@ -114,7 +114,7 @@ class ResultSummaryViewController: UIViewController {
         self.maxLabel.text = String(format: "%.0f", Singleton.sharedInstance.BPMmax)
         self.minLabel.text = String(format: "%.0f", Singleton.sharedInstance.BPMmin)
         self.averageLabel.text = String(format: "%.0f", Singleton.sharedInstance.BPMAverage)
-        
+        print("average label: \(Singleton.sharedInstance.BPMAverage)")
         //have record
         if let totalTruthRate = (Singleton.sharedInstance.totalTruthRate) {
             print("total truth rate: \(totalTruthRate)")

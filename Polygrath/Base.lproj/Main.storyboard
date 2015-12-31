@@ -1041,26 +1041,37 @@
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="equalSpacing" alignment="center" spacing="5" translatesAutoresizingMaskIntoConstraints="NO" id="eqA-n3-SKN">
-                                                    <rect key="frame" x="30" y="10" width="540" height="224"/>
+                                                    <rect key="frame" x="20" y="20" width="560" height="224"/>
                                                     <subviews>
                                                         <stackView opaque="NO" contentMode="scaleToFill" alignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="K2q-EP-FNO">
-                                                            <rect key="frame" x="0.0" y="0.0" width="540" height="69"/>
+                                                            <rect key="frame" x="0.0" y="0.0" width="560" height="69"/>
                                                             <subviews>
                                                                 <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="top" spacing="10" translatesAutoresizingMaskIntoConstraints="NO" id="8qn-c1-gJ8">
-                                                                    <rect key="frame" x="0.0" y="0.0" width="480" height="69"/>
+                                                                    <rect key="frame" x="0.0" y="0.0" width="500" height="69"/>
                                                                     <subviews>
                                                                         <stackView opaque="NO" contentMode="scaleToFill" alignment="center" spacing="25" translatesAutoresizingMaskIntoConstraints="NO" id="5Gu-gl-utF">
-                                                                            <rect key="frame" x="0.0" y="0.0" width="84" height="24"/>
+                                                                            <rect key="frame" x="0.0" y="0.0" width="100" height="24"/>
                                                                             <subviews>
                                                                                 <stackView opaque="NO" contentMode="scaleToFill" alignment="bottom" spacing="15" translatesAutoresizingMaskIntoConstraints="NO" id="xZ7-d0-0hk">
-                                                                                    <rect key="frame" x="0.0" y="0.0" width="84" height="24"/>
+                                                                                    <rect key="frame" x="0.0" y="0.0" width="100" height="24"/>
                                                                                     <subviews>
-                                                                                        <label opaque="NO" userInteractionEnabled="NO" alpha="0.80000000000000004" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Question" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="c2j-IE-7v9">
-                                                                                            <rect key="frame" x="0.0" y="0.0" width="84" height="24"/>
+                                                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Record" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="c2j-IE-7v9">
+                                                                                            <rect key="frame" x="0.0" y="0.0" width="100" height="24"/>
                                                                                             <animations/>
-                                                                                            <fontDescription key="fontDescription" name="HelveticaNeue-Medium" family="Helvetica Neue" pointSize="20"/>
-                                                                                            <color key="textColor" red="0.85490196080000003" green="0.1019607843" blue="0.16078431369999999" alpha="1" colorSpace="calibratedRGB"/>
+                                                                                            <color key="backgroundColor" red="0.85490196080000003" green="0.1019607843" blue="0.16078431369999999" alpha="0.80000000000000004" colorSpace="calibratedRGB"/>
+                                                                                            <constraints>
+                                                                                                <constraint firstAttribute="height" constant="24" id="CN5-1Y-hVX"/>
+                                                                                                <constraint firstAttribute="width" constant="100" id="OcI-h6-N1l"/>
+                                                                                                <constraint firstAttribute="width" constant="100" id="yHL-Gt-MFv"/>
+                                                                                            </constraints>
+                                                                                            <fontDescription key="fontDescription" name="HelveticaNeue-Medium" family="Helvetica Neue" pointSize="17"/>
+                                                                                            <color key="textColor" red="0.94901960780000005" green="0.94901960780000005" blue="0.94901960780000005" alpha="1" colorSpace="calibratedRGB"/>
                                                                                             <nil key="highlightedColor"/>
+                                                                                            <variation key="default">
+                                                                                                <mask key="constraints">
+                                                                                                    <exclude reference="yHL-Gt-MFv"/>
+                                                                                                </mask>
+                                                                                            </variation>
                                                                                         </label>
                                                                                     </subviews>
                                                                                     <animations/>
@@ -1145,7 +1156,7 @@
                                                                     <animations/>
                                                                 </stackView>
                                                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="grb-zX-Ih9">
-                                                                    <rect key="frame" x="480" y="5" width="60" height="60"/>
+                                                                    <rect key="frame" x="500" y="5" width="60" height="60"/>
                                                                     <animations/>
                                                                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                                                     <constraints>
@@ -1167,7 +1178,7 @@
                                                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                                         </stackView>
                                                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="RCT-xC-q6t">
-                                                            <rect key="frame" x="0.0" y="74" width="540" height="150"/>
+                                                            <rect key="frame" x="0.0" y="74" width="560" height="150"/>
                                                             <animations/>
                                                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                                             <constraints>
@@ -1183,8 +1194,8 @@
                                                         <constraint firstItem="K2q-EP-FNO" firstAttribute="leading" secondItem="eqA-n3-SKN" secondAttribute="leading" id="xOk-cA-2m9"/>
                                                     </constraints>
                                                 </stackView>
-                                                <stackView opaque="NO" contentMode="scaleToFill" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="nPG-HO-fgY">
-                                                    <rect key="frame" x="529" y="81" width="36" height="53"/>
+                                                <stackView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="nPG-HO-fgY">
+                                                    <rect key="frame" x="534" y="104" width="36" height="53"/>
                                                     <subviews>
                                                         <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="3aO-2i-Inw">
                                                             <rect key="frame" x="0.0" y="0.0" width="36" height="53"/>
@@ -1231,19 +1242,19 @@
                                             <animations/>
                                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                             <constraints>
-                                                <constraint firstItem="eqA-n3-SKN" firstAttribute="leading" secondItem="xJ8-hL-dui" secondAttribute="leading" constant="30" id="0Hv-wo-lIU"/>
+                                                <constraint firstItem="eqA-n3-SKN" firstAttribute="leading" secondItem="xJ8-hL-dui" secondAttribute="leading" constant="20" id="0Hv-wo-lIU"/>
                                                 <constraint firstAttribute="bottom" secondItem="eqA-n3-SKN" secondAttribute="bottom" constant="10" id="0RC-ml-Xb8"/>
                                                 <constraint firstItem="nPG-HO-fgY" firstAttribute="trailing" secondItem="eqA-n3-SKN" secondAttribute="trailing" id="2Cj-T2-STO"/>
                                                 <constraint firstItem="d3R-Ie-jpW" firstAttribute="centerX" secondItem="RCT-xC-q6t" secondAttribute="centerX" id="5kr-00-8eb"/>
-                                                <constraint firstItem="nPG-HO-fgY" firstAttribute="trailing" secondItem="RCT-xC-q6t" secondAttribute="trailing" constant="-5" id="8Gg-dr-mrj"/>
+                                                <constraint firstItem="nPG-HO-fgY" firstAttribute="trailing" secondItem="RCT-xC-q6t" secondAttribute="trailing" constant="-10" id="8Gg-dr-mrj"/>
                                                 <constraint firstItem="tHm-Tt-Rcs" firstAttribute="centerY" secondItem="d3R-Ie-jpW" secondAttribute="centerY" id="FXc-6o-j8U"/>
-                                                <constraint firstAttribute="trailing" secondItem="eqA-n3-SKN" secondAttribute="trailing" constant="30" id="Ip0-70-lk6"/>
+                                                <constraint firstAttribute="trailing" secondItem="eqA-n3-SKN" secondAttribute="trailing" constant="20" id="Ip0-70-lk6"/>
                                                 <constraint firstItem="d3R-Ie-jpW" firstAttribute="centerY" secondItem="RCT-xC-q6t" secondAttribute="centerY" constant="-10" id="lbU-Cr-gtp"/>
-                                                <constraint firstItem="nPG-HO-fgY" firstAttribute="top" secondItem="RCT-xC-q6t" secondAttribute="top" constant="5" id="liN-dq-Stv"/>
+                                                <constraint firstItem="nPG-HO-fgY" firstAttribute="top" secondItem="RCT-xC-q6t" secondAttribute="top" constant="10" id="liN-dq-Stv"/>
                                                 <constraint firstItem="nPG-HO-fgY" firstAttribute="top" secondItem="eqA-n3-SKN" secondAttribute="top" id="n5h-eB-774"/>
                                                 <constraint firstItem="tHm-Tt-Rcs" firstAttribute="trailing" secondItem="d3R-Ie-jpW" secondAttribute="leading" id="uHe-zB-x8r"/>
                                                 <constraint firstItem="d3R-Ie-jpW" firstAttribute="top" secondItem="RCT-xC-q6t" secondAttribute="bottom" constant="-62" id="x2X-ry-byW"/>
-                                                <constraint firstItem="eqA-n3-SKN" firstAttribute="top" secondItem="xJ8-hL-dui" secondAttribute="top" constant="10" id="xjd-GL-pGK"/>
+                                                <constraint firstItem="eqA-n3-SKN" firstAttribute="top" secondItem="xJ8-hL-dui" secondAttribute="top" constant="20" id="xjd-GL-pGK"/>
                                             </constraints>
                                             <variation key="default">
                                                 <mask key="constraints">
@@ -1255,7 +1266,7 @@
                                             </variation>
                                         </tableViewCellContentView>
                                         <animations/>
-                                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                        <color key="backgroundColor" red="0.062745098039215685" green="0.062745098039215685" blue="0.062745098039215685" alpha="0.0" colorSpace="calibratedRGB"/>
                                         <connections>
                                             <outlet property="avgLabel" destination="D9M-uX-V0N" id="g0I-68-zcZ"/>
                                             <outlet property="chartView" destination="RCT-xC-q6t" id="cv8-Wh-yhX"/>

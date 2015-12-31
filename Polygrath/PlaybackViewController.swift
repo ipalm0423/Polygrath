@@ -71,7 +71,7 @@ class PlaybackViewController: AVPlayerViewController {
         })
         
         //facebook
-        let actionShareFB = UIAlertAction(title: "Facebook", style: UIAlertActionStyle.Default, handler: { (action) -> Void in
+        let actionShareFB = UIAlertAction(title: "Save and Share to Facebook", style: UIAlertActionStyle.Default, handler: { (action) -> Void in
             print("share question.\(row) to facebook")
             
             if let assetUrl = Singleton.sharedInstance.questions[row].file.assetURL {
@@ -88,7 +88,7 @@ class PlaybackViewController: AVPlayerViewController {
         })
         
         //messenger
-        let actionShareMessenger = UIAlertAction(title: "Messenger", style: UIAlertActionStyle.Default, handler: { (action) -> Void in
+        let actionShareMessenger = UIAlertAction(title: "Save and Share to Messenger", style: UIAlertActionStyle.Default, handler: { (action) -> Void in
             print("share question.\(row) to Messenger")
             let url = Singleton.sharedInstance.questions[row].file.URL
             if let assetUrl = Singleton.sharedInstance.questions[row].file.assetURL {

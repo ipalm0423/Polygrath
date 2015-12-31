@@ -79,9 +79,9 @@ class RecordTableViewCell: UITableViewCell, CPTBarPlotDataSource, CPTBarPlotDele
         graph.plotAreaFrame?.masksToBorder = false
         graph.masksToBorder = false
         graph.paddingBottom = 0
-        graph.paddingLeft  = 0.0
+        graph.paddingLeft  = 20.0
         graph.paddingTop    = 0
-        graph.paddingRight  = 0.0
+        graph.paddingRight  = 20.0
         
         //axis
         let axisSet = graph.axisSet as! CPTXYAxisSet
@@ -89,7 +89,7 @@ class RecordTableViewCell: UITableViewCell, CPTBarPlotDataSource, CPTBarPlotDele
         //line style
         let xLineStyle = CPTMutableLineStyle()
         xLineStyle.dashPattern = [NSNumber(double: 2), NSNumber(double: 2)]
-        xLineStyle.lineColor = CPTColor(componentRed: 242 / 255, green: 242 / 255, blue: 242 / 255, alpha: 0.5)
+        xLineStyle.lineColor = CPTColor(componentRed: 160 / 255, green: 160 / 255, blue: 160 / 255, alpha: 0.4)
         xLineStyle.lineWidth = 2
         let textStyle = CPTMutableTextStyle()
         textStyle.fontName = "HelveticaNeue-Light"
@@ -229,8 +229,8 @@ class RecordTableViewCell: UITableViewCell, CPTBarPlotDataSource, CPTBarPlotDele
     
     func barFillForBarPlot(barPlot: CPTBarPlot, recordIndex idx: UInt) -> CPTFill? {
         
-        let topcolor = CPTColor(componentRed: 218 / 255, green: 24 / 255, blue: 41 / 255, alpha: 0.8)
-        let bottomColor = CPTColor(componentRed: 204 / 255, green: 233 / 255, blue: 0 / 255, alpha: 0.8)
+        let topcolor = CPTColor(componentRed: 218 / 255, green: 24 / 255, blue: 41 / 255, alpha: 1)
+        let bottomColor = CPTColor(componentRed: 204 / 255, green: 233 / 255, blue: 0 / 255, alpha: 1)
         let fillGradient = CPTGradient(beginningColor: topcolor, endingColor: bottomColor, beginningPosition: 0, endingPosition: 1)
         if barPlot.identifier!.isEqual("BPM") {
             fillGradient.angle = -90

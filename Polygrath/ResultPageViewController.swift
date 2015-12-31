@@ -34,6 +34,10 @@ class ResultPageViewController: UIViewController {
     
     override func viewDidAppear(animated: Bool) {
         self.setupNotify()
+        
+    }
+    
+    override func viewWillAppear(animated: Bool) {
         self.navigationController?.navigationBarHidden = true
     }
     

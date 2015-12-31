@@ -50,7 +50,7 @@ class VideoTestViewController: UIViewController, AVCaptureVideoDataOutputSampleB
                     Singleton.sharedInstance.playHeartBeatEffect()
                     AudioServicesPlaySystemSound(kSystemSoundID_Vibrate)
                     print("user is lying, vibrate and play sound")
-                    self.truthLabel.text = "Subject is Lying"
+                    self.truthLabel.text = "Subject maybe Lying"
                     self.truthLabel.alpha = 1.0
                 }
                 
@@ -93,7 +93,7 @@ class VideoTestViewController: UIViewController, AVCaptureVideoDataOutputSampleB
                     self.introRecordLabel.alpha = 1
                     self.introRecordLabel.text = "Press When Subject Have Answered"
                     self.introBPM2Label.alpha = 1
-                    self.introFinishedLabel.alpha = 1
+                    
                     
                     self.view.layoutIfNeeded()
                     }) { (bool) -> Void in
@@ -226,17 +226,20 @@ class VideoTestViewController: UIViewController, AVCaptureVideoDataOutputSampleB
             if self.isRecord {
                 UIView.animateWithDuration(1.0, animations: { () -> Void in
                     self.introBPMLabel.alpha = 0
-                    self.introFinishedLabel.alpha = 0
                     self.introRecordLabel.alpha = 0
                     self.introBPM2Label.alpha = 0
+                    self.introFinishedLabel.alpha = 1
                     self.view.layoutIfNeeded()
                     }) { (bool) -> Void in
-                        
+                        let delayTime = dispatch_time(DISPATCH_TIME_NOW, Int64(4 * Double(NSEC_PER_SEC)))
+                        dispatch_after(delayTime, dispatch_get_main_queue()) {
+                            self.introFinishedLabel.alpha = 0
+                        }
                 }
             }else {
                 UIView.animateWithDuration(1.0, animations: { () -> Void in
                     self.introBPMLabel.alpha = 0
-                    self.introFinishedLabel.alpha = 1
+                    self.introFinishedLabel.alpha = 0
                     self.introRecordLabel.text = "Press When Subject Have Answered"
                     self.introBPM2Label.alpha = 0
                     self.view.layoutIfNeeded()
@@ -333,9 +336,7 @@ class VideoTestViewController: UIViewController, AVCaptureVideoDataOutputSampleB
                     self.dataDates.append(dic.0)
                     self.dataValues.append(dic.1)
                 
-                    //set bpm data
-                    self.bpmMax = Singleton.sharedInstance.getMax(self.dataValues)
-                    self.bpmMin = Singleton.sharedInstance.getMin(self.dataValues)
+                    
                     
                     if dic.1 != self.bpm {
                         self.bpm = (dic.1)
@@ -347,6 +348,11 @@ class VideoTestViewController: UIViewController, AVCaptureVideoDataOutputSampleB
                     self.truthLabel.alpha = 0
                     let avg = Singleton.sharedInstance.getAverage(self.dataValues)
                     let dev = Singleton.sharedInstance.getStandardDeviation(self.dataValues)
+                    //set bpm data
+                    self.deviation = dev
+                    self.average = avg
+                    self.bpmMax = Singleton.sharedInstance.getMax(self.dataValues)
+                    self.bpmMin = Singleton.sharedInstance.getMin(self.dataValues)
                     self.truthRate = Singleton.sharedInstance.getTruthRate(self.dataValues, BPMAverage: avg, BPMDeviation: dev)
                     if self.truthRate < 0.5 {
                         self.isLying = true
@@ -1159,7 +1165,7 @@ class VideoTestViewController: UIViewController, AVCaptureVideoDataOutputSampleB
             //save last video
             if let VC = segue.destinationViewController as? ResultPageViewController {
                 
-                print("prepare seque: \(self.questions.last)")
+                print("prepare seque: \(self.questions.last), average: \(self.average)")
                 Singleton.sharedInstance.BPMAverage = self.average
                 Singleton.sharedInstance.BPMDeviation = self.deviation
                 Singleton.sharedInstance.BPMmax = self.bpmMax

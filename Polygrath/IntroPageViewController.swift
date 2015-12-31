@@ -165,11 +165,11 @@ class IntroPageViewController: UIViewController {
         
         self.i++
         if i % 3 == 1 {
-            self.imageView.image = UIImage(named: "iwatchIntro1")
+            self.imageView.image = UIImage(named: "iwatchIntro3")
         }else if i % 3 == 2 {
             self.imageView.image = UIImage(named: "iwatchIntro2")
         }else {
-            self.imageView.image = UIImage(named: "iwatchIntro3")
+            self.imageView.image = UIImage(named: "iwatchIntro1")
         }
     }
     
