@@ -317,6 +317,7 @@ class RecordViewController: UIViewController, UITableViewDelegate, UITableViewDa
         dispatch_async(dispatch_get_main_queue()) { () -> Void in
             if let cell = self.tableView.cellForRowAtIndexPath(indexPath) as? RecordTableViewCell {
                 print("stop animation")
+                cell.playButton.enabled = true
                 //label
                 UIView.animateWithDuration(0.8, delay: 0, options: [UIViewAnimationOptions.CurveEaseIn], animations: { () -> Void in
                     cell.processLabel.alpha = 0
@@ -331,7 +332,7 @@ class RecordViewController: UIViewController, UITableViewDelegate, UITableViewDa
                     plot.removeAnimationForKey("processAnimation")
                     plot2.removeAnimationForKey("processAnimation")
                 }
-                cell.playButton.enabled = true
+                
                 self.tableView.reloadData()
                 
                 

@@ -21,12 +21,14 @@ class ViewController: UIViewController {
     @IBOutlet var statementButton: UIButton!
     
     
-    @IBOutlet var lineStackView: UIStackView!
+    @IBOutlet var welcomeImageLeadConst: NSLayoutConstraint!
+    
     
     
     @IBOutlet var welcomeLineImage: UIImageView!
     
-    @IBOutlet var reflectionImageView: UIImageView!
+    //@IBOutlet var reflectionImageView: UIImageView!
+    
     
     
     
@@ -43,15 +45,28 @@ class ViewController: UIViewController {
         // Dispose of any resources that can be recreated.
     }
 
+    var isAnimate = false
+    
     override func viewDidAppear(animated: Bool) {
         self.animateLine()
+        print("view did appear")
+        
+    }
+    
+    override func viewDidDisappear(animated: Bool) {
+        
+        print("view did disappear")
     }
     
     
     override func viewWillAppear(animated: Bool) {
         self.navigationController?.navigationBarHidden = true
     }
-
+    
+    var firstImageView = UIImageView()
+    var reflectView = UIImageView()
+    var secondImageView = UIImageView()
+    
     func setupView() {
         //navi, background, button
         self.navigationController?.navigationBarHidden = true
@@ -60,12 +75,9 @@ class ViewController: UIViewController {
         self.statementButton.layer.cornerRadius = self.statementButton.frame.height / 2
         self.statementButton.clipsToBounds = true
         
-        let original = self.lineStackView.frame
-        self.lineStackView.frame = CGRect(x: 0, y: original.origin.y, width: self.view.frame.width * 3, height: original.height)
-        if let image = welcomeLineImage.image {
-            let reflect = UIImage(CGImage: image.CGImage!, scale: image.scale, orientation: UIImageOrientation.UpMirrored)
-            self.reflectionImageView.image = reflect
-        }
+        
+        
+        
     }
     
     
@@ -105,13 +117,42 @@ class ViewController: UIViewController {
     
 //animation
     func animateLine() {
-        UIView.animateWithDuration(10, delay: 0, options: [UIViewAnimationOptions.Repeat, UIViewAnimationOptions.CurveLinear], animations: { () -> Void in
-            let original = self.lineStackView.frame
-            print("line frame: \(self.lineStackView.frame)")
-            self.lineStackView.frame = CGRect(x: -self.welcomeLineImage.frame.width * 2 + 2, y: original.origin.y, width: original.width, height: original.height)
-            }) { (bool) -> Void in
-                
+        self.firstImageView.removeFromSuperview()
+        self.reflectView.removeFromSuperview()
+        self.secondImageView.removeFromSuperview()
+        
+        //setup image
+        if let image = welcomeLineImage.image {
+            //setup image 2nd
+            self.firstImageView.image = image
+            self.secondImageView.image = image
+            //setup reflect image
+            let reflect = UIImage(CGImage: image.CGImage!, scale: image.scale, orientation: UIImageOrientation.UpMirrored)
+            self.reflectView.image = reflect
         }
+        
+        let original = self.welcomeLineImage.frame
+        self.firstImageView.frame = CGRect(x: 0 , y: original.origin.y, width: original.width, height: original.height)
+        self.reflectView.frame = CGRect(x: original.width - 2 , y: original.origin.y, width: original.width, height: original.height)
+        self.secondImageView.frame = CGRect(x: original.width * 2 - 4, y: original.origin.y, width: original.width, height: original.height)
+        self.view.addSubview(self.firstImageView)
+        self.view.addSubview(self.reflectView)
+        self.view.addSubview(self.secondImageView)
+        self.welcomeLineImage.hidden = true
+        print("welcome frame: \(self.welcomeLineImage.frame)")
+        
+        
+        UIView.animateWithDuration(10, delay: 0, options: [UIViewAnimationOptions.Repeat, UIViewAnimationOptions.CurveLinear], animations: { () -> Void in
+            
+            self.firstImageView.frame = CGRect(x: -self.welcomeLineImage.frame.width * 2 + 4, y: original.origin.y, width: original.width, height: original.height)
+            self.reflectView.frame = CGRect(x: -self.welcomeLineImage.frame.width + 2, y: original.origin.y, width: original.width, height: original.height)
+            self.secondImageView.frame = original
+            self.view.layoutIfNeeded()
+            }) { (bool) -> Void in
+                //self.lineStackView.frame = CGRect(x: 0, y: original.origin.y, width: self.view.frame.width * 3, height: original.height)
+        }
+        
+        
     }
     
 

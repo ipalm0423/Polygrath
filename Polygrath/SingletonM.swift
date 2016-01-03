@@ -290,7 +290,7 @@ class Singleton: NSObject {
         //bug fix
         var imageArray = [CGImageRef]()
         for text in texts {
-            imageArray.append(self.createCGImageText(text, font: font, size: size))
+            imageArray.append(self.createCGImageText(text, font: font))
         }
         
         let stringAnimation = CAKeyframeAnimation(keyPath: "contents") //"string" have bug, so use contents
@@ -478,7 +478,7 @@ class Singleton: NSObject {
         let count = quest.dataValues.count
         var layers = [CALayer]()
         var ARClayers = [CALayer]()
-        let totalDuration = quest.endTime.timeIntervalSinceDate(quest.startTime)
+        //let totalDuration = quest.endTime.timeIntervalSinceDate(quest.startTime)
         let lineViewSize = CGRect(x: 0, y: (parentViewSize.height / 10 * 3), width: parentViewSize.width, height: parentViewSize.height / 2.5) //height = 1:2.5
         
         
@@ -486,7 +486,7 @@ class Singleton: NSObject {
             //calculate truth rate by data
             for var i = 0; i < count; i++ {
                 let tempData = quest.dataValues[0..<(i + 1)]
-                let truth = self.getTruthRate(Array(tempData), BPMAverage: self.BPMAverage, BPMDeviation: self.BPMDeviation)
+                let truth = self.getLocalizeTruthRate(Array(tempData))
                 truthRates.append(truth)
             }
             
@@ -554,11 +554,8 @@ class Singleton: NSObject {
                 let heartARCLine = self.getHeartLineARCLayer(lineViewSize.size, ripple: 2, heightRatio: CGFloat(heightratio), lineWidth: lineWidth)
                 let heartGradient = self.getGradientLayer(lineViewSize, colors: gradientColor, opacity: 0.9, isVertical: true)
                 heartARCLine.opacity = 0
-                //bias
-                let oldARCFrame = heartARCLine.frame
-                //heartARCLine.frame = CGRect(x: oldARCFrame.origin.x, y: lineViewSize.height / 2, width: oldARCFrame.width, height: oldARCFrame.height)
-                print("ARC LINE FRAME : \(oldARCFrame), GRADIENT frame: \(heartGradient.frame)")
-                //heartGradient.mask = heartARCLine
+                
+                
                 
                 //animation x position
                 var endTime = NSDate()
@@ -608,15 +605,60 @@ class Singleton: NSObject {
     
     
     
-    func getBPMLayerWithAnimation(questionNO: Int, parentViewSize: CGSize) -> CALayer {
+    func getBPMLayerWithAnimation(questionNO: Int, parentViewSize: CGSize) -> [CALayer] {
         
         let quest = self.questions[questionNO]
         let textColor = UIColor(red: 242 / 255, green: 242 / 255, blue: 242 / 255, alpha: 1.0)
         let font = UIFont(name: "HelveticaNeue", size: 55)!
-        let BPMLayer = self.createTextCALayer("---", uiFont: font, color: textColor, x: 0, y: 0)
-        //set to parentview center (height bias +5)
-        BPMLayer.frame = CGRectMake((parentViewSize.width - BPMLayer.bounds.width) / 2, (parentViewSize.height - BPMLayer.bounds.height + 10) / 2, BPMLayer.bounds.width, BPMLayer.bounds.height)
+        var BPMLayers = [CALayer]()
         
+        //create bpm layers
+        for data in quest.dataValues {
+            let BPMLayer = self.createTextCALayer(Int(data).description, uiFont: font, color: textColor, x: 0, y: 0)
+            //set to parentview center (height bias +5)
+            BPMLayer.frame = CGRectMake((parentViewSize.width - BPMLayer.bounds.width) / 2, (parentViewSize.height - BPMLayer.bounds.height + 10) / 2, BPMLayer.bounds.width, BPMLayer.bounds.height)
+            BPMLayer.opacity = 0 //hide for first time
+            BPMLayers.append(BPMLayer)
+        }
+        
+        //setup animation
+        let count = quest.dataDates.count
+        for var i = 0; i < count; i++ {
+            //animation x position
+            var endTime = NSDate()
+            var startTime = NSDate()
+            //calculate time
+            if i == 0 {
+                //first data
+                startTime = quest.startTime
+                if count == 1 {
+                    endTime = quest.endTime
+                }else {
+                    endTime = quest.dataDates[i + 1]
+                }
+                
+            }else if i == count - 1 {
+                //last data
+                startTime = quest.dataDates[i]
+                endTime = quest.endTime
+            }else {
+                startTime = quest.dataDates[i]
+                endTime = quest.dataDates[i + 1]
+            }
+            
+            let duration = endTime.timeIntervalSinceDate(startTime)
+            let offset = startTime.timeIntervalSinceDate(quest.startTime)
+            let animation = self.createOpacityAnimation([0, 1, 1, 0], keyTime: [0, 0.01, 0.99, 1], duration: duration)
+            animation.beginTime = AVCoreAnimationBeginTimeAtZero + offset
+            animation.repeatDuration = duration
+            animation.duration = duration
+            
+            BPMLayers[i].addAnimation(animation, forKey: "string: \(i)")
+            
+            
+        }
+        
+        /*
         //if have data, create animation
         if quest.dataValues.count > 0 {
             var BPMstring = [String]()
@@ -624,6 +666,7 @@ class Singleton: NSObject {
             for data in quest.dataValues {
                 BPMstring.append(Int(data).description)
             }
+            print("BPM string: \(BPMstring)")
             //caculate time
             let duration = quest.endTime.timeIntervalSinceDate(quest.startTime)
             var keyTime = [NSNumber(double: 0.0)]
@@ -641,12 +684,9 @@ class Singleton: NSObject {
             
             //add animation to layer
             BPMLayer.addAnimation(stringAnimation, forKey: "BPMstring")
-        }else {
-            //no data
-            BPMLayer.opacity = 0
         }
-        
-        return BPMLayer
+        */
+        return BPMLayers
         
         
     }
@@ -675,17 +715,27 @@ class Singleton: NSObject {
                 tempData.append(data)
                 
                 //score calculate
-                
                 if i > 1 {
-                    truthRate = self.getTruthRate(tempData, BPMAverage: self.BPMAverage, BPMDeviation: self.BPMDeviation)
+                    truthRate = self.getLocalizeTruthRate(tempData)
                     //turth effect ratio
-                    if truthRate < 0.3 {
-                        heartScaleRatio = NSNumber(double: 1.2 * Double(heartScaleRatio)) // ratio = 1.2
-                        halfPeriod = halfPeriod * 0.7
-                    }else if truthRate < 0.5 {
-                        heartScaleRatio = NSNumber(double: 1.1 * Double(heartScaleRatio)) // ratio = 1.2
-                        halfPeriod = halfPeriod * 0.85
+                    if truthRate > 0.9 {
+                        halfPeriod = 30 / data * 1
+                    }else if truthRate > 0.7 {
+                        halfPeriod = 30 / data * 0.95
+                    }else if truthRate > 0.5 {
+                        halfPeriod = 30 / data * 0.9
+                    }else if truthRate > 0.4 {
+                        halfPeriod = 30 / data * 0.8
+                    }else if truthRate > 0.3 {
+                        halfPeriod = 30 / data * 0.75
+                    }else if truthRate > 0.2 {
+                        halfPeriod = 30 / data * 0.7
+                    }else if truthRate > 0.1 {
+                        halfPeriod = 30 / data * 0.6
+                    }else if truthRate > 0 {
+                        halfPeriod = 30 / data * 0.5
                     }
+                    
                 }
                 
                 //time calculate
@@ -897,8 +947,9 @@ class Singleton: NSObject {
         return NSMutableAttributedString(string: text, attributes: attr)
     }
     
-    func createCGImageText(text: String, font: UIFont, size: CGSize) -> CGImageRef {
+    func createCGImageText(text: String, font: UIFont) -> CGImageRef {
         let string = self.createTextString(text, font: font)
+        let size = string.size()
         UIGraphicsBeginImageContextWithOptions(size, false, 0)
         
         
@@ -1049,7 +1100,7 @@ class Singleton: NSObject {
         print("heart layer back animation: \(heartBeatLayer.animationKeys())")
         
         //create bpm label
-        let BPMLayer = self.getBPMLayerWithAnimation(questNO, parentViewSize: size)
+        let BPMLayers = self.getBPMLayerWithAnimation(questNO, parentViewSize: size)
         
         
         
@@ -1069,7 +1120,10 @@ class Singleton: NSObject {
             j++
         }
         parentLayer.addSublayer(heartBeatLayer)
-        parentLayer.addSublayer(BPMLayer)
+        for layer in BPMLayers {
+            parentLayer.addSublayer(layer)
+        }
+        
         
         //add to tools
         composition.animationTool = AVVideoCompositionCoreAnimationTool(postProcessingAsVideoLayer: videoLayer, inLayer: parentLayer)
@@ -1207,7 +1261,7 @@ class Singleton: NSObject {
         return dev
     }
     
-//current calculate
+//question level calculate
     func getTruthRate(values: [Double], BPMAverage: Double, BPMDeviation: Double) -> Double {
         
         if values.count > 0 {
@@ -1218,24 +1272,70 @@ class Singleton: NSObject {
             let T = 5.0
             var score: Double = 1
             
-            //have deviation difference
-            if dev > 0 {
-                score = T / (3 * dev)
-                if avg > BPMAverage + 0.2 * BPMDeviation {
-                    score = score * 0.8
-                }
+            //avg is at higher
+            if avg > self.BPMAverage {
+                score = 1 - (avg - self.BPMAverage) / self.BPMDeviation
             }
             
+            //have deviation difference
+            if dev > 0 {
+                score = score - 0.3 * (dev / T)
+            }
             
             //max score = 1
             if score > 1 {
                 score = 1
+            }else if score < 0 {
+                score = 0
             }
             
             return score
         }
         //not enough data
         return 1
+    }
+    
+    
+//localize calculation
+    func getLocalizeTruthRate(values: [Double]) -> Double {
+        
+        let count = values.count
+        var score = 1.0
+        
+        
+        //last element
+        if count > 0 {
+            if self.BPMDeviation > 0 {
+                score = 1 - (values.last! - self.BPMAverage) / self.BPMDeviation
+            }
+        }
+        
+        if count > 1 {
+            
+            //last - (second_last) component
+            let delta = values.last! - values[count - 2]
+            if delta > 4 {
+                score = score - 0.2 * (delta - 4)
+            }else if delta < -3 {
+                //comedown
+                score = score + 0.2 * (-delta - 3)//self.truthRate * 1.2
+            }
+            
+        }
+        
+        if self.BPMDeviation < 4 {
+            score = score * 2
+        }
+        
+        
+        //return 100%
+        if score > 1 {
+            score = 1
+        }else if score < 0 {
+            score = 0
+        }
+        
+        return score
     }
     
 //other kind calculate

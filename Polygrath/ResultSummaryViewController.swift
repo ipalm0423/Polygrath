@@ -150,11 +150,15 @@ class ResultSummaryViewController: UIViewController {
         
     }
     
+    func animateHeartAndCircle() {
+        
+    }
+    
 //view
     func getCircleGradientLayer(bound: CGRect, percent: Double, lineWidth: CGFloat) -> CALayer {
         let angle = CGFloat(percent * 2 * M_PI - M_PI / 2)
         let radius = (bound.width < bound.height) ? (bound.width / 2 - lineWidth):(bound.height / 2 - lineWidth)
-        let circle = UIBezierPath(arcCenter: CGPoint(x: bound.width / 2, y: bound.height / 2), radius: radius, startAngle: CGFloat(-M_PI / 2), endAngle: angle, clockwise: true)
+        let circle = UIBezierPath(arcCenter: CGPoint(x: bound.width / 2 + lineWidth, y: bound.height / 2 + lineWidth), radius: radius, startAngle: CGFloat(-M_PI / 2), endAngle: angle, clockwise: true)
         
         let arc = CAShapeLayer()
         arc.path = circle.CGPath
@@ -166,7 +170,7 @@ class ResultSummaryViewController: UIViewController {
         arc.lineJoin = kCALineJoinRound
         
         let gradient: CAGradientLayer = CAGradientLayer()
-        gradient.frame = bound
+        gradient.frame = CGRect(x: 0, y: 0, width: bound.width + lineWidth, height: bound.height + lineWidth)
         gradient.colors = [UIColor(red: 179 / 255, green: 5 / 255, blue: 19 / 255, alpha: 1.0).CGColor, UIColor(red: 202 / 255, green: 24 / 255, blue: 38 / 255, alpha: 1.0).CGColor, UIColor(red: 204 / 255, green: 233 / 255 , blue: 0, alpha: 1.0).CGColor]
         gradient.startPoint = CGPoint(x: 0, y: 0)
         gradient.endPoint = CGPoint(x: 1, y: 0)
@@ -178,7 +182,7 @@ class ResultSummaryViewController: UIViewController {
     func getCircleBackground(bound: CGRect, percent: Double, lineWidth: CGFloat) -> CALayer {
         let angle = CGFloat(percent * 2 * M_PI - M_PI / 2)
         let radius = (bound.width < bound.height) ? (bound.width / 2 - lineWidth):(bound.height / 2 - lineWidth)
-        let circle = UIBezierPath(arcCenter: CGPoint(x: bound.width / 2, y: bound.height / 2), radius: radius, startAngle: CGFloat(-M_PI / 2), endAngle: angle, clockwise: true)
+        let circle = UIBezierPath(arcCenter: CGPoint(x: bound.width / 2 + lineWidth, y: bound.height / 2 + lineWidth), radius: radius, startAngle: CGFloat(-M_PI / 2), endAngle: angle, clockwise: true)
         
         let arc = CAShapeLayer()
         arc.path = circle.CGPath

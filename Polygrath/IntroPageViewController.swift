@@ -98,7 +98,7 @@ class IntroPageViewController: UIViewController {
             case 0:
                 print("page. 0: open watch app")
                 //animate iWatch
-                self.iWatchTimer = NSTimer.scheduledTimerWithTimeInterval(0.4, target: self, selector: Selector("animateiWatch"), userInfo: nil, repeats: true)
+                self.iWatchTimer = NSTimer.scheduledTimerWithTimeInterval(0.6, target: self, selector: Selector("animateiWatch"), userInfo: nil, repeats: true)
                 
             case 1:
                 print("page. 1: keep finger touch")

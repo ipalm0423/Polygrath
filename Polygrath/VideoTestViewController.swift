@@ -269,7 +269,7 @@ class VideoTestViewController: UIViewController, AVCaptureVideoDataOutputSampleB
     
     @IBAction func switchButtonTouch(sender: AnyObject) {
         print("switch button touch")
-        self.isLying = !self.isLying
+        
         self.switchCamera()
     }
     
@@ -353,7 +353,7 @@ class VideoTestViewController: UIViewController, AVCaptureVideoDataOutputSampleB
                     self.average = avg
                     self.bpmMax = Singleton.sharedInstance.getMax(self.dataValues)
                     self.bpmMin = Singleton.sharedInstance.getMin(self.dataValues)
-                    self.truthRate = Singleton.sharedInstance.getTruthRate(self.dataValues, BPMAverage: avg, BPMDeviation: dev)
+                    self.truthRate = self.getTruthRate()
                     if self.truthRate < 0.5 {
                         self.isLying = true
                     }else {
@@ -455,36 +455,37 @@ class VideoTestViewController: UIViewController, AVCaptureVideoDataOutputSampleB
     func getTruthRate() -> Double {
         self.average = Singleton.sharedInstance.getAverage(self.dataValues)
         self.deviation = Singleton.sharedInstance.getStandardDeviation(self.dataValues)
-        let oneDeviation = self.average + self.deviation
-        self.truthRate = 1.0
+        var score = 1.0
         let count = self.dataValues.count
         
         if count > 5 {
+            //last point
+            if self.deviation > 0 {
+                score = 1 - (self.dataValues.last! - self.average) / self.deviation
+            }
+            
+            //previous 2 point
             let delta = self.dataValues.last! - self.dataValues[count - 2]
             if delta > 4 {
-                self.truthRate = self.truthRate - 0.2 * (delta - 4)
-            }else if delta < -7 {
+                score = score - 0.2 * (delta - 4)
+            }else if delta < -3 {
                 //comedown
-                self.truthRate = self.truthRate * 1.2
-            }
-            if self.dataValues.last > oneDeviation {
-                self.truthRate = self.truthRate * 0.4
-            }
-            //previous 2 point
-            for var i = 2; i < 4; i++ {
-                if self.dataValues[count - i] > oneDeviation {
-                    self.truthRate = self.truthRate * 0.9
-                }
+                score = score + 0.2 * (-delta - 3)//self.truthRate * 1.2
             }
             
         }
-        
-        //return 100%
-        if self.truthRate > 1 {
-            self.truthRate = 1
+        if self.deviation < 4 {
+            score = score * 2
         }
         
-        return truthRate
+        //return 100%
+        if score > 1 {
+            score = 1
+        }else if score < 0 {
+            score = 0
+        }
+        
+        return score
     }
     
 //camera
@@ -1171,6 +1172,7 @@ class VideoTestViewController: UIViewController, AVCaptureVideoDataOutputSampleB
                 Singleton.sharedInstance.BPMmax = self.bpmMax
                 Singleton.sharedInstance.BPMmin = self.bpmMin
                 Singleton.sharedInstance.questions = self.questions
+                
             }
         }
     }
