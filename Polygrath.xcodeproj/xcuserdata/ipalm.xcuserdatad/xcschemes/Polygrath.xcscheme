@@ -106,6 +106,7 @@
    </AnalyzeAction>
    <ArchiveAction
       buildConfiguration = "Release"
+      customArchiveName = "WatchPolygraph"
       revealArchiveInOrganizer = "YES">
    </ArchiveAction>
 </Scheme>

@@ -110,45 +110,13 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Polygrath/AllowCameraViewController.swift"
-            timestampString = "471698003.58137"
+            timestampString = "473532384.116794"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "219"
-            endingLineNumber = "219"
+            startingLineNumber = "222"
+            endingLineNumber = "222"
             landmarkName = "authorizeCameraRoll()"
             landmarkType = "5">
-            <Locations>
-               <Location
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "Polygrath.AllowCameraViewController.authorizeCameraRoll (Polygrath.AllowCameraViewController)() -&gt; Swift.Bool"
-                  moduleName = "Polygrath"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/ipalm/Documents/iWatch/Polygrath/Polygrath/AllowCameraViewController.swift"
-                  timestampString = "473526293.888192"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "220"
-                  endingLineNumber = "220"
-                  offsetFromSymbolStart = "656">
-               </Location>
-               <Location
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "Polygrath.AllowCameraViewController.(authorizeCameraRoll (Polygrath.AllowCameraViewController) -&gt; () -&gt; Swift.Bool).(closure #1)"
-                  moduleName = "Polygrath"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/ipalm/Documents/iWatch/Polygrath/Polygrath/AllowCameraViewController.swift"
-                  timestampString = "473526293.888434"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "220"
-                  endingLineNumber = "220"
-                  offsetFromSymbolStart = "452">
-               </Location>
-            </Locations>
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -174,12 +142,12 @@
                   moduleName = "Polygrath"
                   usesParentBreakpointCondition = "Yes"
                   urlString = "file:///Users/ipalm/Documents/iWatch/Polygrath/Polygrath/FrontHeartViewController.swift"
-                  timestampString = "473526293.889647"
+                  timestampString = "473864075.981616"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
                   startingLineNumber = "69"
                   endingLineNumber = "69"
-                  offsetFromSymbolStart = "940">
+                  offsetFromSymbolStart = "1117">
                </Location>
                <Location
                   shouldBeEnabled = "Yes"
@@ -189,12 +157,12 @@
                   moduleName = "Polygrath"
                   usesParentBreakpointCondition = "Yes"
                   urlString = "file:///Users/ipalm/Documents/iWatch/Polygrath/Polygrath/FrontHeartViewController.swift"
-                  timestampString = "473526293.889899"
+                  timestampString = "473864075.981858"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
                   startingLineNumber = "71"
                   endingLineNumber = "71"
-                  offsetFromSymbolStart = "24">
+                  offsetFromSymbolStart = "20">
                </Location>
             </Locations>
          </BreakpointContent>

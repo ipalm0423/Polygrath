@@ -15,6 +15,7 @@
 		AC2CA7611BF9FE4700D199E4 /* ResultPageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = AC2CA7601BF9FE4700D199E4 /* ResultPageViewController.swift */; };
 		AC2CA7631BF9FF4D00D199E4 /* ResultContainerPageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = AC2CA7621BF9FF4D00D199E4 /* ResultContainerPageViewController.swift */; };
 		AC2CA7681BFA219F00D199E4 /* ResultSummaryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = AC2CA7671BFA219F00D199E4 /* ResultSummaryViewController.swift */; };
+		AC3214541C3EC5A200E43AE7 /* HealthKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AC3214531C3EC5A200E43AE7 /* HealthKit.framework */; };
 		AC648BCB1BDF1C6C0063CD1D /* SingletonM.swift in Sources */ = {isa = PBXBuildFile; fileRef = AC648BCA1BDF1C6C0063CD1D /* SingletonM.swift */; };
 		AC8DEABE1BE9B27800E60B62 /* heartbeat.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = AC8DEABD1BE9B27800E60B62 /* heartbeat.mp3 */; };
 		AC8DEAC61BF04E9E00E60B62 /* FBSDKCoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AC8DEAC31BF04E9E00E60B62 /* FBSDKCoreKit.framework */; };
@@ -40,7 +41,6 @@
 		ACBC3FB91B9ECA2B007AC186 /* Polygrath-iWatch.app in Embed Watch Content */ = {isa = PBXBuildFile; fileRef = ACBC3F9F1B9ECA2B007AC186 /* Polygrath-iWatch.app */; };
 		ACBC3FC31B9ECC65007AC186 /* TestInterfaceController.swift in Sources */ = {isa = PBXBuildFile; fileRef = ACBC3FC21B9ECC65007AC186 /* TestInterfaceController.swift */; };
 		ACBC3FC61B9ED277007AC186 /* HealthKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = ACBC3FC51B9ED277007AC186 /* HealthKit.framework */; };
-		ACBE705F1C14935400A15BF8 /* HealthKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = ACBE705E1C14935400A15BF8 /* HealthKit.framework */; };
 		ACC81A4E1BB4E973006377F6 /* ResultViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = ACC81A4D1BB4E973006377F6 /* ResultViewController.swift */; };
 		ACC81A501BB4FB25006377F6 /* questions.swift in Sources */ = {isa = PBXBuildFile; fileRef = ACC81A4F1BB4FB25006377F6 /* questions.swift */; };
 		ACD12B451C19283E008A4856 /* AllowHealthViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = ACD12B441C19283E008A4856 /* AllowHealthViewController.swift */; };
@@ -124,6 +124,7 @@
 		AC2CA7601BF9FE4700D199E4 /* ResultPageViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ResultPageViewController.swift; sourceTree = "<group>"; };
 		AC2CA7621BF9FF4D00D199E4 /* ResultContainerPageViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ResultContainerPageViewController.swift; sourceTree = "<group>"; };
 		AC2CA7671BFA219F00D199E4 /* ResultSummaryViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ResultSummaryViewController.swift; sourceTree = "<group>"; };
+		AC3214531C3EC5A200E43AE7 /* HealthKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = HealthKit.framework; path = System/Library/Frameworks/HealthKit.framework; sourceTree = SDKROOT; };
 		AC648BCA1BDF1C6C0063CD1D /* SingletonM.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SingletonM.swift; sourceTree = "<group>"; };
 		AC8DEABD1BE9B27800E60B62 /* heartbeat.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = heartbeat.mp3; sourceTree = "<group>"; };
 		AC8DEAC31BF04E9E00E60B62 /* FBSDKCoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = FBSDKCoreKit.framework; sourceTree = "<group>"; };
@@ -158,7 +159,6 @@
 		ACBC3FC21B9ECC65007AC186 /* TestInterfaceController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TestInterfaceController.swift; sourceTree = "<group>"; };
 		ACBC3FC41B9ED26D007AC186 /* Polygrath-iWatch Extension.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = "Polygrath-iWatch Extension.entitlements"; sourceTree = "<group>"; };
 		ACBC3FC51B9ED277007AC186 /* HealthKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = HealthKit.framework; path = Platforms/WatchOS.platform/Developer/SDKs/WatchOS2.0.sdk/System/Library/Frameworks/HealthKit.framework; sourceTree = DEVELOPER_DIR; };
-		ACBE705E1C14935400A15BF8 /* HealthKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = HealthKit.framework; path = System/Library/Frameworks/HealthKit.framework; sourceTree = SDKROOT; };
 		ACC81A4D1BB4E973006377F6 /* ResultViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ResultViewController.swift; sourceTree = "<group>"; };
 		ACC81A4F1BB4FB25006377F6 /* questions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = questions.swift; sourceTree = "<group>"; };
 		ACD12B441C19283E008A4856 /* AllowHealthViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AllowHealthViewController.swift; sourceTree = "<group>"; };
@@ -187,7 +187,7 @@
 				AC8DEAC61BF04E9E00E60B62 /* FBSDKCoreKit.framework in Frameworks */,
 				AC8DEAC81BF04E9E00E60B62 /* FBSDKShareKit.framework in Frameworks */,
 				AC8DEAC71BF04E9E00E60B62 /* FBSDKLoginKit.framework in Frameworks */,
-				ACBE705F1C14935400A15BF8 /* HealthKit.framework in Frameworks */,
+				AC3214541C3EC5A200E43AE7 /* HealthKit.framework in Frameworks */,
 				AC8DEACA1BF0528600E60B62 /* FBSDKMessengerShareKit.framework in Frameworks */,
 				5E4EC7BFE4A8EA17D7BC421C /* Pods_Polygrath.framework in Frameworks */,
 			);
@@ -221,7 +221,7 @@
 		4A2FDE4EA48429FC655A26BB /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				ACBE705E1C14935400A15BF8 /* HealthKit.framework */,
+				AC3214531C3EC5A200E43AE7 /* HealthKit.framework */,
 				AC8DEAC91BF0528600E60B62 /* FBSDKMessengerShareKit.framework */,
 				AC8DEAC31BF04E9E00E60B62 /* FBSDKCoreKit.framework */,
 				AC8DEAC41BF04E9E00E60B62 /* FBSDKLoginKit.framework */,
@@ -854,6 +854,7 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
 				SWIFT_OBJC_BRIDGING_HEADER = "";
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Debug;
 		};
@@ -875,6 +876,7 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
 				SWIFT_OBJC_BRIDGING_HEADER = "";
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Release;
 		};

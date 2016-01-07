@@ -3,7 +3,7 @@
     {
       "size" : "24x24",
       "idiom" : "watch",
-      "filename" : "watch launch 48 .png",
+      "filename" : "watch launch 24@2x .png",
       "scale" : "2x",
       "role" : "notificationCenter",
       "subtype" : "38mm"
@@ -11,7 +11,7 @@
     {
       "size" : "27.5x27.5",
       "idiom" : "watch",
-      "filename" : "watch launch 55.png",
+      "filename" : "watch launch 27.5@2x.png",
       "scale" : "2x",
       "role" : "notificationCenter",
       "subtype" : "42mm"
@@ -41,7 +41,7 @@
     {
       "size" : "44x44",
       "idiom" : "watch",
-      "filename" : "watch launch 88.png",
+      "filename" : "watch launch 44@2x.png",
       "scale" : "2x",
       "role" : "longLook",
       "subtype" : "42mm"
