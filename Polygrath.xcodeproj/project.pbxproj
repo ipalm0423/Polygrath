@@ -41,6 +41,7 @@
 		ACBC3FB91B9ECA2B007AC186 /* Polygrath-iWatch.app in Embed Watch Content */ = {isa = PBXBuildFile; fileRef = ACBC3F9F1B9ECA2B007AC186 /* Polygrath-iWatch.app */; };
 		ACBC3FC31B9ECC65007AC186 /* TestInterfaceController.swift in Sources */ = {isa = PBXBuildFile; fileRef = ACBC3FC21B9ECC65007AC186 /* TestInterfaceController.swift */; };
 		ACBC3FC61B9ED277007AC186 /* HealthKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = ACBC3FC51B9ED277007AC186 /* HealthKit.framework */; };
+		ACC5C6EC1C4D42A300A370E4 /* WebURLViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = ACC5C6EB1C4D42A300A370E4 /* WebURLViewController.swift */; };
 		ACC81A4E1BB4E973006377F6 /* ResultViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = ACC81A4D1BB4E973006377F6 /* ResultViewController.swift */; };
 		ACC81A501BB4FB25006377F6 /* questions.swift in Sources */ = {isa = PBXBuildFile; fileRef = ACC81A4F1BB4FB25006377F6 /* questions.swift */; };
 		ACD12B451C19283E008A4856 /* AllowHealthViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = ACD12B441C19283E008A4856 /* AllowHealthViewController.swift */; };
@@ -159,6 +160,7 @@
 		ACBC3FC21B9ECC65007AC186 /* TestInterfaceController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TestInterfaceController.swift; sourceTree = "<group>"; };
 		ACBC3FC41B9ED26D007AC186 /* Polygrath-iWatch Extension.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = "Polygrath-iWatch Extension.entitlements"; sourceTree = "<group>"; };
 		ACBC3FC51B9ED277007AC186 /* HealthKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = HealthKit.framework; path = Platforms/WatchOS.platform/Developer/SDKs/WatchOS2.0.sdk/System/Library/Frameworks/HealthKit.framework; sourceTree = DEVELOPER_DIR; };
+		ACC5C6EB1C4D42A300A370E4 /* WebURLViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WebURLViewController.swift; sourceTree = "<group>"; };
 		ACC81A4D1BB4E973006377F6 /* ResultViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ResultViewController.swift; sourceTree = "<group>"; };
 		ACC81A4F1BB4FB25006377F6 /* questions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = questions.swift; sourceTree = "<group>"; };
 		ACD12B441C19283E008A4856 /* AllowHealthViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AllowHealthViewController.swift; sourceTree = "<group>"; };
@@ -248,6 +250,7 @@
 				ACD12B441C19283E008A4856 /* AllowHealthViewController.swift */,
 				ACD12B4A1C19E301008A4856 /* IntroViewController.swift */,
 				ACD12B461C197A9C008A4856 /* IntroPageViewController.swift */,
+				ACC5C6EB1C4D42A300A370E4 /* WebURLViewController.swift */,
 				ACD12B481C19DA99008A4856 /* AllowCameraViewController.swift */,
 				ACDE08561BA7A1BD00D3ECB7 /* FrontHeartViewController.swift */,
 			);
@@ -645,6 +648,7 @@
 			files = (
 				ACBC3F6F1B9EC9D7007AC186 /* ViewController.swift in Sources */,
 				ACDE08571BA7A1BD00D3ECB7 /* FrontHeartViewController.swift in Sources */,
+				ACC5C6EC1C4D42A300A370E4 /* WebURLViewController.swift in Sources */,
 				ACBC3F6D1B9EC9D7007AC186 /* AppDelegate.swift in Sources */,
 				AC1C44D81C233C75007EB3C3 /* PlaybackViewController.swift in Sources */,
 				ACD12B471C197A9C008A4856 /* IntroPageViewController.swift in Sources */,

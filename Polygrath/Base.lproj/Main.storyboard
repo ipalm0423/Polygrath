@@ -464,7 +464,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="ll7-as-QBp" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2405" y="266"/>
+            <point key="canvasLocation" x="1057" y="-430"/>
         </scene>
         <!--Front Heart View Controller-->
         <scene sceneID="aT0-qx-p3Q">
@@ -1953,17 +1953,14 @@
                                 <color key="textColor" red="0.94901960780000005" green="0.94901960780000005" blue="0.94901960780000005" alpha="1" colorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" showsHorizontalScrollIndicator="NO" translatesAutoresizingMaskIntoConstraints="NO" id="XbQ-SG-HIg">
-                                <rect key="frame" x="0.0" y="124" width="600" height="600"/>
-                                <subviews>
-                                    <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" textAlignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="Jlh-pC-Luf">
-                                        <rect key="frame" x="10" y="0.0" width="580" height="600"/>
-                                        <animations/>
-                                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
-                                        <constraints>
-                                            <constraint firstAttribute="height" constant="600" id="Pn3-bo-LNP"/>
-                                        </constraints>
-                                        <string key="text">The first polygraph, popularly referred to as a lie detector, measures and records several physiological indices such as blood pressure, pulse, respiration, and skin conductivity while the subject is asked and answers a series of questions. 
+                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" editable="NO" textAlignment="center" selectable="NO" translatesAutoresizingMaskIntoConstraints="NO" id="hYJ-Kc-Kz3">
+                                <rect key="frame" x="0.0" y="124" width="600" height="352"/>
+                                <animations/>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="617.5" id="MId-v7-AM8"/>
+                                </constraints>
+                                <mutableString key="text">The first polygraph, popularly referred to as a lie detector, measures and records several physiological indices such as blood pressure, pulse, respiration, and skin conductivity while the subject is asked and answers a series of questions. 
 
 Polygraph testing can discriminate lying from truth telling at rates above chance, though below perfection. These results apply only to specific events and not to screening where it is assumed that polygraph would work less well. Effectiveness may also be worsened by countermeasures.
 
@@ -1972,39 +1969,102 @@ Beyond these condition, we create a easy and light polygraph for iWatch. By coll
 After all, the result of polygrph can only be a refenece. So have fun! Don't be too serious.
 If you have any problem or feedback, please contact us!
 
-www.facebook.com/iWatchPolygraph</string>
-                                        <color key="textColor" red="0.94901960780000005" green="0.94901960780000005" blue="0.94901960780000005" alpha="1" colorSpace="calibratedRGB"/>
-                                        <fontDescription key="fontDescription" name="HelveticaNeue-Light" family="Helvetica Neue" pointSize="18"/>
-                                        <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
-                                    </textView>
-                                </subviews>
+www.facebook.com/iWatchPolygraph
+
+Please check the privacy policy by clicking the button down below.</mutableString>
+                                <color key="textColor" red="0.94901960780000005" green="0.94901960780000005" blue="0.94901960780000005" alpha="1" colorSpace="calibratedRGB"/>
+                                <fontDescription key="fontDescription" name="HelveticaNeue-Light" family="Helvetica Neue" pointSize="18"/>
+                                <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
+                                <variation key="default">
+                                    <mask key="constraints">
+                                        <exclude reference="MId-v7-AM8"/>
+                                    </mask>
+                                </variation>
+                            </textView>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="nLs-T9-agA">
+                                <rect key="frame" x="250" y="556" width="100" height="24"/>
                                 <animations/>
-                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                <color key="backgroundColor" red="0.85490196080000003" green="0.1019607843" blue="0.16078431369999999" alpha="1" colorSpace="calibratedRGB"/>
                                 <constraints>
-                                    <constraint firstItem="Jlh-pC-Luf" firstAttribute="top" secondItem="XbQ-SG-HIg" secondAttribute="top" id="7ix-uZ-Bun"/>
-                                    <constraint firstItem="Jlh-pC-Luf" firstAttribute="centerY" secondItem="XbQ-SG-HIg" secondAttribute="centerY" id="L5n-OY-cdc"/>
-                                    <constraint firstAttribute="bottom" secondItem="Jlh-pC-Luf" secondAttribute="bottom" id="M8O-If-q0v"/>
-                                    <constraint firstAttribute="trailing" secondItem="Jlh-pC-Luf" secondAttribute="trailing" constant="10" id="Vbp-rQ-CXb"/>
-                                    <constraint firstItem="Jlh-pC-Luf" firstAttribute="centerX" secondItem="XbQ-SG-HIg" secondAttribute="centerX" id="Weg-oU-5E0"/>
-                                    <constraint firstItem="Jlh-pC-Luf" firstAttribute="leading" secondItem="XbQ-SG-HIg" secondAttribute="leading" constant="10" id="ymF-66-MWn"/>
+                                    <constraint firstAttribute="height" constant="24" id="KII-F3-1tZ"/>
+                                    <constraint firstAttribute="width" constant="100" id="hdb-53-pbZ"/>
                                 </constraints>
-                            </scrollView>
+                                <fontDescription key="fontDescription" name="HelveticaNeue-LightItalic" family="Helvetica Neue" pointSize="14"/>
+                                <state key="normal" title="Privacy Policy">
+                                    <color key="titleColor" red="0.94901960780000005" green="0.94901960780000005" blue="0.94901960780000005" alpha="1" colorSpace="calibratedRGB"/>
+                                </state>
+                                <connections>
+                                    <segue destination="2wd-Zr-Yja" kind="show" id="ihy-d7-GhJ"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <animations/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
-                            <constraint firstItem="XbQ-SG-HIg" firstAttribute="centerX" secondItem="HDO-ez-B0M" secondAttribute="centerX" id="2ss-jY-EP9"/>
-                            <constraint firstItem="XbQ-SG-HIg" firstAttribute="top" secondItem="HDO-ez-B0M" secondAttribute="bottom" id="BJu-bq-mYU"/>
-                            <constraint firstItem="XbQ-SG-HIg" firstAttribute="leading" secondItem="xvw-o1-emh" secondAttribute="leading" id="GI0-CR-5dY"/>
+                            <constraint firstAttribute="trailing" secondItem="hYJ-Kc-Kz3" secondAttribute="trailing" id="G8s-gw-pKO"/>
                             <constraint firstItem="HDO-ez-B0M" firstAttribute="top" secondItem="MBG-jY-JaI" secondAttribute="bottom" id="Llp-oP-Taq"/>
                             <constraint firstItem="HDO-ez-B0M" firstAttribute="leading" secondItem="xvw-o1-emh" secondAttribute="leadingMargin" id="Ns9-o6-xGc"/>
+                            <constraint firstItem="h0d-ag-SRt" firstAttribute="top" secondItem="nLs-T9-agA" secondAttribute="bottom" constant="20" id="Zbc-QJ-LKA"/>
+                            <constraint firstItem="hYJ-Kc-Kz3" firstAttribute="centerX" secondItem="nLs-T9-agA" secondAttribute="centerX" id="cKm-2J-bxj"/>
                             <constraint firstAttribute="trailingMargin" secondItem="HDO-ez-B0M" secondAttribute="trailing" id="cKm-8c-Xex"/>
+                            <constraint firstItem="hYJ-Kc-Kz3" firstAttribute="leading" secondItem="xvw-o1-emh" secondAttribute="leading" id="iM9-83-tdD"/>
+                            <constraint firstItem="hYJ-Kc-Kz3" firstAttribute="top" secondItem="HDO-ez-B0M" secondAttribute="bottom" id="kcd-f8-Jf4"/>
+                            <constraint firstItem="hYJ-Kc-Kz3" firstAttribute="centerY" secondItem="nLs-T9-agA" secondAttribute="centerY" id="lxp-2V-ZDS"/>
+                            <constraint firstItem="hYJ-Kc-Kz3" firstAttribute="centerY" secondItem="xvw-o1-emh" secondAttribute="centerY" id="oFX-ci-PVn"/>
+                            <constraint firstItem="hYJ-Kc-Kz3" firstAttribute="top" secondItem="xvw-o1-emh" secondAttribute="top" id="tIw-Um-x5t"/>
+                            <constraint firstItem="nLs-T9-agA" firstAttribute="centerX" secondItem="xvw-o1-emh" secondAttribute="centerX" id="upb-K7-yrY"/>
                         </constraints>
+                        <variation key="default">
+                            <mask key="constraints">
+                                <exclude reference="cKm-2J-bxj"/>
+                                <exclude reference="lxp-2V-ZDS"/>
+                                <exclude reference="tIw-Um-x5t"/>
+                            </mask>
+                        </variation>
                     </view>
+                    <connections>
+                        <outlet property="privacyButton" destination="nLs-T9-agA" id="1W2-g8-jjW"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="b7i-o7-AAZ" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="1742" y="266"/>
+        </scene>
+        <!--Web URL View Controller-->
+        <scene sceneID="R3j-g9-FzP">
+            <objects>
+                <viewController id="2wd-Zr-Yja" customClass="WebURLViewController" customModule="Polygrath" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="Vwd-9j-gyB"/>
+                        <viewControllerLayoutGuide type="bottom" id="san-7u-aOG"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="3A1-Ug-qtv">
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <webView contentMode="scaleToFill" scalesPageToFit="YES" translatesAutoresizingMaskIntoConstraints="NO" id="fic-gh-buq">
+                                <rect key="frame" x="0.0" y="64" width="600" height="536"/>
+                                <animations/>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                <dataDetectorType key="dataDetectorTypes" phoneNumber="YES" link="YES"/>
+                            </webView>
+                        </subviews>
+                        <animations/>
+                        <color key="backgroundColor" red="0.0" green="0.25098040700000002" blue="0.50196081400000003" alpha="1" colorSpace="calibratedRGB"/>
+                        <constraints>
+                            <constraint firstItem="fic-gh-buq" firstAttribute="leading" secondItem="3A1-Ug-qtv" secondAttribute="leading" id="aKX-DX-MbA"/>
+                            <constraint firstItem="san-7u-aOG" firstAttribute="top" secondItem="fic-gh-buq" secondAttribute="bottom" id="cj2-Ff-37m"/>
+                            <constraint firstAttribute="trailing" secondItem="fic-gh-buq" secondAttribute="trailing" id="ogZ-OQ-bjf"/>
+                            <constraint firstItem="fic-gh-buq" firstAttribute="top" secondItem="Vwd-9j-gyB" secondAttribute="bottom" id="tbD-4K-zhV"/>
+                        </constraints>
+                    </view>
+                    <connections>
+                        <outlet property="webView" destination="fic-gh-buq" id="6RE-8C-bKY"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="09g-T9-h6i" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="2387" y="266"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="jL1-Bq-gzq">

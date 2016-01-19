@@ -1,27 +1,20 @@
 //
-//  StatementViewController.swift
+//  WebURLViewController.swift
 //  Polygrath
 //
-//  Created by 陳冠宇 on 2015/11/28.
-//  Copyright © 2015年 陳冠宇. All rights reserved.
+//  Created by 陳冠宇 on 2016/1/18.
+//  Copyright © 2016年 陳冠宇. All rights reserved.
 //
 
 import UIKit
 
-class StatementViewController: UIViewController {
+class WebURLViewController: UIViewController {
 
-    
-    @IBOutlet var privacyButton: UIButton!
-    
-    
     override func viewDidLoad() {
         super.viewDidLoad()
 
         // Do any additional setup after loading the view.
-        Singleton.sharedInstance.setupBackgroundGradientColor(self)
-        self.navigationController?.navigationBarHidden = false
-        self.privacyButton.layer.cornerRadius = self.privacyButton.frame.height / 2
-        self.privacyButton.clipsToBounds = true
+        self.loadWebPage()
     }
 
     override func didReceiveMemoryWarning() {
@@ -29,6 +22,15 @@ class StatementViewController: UIViewController {
         // Dispose of any resources that can be recreated.
     }
     
+    
+    @IBOutlet var webView: UIWebView!
+    
+    func loadWebPage() {
+        let theURL = "https://www.facebook.com/notes/polygraph/privacy-policy/1512030455765672"
+        let theRequestURL = NSURL (string: theURL)
+        let theRequest = NSURLRequest (URL: theRequestURL!)
+        webView.loadRequest(theRequest)
+    }
 
     /*
     // MARK: - Navigation
