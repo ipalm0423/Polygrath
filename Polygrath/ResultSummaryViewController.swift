@@ -121,23 +121,23 @@ class ResultSummaryViewController: UIViewController {
             
             
             //circle
-            let circle = self.getCircleGradientLayer(self.circleView.bounds, percent: (totalTruthRate), lineWidth: 7)
+            let circle = self.getCircleGradientLayer(self.circleView.bounds, percent: (1 - totalTruthRate), lineWidth: 7)
             self.circleView.layer.insertSublayer(circle, atIndex: 1)
             
             
             
             //judgement text
-            self.truthRateLabel.text = String(format: "%.0f", totalTruthRate * 100)
+            self.truthRateLabel.text = String(format: "%.0f", (Singleton.sharedInstance.BPMmax - Singleton.sharedInstance.BPMmin))
             if totalTruthRate > 0.8 {
-                self.truthLabel.text = "Honest"
+                self.truthLabel.text = "Steady"
             }else if totalTruthRate > 0.6 {
-                self.truthLabel.text = "Something hide"
+                self.truthLabel.text = "Slightly Accelerated"
             }else if totalTruthRate > 0.4 {
-                self.truthLabel.text = "Sly"
+                self.truthLabel.text = "Heartbeat Accelerated"
             }else if totalTruthRate > 0.2 {
-                self.truthLabel.text = "Cheater"
+                self.truthLabel.text = "Rapid Heart"
             }else {
-                self.truthLabel.text = "Big Liar"
+                self.truthLabel.text = "Heartbeat Racing"
             }
         }else {
             //no data

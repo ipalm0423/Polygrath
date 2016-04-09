@@ -38,7 +38,7 @@ class RecordTableViewCell: UITableViewCell, CPTBarPlotDataSource, CPTBarPlotDele
     
     
     @IBOutlet var processIndicator: UIActivityIndicatorView!
-    
+    var isProcess = false
     
     @IBOutlet var processLabel: UILabel!
     
@@ -69,6 +69,7 @@ class RecordTableViewCell: UITableViewCell, CPTBarPlotDataSource, CPTBarPlotDele
     
     func setupPlotGraph(size: CGSize) {
         self.hostView.removeFromSuperview()
+        self.hostView.layer.removeAllAnimations()
         self.hostView = CPTGraphHostingView(frame: CGRect(x: 0, y: 0, width: size.width, height: size.height))
         let graph = CPTXYGraph(frame: hostView.frame)
         self.hostView.hostedGraph = graph

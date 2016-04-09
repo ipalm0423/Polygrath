@@ -1,34 +1,10 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder.WatchKit.Storyboard" version="3.0" toolsVersion="9060" systemVersion="15C50" targetRuntime="watchKit" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="ePc-Vh-fql">
+<document type="com.apple.InterfaceBuilder.WatchKit.Storyboard" version="3.0" toolsVersion="9060" systemVersion="15D21" targetRuntime="watchKit" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="ePc-Vh-fql">
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="9051"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBWatchKitPlugin" version="9019"/>
     </dependencies>
     <scenes>
-        <!--frontController-->
-        <scene sceneID="aou-V4-d1y">
-            <objects>
-                <controller identifier="frontController" id="AgC-eL-Hgc" customClass="InterfaceController" customModule="Polygrath_iWatch" customModuleProvider="target">
-                    <items>
-                        <label width="136" height="102.5" alignment="left" text="Open the Polygrath APP on your iOS device" textAlignment="center" numberOfLines="0" id="EFY-s0-bsc">
-                            <fontDescription key="font" style="UICTFontTextStyleBody"/>
-                        </label>
-                        <button width="0.90000000000000002" alignment="center" verticalAlignment="center" alpha="0.90000000000000002" title="Comfirm" id="Po0-hU-wcd">
-                            <color key="titleColor" red="0.071733151689185093" green="0.87543402777777779" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
-                            <color key="backgroundColor" red="0.27177196211977772" green="0.32378472222222221" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
-                            <fontDescription key="font" type="system" pointSize="18"/>
-                            <connections>
-                                <action selector="comfirmButtonTouch" destination="AgC-eL-Hgc" id="Efl-Fw-m6C"/>
-                            </connections>
-                        </button>
-                    </items>
-                    <connections>
-                        <outlet property="frontLabel" destination="EFY-s0-bsc" id="E0e-AM-51Q"/>
-                    </connections>
-                </controller>
-            </objects>
-            <point key="canvasLocation" x="245" y="325"/>
-        </scene>
         <!--Front Interface Controller-->
         <scene sceneID="n2M-dg-ZUy">
             <objects>
@@ -40,17 +16,17 @@
                                     <items>
                                         <label width="1" alignment="center" text="Welcome" textAlignment="center" id="AN6-4A-tFR">
                                             <color key="textColor" red="0.85490196078431369" green="0.10196078431372549" blue="0.16078431372549018" alpha="1" colorSpace="calibratedRGB"/>
-                                            <fontDescription key="font" type="system" weight="medium" pointSize="19"/>
+                                            <fontDescription key="font" type="system" weight="medium" pointSize="18"/>
                                         </label>
-                                        <label width="1" alignment="center" text="Polygraph" textAlignment="center" id="Vzb-OW-XGr">
-                                            <fontDescription key="font" type="italicSystem" weight="medium" pointSize="23"/>
+                                        <label width="1" alignment="center" text="Heart Camera" textAlignment="center" id="Vzb-OW-XGr">
+                                            <fontDescription key="font" type="italicSystem" weight="medium" pointSize="19"/>
                                         </label>
                                     </items>
                                 </group>
                                 <group width="1" height="0.5" alignment="center" verticalAlignment="bottom" backgroundImage="cardiogram" contentMode="right" spacing="0.0" id="PFT-9g-hjm">
                                     <items>
                                         <imageView width="1" alignment="left" verticalAlignment="center" contentMode="redraw" id="GMj-d2-Ok7"/>
-                                        <label width="1" alignment="center" verticalAlignment="center" text="Slide to Open" textAlignment="center" id="NZa-Ea-qtI">
+                                        <label width="1" height="100" alignment="center" verticalAlignment="center" text="Slide to Open" textAlignment="center" id="NZa-Ea-qtI">
                                             <color key="textColor" red="0.94901960780000005" green="0.94901960780000005" blue="0.94901960780000005" alpha="1" colorSpace="calibratedRGB"/>
                                             <fontDescription key="font" type="italicSystem" weight="medium" pointSize="16"/>
                                         </label>
@@ -223,30 +199,6 @@
                 </controller>
             </objects>
             <point key="canvasLocation" x="899" y="581"/>
-        </scene>
-        <!--Wait-->
-        <scene sceneID="u7T-35-igf">
-            <objects>
-                <controller identifier="testController" title="Wait" hidesWhenLoading="NO" id="Ee6-eY-CdU" customClass="TestInterfaceController" customModule="Polygrath_iWatch_Extension">
-                    <items>
-                        <label width="1" height="100" alignment="center" text="Wearing the iWatch and press 'Start' button" textAlignment="center" numberOfLines="0" id="qIW-XT-eat">
-                            <fontDescription key="font" style="UICTFontTextStyleCaption1"/>
-                        </label>
-                        <button width="0.90000000000000002" alignment="center" verticalAlignment="center" alpha="0.80000000000000004" title="Start" id="eqt-bi-vR8">
-                            <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                            <color key="backgroundColor" red="1" green="0.055564177692276173" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
-                            <connections>
-                                <action selector="startButtonTouch" destination="Ee6-eY-CdU" id="6bd-Sl-PB8"/>
-                            </connections>
-                        </button>
-                    </items>
-                    <connections>
-                        <outlet property="frontLabel" destination="qIW-XT-eat" id="3t5-s7-pH7"/>
-                        <outlet property="startButton" destination="eqt-bi-vR8" id="OGA-H3-Dfd"/>
-                    </connections>
-                </controller>
-            </objects>
-            <point key="canvasLocation" x="461" y="268"/>
         </scene>
     </scenes>
     <inferredMetricsTieBreakers>

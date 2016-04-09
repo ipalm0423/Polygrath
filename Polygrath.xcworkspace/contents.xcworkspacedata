@@ -2,7 +2,7 @@
 <Workspace
    version = "1.0">
    <FileRef
-      location = "group:Polygrath.xcodeproj">
+      location = "group:/Volumes/Transcend/XCODE/Project/Polygrath/HeartCamera.xcodeproj">
    </FileRef>
    <FileRef
       location = "group:Pods/Pods.xcodeproj">

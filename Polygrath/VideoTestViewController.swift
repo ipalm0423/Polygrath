@@ -50,7 +50,7 @@ class VideoTestViewController: UIViewController, AVCaptureVideoDataOutputSampleB
                     Singleton.sharedInstance.playHeartBeatEffect()
                     AudioServicesPlaySystemSound(kSystemSoundID_Vibrate)
                     print("user is lying, vibrate and play sound")
-                    self.truthLabel.text = "Subject maybe Lying"
+                    self.truthLabel.text = "Accelerated"
                     self.truthLabel.alpha = 1.0
                 }
                 
@@ -83,7 +83,7 @@ class VideoTestViewController: UIViewController, AVCaptureVideoDataOutputSampleB
     
     @IBOutlet var introRecordLabel: UILabel!
     
-    @IBOutlet var introBPM2Label: UILabel!
+    
     
     var isGetBPM = false {
         didSet {
@@ -91,8 +91,8 @@ class VideoTestViewController: UIViewController, AVCaptureVideoDataOutputSampleB
                 UIView.animateWithDuration(1, animations: { () -> Void in
                     self.introBPMLabel.alpha = 1
                     self.introRecordLabel.alpha = 1
-                    self.introRecordLabel.text = "Press When Subject Have Answered"
-                    self.introBPM2Label.alpha = 1
+                    self.introRecordLabel.text = "Press If Answered"
+                    
                     
                     
                     self.view.layoutIfNeeded()
@@ -103,7 +103,7 @@ class VideoTestViewController: UIViewController, AVCaptureVideoDataOutputSampleB
                 UIView.animateWithDuration(1, animations: { () -> Void in
                     self.introBPMLabel.alpha = 1
                     self.introRecordLabel.alpha = 1
-                    self.introBPM2Label.alpha = 1
+                    
                     self.view.layoutIfNeeded()
                     
                     }) { (bool) -> Void in
@@ -221,13 +221,14 @@ class VideoTestViewController: UIViewController, AVCaptureVideoDataOutputSampleB
     @IBOutlet weak var recordButton: UIButton!
     
     @IBAction func recordButtonTouch(sender: AnyObject) {
+        self.introBPMLabel.hidden = true
         //introduction off
         if self.introRecordLabel.alpha == 1 {
             if self.isRecord {
                 UIView.animateWithDuration(1.0, animations: { () -> Void in
                     self.introBPMLabel.alpha = 0
                     self.introRecordLabel.alpha = 0
-                    self.introBPM2Label.alpha = 0
+                    
                     self.introFinishedLabel.alpha = 1
                     self.view.layoutIfNeeded()
                     }) { (bool) -> Void in
@@ -240,8 +241,8 @@ class VideoTestViewController: UIViewController, AVCaptureVideoDataOutputSampleB
                 UIView.animateWithDuration(1.0, animations: { () -> Void in
                     self.introBPMLabel.alpha = 0
                     self.introFinishedLabel.alpha = 0
-                    self.introRecordLabel.text = "Press When Subject Have Answered"
-                    self.introBPM2Label.alpha = 0
+                    self.introRecordLabel.text = "Press If Answered"
+                    
                     self.view.layoutIfNeeded()
                     }) { (bool) -> Void in
                         
@@ -601,7 +602,7 @@ class VideoTestViewController: UIViewController, AVCaptureVideoDataOutputSampleB
             self.view.bringSubviewToFront(self.introRecordLabel)
             self.view.bringSubviewToFront(self.introBPMLabel)
             self.view.bringSubviewToFront(self.introFinishedLabel)
-            self.view.bringSubviewToFront(self.introBPM2Label)
+            
             self.captureSession.startRunning()
             
         }catch {

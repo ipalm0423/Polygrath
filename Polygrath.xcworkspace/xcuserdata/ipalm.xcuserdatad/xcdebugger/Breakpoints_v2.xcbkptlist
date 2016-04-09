@@ -141,13 +141,13 @@
                   symbolName = "Polygrath.FrontHeartViewController.animateHeart (Polygrath.FrontHeartViewController)() -&gt; ()"
                   moduleName = "Polygrath"
                   usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/ipalm/Documents/iWatch/Polygrath/Polygrath/FrontHeartViewController.swift"
-                  timestampString = "473864075.981616"
+                  urlString = "file:///Volumes/Transcend/XCODE/Project/Polygrath/Polygrath/FrontHeartViewController.swift"
+                  timestampString = "481870348.055853"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
                   startingLineNumber = "69"
                   endingLineNumber = "69"
-                  offsetFromSymbolStart = "1117">
+                  offsetFromSymbolStart = "940">
                </Location>
                <Location
                   shouldBeEnabled = "Yes"
@@ -156,15 +156,31 @@
                   symbolName = "Polygrath.FrontHeartViewController.(animateHeart (Polygrath.FrontHeartViewController) -&gt; () -&gt; ()).(closure #1)"
                   moduleName = "Polygrath"
                   usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/ipalm/Documents/iWatch/Polygrath/Polygrath/FrontHeartViewController.swift"
-                  timestampString = "473864075.981858"
+                  urlString = "file:///Volumes/Transcend/XCODE/Project/Polygrath/Polygrath/FrontHeartViewController.swift"
+                  timestampString = "481870348.056108"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
                   startingLineNumber = "71"
                   endingLineNumber = "71"
-                  offsetFromSymbolStart = "20">
+                  offsetFromSymbolStart = "24">
                </Location>
             </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Polygrath/RecordViewController.swift"
+            timestampString = "475318355.321673"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "74"
+            endingLineNumber = "74"
+            landmarkName = "RecordViewController"
+            landmarkType = "3">
          </BreakpointContent>
       </BreakpointProxy>
    </Breakpoints>

@@ -17,7 +17,7 @@ class RecordViewController: UIViewController, UITableViewDelegate, UITableViewDa
     
     //constant
     let pageControl = 1
-    
+    var cellInProcess = [Bool]()
     
     @IBOutlet weak var tableView: UITableView!
     
@@ -28,6 +28,11 @@ class RecordViewController: UIViewController, UITableViewDelegate, UITableViewDa
         
         if Singleton.sharedInstance.questions.count == 0 {
             self.emptyLabel.alpha = 1
+        }
+        
+        //process flag
+        for var i = 0; i < Singleton.sharedInstance.questions.count; i++ {
+            self.cellInProcess.append(false)
         }
         
         // Do any additional setup after loading the view.
@@ -69,10 +74,12 @@ class RecordViewController: UIViewController, UITableViewDelegate, UITableViewDa
     
 //table
     func numberOfSectionsInTableView(tableView: UITableView) -> Int {
+        
         return 1
     }
     
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        
         return Singleton.sharedInstance.questions.count
     }
     
@@ -83,10 +90,7 @@ class RecordViewController: UIViewController, UITableViewDelegate, UITableViewDa
         
         cell.playButton.tag = indexPath.row
         
-        //cell.forwardButton.tag = indexPath.row
-        
         //label setting
-        //cell.timeLabel.text = Singleton.sharedInstance.getTimeString(question.startTime, stopTime: question.endTime)
         cell.questionNoLabel.text = "Record " + (indexPath.row + 1).description
         cell.questionNoLabel.layer.cornerRadius = cell.questionNoLabel.frame.height / 2
         cell.questionNoLabel.clipsToBounds = true
@@ -97,21 +101,37 @@ class RecordViewController: UIViewController, UITableViewDelegate, UITableViewDa
         cell.chartView.clipsToBounds = true
         if question.dataValues.count > 0 {
             //have data
-            cell.truthLabel.text = Int(question.score * 100).description + "%"
+            cell.truthLabel.text = String(format: "%.0f", (question.max - question.min))
             cell.maxLabel.text = String(format: "%.0f", question.max)
             cell.avgLabel.text = String(format: "%.0f", question.average)
             
             //setup graph
             cell.quest = question
             cell.setupPlotGraph(CGSize(width: self.view.bounds.width - 60, height: cell.chartView.frame.height))
-            
+            if self.cellInProcess[indexPath.row] {
+                
+                self.startAnimateBarPlot(indexPath)
+            }else {
+                cell.playButton.enabled = true
+                cell.processLabel.alpha = 0
+            }
         }else {
             //no data
             cell.truthLabel.text = "0"
             cell.maxLabel.text = "0"
             cell.avgLabel.text = "0"
-            cell.processLabel.text = "No Data"
-            cell.processLabel.alpha = 0.6
+            //delete host view
+            cell.hostView.layer.removeAllAnimations()
+            cell.hostView.removeFromSuperview()
+            
+            if self.cellInProcess[indexPath.row] {
+                cell.processLabel.text = "Processing"
+                cell.processLabel.alpha = 0.1
+            }else {
+                cell.processLabel.text = "No Data"
+                cell.playButton.enabled = true
+                cell.processLabel.alpha = 0.6
+            }
         }
         
         
@@ -276,11 +296,12 @@ class RecordViewController: UIViewController, UITableViewDelegate, UITableViewDa
     
 //animation
     func startAnimateBarPlot(indexPath: NSIndexPath) {
+        self.cellInProcess[indexPath.row] = true
         dispatch_async(dispatch_get_main_queue()) { () -> Void in
             if let cell = self.tableView.cellForRowAtIndexPath(indexPath) as? RecordTableViewCell {
-                print("start animation")
+                print("start animation at row: \(indexPath.row)")
                 //label
-                
+                cell.processLabel.text = "Processing"
                 cell.playButton.enabled = false
                 UIView.animateWithDuration(0.8, delay: 0, options: UIViewAnimationOptions.CurveLinear, animations: { () -> Void in
                     cell.processLabel.alpha = 1
@@ -314,10 +335,13 @@ class RecordViewController: UIViewController, UITableViewDelegate, UITableViewDa
     }
     
     func stopAnimateBarPlot(indexPath: NSIndexPath) {
+        self.cellInProcess[indexPath.row] = false
         dispatch_async(dispatch_get_main_queue()) { () -> Void in
             if let cell = self.tableView.cellForRowAtIndexPath(indexPath) as? RecordTableViewCell {
                 print("stop animation")
+                
                 cell.playButton.enabled = true
+                cell.isProcess = false
                 //label
                 UIView.animateWithDuration(0.8, delay: 0, options: [UIViewAnimationOptions.CurveEaseIn], animations: { () -> Void in
                     cell.processLabel.alpha = 0
