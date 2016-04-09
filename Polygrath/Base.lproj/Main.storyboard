@@ -31,14 +31,14 @@
                                     </mask>
                                 </variation>
                             </imageView>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Heart Camera" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="NL3-E8-xua">
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Heart Camera" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="NL3-E8-xua">
                                 <rect key="frame" x="0.0" y="124" width="600" height="43"/>
                                 <animations/>
-                                <fontDescription key="fontDescription" name="HelveticaNeue-BoldItalic" family="Helvetica Neue" pointSize="36"/>
+                                <fontDescription key="fontDescription" name="HelveticaNeue-BoldItalic" family="Helvetica Neue" pointSize="38"/>
                                 <color key="textColor" red="0.94901960780000005" green="0.94901960780000005" blue="0.94901960780000005" alpha="1" colorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Capture Video with Heartbeat" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="eoj-PA-1wN">
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Capture Video with Heartbeat" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="eoj-PA-1wN">
                                 <rect key="frame" x="20" y="187" width="560" height="21"/>
                                 <animations/>
                                 <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="18"/>
@@ -171,7 +171,7 @@
                                     <action selector="allowButtonTouche:" destination="jZJ-co-Uwc" eventType="touchUpInside" id="QnE-cb-xT4"/>
                                 </connections>
                             </button>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Record the heartbeat with camera and share it" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="WW1-w7-gN8">
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Record Heartbeat with Video and Share It" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="WW1-w7-gN8">
                                 <rect key="frame" x="40" y="479" width="520" height="22"/>
                                 <animations/>
                                 <fontDescription key="fontDescription" name="HelveticaNeue-Light" family="Helvetica Neue" pointSize="18"/>
@@ -239,7 +239,7 @@
                                 <color key="textColor" red="0.94901960780000005" green="0.94901960780000005" blue="0.94901960780000005" alpha="1" colorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <pageControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" numberOfPages="3" translatesAutoresizingMaskIntoConstraints="NO" id="iJz-iY-pKm">
+                            <pageControl opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" numberOfPages="2" translatesAutoresizingMaskIntoConstraints="NO" id="iJz-iY-pKm">
                                 <rect key="frame" x="281" y="543" width="39" height="37"/>
                                 <animations/>
                                 <color key="pageIndicatorTintColor" red="0.73778803660000003" green="0.73778803660000003" blue="0.73778803660000003" alpha="1" colorSpace="calibratedRGB"/>
@@ -578,11 +578,11 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="NfC-fF-U3p">
-                                <rect key="frame" x="192" y="421" width="95" height="95"/>
+                                <rect key="frame" x="199.5" y="436" width="80" height="80"/>
                                 <animations/>
                                 <constraints>
-                                    <constraint firstAttribute="width" constant="95" id="5rq-h4-ANz"/>
-                                    <constraint firstAttribute="height" constant="95" id="szA-Qh-vKT"/>
+                                    <constraint firstAttribute="width" constant="80" id="5rq-h4-ANz"/>
+                                    <constraint firstAttribute="height" constant="80" id="szA-Qh-vKT"/>
                                 </constraints>
                                 <state key="normal" image="recording">
                                     <color key="titleColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
@@ -604,11 +604,11 @@
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="B9f-pe-WDc">
-                                <rect key="frame" x="324" y="433" width="71" height="71"/>
+                                <rect key="frame" x="334.5" y="451" width="50" height="50"/>
                                 <animations/>
                                 <constraints>
-                                    <constraint firstAttribute="height" constant="71" id="SD3-VT-rWi"/>
-                                    <constraint firstAttribute="width" constant="71" id="bna-8J-kLk"/>
+                                    <constraint firstAttribute="height" constant="50" id="SD3-VT-rWi"/>
+                                    <constraint firstAttribute="width" constant="50" id="bna-8J-kLk"/>
                                 </constraints>
                                 <state key="normal" image="finish"/>
                                 <connections>
@@ -616,12 +616,12 @@
                                 </connections>
                             </button>
                             <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="heart" translatesAutoresizingMaskIntoConstraints="NO" id="1ic-Lh-fju">
-                                <rect key="frame" x="230" y="208" width="140" height="120"/>
+                                <rect key="frame" x="241" y="256" width="117" height="100"/>
                                 <animations/>
                                 <constraints>
                                     <constraint firstAttribute="width" secondItem="1ic-Lh-fju" secondAttribute="height" multiplier="50:43" id="WrJ-AR-X1F"/>
                                     <constraint firstAttribute="width" constant="150" id="b71-e5-7ZN"/>
-                                    <constraint firstAttribute="height" constant="120" id="fCj-O7-ebi"/>
+                                    <constraint firstAttribute="height" constant="100" id="fCj-O7-ebi"/>
                                 </constraints>
                                 <variation key="default">
                                     <mask key="constraints">
@@ -629,10 +629,10 @@
                                     </mask>
                                 </variation>
                             </imageView>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="0" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="DN4-5Z-0s7">
-                                <rect key="frame" x="285" y="232" width="31" height="64"/>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="0" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="DN4-5Z-0s7">
+                                <rect key="frame" x="287.5" y="275.5" width="24.5" height="51.5"/>
                                 <animations/>
-                                <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="55"/>
+                                <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="44"/>
                                 <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
@@ -644,35 +644,35 @@
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="description" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="4OL-kc-ojG">
-                                <rect key="frame" x="255" y="338" width="90" height="21"/>
+                                <rect key="frame" x="255" y="366" width="90" height="21"/>
                                 <animations/>
                                 <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="18"/>
                                 <color key="textColor" red="0.90196079019999997" green="0.90196079019999997" blue="0.90196079019999997" alpha="1" colorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" alpha="0.0" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Heartbeat (BPM)" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="awy-KM-Y9B">
-                                <rect key="frame" x="233" y="167" width="134" height="21"/>
+                                <rect key="frame" x="233" y="215" width="134" height="21"/>
                                 <animations/>
                                 <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="18"/>
                                 <color key="textColor" red="0.94901960780000005" green="0.94901960780000005" blue="0.94901960780000005" alpha="1" colorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <label opaque="NO" userInteractionEnabled="NO" alpha="0.0" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Press If Finished" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="mzc-gn-SWO">
-                                <rect key="frame" x="287" y="504" width="144.5" height="17"/>
+                            <label opaque="NO" userInteractionEnabled="NO" alpha="0.0" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Press If Finished" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="mzc-gn-SWO">
+                                <rect key="frame" x="310" y="501" width="98.5" height="17"/>
                                 <animations/>
                                 <fontDescription key="fontDescription" name="HelveticaNeue-Light" family="Helvetica Neue" pointSize="14"/>
                                 <color key="textColor" red="0.94901960780000005" green="0.94901960780000005" blue="0.94901960780000005" alpha="1" colorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <label opaque="NO" userInteractionEnabled="NO" alpha="0.0" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Press Before Asking" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="zvr-mm-RHy">
-                                <rect key="frame" x="179" y="398" width="121.5" height="17"/>
+                            <label opaque="NO" userInteractionEnabled="NO" alpha="0.0" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Start Record" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="zvr-mm-RHy">
+                                <rect key="frame" x="201" y="414" width="77" height="17"/>
                                 <animations/>
                                 <fontDescription key="fontDescription" name="HelveticaNeue-Light" family="Helvetica Neue" pointSize="14"/>
                                 <color key="textColor" red="0.94901960780000005" green="0.94901960780000005" blue="0.94901960780000005" alpha="1" colorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="I5K-pv-Rl9">
-                                <rect key="frame" x="0.0" y="160" width="600" height="215"/>
+                                <rect key="frame" x="0.0" y="198" width="600" height="215"/>
                                 <animations/>
                             </view>
                         </subviews>
@@ -682,7 +682,8 @@
                             <constraint firstItem="DN4-5Z-0s7" firstAttribute="centerY" secondItem="1ic-Lh-fju" secondAttribute="centerY" constant="-5" id="0uZ-dx-edI"/>
                             <constraint firstAttribute="trailing" secondItem="I5K-pv-Rl9" secondAttribute="trailing" id="1ry-96-fK3"/>
                             <constraint firstItem="Eia-G7-nO3" firstAttribute="top" secondItem="I5K-pv-Rl9" secondAttribute="bottom" id="2lC-W1-VlA"/>
-                            <constraint firstItem="1ic-Lh-fju" firstAttribute="centerY" secondItem="Ok9-FT-77G" secondAttribute="centerY" id="459-PI-yN4"/>
+                            <constraint firstItem="1ic-Lh-fju" firstAttribute="centerY" secondItem="Ok9-FT-77G" secondAttribute="centerY" constant="60" id="459-PI-yN4"/>
+                            <constraint firstItem="Eia-G7-nO3" firstAttribute="top" secondItem="1ic-Lh-fju" secondAttribute="bottom" constant="180" id="49L-aP-MpI"/>
                             <constraint firstItem="B9f-pe-WDc" firstAttribute="centerY" secondItem="NfC-fF-U3p" secondAttribute="centerY" id="4qT-b8-uIp"/>
                             <constraint firstItem="I5K-pv-Rl9" firstAttribute="centerY" secondItem="1ic-Lh-fju" secondAttribute="centerY" id="5y5-AO-YyI"/>
                             <constraint firstItem="NfC-fF-U3p" firstAttribute="top" secondItem="zvr-mm-RHy" secondAttribute="bottom" constant="5" id="EU6-mF-mzF"/>
@@ -709,6 +710,7 @@
                         <variation key="default">
                             <mask key="constraints">
                                 <exclude reference="Ojw-JP-F4Q"/>
+                                <exclude reference="459-PI-yN4"/>
                                 <exclude reference="2lC-W1-VlA"/>
                             </mask>
                         </variation>
@@ -882,7 +884,7 @@
                                                     </mask>
                                                 </variation>
                                             </label>
-                                            <label opaque="NO" userInteractionEnabled="NO" alpha="0.69999998807907104" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Heartbeat (BPM) " textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="nOo-Zl-mC3" userLabel="Heart Rate (BPM)">
+                                            <label opaque="NO" userInteractionEnabled="NO" alpha="0.69999998807907104" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="BPM" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="nOo-Zl-mC3" userLabel="Heart Rate (BPM)">
                                                 <rect key="frame" x="174" y="12" width="173" height="17"/>
                                                 <animations/>
                                                 <constraints>

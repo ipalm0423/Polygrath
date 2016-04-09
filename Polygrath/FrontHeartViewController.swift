@@ -76,7 +76,7 @@ class FrontHeartViewController: UIViewController,WCSessionDelegate {
     
 //alert
     func alertAuthorizeCamera() {
-        let alert = UIAlertController(title: "Authorize", message: "We need to access camera", preferredStyle: UIAlertControllerStyle.Alert)
+        let alert = UIAlertController(title: "Authorize", message: "Need to Access Camera", preferredStyle: UIAlertControllerStyle.Alert)
         alert.addAction(UIAlertAction(title: "OK", style: UIAlertActionStyle.Default, handler: { (act) -> Void in
             switch act.style {
             case .Default:
@@ -95,7 +95,7 @@ class FrontHeartViewController: UIViewController,WCSessionDelegate {
     }
     
     func alertAuthorizeCameraFail() {
-        let alert = UIAlertController(title: "Warning", message: "We need to access your camera and camera roll", preferredStyle: UIAlertControllerStyle.Alert)
+        let alert = UIAlertController(title: "Warning", message: "Need to Access Camera and Camera Roll", preferredStyle: UIAlertControllerStyle.Alert)
         alert.addAction(UIAlertAction(title: "OK", style: UIAlertActionStyle.Default, handler: nil))
         self.presentViewController(alert, animated: true, completion: nil)
     }

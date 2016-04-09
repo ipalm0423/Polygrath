@@ -91,7 +91,7 @@ class VideoTestViewController: UIViewController, AVCaptureVideoDataOutputSampleB
                 UIView.animateWithDuration(1, animations: { () -> Void in
                     self.introBPMLabel.alpha = 1
                     self.introRecordLabel.alpha = 1
-                    self.introRecordLabel.text = "Press If Answered"
+                    self.introRecordLabel.text = "Stop Record"
                     
                     
                     
@@ -179,7 +179,7 @@ class VideoTestViewController: UIViewController, AVCaptureVideoDataOutputSampleB
         UIApplication.sharedApplication().idleTimerDisabled = true
         
         //truth label 
-        self.truthLabel.text = "Wait for Watch"
+        self.truthLabel.text = "Wait for iWatch"
         
         //heart line
         self.setupHeartLineLayer()
@@ -241,7 +241,7 @@ class VideoTestViewController: UIViewController, AVCaptureVideoDataOutputSampleB
                 UIView.animateWithDuration(1.0, animations: { () -> Void in
                     self.introBPMLabel.alpha = 0
                     self.introFinishedLabel.alpha = 0
-                    self.introRecordLabel.text = "Press If Answered"
+                    self.introRecordLabel.text = "Stop Record"
                     
                     self.view.layoutIfNeeded()
                     }) { (bool) -> Void in

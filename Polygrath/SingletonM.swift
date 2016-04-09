@@ -225,18 +225,18 @@ class Singleton: NSObject {
     
     func createAlbum() -> PHAssetCollection? {
         let fetchOptions = PHFetchOptions()
-        fetchOptions.predicate = NSPredicate(format: "title = %@", "PolyGraph")
+        fetchOptions.predicate = NSPredicate(format: "title = %@", "Heart Camera")
         var collection : PHFetchResult = PHAssetCollection.fetchAssetCollectionsWithType(.Album, subtype: .Any, options: fetchOptions)
         
         if let first_obj = collection.firstObject as? PHAssetCollection {
             //already exist, return object
-            print("PolyGraph collection alreay exist")
+            print("Heart Camera collection alreay exist")
             return first_obj
         }else {
             //didn't exist, create one
-            print("Create new collection : PolyGraph")
+            print("Create new collection : Heart Camera")
             PHPhotoLibrary.sharedPhotoLibrary().performChanges({
-                let createAlbumRequest : PHAssetCollectionChangeRequest = PHAssetCollectionChangeRequest.creationRequestForAssetCollectionWithTitle("PolyGraph")
+                let createAlbumRequest : PHAssetCollectionChangeRequest = PHAssetCollectionChangeRequest.creationRequestForAssetCollectionWithTitle("Heart Camera")
                 let assetCollectionPlaceholder = createAlbumRequest.placeholderForCreatedAssetCollection
                 
                 }, completionHandler: { success, error in
@@ -459,7 +459,7 @@ class Singleton: NSObject {
     func getWaterMarkLayer(size: CGSize) -> CALayer {
         //create CALayer
         let textColor = UIColor(red: 242 / 255, green: 242 / 255, blue: 242 / 255, alpha: 1.0)
-        let textLayer = self.createTextCALayer("Polygraph", uiFont: UIFont(name: "Helvetica-Bold", size: 18)!, color: textColor, x: 10, y: size.height - 30) //constraint = 10, 10
+        let textLayer = self.createTextCALayer("Heart Camera", uiFont: UIFont(name: "Helvetica-Bold", size: 18)!, color: textColor, x: 10, y: size.height - 30) //constraint = 10, 10
         
         //put into a size
         let overlayLayer = CALayer()
@@ -479,8 +479,269 @@ class Singleton: NSObject {
         var layers = [CALayer]()
         var ARClayers = [CALayer]()
         //let totalDuration = quest.endTime.timeIntervalSinceDate(quest.startTime)
-        let lineViewSize = CGRect(x: 0, y: (parentViewSize.height / 10 * 3), width: parentViewSize.width, height: parentViewSize.height / 2.5) //height = 1:2.5
+        let lineViewSize = CGRect(x: 0, y: 0, width: parentViewSize.width, height: parentViewSize.height / 2.5) //height = 1:2.5
+        //(parentViewSize.height / 10 * 3)
         
+        if count > 0 {
+            //calculate truth rate by data
+            for var i = 0; i < count; i++ {
+                let tempData = quest.dataValues[0..<(i + 1)]
+                let truth = self.getLocalizeTruthRate(Array(tempData))
+                truthRates.append(truth)
+            }
+            
+            //generate layer
+            
+            for var j = 0; j < truthRates.count; j++ {
+                //setup const
+                //color
+                let redColor = UIColor(red: 202 / 255, green: 24 / 255, blue: 38 / 255, alpha: 1.0).CGColor
+                let yellowColor = UIColor(red: 204 / 255, green: 233 / 255 , blue: 0, alpha: 1.0).CGColor
+                let blackColor = UIColor(red: 0.1, green: 0.1, blue: 0.1, alpha: 1.0).CGColor
+                //let grayColor = UIColor.grayColor().CGColor
+                //constant
+                let truth = truthRates[j]
+                let BPM = quest.dataValues[j]
+                var period = 2.0
+                if BPM == 0 {
+                    //not ready data
+                    period = 2.0
+                }else {
+                    period = (50 / BPM) * 2.0
+                }
+                var heightratio = 0.0
+                var lineWidth = 1.0
+                var gradientColor = [CGColorRef]()
+                
+                
+                //calculate
+                if truth > 0.7 {
+                    heightratio = (1 - truth) * 0.5
+                    lineWidth  = 1
+                    gradientColor = [redColor, yellowColor, redColor]
+                    
+                }else if truth > 0.5 {
+                    heightratio = (1 - truth) * 0.6
+                    lineWidth  = 2
+                    gradientColor = [redColor, redColor, yellowColor, redColor, redColor]
+                    
+                }else if truth > 0.4 {
+                    heightratio = (1 - truth) * 0.7
+                    lineWidth = 3
+                    gradientColor = [blackColor, redColor, yellowColor, redColor, blackColor]
+                }else if truth > 0.3 {
+                    heightratio = (1 - truth) * 0.8
+                    lineWidth = 3
+                    gradientColor = [blackColor, redColor, redColor, yellowColor, redColor, redColor, blackColor]
+                }else if truth > 0.2 {
+                    heightratio = (1 - truth) * 1
+                    lineWidth = 4
+                    gradientColor = [blackColor, blackColor, redColor, yellowColor, redColor, blackColor, blackColor]
+                }else if truth > 0.1 {
+                    heightratio = (1 - truth) * 1.2
+                    lineWidth = 4
+                    gradientColor = [blackColor, blackColor, redColor, redColor, blackColor, blackColor]
+                }else {
+                    heightratio = (1 - truth) * 1.4
+                    lineWidth = 5
+                    gradientColor = [blackColor, blackColor, redColor, blackColor, blackColor]
+                }
+                if heightratio <= 0.1 {
+                    heightratio = 0.1
+                }
+                
+                //create layer
+                let heartARCLine = self.getHeartLineARCLayer(lineViewSize.size, ripple: 2, heightRatio: CGFloat(heightratio), lineWidth: lineWidth)
+                let heartGradient = self.getGradientLayer(lineViewSize, colors: gradientColor, opacity: 0.9, isVertical: true)
+                heartARCLine.opacity = 0
+                
+                
+                
+                //animation x position
+                var endTime = NSDate()
+                var startTime = NSDate()
+                //calculate time
+                if j == 0 {
+                    //first data
+                    startTime = quest.startTime
+                    if count == 1 {
+                        endTime = quest.endTime
+                    }else {
+                        endTime = quest.dataDates[j + 1]
+                    }
+                    
+                }else if j == count - 1 {
+                    //last data
+                    startTime = quest.dataDates[j]
+                    endTime = quest.endTime
+                }else {
+                    startTime = quest.dataDates[j]
+                    endTime = quest.dataDates[j+1]
+                }
+                
+                let heartAnimation = self.createPositionAnimation(period, startPoint: CGPoint(x: 0, y: -0), EndPoint: CGPoint(x: -(lineViewSize.width), y: -0), offset: 0, repeatCount: 1)
+                let opacityAnimate = self.createOpacityAnimation([0, 1, 0], keyTime: [0, 0.2, 0.8, 1], duration: period)
+                
+                let group = CAAnimationGroup()
+                group.repeatCount = Float(endTime.timeIntervalSinceDate(startTime) / period)
+                group.duration = period
+                group.beginTime = AVCoreAnimationBeginTimeAtZero + startTime.timeIntervalSinceDate(quest.startTime)
+                group.animations = [heartAnimation, opacityAnimate]
+                heartARCLine.addAnimation(group, forKey: "\(BPM).\(j)")
+                
+                
+                
+                layers.append(heartGradient)
+                ARClayers.append(heartARCLine)
+                print("height:\(heightratio), BPM: \(BPM), truth:\(truth), period: \(period), linewidth:\(lineWidth), timeOffset: \(group.timeOffset) animation: \(heartARCLine.animationKeys())")
+                print("repeat count: \(group.repeatCount)")
+            }
+            
+            
+        }
+        print("heart line layers \(layers)")
+        return [layers, ARClayers]
+    }
+    func getHeartLineLayerWithAnimation2delete2(questionNO: Int, parentViewSize: CGSize) -> [[CALayer]] {
+        let quest = self.questions[questionNO]
+        var truthRates = [Double]()//self.getTruthRateFromQuestion(quest)
+        let count = quest.dataValues.count
+        var layers = [CALayer]()
+        var ARClayers = [CALayer]()
+        //let totalDuration = quest.endTime.timeIntervalSinceDate(quest.startTime)
+        let lineViewSize = CGRect(x: 0, y: 0, width: parentViewSize.width, height: parentViewSize.height / 2.5) //height = 1:2.5
+        //(parentViewSize.height / 10 * 3)
+        
+        if count > 0 {
+            //calculate truth rate by data
+            for var i = 0; i < count; i++ {
+                let tempData = quest.dataValues[0..<(i + 1)]
+                let truth = self.getLocalizeTruthRate(Array(tempData))
+                truthRates.append(truth)
+            }
+            
+            //generate layer
+            
+            for var j = 0; j < truthRates.count; j++ {
+                //setup const
+                //color
+                let redColor = UIColor(red: 202 / 255, green: 24 / 255, blue: 38 / 255, alpha: 1.0).CGColor
+                let yellowColor = UIColor(red: 204 / 255, green: 233 / 255 , blue: 0, alpha: 1.0).CGColor
+                let blackColor = UIColor(red: 0.1, green: 0.1, blue: 0.1, alpha: 1.0).CGColor
+                //let grayColor = UIColor.grayColor().CGColor
+                //constant
+                let truth = truthRates[j]
+                let BPM = quest.dataValues[j]
+                var period = 2.0
+                if BPM == 0 {
+                    //not ready data
+                    period = 2.0
+                }else {
+                    period = (50 / BPM) * 2.0
+                }
+                var heightratio = 0.0
+                var lineWidth = 1.0
+                var gradientColor = [CGColorRef]()
+                
+                
+                //calculate
+                if truth > 0.7 {
+                    heightratio = (1 - truth) * 0.5
+                    lineWidth  = 1
+                    gradientColor = [redColor, yellowColor, redColor]
+                    
+                }else if truth > 0.5 {
+                    heightratio = (1 - truth) * 0.6
+                    lineWidth  = 2
+                    gradientColor = [redColor, redColor, yellowColor, redColor, redColor]
+                    
+                }else if truth > 0.4 {
+                    heightratio = (1 - truth) * 0.7
+                    lineWidth = 3
+                    gradientColor = [blackColor, redColor, yellowColor, redColor, blackColor]
+                }else if truth > 0.3 {
+                    heightratio = (1 - truth) * 0.8
+                    lineWidth = 3
+                    gradientColor = [blackColor, redColor, redColor, yellowColor, redColor, redColor, blackColor]
+                }else if truth > 0.2 {
+                    heightratio = (1 - truth) * 1
+                    lineWidth = 4
+                    gradientColor = [blackColor, blackColor, redColor, yellowColor, redColor, blackColor, blackColor]
+                }else if truth > 0.1 {
+                    heightratio = (1 - truth) * 1.2
+                    lineWidth = 4
+                    gradientColor = [blackColor, blackColor, redColor, redColor, blackColor, blackColor]
+                }else {
+                    heightratio = (1 - truth) * 1.4
+                    lineWidth = 5
+                    gradientColor = [blackColor, blackColor, redColor, blackColor, blackColor]
+                }
+                if heightratio <= 0.1 {
+                    heightratio = 0.1
+                }
+                
+                //create layer
+                let heartARCLine = self.getHeartLineARCLayer(lineViewSize.size, ripple: 2, heightRatio: CGFloat(heightratio), lineWidth: lineWidth)
+                let heartGradient = self.getGradientLayer(lineViewSize, colors: gradientColor, opacity: 0.9, isVertical: true)
+                heartARCLine.opacity = 0
+                
+                
+                
+                //animation x position
+                var endTime = NSDate()
+                var startTime = NSDate()
+                //calculate time
+                if j == 0 {
+                    //first data
+                    startTime = quest.startTime
+                    if count == 1 {
+                        endTime = quest.endTime
+                    }else {
+                        endTime = quest.dataDates[j + 1]
+                    }
+                    
+                }else if j == count - 1 {
+                    //last data
+                    startTime = quest.dataDates[j]
+                    endTime = quest.endTime
+                }else {
+                    startTime = quest.dataDates[j]
+                    endTime = quest.dataDates[j+1]
+                }
+                
+                let heartAnimation = self.createPositionAnimation(period, startPoint: CGPoint(x: 0, y: -0), EndPoint: CGPoint(x: -(lineViewSize.width), y: -0), offset: 0, repeatCount: 1)
+                let opacityAnimate = self.createOpacityAnimation([0, 1, 0], keyTime: [0, 0.2, 0.8, 1], duration: period)
+                
+                let group = CAAnimationGroup()
+                group.repeatCount = Float(endTime.timeIntervalSinceDate(startTime) / period)
+                group.duration = period
+                group.beginTime = AVCoreAnimationBeginTimeAtZero + startTime.timeIntervalSinceDate(quest.startTime)
+                group.animations = [heartAnimation, opacityAnimate]
+                heartARCLine.addAnimation(group, forKey: "\(BPM).\(j)")
+                
+                
+                
+                layers.append(heartGradient)
+                ARClayers.append(heartARCLine)
+                print("height:\(heightratio), BPM: \(BPM), truth:\(truth), period: \(period), linewidth:\(lineWidth), timeOffset: \(group.timeOffset) animation: \(heartARCLine.animationKeys())")
+                print("repeat count: \(group.repeatCount)")
+            }
+            
+            
+        }
+        print("heart line layers \(layers)")
+        return [layers, ARClayers]
+    }
+    
+    func getHeartLineLayerWithAnimation2delete(questionNO: Int, parentViewSize: CGSize) -> [[CALayer]] {
+        let quest = self.questions[questionNO]
+        var truthRates = [Double]()//self.getTruthRateFromQuestion(quest)
+        let count = quest.dataValues.count
+        var layers = [CALayer]()
+        var ARClayers = [CALayer]()
+        //let totalDuration = quest.endTime.timeIntervalSinceDate(quest.startTime)
+        let lineViewSize = CGRect(x: 0, y: 0, width: parentViewSize.width, height: parentViewSize.height / 2.5) //height = 1:2.5
+        //(parentViewSize.height / 10 * 3)
         
         if count > 0 {
             //calculate truth rate by data
@@ -604,19 +865,18 @@ class Singleton: NSObject {
     }
     
     
-    
-    func getBPMLayerWithAnimation(questionNO: Int, parentViewSize: CGSize) -> [CALayer] {
+    func getBPMLayerWithAnimation2delete(questionNO: Int, parentViewSize: CGSize) -> [CALayer] {
         
         let quest = self.questions[questionNO]
         let textColor = UIColor(red: 242 / 255, green: 242 / 255, blue: 242 / 255, alpha: 1.0)
-        let font = UIFont(name: "HelveticaNeue", size: 55)!
+        let font = UIFont(name: "HelveticaNeue", size: 44)!
         var BPMLayers = [CALayer]()
         
         //create bpm layers
         for data in quest.dataValues {
             let BPMLayer = self.createTextCALayer(Int(data).description, uiFont: font, color: textColor, x: 0, y: 0)
             //set to parentview center (height bias +5)
-            BPMLayer.frame = CGRectMake((parentViewSize.width - BPMLayer.bounds.width) / 2, (parentViewSize.height - BPMLayer.bounds.height + 10) / 2, BPMLayer.bounds.width, BPMLayer.bounds.height)
+            BPMLayer.frame = CGRectMake((parentViewSize.width - BPMLayer.bounds.width) / 2, 150 - BPMLayer.bounds.height / 2, BPMLayer.bounds.width, BPMLayer.bounds.height)//(parentViewSize.height - BPMLayer.bounds.height + 10) / 2
             BPMLayer.opacity = 0 //hide for first time
             BPMLayers.append(BPMLayer)
         }
@@ -691,10 +951,96 @@ class Singleton: NSObject {
         
     }
     
+    func getBPMLayerWithAnimation(questionNO: Int, parentViewSize: CGSize) -> [CALayer] {
+        
+        let quest = self.questions[questionNO]
+        let textColor = UIColor(red: 242 / 255, green: 242 / 255, blue: 242 / 255, alpha: 1.0)
+        let font = UIFont(name: "HelveticaNeue", size: 44)!
+        var BPMLayers = [CALayer]()
+        
+        //create bpm layers
+        for data in quest.dataValues {
+            let BPMLayer = self.createTextCALayer(Int(data).description, uiFont: font, color: textColor, x: 0, y: 0)
+            //set to parentview center (height bias +5)
+            BPMLayer.frame = CGRectMake((parentViewSize.width - BPMLayer.bounds.width) / 2, 150 - BPMLayer.bounds.height / 2, BPMLayer.bounds.width, BPMLayer.bounds.height)//(parentViewSize.height - BPMLayer.bounds.height + 10) / 2
+            BPMLayer.opacity = 0 //hide for first time
+            BPMLayers.append(BPMLayer)
+        }
+        
+        //setup animation
+        let count = quest.dataDates.count
+        for var i = 0; i < count; i++ {
+            //animation x position
+            var endTime = NSDate()
+            var startTime = NSDate()
+            //calculate time
+            if i == 0 {
+                //first data
+                startTime = quest.startTime
+                if count == 1 {
+                    endTime = quest.endTime
+                }else {
+                    endTime = quest.dataDates[i + 1]
+                }
+                
+            }else if i == count - 1 {
+                //last data
+                startTime = quest.dataDates[i]
+                endTime = quest.endTime
+            }else {
+                startTime = quest.dataDates[i]
+                endTime = quest.dataDates[i + 1]
+            }
+            
+            let duration = endTime.timeIntervalSinceDate(startTime)
+            let offset = startTime.timeIntervalSinceDate(quest.startTime)
+            let animation = self.createOpacityAnimation([0, 1, 1, 0], keyTime: [0, 0.01, 0.99, 1], duration: duration)
+            animation.beginTime = AVCoreAnimationBeginTimeAtZero + offset
+            animation.repeatDuration = duration
+            animation.duration = duration
+            
+            BPMLayers[i].addAnimation(animation, forKey: "string: \(i)")
+            
+            
+        }
+        
+        /*
+        //if have data, create animation
+        if quest.dataValues.count > 0 {
+        var BPMstring = [String]()
+        //change data to string
+        for data in quest.dataValues {
+        BPMstring.append(Int(data).description)
+        }
+        print("BPM string: \(BPMstring)")
+        //caculate time
+        let duration = quest.endTime.timeIntervalSinceDate(quest.startTime)
+        var keyTime = [NSNumber(double: 0.0)]
+        for date in quest.dataDates {
+        let interval = date.timeIntervalSinceDate(quest.startTime)
+        let space = interval / duration
+        print("start : \(quest.startTime), endtime: \(quest.endTime)")
+        print("\(date) has interval: \(interval)")
+        keyTime.append(space)
+        }
+        keyTime.append(NSNumber(double: 1.0))
+        
+        //setup animation
+        let stringAnimation = self.createCALayerStringAnimation(BPMLayer.bounds.size, font: font, duration: duration, texts: BPMstring, keyTimes: keyTime, repeatCount: 1, removeOnCompletion: false)
+        
+        //add animation to layer
+        BPMLayer.addAnimation(stringAnimation, forKey: "BPMstring")
+        }
+        */
+        return BPMLayers
+        
+        
+    }
+    
     
     func getHeartBeatLayerWithAnimation(questionNO: Int, parentViewSize: CGSize) -> CALayer {
     
-        let heartLayer = self.createUIImageCALayer(UIImage(named: "heart")!, width: 140, height: 120, x: parentViewSize.width / 2 - 70, y: parentViewSize.height / 2 - 60)
+        let heartLayer = self.createUIImageCALayer(UIImage(named: "heart")!, width: 117, height: 100, x: parentViewSize.width / 2 - 59, y: 150 - 50)
         var heartAnimation = [CAKeyframeAnimation]()
         let quest = self.questions[questionNO]
         var truthRate: Double = 1
@@ -808,7 +1154,7 @@ class Singleton: NSObject {
         let sizeOfTimeText = timeText?.size()
         
         //brand text
-        let brandText = createTextString("Polygraph", font: topFont)
+        let brandText = createTextString("Heart Camera", font: topFont)
         let sizeOfBrandText = brandText.size()
 
         //truth label

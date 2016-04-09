@@ -36,9 +36,9 @@ class IntroViewController: UIViewController, UIPageViewControllerDelegate, UIPag
     
     
 //page view
-    var introText = ["Wear Apple Watch \n" + "on Subject", "Keep Watch Active", "Ready?"]
-    var subText = ["Open the Polygraph App on Watch \n" + "and Follow the Instruction", "During the Test, \n" + "Subject's Finger Should Touch \n" + "Watch Screen to Keep Active", "When You Are Ready \n" + "Press Start Button on Both Side"]
-    var introImageName = ["iwatchIntro3", "finger", "heartLine"]
+    var introText = ["Wear Apple Watch \n" + "on Subject", "Ready?"]//, "Keep Watch Active"
+    var subText = ["Open 'Heart Camera' App on iWatch \n" , "Press Start Button on Both Side"]//"During the Test, \n" + "Subject's Finger Should Touch \n" + "Watch Screen to Keep Active"
+    var introImageName = ["iwatchIntro3", "heartLine"]//, "finger"
     var pageViewController: UIPageViewController!
     var pageControl = 0
     
@@ -67,7 +67,7 @@ class IntroViewController: UIViewController, UIPageViewControllerDelegate, UIPag
     func pageViewController(pageViewController: UIPageViewController, viewControllerAfterViewController viewController: UIViewController) -> UIViewController? {
         if var index = (viewController as! IntroPageViewController).pageIndex {
             
-            if index == 2 {
+            if index == 1 {
                 //final page
                 return nil
             }
@@ -104,6 +104,8 @@ class IntroViewController: UIViewController, UIPageViewControllerDelegate, UIPag
         return contentViewController
         
     }
+    
+    
     
     
     

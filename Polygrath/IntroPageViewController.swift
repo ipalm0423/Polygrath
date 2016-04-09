@@ -69,7 +69,7 @@ class IntroPageViewController: UIViewController {
         //self.startButton.layer.cornerRadius = self.startButton.frame.height / 2
         //self.startButton.clipsToBounds = true
         //button
-        if self.pageIndex != 2 {
+        if self.pageIndex != 1 {
             //heart image
             self.heartImage.alpha = 0
             self.startButton.alpha = 0
@@ -79,13 +79,14 @@ class IntroPageViewController: UIViewController {
             
         }
         
+        /*
         //finger print
         if self.pageIndex == 1 {
             self.fingerPrintImageView.alpha = 1
             self.fingerPrintImageView.updateConstraintsIfNeeded()
             self.fingerPrintBTMConst.constant = self.fingerPrintImageView.frame.height / 2
         }
-        
+        */
         
         //self.startButton.setNeedsUpdateConstraints()
         //self.startButtonBottomConstraint.constant = -60 //hide
@@ -99,12 +100,12 @@ class IntroPageViewController: UIViewController {
                 print("page. 0: open watch app")
                 //animate iWatch
                 self.iWatchTimer = NSTimer.scheduledTimerWithTimeInterval(0.6, target: self, selector: Selector("animateiWatch"), userInfo: nil, repeats: true)
-                
+                /*
             case 1:
                 print("page. 1: keep finger touch")
                 self.animateFinger()
-                
-            case 2:
+                */
+            case 1:
                 print("page. 2: Ready page, camera authorize")
                 //animation heart
                 self.animateHeart()
@@ -229,7 +230,7 @@ class IntroPageViewController: UIViewController {
     
 //alert
     func alertCameraWarning() {
-        let alert = UIAlertController(title: "Authorize", message: "Need to Access Camera for Polygraph Purpose", preferredStyle: UIAlertControllerStyle.Alert)
+        let alert = UIAlertController(title: "Authorize", message: "Need to Access Camera Before Start", preferredStyle: UIAlertControllerStyle.Alert)
         
         alert.addAction(UIAlertAction(title: "OK", style: .Default, handler: { action in
             switch action.style{

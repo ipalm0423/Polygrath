@@ -72,11 +72,11 @@ class AllowHealthViewController: UIViewController {
                             
                         }else {
                             //authorize denny
-                            self.alertHealthWarning("We need to access your health data for polygraph purpose")
+                            self.alertHealthWarning("Need to Access Health Data Before Start")
                         }
                     }else {
                         print("didn't reply HK authorization", terminator: "")
-                        self.alertHealthWarning("We need to access your health data for polygraph purpose")
+                        self.alertHealthWarning("Need to Access Health Data Before Start")
                     }
                 })
                 print("health store is not authorize", terminator: "")

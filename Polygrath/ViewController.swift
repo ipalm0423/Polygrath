@@ -93,7 +93,7 @@ class ViewController: UIViewController {
     }
     
     func alertHealthWarning() {
-        let alert = UIAlertController(title: "Authorize", message: "Need to Access Health Data for Polygraph Purpose", preferredStyle: UIAlertControllerStyle.Alert)
+        let alert = UIAlertController(title: "Authorize", message: "Need to Access Health Data Before Start", preferredStyle: UIAlertControllerStyle.Alert)
         
         alert.addAction(UIAlertAction(title: "OK", style: .Default, handler: { action in
             switch action.style{
